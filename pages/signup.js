@@ -1,6 +1,5 @@
 import { supabase } from '@/utils/supabase'
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 const Signup = () => {
@@ -62,6 +61,7 @@ const Signup = () => {
                 value={newUser.password}
                 required
               />
+              <p>Password must be at least six characters long</p>
             </div>
             <div className="input-wrapper">
               <label htmlFor="passwordCheck">Re-enter password</label>
@@ -79,6 +79,7 @@ const Signup = () => {
               disabled={
                 !newUser.email ||
                 !newUser.password ||
+                newUser.password.length < 6 ||
                 newUser.password != newUser.passwordCheck
               }
             >
