@@ -46,10 +46,14 @@ const UserProvider = ({ children }) => {
       email: email,
       password: password
     })
-    if (user.firstLogin) {
-      router.push('/create-account')
+
+    if (user) {
+      router.push(
+        `/${user.user_metadata.type === 'Label' ? 'labels' : 'artists'}/${
+          user.user_metadata.slug
+        }`
+      )
     }
-    router.push('/logged')
   }
 
   const logout = async () => {

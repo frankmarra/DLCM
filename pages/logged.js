@@ -2,7 +2,6 @@ import { useUser } from '@/utils/context/user'
 
 const Logged = () => {
   const { activeUser, logout } = useUser()
-  console.log('user: ', activeUser)
 
   return (
     <div>
