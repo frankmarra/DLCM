@@ -2,11 +2,21 @@ import { supabase } from '@/utils/supabase'
 import { useState } from 'react'
 import Link from 'next/link'
 
+const accountTypes = [
+  { id: 1, text: 'Label' },
+  { id: 2, text: 'Artist' },
+  { id: 3, text: 'Choose account type', isDisabled: true }
+]
+
 const Signup = () => {
   const [newUser, setNewUser] = useState({
     email: '',
     password: '',
-    passwordCheck: ''
+    passwordCheck: '',
+    type: accountTypes[2].text,
+    name: '',
+    avatar: '',
+    location: ''
   })
   const [userCreated, setUserCreated] = useState(false)
 
@@ -18,7 +28,15 @@ const Signup = () => {
     e.preventDefault()
     let { data, error } = await supabase.auth.signUp({
       email: newUser.email,
-      password: newUser.password
+      password: newUser.password,
+      options: {
+        data: {
+          type: newUser.type,
+          name: newUser.name,
+          avatar: newUser.avatar,
+          location: newUser.location
+        }
+      }
     })
 
     if (error) {
@@ -73,6 +91,89 @@ const Signup = () => {
                 required
               />
             </div>
+            <div className="input-wrapper">
+              <label htmlFor="type">Account type</label>
+              <select
+                onChange={handleChange}
+                id="type"
+                value={newUser.type}
+                required
+              >
+                {accountTypes.map((accountType) => (
+                  <option
+                    key={accountType.id}
+                    value={accountType.text}
+                    disabled={accountType.isDisabled}
+                  >
+                    {accountType.text}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {newUser.type === accountTypes[2].text ? null : newUser.type ===
+              'Label' ? (
+              <>
+                <div className="input-wrapper">
+                  <label htmlFor="name">Label Name</label>
+                  <input
+                    onChange={handleChange}
+                    id="name"
+                    type="text"
+                    value={newUser.name}
+                    required
+                  />
+                </div>
+                <div className="input-wrapper">
+                  <label htmlFor="name">Label avatar</label>
+                  <input
+                    onChange={handleChange}
+                    id="avatar"
+                    type="text"
+                    value={newUser.avatar}
+                  />
+                </div>
+                <div className="input-wrapper">
+                  <label htmlFor="location">Label location</label>
+                  <input
+                    onChange={handleChange}
+                    id="location"
+                    type="text"
+                    value={newUser.location}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="input-wrapper">
+                  <label htmlFor="name">Artist Name</label>
+                  <input
+                    onChange={handleChange}
+                    id="name"
+                    type="text"
+                    value={newUser.name}
+                    required
+                  />
+                </div>
+                <div className="input-wrapper">
+                  <label htmlFor="name">Artist avatar</label>
+                  <input
+                    onChange={handleChange}
+                    id="avatar"
+                    type="text"
+                    value={newUser.avatar}
+                  />
+                </div>
+                <div className="input-wrapper">
+                  <label htmlFor="location">Artist location</label>
+                  <input
+                    onChange={handleChange}
+                    id="location"
+                    type="text"
+                    value={newUser.location}
+                  />
+                </div>
+              </>
+            )}
             <button
               type="submit"
               className="btn primary"
@@ -80,7 +181,9 @@ const Signup = () => {
                 !newUser.email ||
                 !newUser.password ||
                 newUser.password.length < 6 ||
-                newUser.password != newUser.passwordCheck
+                newUser.password != newUser.passwordCheck ||
+                !newUser.name ||
+                newUser.type === accountTypes[2].text
               }
             >
               Sign Up

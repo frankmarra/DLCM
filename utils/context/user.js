@@ -39,10 +39,16 @@ const UserProvider = ({ children }) => {
 
   //login with dlcm user name and password
   const loginWithPassword = async (email, password) => {
-    await supabase.auth.signInWithPassword({
+    const {
+      data: { user },
+      error
+    } = await supabase.auth.signInWithPassword({
       email: email,
       password: password
     })
+    if (user.firstLogin) {
+      router.push('/create-account')
+    }
     router.push('/logged')
   }
 
