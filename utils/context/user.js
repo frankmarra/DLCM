@@ -5,23 +5,27 @@ import { useRouter } from 'next/router'
 const Context = createContext()
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(supabase.auth.getUser())
+  const [activeUser, setActiveUser] = useState()
   const router = useRouter()
 
   useEffect(() => {
     const getUserProfile = async () => {
-      const sessionUser = supabase.auth.getUser()
-
-      if (sessionUser) {
-        const { data: profile, error } = await supabase
+      const {
+        data: { user },
+        error
+      } = await supabase.auth.getUser()
+      console.log('user in user: ', activeUser)
+      console.log('session user: ', user)
+      if (user != null) {
+        const { data: profiles, error } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', sessionUser.id)
+          .eq('id', user.id)
           .single()
 
-        setUser({
-          ...sessionUser,
-          ...profile
+        setActiveUser({
+          ...user,
+          ...profiles
         })
       }
     }
@@ -42,12 +46,12 @@ const UserProvider = ({ children }) => {
 
   const logout = async () => {
     await supabase.auth.signOut()
-    setUser(null)
+    setActiveUser(null)
     router.push('/')
   }
 
   const exposed = {
-    user,
+    activeUser,
     loginWithPassword,
     logout
   }
