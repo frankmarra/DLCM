@@ -14,8 +14,6 @@ const UserProvider = ({ children }) => {
         data: { user },
         error
       } = await supabase.auth.getUser()
-      console.log('user in user: ', activeUser)
-      console.log('session user: ', user)
       if (user != null) {
         const { data: profiles, error } = await supabase
           .from('profiles')
