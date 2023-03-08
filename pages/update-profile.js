@@ -1,6 +1,7 @@
 import { useUser } from '@/utils/context/user'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { supabase } from '@/utils/supabase'
 
 const trueFalse = [
   { id: 1, text: 'True', value: true },
@@ -8,29 +9,43 @@ const trueFalse = [
 ]
 
 export default function UpdateProfile() {
-  const { activeUser, updateProfile } = useUser()
+  const { activeUser } = useUser()
   const [updateData, setUpdateData] = useState({
-    avatar: activeUser.avatar || '',
-    location: activeUser.location || '',
-    isPasswordProtected: activeUser.isPasswordProtected,
-    pagePassword: activeUser.pagePassword || '',
-    sites: activeUser.sites || ''
+    avatar: '',
+    location: '',
+    isPasswordProtected: '',
+    pagePassword: '',
+    sites: ''
   })
-  console.log(activeUser)
+
+  useEffect(() => {
+    if (activeUser) {
+      setUpdateData({
+        avatar: activeUser.avatar,
+        location: activeUser.location,
+        isPasswordProtected: activeUser.isPasswordProtected,
+        pagePassword: activeUser.pagePassword,
+        sites: activeUser.sites
+      })
+    }
+  }, [activeUser])
+
   const handleChange = (e) => {
     e.preventDefault()
     setUpdateData({ ...updateData, [e.target.id]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const updateProfile = async (e) => {
     e.preventDefault()
-    const updatedProfile = updateProfile(activeUser.id, updateData)
-    console.log('updated Profile: ', updatedProfile)
+    const { data, error } = await supabase
+      .from('profiles')
+      .update(updateData)
+      .eq('id', activeUser.id)
   }
   return activeUser ? (
     <div className="update-profile-wrapper">
       <h1>Update Profile</h1>
-      <form className="update-profile-form" onSubmit={handleSubmit}>
+      <form className="update-profile-form" onSubmit={updateProfile}>
         <div className="input-wrapper">
           <label htmlFor="avatar">Avatar</label>
           <input
