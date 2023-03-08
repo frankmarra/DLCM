@@ -25,6 +25,7 @@ const Signup = () => {
   }
 
   const handleSubmit = async (e) => {
+    let slugger = newUser.name.toLowerCase()
     e.preventDefault()
     let { data, error } = await supabase.auth.signUp({
       email: newUser.email,
@@ -34,7 +35,11 @@ const Signup = () => {
           type: newUser.type,
           name: newUser.name,
           avatar: newUser.avatar,
-          location: newUser.location
+          location: newUser.location,
+          slug: slugger
+            .replace(/[^a-z0-9 -]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
         }
       }
     })

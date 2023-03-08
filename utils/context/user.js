@@ -9,6 +9,11 @@ const UserProvider = ({ children }) => {
   const [activeUser, setActiveUser] = useState()
   const router = useRouter()
 
+  const userTypePaths = new Map([
+    ['Label', 'labels'],
+    ['Artist', 'artists']
+  ])
+
   useEffect(() => {
     //gets current user from auth table in supabase
     const getUserProfile = async () => {
@@ -46,10 +51,14 @@ const UserProvider = ({ children }) => {
       email: email,
       password: password
     })
-    if (user.firstLogin) {
-      router.push('/create-account')
+
+    if (user) {
+      router.push(
+        `/${userTypePaths.get(user.user_metadata.type)}/${
+          user.user_metadata.slug
+        }`
+      )
     }
-    router.push('/logged')
   }
 
   const logout = async () => {
