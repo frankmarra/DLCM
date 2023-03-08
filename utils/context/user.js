@@ -67,10 +67,18 @@ const UserProvider = ({ children }) => {
     router.push('/')
   }
 
+  const updateProfile = async (updateData, id) => {
+    const { data, error } = await supabase
+      .from('profiles')
+      .update(updateData)
+      .eq('id', id)
+  }
+
   const exposed = {
     activeUser,
     loginWithPassword,
-    logout
+    logout,
+    updateProfile
   }
 
   return <Context.Provider value={exposed}>{children}</Context.Provider>
