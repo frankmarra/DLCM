@@ -9,6 +9,11 @@ const UserProvider = ({ children }) => {
   const [activeUser, setActiveUser] = useState()
   const router = useRouter()
 
+  const userTypePaths = new Map([
+    ['Label', 'labels'],
+    ['Artist', 'artists']
+  ])
+
   useEffect(() => {
     //gets current user from auth table in supabase
     const getUserProfile = async () => {
@@ -49,7 +54,7 @@ const UserProvider = ({ children }) => {
 
     if (user) {
       router.push(
-        `/${user.user_metadata.type === 'Label' ? 'labels' : 'artists'}/${
+        `/${userTypePaths.get(user.user_metadata.type)}/${
           user.user_metadata.slug
         }`
       )
