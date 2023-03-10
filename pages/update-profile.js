@@ -2,6 +2,8 @@ import { useUser } from '@/utils/context/user'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '@/utils/supabase'
+import Link from 'next/link'
+import Login from '@/components/Login'
 
 const trueFalse = [
   { id: 1, text: 'True', value: true },
@@ -97,6 +99,15 @@ export default function UpdateProfile() {
       </form>
     </div>
   ) : (
-    <div>You do not have permission to access this page</div>
+    <div>
+      <p>You must login to use this function</p>
+      <Login />
+      <p>
+        don't have an account?{' '}
+        <span>
+          <Link href="/signup">Sign up</Link>
+        </span>
+      </p>
+    </div>
   )
 }

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase'
 import { useUser } from '@/utils/context/user'
+import Link from 'next/link'
+import Login from '@/components/Login'
 
 const trueFalse = [
   { id: 1, text: 'True', value: true },
@@ -32,20 +34,11 @@ export default function CreateRelease() {
 
   useEffect(() => {
     if (activeUser) {
-      if (activeUser.type === 'Label') {
-        setNewRelease({
-          ...newRelease,
-          label: activeUser.name,
-          userId: activeUser.id
-        })
-      }
-      if (activeUser.type === 'Artist') {
-        setNewRelease({
-          ...newRelease,
-          artist: activeUser.name,
-          userId: activeUser.id
-        })
-      }
+      setNewRelease({
+        ...newRelease,
+        label: activeUser.type === 'Label' ? activeUser.name : null,
+        artist: activeUser.type === 'Artist' ? activeUser.name : null
+      })
     }
   }, [activeUser])
 
@@ -58,98 +51,118 @@ export default function CreateRelease() {
     const { data, error } = await supabase.from('releases').insert([newRelease])
   }
 
-  return (
-    activeUser && (
-      <div className="create-release-wrapper">
-        <h1>Add new release</h1>
-        <form className="create-release-form" onSubmit={handleSubmit}>
-          <div className="input-wrapper">
-            <label htmlFor="title">Title</label>
+  return activeUser ? (
+    <div className="create-release-wrapper">
+      <h1>Add new release</h1>
+      <form className="create-release-form" onSubmit={handleSubmit}>
+        <div className="input-wrapper">
+          <label htmlFor="title">Title</label>
+          <input
+            onChange={handleChange}
+            id="title"
+            type="text"
+            value={newRelease.title}
+            required
+          />
+        </div>
+        <div className="input-wrapper">
+          <label htmlFor="artist">Artist</label>
+          {activeUser.type === 'Artist' ? (
+            <p>{activeUser.name}</p>
+          ) : (
             <input
               onChange={handleChange}
-              id="title"
+              id="artist"
               type="text"
-              value={newRelease.title}
-              required
+              value={newRelease.artist}
             />
-          </div>
-          <div className="input-wrapper">
-            <label htmlFor="artist">Artist</label>
-            {activeUser.type === 'Artist' ? (
-              <p>{activeUser.name}</p>
-            ) : (
-              <input
-                onChange={handleChange}
-                id="artist"
-                type="text"
-                value={newRelease.artist}
-              />
-            )}
-          </div>
-          <div className="input-wrapper">
-            <label htmlFor="label">Label</label>
-            {activeUser.type === 'Label' ? (
-              <p>{activeUser.name}</p>
-            ) : (
-              <input
-                onChange={handleChange}
-                id="label"
-                type="text"
-                value={newRelease.label}
-              />
-            )}
-          </div>
-          <div className="input-wrapper">
-            <label htmlFor="artwork">Artwork</label>
+          )}
+        </div>
+        <div className="input-wrapper">
+          <label htmlFor="label">Label</label>
+          {activeUser.type === 'Label' ? (
+            <p>{activeUser.name}</p>
+          ) : (
             <input
               onChange={handleChange}
-              id="artwork"
+              id="label"
               type="text"
-              value={newRelease.artwork}
+              value={newRelease.label}
             />
-          </div>
-          <div className="input-wrapper">
-            <label htmlFor="type">Type</label>
-            <select onChange={handleChange} id="type" value={newRelease.type}>
-              {releaseTypes.map((releaseType) => (
-                <option key={releaseType.id} value={releaseType.value}>
-                  {releaseType.text}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="input-wrapper">
-            <label htmlFor="isPasswordProtected">
-              Password protect release?
-            </label>
-            <select
-              onChange={handleChange}
-              id="isPasswordProtected"
-              value={newRelease.isPasswordProtected}
-            >
-              {trueFalse.map((bool) => (
-                <option key={bool.id} value={bool.value}>
-                  {bool.text}
-                </option>
-              ))}
-            </select>
-            {newRelease.isPasswordProtected ? (
-              <div className="input-wrapper">
-                <label htmlFor="pagePassword">Page password</label>
-                <input
-                  onChange={handleChange}
-                  id="pagePassword"
-                  type="password"
-                  value={newRelease.pagePassword}
-                />
-              </div>
-            ) : null}
-          </div>
-          <button type="submit" className="btn primary">
-            Create
-          </button>
-        </form>
-      </div>
-    )
+          )}
+        </div>
+        <div className="input-wrapper">
+          <label htmlFor="artwork">Artwork</label>
+          <input
+            onChange={handleChange}
+            id="artwork"
+            type="text"
+            value={newRelease.artwork}
+          />
+        </div>
+        <div className="input-wrapper">
+          <label htmlFor="type">Type</label>
+          <select
+            onChange={handleChange}
+            id="type"
+            value={newRelease.type}
+            required
+          >
+            {releaseTypes.map((releaseType) => (
+              <option
+                key={releaseType.id}
+                value={releaseType.value}
+                disabled={releaseType.isDisabled}
+              >
+                {releaseType.text}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="input-wrapper">
+          <label htmlFor="isPasswordProtected">Password protect release?</label>
+          <select
+            onChange={handleChange}
+            id="isPasswordProtected"
+            value={newRelease.isPasswordProtected}
+          >
+            {trueFalse.map((bool) => (
+              <option key={bool.id} value={bool.value}>
+                {bool.text}
+              </option>
+            ))}
+          </select>
+          {newRelease.isPasswordProtected ? (
+            <div className="input-wrapper">
+              <label htmlFor="pagePassword">Page password</label>
+              <input
+                onChange={handleChange}
+                id="pagePassword"
+                type="password"
+                value={newRelease.pagePassword}
+              />
+            </div>
+          ) : null}
+        </div>
+        <button
+          type="submit"
+          className="btn primary"
+          disabled={!newRelease.title || !newRelease.type}
+        >
+          Create
+        </button>
+      </form>
+    </div>
+  ) : (
+    <div>
+      <p>You must login to use this function</p>
+      <Login />
+      <p>
+        don't have an account?{' '}
+        <span>
+          <Link href="/signup">Sign up</Link>
+        </span>
+      </p>
+    </div>
   )
 }
