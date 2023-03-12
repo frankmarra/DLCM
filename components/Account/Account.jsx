@@ -9,7 +9,7 @@ export default function Account({ session }) {
   const user = useUser()
   const [loading, setLoading] = useState(true)
   const [name, setName] = useState(null)
-  const [avatar, setAvatarUrl] = useState(null)
+  const [avatarUrl, setAvatarUrl] = useState(null)
 
   useEffect(() => {
     async function getProfile() {
@@ -67,11 +67,11 @@ export default function Account({ session }) {
     <div className="stack">
       <Avatar
         uid={user.id}
-        url={avatar}
+        url={avatarUrl}
         size={250}
         onUpload={(url) => {
           setAvatarUrl(url)
-          updateProfile({ name, avatar: url })
+          updateProfile({ name, avatarUrl: url })
         }}
       />
 
@@ -103,7 +103,7 @@ export default function Account({ session }) {
         <button
           className="button"
           data-variant="primary"
-          onClick={() => updateProfile({ name, avatar })}
+          onClick={() => updateProfile({ name, avatarUrl })}
           disabled={loading}
         >
           {loading ? "Loading..." : "Update"}
