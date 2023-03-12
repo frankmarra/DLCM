@@ -19,7 +19,7 @@ const releaseTypes = [
 ]
 
 export default function CreateRelease() {
-  const { activeUser } = useUser()
+  const { user } = useUser()
   const [newRelease, setNewRelease] = useState({
     title: '',
     artist: '',
@@ -33,14 +33,14 @@ export default function CreateRelease() {
   })
 
   useEffect(() => {
-    if (activeUser) {
+    if (user) {
       setNewRelease({
         ...newRelease,
-        label: activeUser.type === 'Label' ? activeUser.name : null,
-        artist: activeUser.type === 'Artist' ? activeUser.name : null
+        label: user.type === 'Label' ? user.name : null,
+        artist: user.type === 'Artist' ? user.name : null
       })
     }
-  }, [activeUser])
+  }, [user])
 
   const handleChange = (e) => {
     setNewRelease({ ...newRelease, [e.target.id]: e.target.value })
@@ -51,7 +51,7 @@ export default function CreateRelease() {
     const { data, error } = await supabase.from('releases').insert([newRelease])
   }
 
-  return activeUser ? (
+  return user ? (
     <div className="create-release-wrapper">
       <h1>Add new release</h1>
       <form className="create-release-form" onSubmit={handleSubmit}>
@@ -67,8 +67,8 @@ export default function CreateRelease() {
         </div>
         <div className="input-wrapper">
           <label htmlFor="artist">Artist</label>
-          {activeUser.type === 'Artist' ? (
-            <p>{activeUser.name}</p>
+          {user.type === 'Artist' ? (
+            <p>{user.name}</p>
           ) : (
             <input
               onChange={handleChange}
@@ -80,8 +80,8 @@ export default function CreateRelease() {
         </div>
         <div className="input-wrapper">
           <label htmlFor="label">Label</label>
-          {activeUser.type === 'Label' ? (
-            <p>{activeUser.name}</p>
+          {user.type === 'Label' ? (
+            <p>{user.name}</p>
           ) : (
             <input
               onChange={handleChange}

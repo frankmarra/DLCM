@@ -4,14 +4,10 @@ import { useRouter } from 'next/router'
 import { supabase } from '@/utils/supabase'
 import Link from 'next/link'
 import Login from '@/components/Login'
-
-const trueFalse = [
-  { id: 1, text: 'True', value: true },
-  { id: 2, text: 'False', value: false }
-]
+import NotLoggedInUserScreen from '@/components/NotLoggedInUserScreen'
 
 export default function UpdateProfile() {
-  const { activeUser } = useUser()
+  const { user } = useUser()
   const [updateData, setUpdateData] = useState({
     avatar: '',
     location: '',
@@ -21,20 +17,28 @@ export default function UpdateProfile() {
   })
 
   useEffect(() => {
-    if (activeUser) {
+    if (user) {
       setUpdateData({
-        avatar: activeUser.avatar,
-        location: activeUser.location,
-        isPasswordProtected: activeUser.isPasswordProtected,
-        pagePassword: activeUser.pagePassword,
-        sites: activeUser.sites
+        avatar: user.avatar,
+        location: user.location,
+        isPasswordProtected: user.isPasswordProtected,
+        pagePassword: user.pagePassword,
+        sites: user.sites
       })
     }
-  }, [activeUser])
+  }, [user])
 
   const handleChange = (e) => {
+    console.log('hi change')
     e.preventDefault()
     setUpdateData({ ...updateData, [e.target.id]: e.target.value })
+  }
+
+  const handleIsPasswordProtectedChange = (e) => {
+    setUpdateData({
+      ...updateData,
+      isPasswordProtected: e.target.checked
+    })
   }
 
   const updateProfile = async (e) => {
@@ -42,9 +46,16 @@ export default function UpdateProfile() {
     const { data, error } = await supabase
       .from('profiles')
       .update(updateData)
-      .eq('id', activeUser.id)
+      .eq('id', user.id)
   }
-  return activeUser ? (
+
+  if (!user) {
+    return (
+      <NotLoggedInUserScreen actionText="You must login to create a new release" />
+    )
+  }
+
+  return (
     <div className="update-profile-wrapper">
       <h1>Update Profile</h1>
       <form className="update-profile-form" onSubmit={updateProfile}>
@@ -67,20 +78,15 @@ export default function UpdateProfile() {
           />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="isPasswordProtected">
-            Password protect public site?
-          </label>
-          <select
-            onChange={handleChange}
+          <input
+            type="checkbox"
             id="isPasswordProtected"
-            value={activeUser.isPasswordProtected}
-          >
-            {trueFalse.map((bool) => (
-              <option key={bool.id} value={bool.value}>
-                {bool.text}
-              </option>
-            ))}
-          </select>
+            onChange={handleIsPasswordProtectedChange}
+            checked={updateData.isPasswordProtected}
+          />
+          <label htmlFor="isPasswordProtected">
+            Enable password protection
+          </label>
         </div>
         {updateData.isPasswordProtected ? (
           <div className="input-wrapper">
@@ -97,17 +103,6 @@ export default function UpdateProfile() {
           Update
         </button>
       </form>
-    </div>
-  ) : (
-    <div>
-      <p>You must login to use this function</p>
-      <Login />
-      <p>
-        don't have an account?{' '}
-        <span>
-          <Link href="/signup">Sign up</Link>
-        </span>
-      </p>
     </div>
   )
 }
