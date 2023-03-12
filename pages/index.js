@@ -1,21 +1,11 @@
+import { useSession } from "@supabase/auth-helpers-react"
+import Account from "@/components/Account/Account"
+import Login from "@/components/Login/Login"
 
-import Login from "@/components/login";
-import Link from "next/link";
-import IconRecord from "@/icons/vinyl-record.svg";
+const Home = () => {
+  const session = useSession()
 
-export default function Home() {
-  return (
-    <div>
-      <h1>
-        <IconRecord aria-hidden="true" /> Download Code Manager
-      </h1>
-      <Login />
-      <p>
-        Not a member?{" "}
-        <span>
-          <Link href="/signup">Sign up!</Link>
-        </span>
-      </p>
-    </div>
-  );
+  return !session ? <Login /> : <Account session={session} />
 }
+
+export default Home

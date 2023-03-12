@@ -1,43 +1,43 @@
-import { useState, useEffect } from 'react'
-import { supabase } from '@/utils/supabase'
-import { useUser } from '@/utils/context/user'
-import Link from 'next/link'
-import Login from '@/components/Login'
+import { useState, useEffect } from "react"
+import { supabase } from "@/utils/supabase"
+import { useUser } from "@/utils/context/user"
+import Link from "next/link"
+import Login from "@/components/Login/Login"
 
 const trueFalse = [
-  { id: 1, text: 'True', value: true },
-  { id: 2, text: 'False', value: false }
+  { id: 1, text: "True", value: true },
+  { id: 2, text: "False", value: false },
 ]
 
 const releaseTypes = [
-  { id: 1, text: 'LP' },
-  { id: 2, text: 'EP' },
-  { id: 3, text: 'Single' },
-  { id: 4, text: 'Compilation' },
-  { id: 5, text: 'Soundtrack' },
-  { id: 6, text: 'Choose release type', isDisabled: true }
+  { id: 1, text: "LP" },
+  { id: 2, text: "EP" },
+  { id: 3, text: "Single" },
+  { id: 4, text: "Compilation" },
+  { id: 5, text: "Soundtrack" },
+  { id: 6, text: "Choose release type", isDisabled: true },
 ]
 
 export default function CreateRelease() {
   const { user } = useUser()
   const [newRelease, setNewRelease] = useState({
-    title: '',
-    artist: '',
-    label: '',
-    artwork: '',
-    downloadUrl: '',
-    pagePassword: '',
+    title: "",
+    artist: "",
+    label: "",
+    artwork: "",
+    downloadUrl: "",
+    pagePassword: "",
     isPasswordProtected: trueFalse[1].value,
     type: releaseTypes[5].text,
-    userId: ''
+    userId: "",
   })
 
   useEffect(() => {
     if (user) {
       setNewRelease({
         ...newRelease,
-        label: user.type === 'Label' ? user.name : null,
-        artist: user.type === 'Artist' ? user.name : null
+        label: user.type === "Label" ? user.name : null,
+        artist: user.type === "Artist" ? user.name : null,
       })
     }
   }, [user])
@@ -48,7 +48,7 @@ export default function CreateRelease() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const { data, error } = await supabase.from('releases').insert([newRelease])
+    const { data, error } = await supabase.from("releases").insert([newRelease])
   }
 
   return user ? (
@@ -67,7 +67,7 @@ export default function CreateRelease() {
         </div>
         <div className="input-wrapper">
           <label htmlFor="artist">Artist</label>
-          {user.type === 'Artist' ? (
+          {user.type === "Artist" ? (
             <p>{user.name}</p>
           ) : (
             <input
@@ -80,7 +80,7 @@ export default function CreateRelease() {
         </div>
         <div className="input-wrapper">
           <label htmlFor="label">Label</label>
-          {user.type === 'Label' ? (
+          {user.type === "Label" ? (
             <p>{user.name}</p>
           ) : (
             <input
@@ -158,7 +158,7 @@ export default function CreateRelease() {
       <p>You must login to use this function</p>
       <Login />
       <p>
-        don't have an account?{' '}
+        don't have an account?{" "}
         <span>
           <Link href="/signup">Sign up</Link>
         </span>

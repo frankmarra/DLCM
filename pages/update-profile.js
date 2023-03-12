@@ -1,53 +1,58 @@
-import { useUser } from "@/utils/context/user";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { supabase } from "@/utils/supabase";
-import Link from "next/link";
-import Login from "@/components/Login";
-import NotLoggedInUserScreen from "@/components/NotLoggedInUserScreen";
+import { useUser } from "@/utils/context/user"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/router"
+import { supabase } from "@/utils/supabase"
+import Link from "next/link"
+import Login from "@/components/Login/Login"
+import NotLoggedInUserScreen from "@/components/NotLoggedInUserScreen"
 
 export default function UpdateProfile() {
-  const { user } = useUser();
+  const { user } = useUser()
   const [updateData, setUpdateData] = useState({
     avatar: "",
     location: "",
     isPasswordProtected: "",
     pagePassword: "",
     sites: "",
-  });
+  })
 
   useEffect(() => {
     if (user) {
       setUpdateData({
-        avatar: user.avatar,
+        avatar: user.avatar_url,
         location: user.location,
         isPasswordProtected: user.isPasswordProtected,
         pagePassword: user.pagePassword,
         sites: user.sites,
-      });
+      })
     }
-  }, [user]);
+  }, [user])
 
   const handleChange = (e) => {
-    console.log("hi change");
-    e.preventDefault();
-    setUpdateData({ ...updateData, [e.target.id]: e.target.value });
-  };
+    console.log("hi change")
+    e.preventDefault()
+    setUpdateData({ ...updateData, [e.target.id]: e.target.value })
+  }
 
   const handleIsPasswordProtectedChange = (e) => {
     setUpdateData({
       ...updateData,
       isPasswordProtected: e.target.checked,
-    });
-  };
+    })
+  }
 
   const updateProfile = async (e) => {
-    e.preventDefault();
-    const { data, error } = await supabase.from("profiles").update(updateData).eq("id", user.id);
-  };
+    e.preventDefault()
+    const { data, error } = await supabase
+      .from("profiles")
+      .update(updateData)
+      .eq("id", user.id)
+  }
 
   if (!user) {
-    return <NotLoggedInUserScreen actionText="You must log in to create a new release" />;
+    return (
+      <NotLoggedInUserScreen actionText="You must log in to create a new release" />
+    )
   }
 
   return (
@@ -56,11 +61,21 @@ export default function UpdateProfile() {
       <form className="update-profile-form" onSubmit={updateProfile}>
         <div className="input-wrapper">
           <label htmlFor="avatar">Avatar</label>
-          <input onChange={handleChange} id="avatar" type="text" value={updateData.avatar} />
+          <input
+            onChange={handleChange}
+            id="avatar"
+            type="text"
+            value={updateData.avatar_url}
+          />
         </div>
         <div className="input-wrapper">
           <label htmlFor="location">Location</label>
-          <input onChange={handleChange} id="location" type="text" value={updateData.location} />
+          <input
+            onChange={handleChange}
+            id="location"
+            type="text"
+            value={updateData.location}
+          />
         </div>
         <div className="input-wrapper">
           <input
@@ -69,12 +84,19 @@ export default function UpdateProfile() {
             onChange={handleIsPasswordProtectedChange}
             checked={updateData.isPasswordProtected}
           />
-          <label htmlFor="isPasswordProtected">Enable password protection</label>
+          <label htmlFor="isPasswordProtected">
+            Enable password protection
+          </label>
         </div>
         {updateData.isPasswordProtected ? (
           <div className="input-wrapper">
             <label htmlFor="pagePassword">Page password</label>
-            <input onChange={handleChange} id="pagePassword" type="password" value={updateData.pagePassword} />
+            <input
+              onChange={handleChange}
+              id="pagePassword"
+              type="password"
+              value={updateData.pagePassword}
+            />
           </div>
         ) : null}
         <button type="submit" className="btn primary">
@@ -82,5 +104,5 @@ export default function UpdateProfile() {
         </button>
       </form>
     </div>
-  );
+  )
 }

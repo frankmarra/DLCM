@@ -1,0 +1,9 @@
+.component {
+  --stack-space: var(--size-2);
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
