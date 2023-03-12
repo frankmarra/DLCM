@@ -8,7 +8,7 @@ export default function Account({ session }) {
   const supabase = useSupabaseClient()
   const user = useUser()
   const [loading, setLoading] = useState(true)
-  const [name, setName] = useState(null)
+  const [username, setUsername] = useState(null)
   const [avatarUrl, setAvatarUrl] = useState(null)
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Account({ session }) {
         }
 
         if (data) {
-          setName(data.name)
+          setUsername(data.name)
           setAvatarUrl(data.avatar)
         }
       } catch (error) {
@@ -41,14 +41,14 @@ export default function Account({ session }) {
     getProfile()
   }, [session, supabase, user.id])
 
-  async function updateProfile({ name, avatar }) {
+  async function updateProfile({ username, avatarUrl }) {
     try {
       setLoading(true)
 
       const updates = {
         id: user.id,
-        name,
-        avatar,
+        name: username,
+        avatar: avatarUrl,
         // updated_at: new Date().toISOString(),
       }
 
@@ -71,21 +71,21 @@ export default function Account({ session }) {
         size={250}
         onUpload={(url) => {
           setAvatarUrl(url)
-          updateProfile({ name, avatar: url })
+          updateProfile({ username, avatarUrl: url })
         }}
       />
 
-      <h1>{name}</h1>
+      <h1>{username}</h1>
 
-      <label className="label" htmlFor="name">
-        Name
+      <label className="label" htmlFor="username">
+        Userame
       </label>
       <input
         className="input"
-        id="name"
+        id="username"
         type="text"
-        value={name || ""}
-        onChange={(e) => setName(e.target.value)}
+        value={username || ""}
+        onChange={(e) => setUsername(e.target.value)}
       />
 
       <label className="label" htmlFor="email">
@@ -103,7 +103,7 @@ export default function Account({ session }) {
         <button
           className="button"
           data-variant="primary"
-          onClick={() => updateProfile({ name, avatarUrl })}
+          onClick={() => updateProfile({ username, avatarUrl })}
           disabled={loading}
         >
           {loading ? "Loading..." : "Update"}
