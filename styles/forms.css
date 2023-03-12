@@ -1,9 +1,8 @@
-label {
+.label {
   display: inline-block;
 }
 
-input {
-  --stack-space: var(--size-1);
+.input {
   display: block;
   padding: var(--size-2);
   inline-size: 100%;
@@ -12,7 +11,12 @@ input {
   box-shadow: var(--shadow-1);
 }
 
-button {
+.label + .input {
+  --stack-space: var(--size-1);
+}
+
+.button {
+  display: inline-flex;
   position: relative;
   cursor: pointer;
   border-width: 1px;
@@ -22,17 +26,37 @@ button {
   box-shadow: var(--shadow-1);
 }
 
-button:not(:disabled) {
-  color: var(--brand-text);
-  border-color: var(--brand);
-  background-color: var(--brand);
+.button svg {
+  flex-shrink: 0;
+  position: relative;
+  top: 0.1em;
+  inline-size: var(--button-icon-size, 1.25em);
+  block-size: var(--button-icon-size, 1.25em);
+  margin-inline-start: calc(var(--size-1) * -1);
+  margin-inline-end: var(--size-2);
 }
 
-button:not(:disabled):hover {
-  border-color: var(--brand-hover);
-  background-color: var(--brand-hover);
+.button:not(:disabled) {
+  color: var(--button-text-color, inherit);
+  background-color: var(--button-bg-color, transparent);
+  border-color: var(--button-border-color, currentcolor);
 }
 
-button:not(:disabled):active {
+.button:not(:disabled):active {
   top: 1px;
+}
+
+.button[data-variant="primary"] {
+  --button-bg-color: var(--brand);
+  --button-border-color: var(--brand);
+  --button-text-color: var(--brand-text);
+}
+
+.button[data-variant="primary"]:hover {
+  --button-bg-color: var(--brand-hover);
+  --button-border-color: var(--brand-hover);
+}
+
+.button[data-variant="dashed"] {
+  border-style: dashed;
 }

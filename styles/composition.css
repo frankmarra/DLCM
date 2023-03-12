@@ -9,7 +9,15 @@
 }
 
 .stack > * + * {
-  margin-block-start: var(--stack-space, var(--size-3));
+  margin-block-start: var(--stack-space, var(--size-4));
+}
+
+.block-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: var(--size-content-2);
+  gap: var(--block-wrap-gap, var(--size-4));
+  align-items: flex-start;
 }
 
 .container {
