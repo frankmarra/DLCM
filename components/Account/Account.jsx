@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import styles from "./Account.module.css"
 import cn from "classnames"
-import Avatar from "../Avatar/Avatar"
+import Avatar from "@/components/Avatar/Avatar"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
