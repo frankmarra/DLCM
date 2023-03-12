@@ -17,7 +17,7 @@ export async function getServerSideProps({ params }) {
 
 export default function ArtistPage({ artist }) {
   const router = useRouter()
-  const { activeUser, logout } = useUser()
+  const { user, logout } = useUser()
   return artist ? (
     <ProfileLayout
       avatar={artist.avatar}

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useUser } from '@/utils/context/user'
+import Link from 'next/link'
 
-const Login = () => {
+export default function Login() {
   const [signIn, setsignIn] = useState({
     email: '',
     password: ''
@@ -18,39 +19,38 @@ const Login = () => {
   }
 
   return (
-    <div className="signin form-container">
+    <article className="container max-inline stack" style={{ "--max-inline-size": "400px"}}>
       <h2>Sign In</h2>
-      <form className="signin-form" onSubmit={handleSubmit}>
-        <div className="input-wrapper">
-          <label htmlFor="email">Email</label>
-          <input
-            onChange={handleChange}
-            id="email"
-            type="email"
-            value={signIn.email}
-            required
-          />
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="password">Password</label>
-          <input
-            onChange={handleChange}
-            id="password"
-            type="password"
-            value={signIn.password}
-            required
-          />
-        </div>
+      
+      <form className="stack" onSubmit={handleSubmit}>
+        <label htmlFor="email">Email</label>
+        <input
+          onChange={handleChange}
+          id="email"
+          type="email"
+          value={signIn.email}
+          required
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          onChange={handleChange}
+          id="password"
+          type="password"
+          value={signIn.password}
+          required
+        />
+
         <button
           type="submit"
-          className="btn primary"
+          className="button"
           disabled={!signIn.email || !signIn.password}
         >
           Sign In
         </button>
       </form>
-    </div>
+
+      <p>Not a member? <Link href="/signup">Sign up!</Link></p>
+    </article>
   )
 }
-
-export default Login

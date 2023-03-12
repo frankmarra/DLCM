@@ -17,7 +17,7 @@ export async function getServerSideProps({ params }) {
 
 export default function LabelPage({ label }) {
   const router = useRouter()
-  const { activeUser, logout } = useUser()
+  const { user, logout } = useUser()
   return label ? (
     <ProfileLayout
       avatar={label.avatar}

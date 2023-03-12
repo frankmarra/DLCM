@@ -1,0 +1,34 @@
+:where(html) {
+  color-scheme: light dark;
+
+  --brand: var(--blue-6);
+  --brand-hover: var(--blue-7);
+  --brand-text: var(--gray-0);
+
+  --text-1: var(--gray-8);
+  --text-2: var(--gray-7);
+
+  --surface-1: var(--gray-0);
+  --surface-2: var(--gray-1);
+  --surface-3: var(--gray-2);
+  --surface-4: var(--gray-3);
+
+  --page-max-inline-size: 1200px;
+  --page-padding: clamp(var(--size-2), 8vw, var(--size-6));
+}
+
+@media (prefers-color-scheme: dark) {
+  :where(html) {  
+    --brand: var(--red-6);
+    --brand-hover: var(--red-7);
+    --brand-text: var(--gray-9);
+
+    --text-1: var(--gray-2);
+    --text-2: var(--gray-3);
+  
+    --surface-1: var(--gray-10);
+    --surface-2: var(--gray-9);
+    --surface-3: var(--gray-8);
+    --surface-4: var(--gray-7);
+  }
+}
