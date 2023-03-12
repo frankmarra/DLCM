@@ -71,7 +71,7 @@ export default function Account({ session }) {
         size={250}
         onUpload={(url) => {
           setAvatarUrl(url)
-          updateProfile({ name, avatarUrl: url })
+          updateProfile({ name, avatar: url })
         }}
       />
 
