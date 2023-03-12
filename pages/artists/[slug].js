@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react"
 import { supabase } from "@/utils/supabase"
-import { useRouter } from "next/router"
-import { useUser } from "@/utils/context/user"
 import ProfileLayout from "@/components/ProfileLayout"
 
 export async function getServerSideProps({ params }) {
@@ -18,7 +15,7 @@ export async function getServerSideProps({ params }) {
 export default function ArtistPage({ artist }) {
   return artist ? (
     <ProfileLayout
-      avatar={artist.avatar}
+      avatar={artist.avatar_url}
       name={artist.name}
       location={artist.location}
     />

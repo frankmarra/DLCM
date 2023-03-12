@@ -15,7 +15,7 @@ export async function getServerSideProps({ params }) {
 export default function LabelPage({ label }) {
   return label ? (
     <ProfileLayout
-      avatar={label.avatar}
+      avatar={label.avatar_url}
       name={label.name}
       location={label.location}
     />

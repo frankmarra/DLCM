@@ -28,7 +28,7 @@ export default function Account({ session }) {
 
         if (data) {
           setUsername(data.name)
-          setAvatarUrl(data.avatar)
+          setAvatarUrl(data.avatar_url)
         }
       } catch (error) {
         alert("Error loading user data!")
@@ -81,7 +81,7 @@ export default function Account({ session }) {
       <h1>{username}</h1>
 
       <label className="label" htmlFor="username">
-        Userame
+        Name
       </label>
       <input
         className="input"

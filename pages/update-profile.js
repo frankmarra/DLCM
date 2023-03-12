@@ -19,7 +19,7 @@ export default function UpdateProfile() {
   useEffect(() => {
     if (user) {
       setUpdateData({
-        avatar: user.avatar,
+        avatar: user.avatar_url,
         location: user.location,
         isPasswordProtected: user.isPasswordProtected,
         pagePassword: user.pagePassword,
@@ -65,7 +65,7 @@ export default function UpdateProfile() {
             onChange={handleChange}
             id="avatar"
             type="text"
-            value={updateData.avatar}
+            value={updateData.avatar_url}
           />
         </div>
         <div className="input-wrapper">

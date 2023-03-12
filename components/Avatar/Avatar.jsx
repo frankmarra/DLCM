@@ -73,6 +73,7 @@ export default function Avatar({ uid, url, size, onUpload }) {
       )}
 
       <label
+        tabIndex={1}
         className={cn(styles.upload, "button")}
         data-variant="dashed"
         htmlFor="single"

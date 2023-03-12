@@ -1,22 +1,22 @@
-import { supabase } from '@/utils/supabase'
-import { useState } from 'react'
-import Link from 'next/link'
+import { supabase } from "@/utils/supabase"
+import { useState } from "react"
+import Link from "next/link"
 
 const accountTypes = [
-  { id: 1, text: 'Label' },
-  { id: 2, text: 'Artist' },
-  { id: 3, text: 'Choose account type', isDisabled: true }
+  { id: 1, text: "Label" },
+  { id: 2, text: "Artist" },
+  { id: 3, text: "Choose account type", isDisabled: true },
 ]
 
 const Signup = () => {
   const [newUser, setNewUser] = useState({
-    email: '',
-    password: '',
-    passwordCheck: '',
+    email: "",
+    password: "",
+    passwordCheck: "",
     type: accountTypes[2].text,
-    name: '',
-    avatar: '',
-    location: ''
+    name: "",
+    avatar: "",
+    location: "",
   })
   const [userCreated, setUserCreated] = useState(false)
 
@@ -34,14 +34,14 @@ const Signup = () => {
         data: {
           type: newUser.type,
           name: newUser.name,
-          avatar: newUser.avatar,
+          avatar: newUser.avatar_url,
           location: newUser.location,
           slug: slugger
-            .replace(/[^a-z0-9 -]/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-        }
-      }
+            .replace(/[^a-z0-9 -]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-"),
+        },
+      },
     })
 
     if (error) {
@@ -116,7 +116,7 @@ const Signup = () => {
               </select>
             </div>
             {newUser.type === accountTypes[2].text ? null : newUser.type ===
-              'Label' ? (
+              "Label" ? (
               <>
                 <div className="input-wrapper">
                   <label htmlFor="name">Label Name</label>
@@ -134,7 +134,7 @@ const Signup = () => {
                     onChange={handleChange}
                     id="avatar"
                     type="text"
-                    value={newUser.avatar}
+                    value={newUser.avatar_url}
                   />
                 </div>
                 <div className="input-wrapper">
@@ -165,7 +165,7 @@ const Signup = () => {
                     onChange={handleChange}
                     id="avatar"
                     type="text"
-                    value={newUser.avatar}
+                    value={newUser.avatar_url}
                   />
                 </div>
                 <div className="input-wrapper">
