@@ -1,0 +1,4 @@
+.actions {
+  --stack-space: var(--size-8);
+  justify-content: space-between;
+}
