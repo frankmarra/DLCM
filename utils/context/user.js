@@ -6,7 +6,7 @@ const Context = createContext()
 
 //create context so user state is available anywhere in app
 const UserProvider = ({ children }) => {
-  const [activeUser, setActiveUser] = useState()
+  const [user, setUser] = useState()
   const router = useRouter()
 
   const userTypePaths = new Map([
@@ -15,21 +15,20 @@ const UserProvider = ({ children }) => {
   ])
 
   useEffect(() => {
-    //gets current user from auth table in supabase
     const getUserProfile = async () => {
       const {
         data: { user },
         error
       } = await supabase.auth.getUser()
-      //if there is an auth user, grab that users public profile from supabase
+
       if (user != null) {
         const { data: profiles, error } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single()
-        //set the active user with the user from auth and profiles so all user info is accessible throughout app
-        setActiveUser({
+
+        setUser({
           ...user,
           ...profiles
         })
@@ -63,12 +62,12 @@ const UserProvider = ({ children }) => {
 
   const logout = async () => {
     await supabase.auth.signOut()
-    setActiveUser(null)
+    setUser(null)
     router.push('/')
   }
 
   const exposed = {
-    activeUser,
+    user,
     loginWithPassword,
     logout
   }
