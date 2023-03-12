@@ -13,19 +13,27 @@
   --surface-3: var(--gray-2);
   --surface-4: var(--gray-3);
 
+  --surface-success-1: var(--green-2);
+  --surface-success-2: var(--green-3);
+  --surface-warning-1: var(--red-2);
+  --surface-warning-2: var(--red-3);
+  --text-success: var(--green-9);
+  --text-warning: var(--red-9);
+
   --page-max-inline-size: 1200px;
+  --input-screen-max-inline-size: 450px;
   --page-padding: clamp(var(--size-2), 8vw, var(--size-6));
 }
 
 @media (prefers-color-scheme: dark) {
-  :where(html) {  
+  :where(html) {
     --brand: var(--red-6);
     --brand-hover: var(--red-7);
     --brand-text: var(--gray-9);
 
     --text-1: var(--gray-2);
     --text-2: var(--gray-3);
-  
+
     --surface-1: var(--gray-10);
     --surface-2: var(--gray-9);
     --surface-3: var(--gray-8);

@@ -1,14 +1,18 @@
-import Login from '@/components/Login'
-import Link from 'next/link'
+import Login from "@/components/Login";
+import Alert from "@/components/Alert/Alert";
 
 export default function NotLoggedInUserScreen({ actionText }) {
   return (
-    <div>
-      {actionText ? <p>{actionText}</p> : null}
+    <div className="stack max-inline">
+      {actionText ? (
+        <Alert
+          state="error"
+          className="max-inline"
+          style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}>
+          {actionText}
+        </Alert>
+      ) : null}
       <Login />
-      <p>
-        Don‘t have an account? <Link href="/signup">Sign up</Link>
-      </p>
     </div>
-  )
+  );
 }
