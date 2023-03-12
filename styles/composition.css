@@ -30,7 +30,7 @@
 
 .input-screen {
   display: grid;
-  place-content: center;
+  place-items: center;
   min-height: 80vh;
   padding-block: var(--size-8);
 }

@@ -64,7 +64,10 @@ export default function Account({ session }) {
   }
 
   return (
-    <div className="stack">
+    <div
+      className="stack max-inline"
+      style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
+    >
       <Avatar
         uid={user.id}
         url={avatarUrl}

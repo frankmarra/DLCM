@@ -1,5 +1,5 @@
-import Login from "@/components/Login";
-import Alert from "@/components/Alert/Alert";
+import Login from "@/components/Login/Login"
+import Alert from "@/components/Alert/Alert"
 
 export default function NotLoggedInUserScreen({ actionText }) {
   return (
@@ -8,11 +8,12 @@ export default function NotLoggedInUserScreen({ actionText }) {
         <Alert
           state="error"
           className="max-inline"
-          style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}>
+          style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
+        >
           {actionText}
         </Alert>
       ) : null}
       <Login />
     </div>
-  );
+  )
 }
