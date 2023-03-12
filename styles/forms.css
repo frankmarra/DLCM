@@ -1,0 +1,38 @@
+label {
+  display: inline-block;
+}
+
+input {
+  --stack-space: var(--size-1);
+  display: block;
+  padding: var(--size-2);
+  inline-size: 100%;
+  border: var(--border-size-1) solid var(--surface-4);
+  border-radius: var(--radius-1);
+  box-shadow: var(--shadow-1);
+}
+
+button {
+  position: relative;
+  cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  padding: var(--size-2) var(--size-3);
+  border-radius: var(--radius-1);
+  box-shadow: var(--shadow-1);
+}
+
+button:not(:disabled) {
+  color: var(--brand-text);
+  border-color: var(--brand);
+  background-color: var(--brand);
+}
+
+button:not(:disabled):hover {
+  border-color: var(--brand-hover);
+  background-color: var(--brand-hover);
+}
+
+button:not(:disabled):active {
+  top: 1px;
+}
