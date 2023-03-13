@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import ReleaseCard from "./ReleaseCard"
+import { useRouter } from "next/router"
 
 export default function Releases({ user, setCreateNewRelease }) {
   const supabase = useSupabaseClient()
-
+  const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [releases, setReleases] = useState([])
 
@@ -52,7 +53,10 @@ export default function Releases({ user, setCreateNewRelease }) {
 
       <ul>
         {releases.map((release) => (
-          <li key={release.id}>
+          <li
+            key={release.id}
+            onClick={() => router.push(`/releases/${release.release_slug}`)}
+          >
             <ReleaseCard
               title={release.title}
               artist={release.artist}
