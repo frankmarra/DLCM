@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import ReleaseCard from "./ReleaseCard"
 
 export default function Releases({ session }) {
   const supabase = useSupabaseClient()
@@ -40,11 +41,20 @@ export default function Releases({ session }) {
       className="stack max-inline"
       style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
     >
-      <h1>Releases</h1>
+      <h2>Releases</h2>
 
       <ul>
         {releases.map((release) => (
-          <li key={release.id}>{release.title}</li>
+          <li key={release.id}>
+            <ReleaseCard
+              title={release.title}
+              artist={release.artist}
+              label={release.label}
+              type={release.type}
+              artwork_url={release.artwork_url}
+              size={250}
+            />
+          </li>
         ))}
       </ul>
     </div>
