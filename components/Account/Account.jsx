@@ -3,6 +3,7 @@ import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import styles from "./Account.module.css"
 import cn from "classnames"
 import Avatar from "@/components/Avatar/Avatar"
+import Releases from "../Releases/Releases"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
@@ -112,6 +113,7 @@ export default function Account({ session }) {
           {loading ? "Loading..." : "Update"}
         </button>
 
+        <Releases />
         <button className="button" onClick={() => supabase.auth.signOut()}>
           Sign Out
         </button>
