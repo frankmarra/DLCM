@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import ReleaseCard from "./ReleaseCard"
 
-export default function Releases({ session }) {
+export default function Releases({ user, setCreateNewRelease }) {
   const supabase = useSupabaseClient()
-  const user = useUser()
+
   const [loading, setLoading] = useState(true)
   const [releases, setReleases] = useState([])
 
@@ -34,7 +34,7 @@ export default function Releases({ session }) {
     }
 
     getReleases()
-  }, [session, supabase, user.id])
+  }, [supabase, user.id])
 
   return (
     <div
@@ -42,6 +42,13 @@ export default function Releases({ session }) {
       style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
     >
       <h2>Releases</h2>
+      <button
+        className="button"
+        data-variant="primary"
+        onClick={() => setCreateNewRelease(true)}
+      >
+        Create
+      </button>
 
       <ul>
         {releases.map((release) => (

@@ -4,6 +4,7 @@ import styles from "./Account.module.css"
 import cn from "classnames"
 import Avatar from "@/components/Avatar/Avatar"
 import Releases from "../Releases/Releases"
+import CreateRelease from "../Releases/CreateRelease"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
@@ -11,6 +12,7 @@ export default function Account({ session }) {
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState(null)
   const [avatarUrl, setAvatarUrl] = useState(null)
+  const [createNewRelease, setCreateNewRelease] = useState(false)
 
   useEffect(() => {
     async function getProfile() {
@@ -113,7 +115,14 @@ export default function Account({ session }) {
           {loading ? "Loading..." : "Update"}
         </button>
 
-        <Releases />
+        {createNewRelease ? (
+          <CreateRelease
+            user={user}
+            setCreateNewRelease={setCreateNewRelease}
+          />
+        ) : (
+          <Releases user={user} setCreateNewRelease={setCreateNewRelease} />
+        )}
         <button className="button" onClick={() => supabase.auth.signOut()}>
           Sign Out
         </button>
