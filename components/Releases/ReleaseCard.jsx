@@ -8,10 +8,10 @@ export default function ReleaseCard({
   artist,
   label,
   type,
-  artwork_url,
+  artworkUrl,
   size,
-  release_id,
-  user_id,
+  releaseId,
+  userId,
 }) {
   const supabase = useSupabaseClient()
   const [showAddCodes, setShowAddCodes] = useState(false)
@@ -28,7 +28,7 @@ export default function ReleaseCard({
       const { count, error } = await supabase
         .from("codes")
         .select("*", { count: "exact", head: true })
-        .eq("release_id", release_id)
+        .eq("release_id", releaseId)
         .eq("redeemed", false)
       if (error) throw error
       setCodeCount(count)
@@ -38,22 +38,22 @@ export default function ReleaseCard({
   }
   return showAddCodes ? (
     <AddCodes
-      user_id={user_id}
-      release_id={release_id}
+      userId={userId}
+      releaseId={releaseId}
       setShowAddCodes={setShowAddCodes}
     />
   ) : (
     <div className="container">
-      {artwork_url ? (
+      {artworkUrl ? (
         <img
           className={styles.image}
-          src={artwork_url}
+          src={artworkUrl}
           alt=""
           height={size}
           width={size}
         />
       ) : (
-        <div style={{ height: size, width: size }} />
+        <div className={styles.image} />
       )}
       <h3>{title}</h3>
       <h4>{artist}</h4>

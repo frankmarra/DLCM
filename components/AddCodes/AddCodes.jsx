@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
-export default function AddCodes({ user_id, release_id, setShowAddCodes }) {
+export default function AddCodes({ userId, releaseId, setShowAddCodes }) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
 
@@ -11,8 +11,8 @@ export default function AddCodes({ user_id, release_id, setShowAddCodes }) {
       let newCodes = codes.split(/\s/g)
       newCodes.forEach((code) => {
         let newCode = {
-          release_id: release_id,
-          user_id: user_id,
+          release_id: releaseId,
+          user_id: userId,
           code: code,
         }
         codeArray.push(newCode)
