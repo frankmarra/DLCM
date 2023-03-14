@@ -2,12 +2,14 @@ import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import ReleaseCard from "./ReleaseCard"
 import { useRouter } from "next/router"
+import AddCodes from "../AddCodes/AddCodes"
 
 export default function Releases({ user, setCreateNewRelease }) {
   const supabase = useSupabaseClient()
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [releases, setReleases] = useState([])
+  const [showAddCodes, setShowAddCodes] = useState(false)
 
   useEffect(() => {
     async function getReleases() {
@@ -53,10 +55,7 @@ export default function Releases({ user, setCreateNewRelease }) {
 
       <ul>
         {releases.map((release) => (
-          <li
-            key={release.id}
-            onClick={() => router.push(`/releases/${release.release_slug}`)}
-          >
+          <li key={release.id}>
             <ReleaseCard
               title={release.title}
               artist={release.artist}
@@ -64,6 +63,8 @@ export default function Releases({ user, setCreateNewRelease }) {
               type={release.type}
               artwork_url={release.artwork_url}
               size={250}
+              release_id={release.id}
+              user_id={user.id}
             />
           </li>
         ))}
