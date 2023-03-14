@@ -3,8 +3,8 @@ import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import styles from "./Account.module.css"
 import cn from "classnames"
 import Avatar from "@/components/Avatar/Avatar"
-import Releases from "../Releases/Releases"
-import CreateRelease from "../Releases/CreateRelease"
+import Releases from "@/components/Releases/Releases"
+import CreateRelease from "@/components/Releases/CreateRelease"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
@@ -12,7 +12,7 @@ export default function Account({ session }) {
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState(null)
   const [avatarUrl, setAvatarUrl] = useState(null)
-  const [createNewRelease, setCreateNewRelease] = useState(false)
+  const [showCreateNewRelease, setShowCreateNewRelease] = useState(false)
 
   useEffect(() => {
     async function getProfile() {
@@ -115,13 +115,16 @@ export default function Account({ session }) {
           {loading ? "Loading..." : "Update"}
         </button>
 
-        {createNewRelease ? (
+        {showCreateNewRelease ? (
           <CreateRelease
             user={user}
-            setCreateNewRelease={setCreateNewRelease}
+            setShowCreateNewRelease={setShowCreateNewRelease}
           />
         ) : (
-          <Releases user={user} setCreateNewRelease={setCreateNewRelease} />
+          <Releases
+            user={user}
+            setShowCreateNewRelease={setShowCreateNewRelease}
+          />
         )}
         <button className="button" onClick={() => supabase.auth.signOut()}>
           Sign Out

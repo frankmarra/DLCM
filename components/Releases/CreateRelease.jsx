@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useState } from "react"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
 const releaseTypes = [
   { id: 1, text: "LP" },
@@ -10,7 +10,7 @@ const releaseTypes = [
   { id: 6, text: "Choose release type", isDisabled: true },
 ]
 
-export default function CreateRelease({ user, setCreateNewRelease }) {
+export default function CreateRelease({ user, setShowCreateNewRelease }) {
   const supabase = useSupabaseClient()
   const [title, setTitle] = useState()
   const [artist, setArtist] = useState(
@@ -19,22 +19,22 @@ export default function CreateRelease({ user, setCreateNewRelease }) {
   const [label, setLabel] = useState(
     user.user_metadata.type === "Label" ? user.user_metadata.name : null
   )
-  const [artwork_url, setArtwork_url] = useState()
-  const [download_url, setDownload_url] = useState()
-  const [page_password, setPage_password] = useState()
-  const [is_password_protected, setIs_password_protected] = useState(false)
+  const [artworkUrl, setArtworkUrl] = useState()
+  const [downloadUrl, setDownloadUrl] = useState()
+  const [pagePassword, setPagePassword] = useState()
+  const [isPasswordProtected, setIsPasswordProtected] = useState(false)
   const [type, setType] = useState(releaseTypes[5].text)
 
-  const [user_id, setUser_id] = useState(user.id)
+  const [userId, setUserId] = useState(user.id)
 
   async function createNewRelease({
     title,
     artist,
     label,
-    artwork_url,
-    download_url,
+    artworkUrl,
+    downloadUrl,
     type,
-    user_id,
+    userId,
   }) {
     try {
       let slugger = title.toLowerCase()
@@ -42,8 +42,8 @@ export default function CreateRelease({ user, setCreateNewRelease }) {
         title: title,
         artist: artist,
         label: label,
-        artwork_url: artwork_url,
-        download_url: download_url,
+        artwork_url: artworkUrl,
+        download_url: downloadUrl,
         type: type,
         release_slug: slugger
           .replace(/[^a-z0-9 -]/g, "")
@@ -59,7 +59,7 @@ export default function CreateRelease({ user, setCreateNewRelease }) {
     } catch (error) {
       alert("Error creating new release!")
     } finally {
-      setCreateNewRelease(false)
+      setShowCreateNewRelease(false)
     }
   }
 
@@ -103,26 +103,26 @@ export default function CreateRelease({ user, setCreateNewRelease }) {
         onChange={(e) => setLabel(e.target.value)}
       />
 
-      <label className="label" htmlFor="artwork_url">
+      <label className="label" htmlFor="artworkUrl">
         Artwork
       </label>
       <input
         className="input"
-        id="artwork_url"
+        id="artworkUrl"
         type="text"
-        value={artwork_url || ""}
-        onChange={(e) => setArtwork_url(e.target.value)}
+        value={artworkUrl || ""}
+        onChange={(e) => setArtworkUrl(e.target.value)}
       />
 
-      <label className="label" htmlFor="download_url">
+      <label className="label" htmlFor="downloadUrl">
         Download Url
       </label>
       <input
         className="input"
-        id="download_url"
+        id="downloadUrl"
         type="text"
-        value={download_url || ""}
-        onChange={(e) => setDownload_url(e.target.value)}
+        value={downloadUrl || ""}
+        onChange={(e) => setDownloadUrl(e.target.value)}
       />
 
       <label className="label" htmlFor="type">
@@ -154,9 +154,9 @@ export default function CreateRelease({ user, setCreateNewRelease }) {
             artist,
             label,
             type,
-            artwork_url,
-            download_url,
-            user_id,
+            artworkUrl,
+            downloadUrl,
+            userId,
           })
         }
         disabled={!title || !artist || !type}
@@ -167,7 +167,7 @@ export default function CreateRelease({ user, setCreateNewRelease }) {
       <button
         className="button"
         data-varian="primary"
-        onClick={() => setCreateNewRelease(false)}
+        onClick={() => setShowCreateNewRelease(false)}
       >
         Cancel
       </button>

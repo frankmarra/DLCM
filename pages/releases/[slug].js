@@ -1,5 +1,6 @@
 import { supabase } from "@/utils/supabase"
 import ReleaseLayout from "@/components/Releases/ReleaseLayout"
+
 export async function getServerSideProps({ params }) {
   let { data: release, error } = await supabase
     .from("releases")

@@ -3,17 +3,13 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import ReleaseCard from "./ReleaseCard"
 import { useRouter } from "next/router"
 
-export default function Releases({ user, setCreateNewRelease }) {
+export default function Releases({ user, setShowCreateNewRelease }) {
   const supabase = useSupabaseClient()
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
   const [releases, setReleases] = useState([])
 
   useEffect(() => {
     async function getReleases() {
       try {
-        setLoading(true)
-
         let { data, error } = await supabase
           .from("releases")
           .select("*")
@@ -29,8 +25,6 @@ export default function Releases({ user, setCreateNewRelease }) {
       } catch (error) {
         alert("Error loading user releases!")
         console.log(error)
-      } finally {
-        setLoading(false)
       }
     }
 
@@ -46,24 +40,23 @@ export default function Releases({ user, setCreateNewRelease }) {
       <button
         className="button"
         data-variant="primary"
-        onClick={() => setCreateNewRelease(true)}
+        onClick={() => setShowCreateNewRelease(true)}
       >
         Create
       </button>
 
-      <ul>
+      <ul role="list">
         {releases.map((release) => (
-          <li
-            key={release.id}
-            onClick={() => router.push(`/releases/${release.release_slug}`)}
-          >
+          <li key={release.id}>
             <ReleaseCard
               title={release.title}
               artist={release.artist}
               label={release.label}
               type={release.type}
-              artwork_url={release.artwork_url}
+              artworkUrl={release.artwork_url}
               size={250}
+              releaseId={release.id}
+              userId={user.id}
             />
           </li>
         ))}

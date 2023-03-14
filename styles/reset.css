@@ -50,6 +50,7 @@ h6 {
   isolation: isolate;
 }
 
-ul {
+ul[role="list"],
+ol[role="list"] {
   list-style: none;
 }
