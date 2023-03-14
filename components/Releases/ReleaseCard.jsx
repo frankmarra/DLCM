@@ -1,6 +1,7 @@
 import styles from "./ReleaseCard.module.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import AddCodes from "../AddCodes/AddCodes"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
 export default function ReleaseCard({
   title,
@@ -12,7 +13,29 @@ export default function ReleaseCard({
   release_id,
   user_id,
 }) {
+  const supabase = useSupabaseClient()
   const [showAddCodes, setShowAddCodes] = useState(false)
+  const [codeCount, setCodeCount] = useState(0)
+
+  useEffect(() => {
+    if (!showAddCodes) {
+      getCodeCount()
+    }
+  }, [showAddCodes])
+
+  async function getCodeCount() {
+    try {
+      const { count, error } = await supabase
+        .from("codes")
+        .select("*", { count: "exact", head: true })
+        .eq("release_id", release_id)
+        .eq("redeemed", false)
+      if (error) throw error
+      setCodeCount(count)
+    } catch (error) {
+      throw error
+    }
+  }
   return showAddCodes ? (
     <AddCodes
       user_id={user_id}
@@ -36,6 +59,7 @@ export default function ReleaseCard({
       <h4>{artist}</h4>
       <h5>{label}</h5>
       <h6>{type}</h6>
+      <p>Codes remaining: {`${codeCount}`}</p>
       <button
         type="button"
         data-variant="primary"
