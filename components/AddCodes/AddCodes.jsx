@@ -4,8 +4,6 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 export default function AddCodes({ user_id, release_id, setShowAddCodes }) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
-  const [codesAdded, setCodesAdded] = useState(false)
-  const [formattedCodes, setFormattedCodes] = useState([])
 
   async function createCodes() {
     try {
