@@ -81,7 +81,7 @@ export default function CreateRelease() {
             className="input"
             id="title"
             type="text"
-            value={title || ""}
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
@@ -114,7 +114,7 @@ export default function CreateRelease() {
             className="input"
             id="artworkUrl"
             type="text"
-            value={artworkUrl || ""}
+            value={artworkUrl}
             onChange={(e) => setArtworkUrl(e.target.value)}
           />
 
@@ -125,7 +125,7 @@ export default function CreateRelease() {
             className="input"
             id="downloadUrl"
             type="text"
-            value={downloadUrl || ""}
+            value={downloadUrl}
             onChange={(e) => setDownloadUrl(e.target.value)}
           />
 
