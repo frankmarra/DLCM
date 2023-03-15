@@ -6,8 +6,8 @@ import CreateRelease from "./CreateRelease"
 export default function Releases() {
   const supabase = useSupabaseClient()
   const user = useUser()
+  const userId = user.id
   const [releases, setReleases] = useState([])
-  const [onReleaseCreated, setOnReleaseCreated] = useState(true)
 
   useEffect(() => {
     async function getReleases() {
@@ -29,26 +29,27 @@ export default function Releases() {
         console.log(error)
       }
     }
-    if (updateReleases) {
-      getReleases()
-      setOnReleaseCreated(false)
-    }
-  }, [supabase, user.id, onReleaseCreated])
 
-  // const newReleases = supabase
-  //   .channel("any")
-  //   .on(
-  //     "postgres_changes",
-  //     {
-  //       event: "INSERT",
-  //       schema: "public",
-  //       table: "releases",
-  //     },
-  //     (payload) => console.log("data: ", payload)
-  //   )
-  //   .subscribe()
+    getReleases()
+  }, [supabase, user.id])
 
-  // console.log("new release: ", newReleases)
+  const newReleases = supabase
+    .channel("new-release-added")
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "releases",
+      },
+      (payload) => {
+        if (payload.new.user_id === user.id) {
+          const newRelease = payload.new
+          setReleases({ ...releases, newRelease })
+        }
+      }
+    )
+    .subscribe()
 
   return (
     <section
@@ -58,22 +59,21 @@ export default function Releases() {
       <hr></hr>
       <h2>Releases</h2>
 
-      <CreateRelease setOnReleaseCreated={setOnReleaseCreated} />
+      <CreateRelease />
 
       <ul className="stack" role="list">
         {releases.map((release) => (
-          <li key={release.id}>
-            <ReleaseCard
-              title={release.title}
-              artist={release.artist}
-              label={release.label}
-              type={release.type}
-              artworkUrl={release.artwork_url}
-              size={250}
-              releaseId={release.id}
-              userId={user.id}
-            />
-          </li>
+          <ReleaseCard
+            key={release.id}
+            title={release.title}
+            artist={release.artist}
+            label={release.label}
+            type={release.type}
+            artworkUrl={release.artwork_url}
+            size={250}
+            releaseId={release.id}
+            userId={user.id}
+          />
         ))}
       </ul>
     </section>

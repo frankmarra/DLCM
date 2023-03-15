@@ -15,6 +15,7 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
   async function createCodes() {
     try {
       let codeArray = []
+
       let newCodes = codes.split(/\s/g)
       newCodes.forEach((code) => {
         let newCode = {
@@ -24,15 +25,17 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
         }
         codeArray.push(newCode)
       })
+
       const { data, error } = await supabase.from("codes").insert(codeArray)
       if (error) throw error
       alert("New codes added!")
+      setOnCodeAdded(true)
     } catch (error) {
       alert("Error creating codes!")
       console.log(error)
     } finally {
       console.log("All done!")
-      setOnCodeAdded(true)
+
       setOpen(false)
     }
   }

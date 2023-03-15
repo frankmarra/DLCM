@@ -32,11 +32,47 @@ export default function ReleaseCard({
         throw error
       }
     }
-    if (updateCodeCount) {
+    if (onCodeAdded) {
       getCodeCount()
       setOnCodeAdded(false)
     }
   }, [setCodeCount, supabase, releaseId, onCodeAdded])
+
+  // const newCodes = supabase
+  //   .channel("new-codes-added")
+  //   .on(
+  //     "postgres_changes",
+  //     {
+  //       event: "INSERT",
+  //       schema: "public",
+  //       table: "codes",
+  //     },
+  //     (payload) => {
+  //       console.log("payload: ", payload)
+  //       console.log("releseId: ", releaseId)
+  //       if (payload.new.release_id === releaseId) {
+  //         let count = codeCount
+  //         setCodeCount(count + 1)
+  //       }
+  //     }
+  //   )
+  //   .on(
+  //     "postgres_changes",
+  //     {
+  //       event: "UPDATE",
+  //       schema: "public",
+  //       table: "codes",
+  //     },
+  //     (payload) => {
+  //       if (
+  //         payload.new.release_id === releaseId &&
+  //         payload.new.redeemed === true
+  //       ) {
+  //         setCodeCount(codeCount - 1)
+  //       }
+  //     }
+  //   )
+  //   .subscribe()
 
   return (
     <div className={cn(styles.component, "container")}>
