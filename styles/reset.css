@@ -53,4 +53,5 @@ h6 {
 ul[role="list"],
 ol[role="list"] {
   list-style: none;
+  padding-inline-start: unset;
 }
