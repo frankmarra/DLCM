@@ -22,10 +22,10 @@ export default function CreateRelease() {
   const supabase = useSupabaseClient()
   const [title, setTitle] = useState()
   const [artist, setArtist] = useState(
-    user.user_metadata.type === "Artist" ? user.user_metadata.name : null
+    user.user_metadata.type === "Artist" ? user.user_metadata.name : ""
   )
   const [label, setLabel] = useState(
-    user.user_metadata.type === "Label" ? user.user_metadata.name : null
+    user.user_metadata.type === "Label" ? user.user_metadata.name : ""
   )
   const [artworkUrl, setArtworkUrl] = useState()
   const [downloadUrl, setDownloadUrl] = useState()
@@ -92,7 +92,7 @@ export default function CreateRelease() {
             className="input"
             id="artist"
             type="text"
-            value={artist || ""}
+            value={artist}
             onChange={(e) => setArtist(e.target.value)}
           />
 
@@ -103,7 +103,7 @@ export default function CreateRelease() {
             className="input"
             id="label"
             type="text"
-            value={label || ""}
+            value={label}
             onChange={(e) => setLabel(e.target.value)}
           />
 
