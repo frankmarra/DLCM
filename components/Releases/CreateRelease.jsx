@@ -17,7 +17,7 @@ const releaseTypes = [
   { id: 6, text: "Choose release type", isDisabled: true },
 ]
 
-export default function CreateRelease() {
+export default function CreateRelease({ setUpdateReleases }) {
   const user = useUser()
   const supabase = useSupabaseClient()
   const [open, setOpen] = useState(false)
@@ -62,6 +62,7 @@ export default function CreateRelease() {
       alert("Error creating new release!")
     } finally {
       console.log("All done!")
+      setUpdateReleases(true)
       setOpen(false)
     }
   }
