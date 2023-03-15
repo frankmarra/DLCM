@@ -103,7 +103,7 @@ export default function Account({ session }) {
         disabled
       />
 
-      <div className={cn(styles.actions, "block-wrap")}>
+      <div className="button-actions block-wrap">
         <button
           className="button"
           data-variant="primary"
