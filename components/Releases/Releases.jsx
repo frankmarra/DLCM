@@ -7,7 +7,6 @@ export default function Releases() {
   const supabase = useSupabaseClient()
   const user = useUser()
   const [releases, setReleases] = useState([])
-  const [openCreateReleaseForm, setOpenCreateReleaseForm] = useState(false)
 
   useEffect(() => {
     async function getReleases() {
