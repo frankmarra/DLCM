@@ -15,7 +15,6 @@ export default function ReleaseCard({
   userId,
 }) {
   const supabase = useSupabaseClient()
-  const [showAddCodes, setShowAddCodes] = useState(false)
   const [codeCount, setCodeCount] = useState(0)
 
   useEffect(() => {
@@ -33,18 +32,10 @@ export default function ReleaseCard({
       }
     }
 
-    if (!showAddCodes) {
-      getCodeCount()
-    }
-  }, [showAddCodes, setCodeCount, supabase, releaseId])
+    getCodeCount()
+  }, [setCodeCount, supabase, releaseId])
 
-  return showAddCodes ? (
-    <AddCodes
-      userId={userId}
-      releaseId={releaseId}
-      setShowAddCodes={setShowAddCodes}
-    />
-  ) : (
+  return (
     <div className={cn(styles.component, "container")}>
       {artworkUrl ? (
         <img
@@ -64,13 +55,7 @@ export default function ReleaseCard({
         <h5>{label}</h5>
         <h6>{type}</h6>
         <p>Codes remaining: {`${codeCount}`}</p>
-        <button
-          type="button"
-          data-variant="primary"
-          onClick={() => setShowAddCodes(true)}
-        >
-          Add Codes
-        </button>
+        <AddCodes userId={userId} releaseId={releaseId} />
       </div>
     </div>
   )
