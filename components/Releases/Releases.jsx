@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import ReleaseCard from "./ReleaseCard"
-import { useRouter } from "next/router"
+import CreateRelease from "./CreateRelease"
 
-export default function Releases({ user, setShowCreateNewRelease }) {
+export default function Releases() {
   const supabase = useSupabaseClient()
+  const user = useUser()
   const [releases, setReleases] = useState([])
 
   useEffect(() => {
@@ -32,20 +33,16 @@ export default function Releases({ user, setShowCreateNewRelease }) {
   }, [supabase, user.id])
 
   return (
-    <div
+    <section
       className="stack max-inline"
       style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
     >
+      <hr></hr>
       <h2>Releases</h2>
-      <button
-        className="button"
-        data-variant="primary"
-        onClick={() => setShowCreateNewRelease(true)}
-      >
-        Create
-      </button>
 
-      <ul role="list">
+      <CreateRelease />
+
+      <ul className="stack" role="list">
         {releases.map((release) => (
           <li key={release.id}>
             <ReleaseCard
@@ -61,6 +58,6 @@ export default function Releases({ user, setShowCreateNewRelease }) {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   )
 }

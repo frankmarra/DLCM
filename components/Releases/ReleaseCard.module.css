@@ -1,5 +1,17 @@
+.component {
+  display: flex;
+  gap: var(--size-4);
+}
+
 .image {
+  flex-shrink: 0;
   width: 100%;
+  max-inline-size: 150px;
   height: auto;
   aspect-ratio: 1;
+  border-radius: var(--radius-1);
+}
+
+.image:not([src]) {
+  background-color: var(--surface-4);
 }
