@@ -5,6 +5,7 @@
 
 .max-inline {
   inline-size: min(var(--max-inline-size, var(--page-max-inline-size)), 100%);
+  max-inline-size: calc(100% - var(--page-padding));
   margin-inline: auto;
 }
 

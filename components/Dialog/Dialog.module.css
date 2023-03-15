@@ -6,6 +6,7 @@
 }
 
 .content {
+  --max-inline-size: var(--dialog-max-inline-size, 450px);
   overflow: hidden;
   background-color: var(--surface-1);
   border-radius: 6px;
@@ -13,9 +14,8 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 90vw;
-  max-width: 450px;
-  max-height: 85vh;
+  max-block-size: calc(100% - var(--page-padding));
+  max-inline-size: calc(100% - var(--page-padding));
   transform: translate(-50%, -50%);
   animation: content 200ms var(--ease-out-3);
 }
