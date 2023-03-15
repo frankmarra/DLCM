@@ -16,7 +16,7 @@ export default function ReleaseCard({
 }) {
   const supabase = useSupabaseClient()
   const [codeCount, setCodeCount] = useState(0)
-  const [updateCodeCount, setUpdateCodeCount] = useState(true)
+  const [onCodeAdded, setOnCodeAdded] = useState(true)
 
   useEffect(() => {
     async function getCodeCount() {
@@ -34,9 +34,9 @@ export default function ReleaseCard({
     }
     if (updateCodeCount) {
       getCodeCount()
-      setUpdateCodeCount(false)
+      setOnCodeAdded(false)
     }
-  }, [setCodeCount, supabase, releaseId, updateCodeCount])
+  }, [setCodeCount, supabase, releaseId, onCodeAdded])
 
   return (
     <div className={cn(styles.component, "container")}>
@@ -61,7 +61,7 @@ export default function ReleaseCard({
         <AddCodes
           userId={userId}
           releaseId={releaseId}
-          setUpdateCodeCount={setUpdateCodeCount}
+          setOnCodeAdded={setOnCodeAdded}
         />
       </div>
     </div>

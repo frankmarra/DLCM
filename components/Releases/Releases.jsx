@@ -7,7 +7,7 @@ export default function Releases() {
   const supabase = useSupabaseClient()
   const user = useUser()
   const [releases, setReleases] = useState([])
-  const [updateReleases, setUpdateReleases] = useState(true)
+  const [onReleaseCreated, setOnReleaseCreated] = useState(true)
 
   useEffect(() => {
     async function getReleases() {
@@ -31,9 +31,9 @@ export default function Releases() {
     }
     if (updateReleases) {
       getReleases()
-      setUpdateReleases(false)
+      setOnReleaseCreated(false)
     }
-  }, [supabase, user.id, updateReleases])
+  }, [supabase, user.id, onReleaseCreated])
 
   // const newReleases = supabase
   //   .channel("any")
@@ -58,7 +58,7 @@ export default function Releases() {
       <hr></hr>
       <h2>Releases</h2>
 
-      <CreateRelease setUpdateReleases={setUpdateReleases} />
+      <CreateRelease setOnReleaseCreated={setOnReleaseCreated} />
 
       <ul className="stack" role="list">
         {releases.map((release) => (

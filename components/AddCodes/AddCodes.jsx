@@ -7,7 +7,7 @@ import {
   DialogClose,
 } from "@/components/Dialog/Dialog"
 
-export default function AddCodes({ userId, releaseId, setUpdateCodeCount }) {
+export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
   const [open, setOpen] = useState(false)
@@ -32,7 +32,7 @@ export default function AddCodes({ userId, releaseId, setUpdateCodeCount }) {
       console.log(error)
     } finally {
       console.log("All done!")
-      setUpdateCodeCount(true)
+      setOnCodeAdded(true)
       setOpen(false)
     }
   }

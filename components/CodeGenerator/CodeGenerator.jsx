@@ -35,7 +35,7 @@ export default function CodeGenerator({ releaseId }) {
     setCode(activeCodes[rng])
     const { data, error } = await supabase
       .from("codes")
-      .update({ redeemed: true, redeemed_at: new Date() })
+      .update({ redeemed: true, redeemed_at: new Date().toISOString() })
       .eq("id", activeCodes[rng].id)
   }
 
