@@ -34,7 +34,7 @@
   border-block-end: var(--border);
 }
 
-.content > :last-child {
+.content > :last-child:not(:nth-child(2)) {
   border-block-start: var(--border);
 }
 
