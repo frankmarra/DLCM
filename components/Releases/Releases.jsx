@@ -32,6 +32,21 @@ export default function Releases() {
     getReleases()
   }, [supabase, user.id])
 
+  // const newReleases = supabase
+  //   .channel("any")
+  //   .on(
+  //     "postgres_changes",
+  //     {
+  //       event: "INSERT",
+  //       schema: "public",
+  //       table: "releases",
+  //     },
+  //     (payload) => console.log("data: ", payload)
+  //   )
+  //   .subscribe()
+
+  // console.log("new release: ", newReleases)
+
   return (
     <section
       className="stack max-inline"
