@@ -1,23 +1,25 @@
-export default function ReleaseLayout({
-  title,
-  artist,
-  label,
-  artwork_url,
-  download_url,
-  type,
-}) {
+import CodeGenerator from "../CodeGenerator/CodeGenerator"
+
+export default function ReleaseLayout({ release }) {
   return (
     <div
       className="stack max-inline"
       style={{ "--max-inline-size": "var(--input-screen-max-inline-size" }}
     >
-      {artwork_url ? (
-        <img src={artwork_url} alt={title} height={250} width={250} />
+      {release.artwork_url ? (
+        <img
+          src={release.artwork_url}
+          alt={release.title}
+          height={250}
+          width={250}
+        />
       ) : null}
-      <h1>{title}</h1>
-      <h2>{artist}</h2>
-      <h3>{label}</h3>
-      <h4>{type}</h4>
+      <h1>{release.title}</h1>
+      <h2>{release.artist}</h2>
+      <h3>{release.label}</h3>
+      <h4>{release.type}</h4>
+
+      <CodeGenerator releaseId={release.id} />
     </div>
   )
 }

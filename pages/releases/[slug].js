@@ -12,16 +12,5 @@ export async function getServerSideProps({ params }) {
 }
 
 export default function ReleasePage({ release }) {
-  return release ? (
-    <ReleaseLayout
-      title={release.title}
-      artist={release.artist}
-      label={release.label}
-      artwork_url={release.artwork_url}
-      type={release.type}
-      download_url={release.download_url}
-    />
-  ) : (
-    <div>Loading...</div>
-  )
+  return release ? <ReleaseLayout release={release} /> : <div>Loading...</div>
 }
