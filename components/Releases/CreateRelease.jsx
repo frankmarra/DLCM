@@ -71,9 +71,11 @@ export default function CreateRelease() {
       </DialogTrigger>
 
       <DialogContent>
-        <div className="stack">
-          <h1>Create new release</h1>
+        <header>
+          <h2>Create new release</h2>
+        </header>
 
+        <div className="stack overflow-y">
           <label className="label" htmlFor="title">
             Title
           </label>
@@ -133,6 +135,7 @@ export default function CreateRelease() {
             Type
           </label>
           <select
+            className="input select"
             onChange={(e) => setType(e.target.value)}
             id="type"
             value={type}
@@ -148,28 +151,28 @@ export default function CreateRelease() {
               </option>
             ))}
           </select>
-
-          <div className="flex-wrap">
-            <button
-              className="button"
-              data-variant="primary"
-              onClick={() =>
-                createNewRelease({
-                  title,
-                  artist,
-                  label,
-                  type,
-                  artworkUrl,
-                  downloadUrl,
-                })
-              }
-              disabled={!title || !artist || !type}
-            >
-              Create
-            </button>
-            <DialogClose className="button">Cancel</DialogClose>
-          </div>
         </div>
+
+        <footer className="button-actions block-wrap">
+          <button
+            className="button"
+            data-variant="primary"
+            onClick={() =>
+              createNewRelease({
+                title,
+                artist,
+                label,
+                type,
+                artworkUrl,
+                downloadUrl,
+              })
+            }
+            disabled={!title || !artist || !type}
+          >
+            Create
+          </button>
+          <DialogClose className="button">Cancel</DialogClose>
+        </footer>
       </DialogContent>
     </Dialog>
   )

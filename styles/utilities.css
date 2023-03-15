@@ -1,0 +1,4 @@
+.overflow-y {
+  height: 100%;
+  overflow-y: scroll;
+}

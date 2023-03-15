@@ -20,8 +20,10 @@
   --text-success: var(--green-9);
   --text-warning: var(--red-9);
 
-  --page-max-inline-size: 1200px;
+  --input-icon-color: var(--gray-5);
   --input-screen-max-inline-size: 450px;
+
+  --page-max-inline-size: 1200px;
   --page-padding: clamp(var(--size-2), 8vw, var(--size-6));
 }
 
@@ -38,5 +40,7 @@
     --surface-2: var(--gray-9);
     --surface-3: var(--gray-8);
     --surface-4: var(--gray-7);
+
+    --input-icon-color: var(--gray-6);
   }
 }

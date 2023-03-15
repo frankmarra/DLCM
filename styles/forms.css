@@ -11,6 +11,20 @@
   box-shadow: var(--shadow-1);
 }
 
+.select {
+  appearance: none;
+  background-image: linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--input-icon-color) 50%
+    ),
+    linear-gradient(135deg, var(--input-icon-color) 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px), 100% 0;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
 .label + .input {
   --stack-space: var(--size-1);
 }
@@ -59,4 +73,8 @@
 
 .button[data-variant="dashed"] {
   border-style: dashed;
+}
+
+.button-actions {
+  justify-content: space-between;
 }
