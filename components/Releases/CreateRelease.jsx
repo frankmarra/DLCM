@@ -20,6 +20,7 @@ const releaseTypes = [
 export default function CreateRelease() {
   const user = useUser()
   const supabase = useSupabaseClient()
+  const [open, setOpen] = useState(false)
   const [title, setTitle] = useState()
   const [artist, setArtist] = useState(
     user.user_metadata.type === "Artist" ? user.user_metadata.name : ""
@@ -61,11 +62,12 @@ export default function CreateRelease() {
       alert("Error creating new release!")
     } finally {
       console.log("All done!")
+      setOpen(false)
     }
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="button" data-variant="primary">
         Create new release
       </DialogTrigger>
