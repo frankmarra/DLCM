@@ -15,6 +15,7 @@ export default function Releases() {
           .from("releases")
           .select("*, codes (*)")
           .eq("user_id", user.id)
+          .eq("codes.redeemed", "false")
 
         if (error) {
           throw error

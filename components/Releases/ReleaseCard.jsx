@@ -17,29 +17,29 @@ export default function ReleaseCard({
 }) {
   const supabase = useSupabaseClient()
   const [codeCount, setCodeCount] = useState(0)
-  // const [onCodeAdded, setOnCodeAdded] = useState(true)
-  // const [availableCodes, setAvailableCodes] = useState()
+  const [onCodeAdded, setOnCodeAdded] = useState(true)
+  const [availableCodes, setAvailableCodes] = useState()
 
-  // useEffect(() => {
-  //   async function getCodeCount() {
-  //     try {
-  //       const { count, error } = await supabase
-  //         .from("codes")
-  //         .select("*", { count: "exact", head: true })
-  //         .eq("release_id", releaseId)
-  //         .eq("redeemed", false)
-  //       if (error) throw error
-  //       setCodeCount(count)
-  //     } catch (error) {
-  //       throw error
-  //     }
-  //   }
-  //   if (onCodeAdded) {
-  //     getCodeCount()
-  //     setOnCodeAdded(false)
-  //   }
-  // }, [setCodeCount, supabase, releaseId, onCodeAdded])
-
+  useEffect(() => {
+    async function getCodeCount() {
+      try {
+        const { count, error } = await supabase
+          .from("codes")
+          .select("*", { count: "exact", head: true })
+          .eq("release_id", releaseId)
+          .eq("redeemed", false)
+        if (error) throw error
+        setCodeCount(count)
+      } catch (error) {
+        throw error
+      }
+    }
+    if (onCodeAdded) {
+      getCodeCount()
+      setOnCodeAdded(false)
+    }
+  }, [setCodeCount, supabase, releaseId, onCodeAdded])
+  // console.log("release Id 1: ", releaseId)
   // const newCodes = supabase
   //   .channel("new-codes-added")
   //   .on(
@@ -51,7 +51,7 @@ export default function ReleaseCard({
   //     },
   //     (payload) => {
   //       console.log("payload: ", payload)
-  //       console.log("releseId: ", releaseId)
+  //       console.log("release Id 2: ", releaseId)
   //       if (payload.new.release_id === releaseId) {
   //         let count = codeCount
   //         setCodeCount(count + 1)
@@ -75,20 +75,22 @@ export default function ReleaseCard({
   //     }
   //   )
   // .subscribe()
-  useEffect(() => {
-    let availableCodes = []
-    if (releaseCodes) {
-      releaseCodes.forEach((code) => {
-        if (code.redeemed === false) {
-          availableCodes.push(code)
-        }
-      })
-    }
+  // useEffect(() => {
+  //   let availableCodes = []
+  //   if (releaseCodes) {
+  //     releaseCodes.forEach((code) => {
+  //       if (code.redeemed === false) {
+  //         availableCodes.push(code)
+  //       }
+  //     })
+  //   }
 
-    if (availableCodes.length > 0) {
-      setCodeCount(availableCodes.length)
-    }
-  }, [])
+  //   if (availableCodes.length > 0) {
+  //     setCodeCount(availableCodes.length)
+  //   }
+  // }, [])
+
+  // console.log("release Id 3: ", releaseId)
   return (
     <li className={cn(styles.component, "container")}>
       {artworkUrl ? (
@@ -109,7 +111,11 @@ export default function ReleaseCard({
         <h5>{label}</h5>
         <h6>{type}</h6>
         <p>Codes remaining: {codeCount}</p>
-        <AddCodes userId={userId} releaseId={releaseId} />
+        <AddCodes
+          userId={userId}
+          releaseId={releaseId}
+          setOnCodeAdded={setOnCodeAdded}
+        />
       </div>
     </li>
   )
