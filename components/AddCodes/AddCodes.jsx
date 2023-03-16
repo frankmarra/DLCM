@@ -7,7 +7,7 @@ import {
   DialogClose,
 } from "@/components/Dialog/Dialog"
 
-export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
+export default function AddCodes({ userId, releaseId }) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
   const [open, setOpen] = useState(false)
@@ -29,7 +29,6 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
       const { data, error } = await supabase.from("codes").insert(codeArray)
       if (error) throw error
       alert("New codes added!")
-      setOnCodeAdded(true)
     } catch (error) {
       alert("Error creating codes!")
       console.log(error)
