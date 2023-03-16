@@ -78,7 +78,7 @@ export default function CreateRelease() {
           <h2>Create new release</h2>
         </header>
 
-        <div className="stack overflow-y">
+        <div className="stack block-overflow">
           <label className="label" htmlFor="title">
             Title
           </label>
