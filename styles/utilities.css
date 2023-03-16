@@ -1,4 +1,8 @@
-.overflow-y {
+.block-overflow {
   height: 100%;
   overflow-y: auto;
+}
+
+.block-resize {
+  resize: vertical;
 }

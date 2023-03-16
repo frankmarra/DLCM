@@ -51,11 +51,12 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
           <h3>Add codes</h3>
         </header>
 
-        <div className="stack overflow-y">
+        <div className="stack block-overflow">
           <label className="label" htmlFor="codes">
             Codes
           </label>
           <textarea
+            className="input block-resize"
             id="albumCodes"
             placeholder="Enter your codes separated by a space"
             cols="20"
