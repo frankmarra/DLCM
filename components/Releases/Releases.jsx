@@ -6,7 +6,6 @@ import CreateRelease from "./CreateRelease"
 export default function Releases() {
   const supabase = useSupabaseClient()
   const user = useUser()
-  const userId = user.id
   const [releases, setReleases] = useState([])
 
   useEffect(() => {
@@ -14,8 +13,9 @@ export default function Releases() {
       try {
         let { data, error } = await supabase
           .from("releases")
-          .select("*")
+          .select("*, codes (*)")
           .eq("user_id", user.id)
+          .eq("codes.redeemed", "false")
 
         if (error) {
           throw error
@@ -45,7 +45,8 @@ export default function Releases() {
       (payload) => {
         if (payload.new.user_id === user.id) {
           const newRelease = payload.new
-          setReleases({ ...releases, newRelease })
+
+          setReleases([...releases, newRelease])
         }
       }
     )
@@ -73,6 +74,7 @@ export default function Releases() {
             size={250}
             releaseId={release.id}
             userId={user.id}
+            releaseCodes={release.codes}
           />
         ))}
       </ul>

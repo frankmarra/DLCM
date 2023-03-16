@@ -13,10 +13,12 @@ export default function ReleaseCard({
   size,
   releaseId,
   userId,
+  releaseCodes,
 }) {
   const supabase = useSupabaseClient()
   const [codeCount, setCodeCount] = useState(0)
   const [onCodeAdded, setOnCodeAdded] = useState(true)
+  const [availableCodes, setAvailableCodes] = useState()
 
   useEffect(() => {
     async function getCodeCount() {
@@ -37,7 +39,7 @@ export default function ReleaseCard({
       setOnCodeAdded(false)
     }
   }, [setCodeCount, supabase, releaseId, onCodeAdded])
-
+  // console.log("release Id 1: ", releaseId)
   // const newCodes = supabase
   //   .channel("new-codes-added")
   //   .on(
@@ -49,7 +51,7 @@ export default function ReleaseCard({
   //     },
   //     (payload) => {
   //       console.log("payload: ", payload)
-  //       console.log("releseId: ", releaseId)
+  //       console.log("release Id 2: ", releaseId)
   //       if (payload.new.release_id === releaseId) {
   //         let count = codeCount
   //         setCodeCount(count + 1)
@@ -72,10 +74,25 @@ export default function ReleaseCard({
   //       }
   //     }
   //   )
-  //   .subscribe()
+  // .subscribe()
+  // useEffect(() => {
+  //   let availableCodes = []
+  //   if (releaseCodes) {
+  //     releaseCodes.forEach((code) => {
+  //       if (code.redeemed === false) {
+  //         availableCodes.push(code)
+  //       }
+  //     })
+  //   }
 
+  //   if (availableCodes.length > 0) {
+  //     setCodeCount(availableCodes.length)
+  //   }
+  // }, [])
+
+  // console.log("release Id 3: ", releaseId)
   return (
-    <div className={cn(styles.component, "container")}>
+    <li className={cn(styles.component, "container")}>
       {artworkUrl ? (
         <img
           className={styles.image}
@@ -93,13 +110,13 @@ export default function ReleaseCard({
         <h4>{artist}</h4>
         <h5>{label}</h5>
         <h6>{type}</h6>
-        <p>Codes remaining: {`${codeCount}`}</p>
+        <p>Codes remaining: {codeCount}</p>
         <AddCodes
           userId={userId}
           releaseId={releaseId}
           setOnCodeAdded={setOnCodeAdded}
         />
       </div>
-    </div>
+    </li>
   )
 }
