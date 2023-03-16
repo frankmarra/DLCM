@@ -3,6 +3,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import IconUpload from "@/icons/upload.svg"
 import styles from "./Avatar.module.css"
 import cn from "classnames"
+import { v4 as uuidv4 } from "uuid"
 
 export default function Avatar({ uid, url, size, onUpload }) {
   const supabase = useSupabaseClient()
@@ -13,7 +14,7 @@ export default function Avatar({ uid, url, size, onUpload }) {
     async function downloadImage(path) {
       try {
         const { data, error } = await supabase.storage
-          .from("avatars")
+          .from("images")
           .download(path)
         if (error) {
           throw error
@@ -41,15 +42,20 @@ export default function Avatar({ uid, url, size, onUpload }) {
       const fileName = `${uid}.${fileExt}`
       const filePath = `${fileName}`
 
-      let { error: uploadError } = await supabase.storage
-        .from("profiles")
-        .update({ avatar: filePath })
+      let { data, error: uploadError } = await supabase.storage
+        .from("images")
+        .upload(uid + "/" + uuidv4(), file)
 
       if (uploadError) {
         throw uploadError
       }
 
-      onUpload(filePath)
+      if (data) {
+        console.log("image upload data: ", data)
+      } else {
+        console.log(error)
+      }
+      // onUpload(filePath)
     } catch (error) {
       alert("Error uploading avatar!")
       console.log(error)
@@ -89,7 +95,7 @@ export default function Avatar({ uid, url, size, onUpload }) {
         type="file"
         id="single"
         accept="image/*"
-        // onChange={uploadAvatar}
+        onChange={uploadAvatar}
         disabled={uploading}
       />
     </div>
