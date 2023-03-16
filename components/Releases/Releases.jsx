@@ -6,6 +6,7 @@ import CreateRelease from "./CreateRelease"
 export default function Releases() {
   const supabase = useSupabaseClient()
   const user = useUser()
+  const userId = user.id
   const [releases, setReleases] = useState([])
 
   useEffect(() => {
@@ -32,6 +33,24 @@ export default function Releases() {
     getReleases()
   }, [supabase, user.id])
 
+  const newReleases = supabase
+    .channel("new-release-added")
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "releases",
+      },
+      (payload) => {
+        if (payload.new.user_id === user.id) {
+          const newRelease = payload.new
+          setReleases({ ...releases, newRelease })
+        }
+      }
+    )
+    .subscribe()
+
   return (
     <section
       className="stack max-inline"
@@ -44,18 +63,17 @@ export default function Releases() {
 
       <ul className="stack" role="list">
         {releases.map((release) => (
-          <li key={release.id}>
-            <ReleaseCard
-              title={release.title}
-              artist={release.artist}
-              label={release.label}
-              type={release.type}
-              artworkUrl={release.artwork_url}
-              size={250}
-              releaseId={release.id}
-              userId={user.id}
-            />
-          </li>
+          <ReleaseCard
+            key={release.id}
+            title={release.title}
+            artist={release.artist}
+            label={release.label}
+            type={release.type}
+            artworkUrl={release.artwork_url}
+            size={250}
+            releaseId={release.id}
+            userId={user.id}
+          />
         ))}
       </ul>
     </section>

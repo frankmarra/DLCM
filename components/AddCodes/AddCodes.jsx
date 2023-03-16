@@ -1,13 +1,21 @@
 import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@/components/Dialog/Dialog"
 
-export default function AddCodes({ userId, releaseId, setShowAddCodes }) {
+export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
+  const [open, setOpen] = useState(false)
 
   async function createCodes() {
     try {
       let codeArray = []
+
       let newCodes = codes.split(/\s/g)
       newCodes.forEach((code) => {
         let newCode = {
@@ -17,44 +25,57 @@ export default function AddCodes({ userId, releaseId, setShowAddCodes }) {
         }
         codeArray.push(newCode)
       })
+
       const { data, error } = await supabase.from("codes").insert(codeArray)
       if (error) throw error
-
-      setShowAddCodes(false)
+      alert("New codes added!")
+      setOnCodeAdded(true)
     } catch (error) {
       alert("Error creating codes!")
       console.log(error)
+    } finally {
+      console.log("All done!")
+
+      setOpen(false)
     }
   }
 
   return (
-    <div
-      className="stack max-inline"
-      style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
-    >
-      <h3>Add codes</h3>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger className="button" data-variant="primary">
+        Add codes
+      </DialogTrigger>
 
-      <label className="label" htmlFor="codes">
-        Codes
-      </label>
-      <textarea
-        id="albumCodes"
-        placeholder="Enter your codes separated by a space"
-        cols="20"
-        rows="8"
-        onChange={(e) => setCodes(e.target.value)}
-      ></textarea>
+      <DialogContent>
+        <header>
+          <h3>Add codes</h3>
+        </header>
 
-      <button className="button" data-variant="primary" onClick={createCodes}>
-        Add
-      </button>
-      <button
-        className="button"
-        data-variant="primary"
-        onClick={() => setShowAddCodes(false)}
-      >
-        Cancel
-      </button>
-    </div>
+        <div className="stack overflow-y">
+          <label className="label" htmlFor="codes">
+            Codes
+          </label>
+          <textarea
+            id="albumCodes"
+            placeholder="Enter your codes separated by a space"
+            cols="20"
+            rows="8"
+            onChange={(e) => setCodes(e.target.value)}
+          ></textarea>
+        </div>
+
+        <footer className="button-actions block-wrap">
+          <button
+            className="button"
+            data-variant="primary"
+            onClick={createCodes}
+          >
+            Add
+          </button>
+
+          <DialogClose className="button">Cancel</DialogClose>
+        </footer>
+      </DialogContent>
+    </Dialog>
   )
 }

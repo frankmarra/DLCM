@@ -33,8 +33,8 @@ const Signup = () => {
       options: {
         data: {
           type: newUser.type,
-          name: newUser.name,
-          avatar: newUser.avatar_url,
+          username: newUser.name,
+          avatar_url: newUser.avatar,
           location: newUser.location,
           slug: slugger
             .replace(/[^a-z0-9 -]/g, "")

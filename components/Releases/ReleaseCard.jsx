@@ -15,8 +15,8 @@ export default function ReleaseCard({
   userId,
 }) {
   const supabase = useSupabaseClient()
-  const [showAddCodes, setShowAddCodes] = useState(false)
   const [codeCount, setCodeCount] = useState(0)
+  const [onCodeAdded, setOnCodeAdded] = useState(true)
 
   useEffect(() => {
     async function getCodeCount() {
@@ -32,19 +32,49 @@ export default function ReleaseCard({
         throw error
       }
     }
-
-    if (!showAddCodes) {
+    if (onCodeAdded) {
       getCodeCount()
+      setOnCodeAdded(false)
     }
-  }, [showAddCodes, setCodeCount, supabase, releaseId])
+  }, [setCodeCount, supabase, releaseId, onCodeAdded])
 
-  return showAddCodes ? (
-    <AddCodes
-      userId={userId}
-      releaseId={releaseId}
-      setShowAddCodes={setShowAddCodes}
-    />
-  ) : (
+  // const newCodes = supabase
+  //   .channel("new-codes-added")
+  //   .on(
+  //     "postgres_changes",
+  //     {
+  //       event: "INSERT",
+  //       schema: "public",
+  //       table: "codes",
+  //     },
+  //     (payload) => {
+  //       console.log("payload: ", payload)
+  //       console.log("releseId: ", releaseId)
+  //       if (payload.new.release_id === releaseId) {
+  //         let count = codeCount
+  //         setCodeCount(count + 1)
+  //       }
+  //     }
+  //   )
+  //   .on(
+  //     "postgres_changes",
+  //     {
+  //       event: "UPDATE",
+  //       schema: "public",
+  //       table: "codes",
+  //     },
+  //     (payload) => {
+  //       if (
+  //         payload.new.release_id === releaseId &&
+  //         payload.new.redeemed === true
+  //       ) {
+  //         setCodeCount(codeCount - 1)
+  //       }
+  //     }
+  //   )
+  //   .subscribe()
+
+  return (
     <div className={cn(styles.component, "container")}>
       {artworkUrl ? (
         <img
@@ -64,13 +94,11 @@ export default function ReleaseCard({
         <h5>{label}</h5>
         <h6>{type}</h6>
         <p>Codes remaining: {`${codeCount}`}</p>
-        <button
-          type="button"
-          data-variant="primary"
-          onClick={() => setShowAddCodes(true)}
-        >
-          Add Codes
-        </button>
+        <AddCodes
+          userId={userId}
+          releaseId={releaseId}
+          setOnCodeAdded={setOnCodeAdded}
+        />
       </div>
     </div>
   )

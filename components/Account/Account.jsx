@@ -28,7 +28,7 @@ export default function Account({ session }) {
         }
 
         if (data) {
-          setUsername(data.name)
+          setUsername(data.username)
           setAvatarUrl(data.avatar_url)
         }
       } catch (error) {
@@ -48,9 +48,9 @@ export default function Account({ session }) {
 
       const updates = {
         id: user.id,
-        name: username,
-        avatar: avatarUrl,
-        // updated_at: new Date().toISOString(),
+        username: username,
+        avatar_url: avatarUrl,
+        updated_at: new Date().toISOString(),
       }
 
       let { error } = await supabase.from("profiles").upsert(updates)

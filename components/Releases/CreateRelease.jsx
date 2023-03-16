@@ -62,6 +62,7 @@ export default function CreateRelease() {
       alert("Error creating new release!")
     } finally {
       console.log("All done!")
+
       setOpen(false)
     }
   }
