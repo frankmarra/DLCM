@@ -1,6 +1,7 @@
 import slugify from "slugify"
 import { useState } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import AddImage from "../AddImage/AddImage"
 import {
   Dialog,
   DialogTrigger,
@@ -111,6 +112,15 @@ export default function CreateRelease() {
             value={label}
             onChange={(e) => setLabel(e.target.value)}
           />
+
+          {/*}
+          <AddImage
+            uid={user.id}
+            setPublicUrl={(url) => {
+              setArtworkUrl(url)
+            }}
+          />
+          */}
 
           <label className="label" htmlFor="artworkUrl">
             Artwork

@@ -53,7 +53,10 @@ export default function Account({ session }) {
         updated_at: new Date().toISOString(),
       }
 
-      let { error } = await supabase.from("profiles").upsert(updates)
+      let { error } = await supabase
+        .from("profiles")
+        .update(updates)
+        .eq("id", user.id)
       if (error) throw error
       alert("Profile updated!")
     } catch (error) {
@@ -73,7 +76,7 @@ export default function Account({ session }) {
         uid={user.id}
         url={avatarUrl}
         size={250}
-        onUpload={(url) => {
+        setPublicUrl={(url) => {
           setAvatarUrl(url)
           updateProfile({ username, avatarUrl: url })
         }}
