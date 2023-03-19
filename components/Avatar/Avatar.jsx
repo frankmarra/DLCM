@@ -6,10 +6,10 @@ import cn from "classnames"
 import { v4 as uuidv4 } from "uuid"
 import AddImage from "../AddImage/AddImage"
 
-export default function Avatar({ uid, url, size, setPublicUrl }) {
-  const supabase = useSupabaseClient()
-  const [imageUrl, setImageUrl] = useState(null)
-  const [uploading, setUploading] = useState(false)
+export default function Avatar({ url, size }) {
+  // const supabase = useSupabaseClient()
+  // const [imageUrl, setImageUrl] = useState(null)
+  // const [uploading, setUploading] = useState(false)
 
   // useEffect(() => {
   //   async function downloadImage(path) {
@@ -78,8 +78,6 @@ export default function Avatar({ uid, url, size, setPublicUrl }) {
       ) : (
         <div style={{ height: size, width: size }} />
       )}
-
-      <AddImage uid={uid} setPublicUrl={setPublicUrl} />
     </div>
   )
 }

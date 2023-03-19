@@ -113,14 +113,12 @@ export default function CreateRelease() {
             onChange={(e) => setLabel(e.target.value)}
           />
 
-          {/*}
           <AddImage
             uid={user.id}
             setPublicUrl={(url) => {
               setArtworkUrl(url)
             }}
           />
-          */}
 
           <label className="label" htmlFor="artworkUrl">
             Artwork

@@ -12,7 +12,6 @@ export default function AddImage({ uid, setPublicUrl }) {
     const { data } = supabase.storage.from("images").getPublicUrl(path.path)
 
     if (data) {
-      console.log("public url: ", data)
       setPublicUrl(data.publicUrl)
     }
   }
