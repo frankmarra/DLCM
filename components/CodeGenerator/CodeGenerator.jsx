@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
-import Link from "next/link"
 
 export default function CodeGenerator({ releaseId }) {
   const supabase = useSupabaseClient()
