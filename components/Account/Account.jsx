@@ -48,7 +48,7 @@ export default function Account({ session }) {
       className="stack max-inline"
       style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
     >
-      {!updateView ? (
+      {!showUpdateView ? (
         <>
           <Avatar url={profileData.avatar_url} size={250} />
 
