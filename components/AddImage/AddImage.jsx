@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useState } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import IconUpload from "@/icons/upload.svg"
 import cn from "classnames"
@@ -43,7 +43,6 @@ export default function AddImage({ uid, setPublicUrl }) {
       } else {
         console.log(error)
       }
-      // onUpload(filePath)
     } catch (error) {
       alert("Error uploading avatar!")
       console.log(error)

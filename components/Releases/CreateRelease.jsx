@@ -1,7 +1,7 @@
 import slugify from "slugify"
 import { useState } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
-import AddImage from "../AddImage/AddImage"
+import AddImage from "@/components/AddImage/AddImage"
 import {
   Dialog,
   DialogTrigger,

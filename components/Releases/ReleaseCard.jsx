@@ -18,7 +18,6 @@ export default function ReleaseCard({
   const supabase = useSupabaseClient()
   const [codeCount, setCodeCount] = useState(0)
   const [onCodeAdded, setOnCodeAdded] = useState(true)
-  const [availableCodes, setAvailableCodes] = useState()
 
   useEffect(() => {
     async function getCodeCount() {
@@ -39,58 +38,7 @@ export default function ReleaseCard({
       setOnCodeAdded(false)
     }
   }, [setCodeCount, supabase, releaseId, onCodeAdded])
-  // console.log("release Id 1: ", releaseId)
-  // const newCodes = supabase
-  //   .channel("new-codes-added")
-  //   .on(
-  //     "postgres_changes",
-  //     {
-  //       event: "INSERT",
-  //       schema: "public",
-  //       table: "codes",
-  //     },
-  //     (payload) => {
-  //       console.log("payload: ", payload)
-  //       console.log("release Id 2: ", releaseId)
-  //       if (payload.new.release_id === releaseId) {
-  //         let count = codeCount
-  //         setCodeCount(count + 1)
-  //       }
-  //     }
-  //   )
-  //   .on(
-  //     "postgres_changes",
-  //     {
-  //       event: "UPDATE",
-  //       schema: "public",
-  //       table: "codes",
-  //     },
-  //     (payload) => {
-  //       if (
-  //         payload.new.release_id === releaseId &&
-  //         payload.new.redeemed === true
-  //       ) {
-  //         setCodeCount(codeCount - 1)
-  //       }
-  //     }
-  //   )
-  // .subscribe()
-  // useEffect(() => {
-  //   let availableCodes = []
-  //   if (releaseCodes) {
-  //     releaseCodes.forEach((code) => {
-  //       if (code.redeemed === false) {
-  //         availableCodes.push(code)
-  //       }
-  //     })
-  //   }
 
-  //   if (availableCodes.length > 0) {
-  //     setCodeCount(availableCodes.length)
-  //   }
-  // }, [])
-
-  // console.log("release Id 3: ", releaseId)
   return (
     <li className={cn(styles.component, "container")}>
       {artworkUrl ? (

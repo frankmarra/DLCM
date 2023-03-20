@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
-import IconUpload from "@/icons/upload.svg"
-import classNames from "classnames"
 import Avatar from "../Avatar/Avatar"
 import AddImage from "../AddImage/AddImage"
 
 export default function UpdateProfile({
   getProfile,
   profileData,
-  setUpdateView,
+  setShowUpdateView,
 }) {
   const supabase = useSupabaseClient()
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
@@ -37,7 +35,7 @@ export default function UpdateProfile({
       console.log(error)
     } finally {
       getProfile()
-      setUpdateView(false)
+      setShowUpdateView(false)
     }
   }
 
