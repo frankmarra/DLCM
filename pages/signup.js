@@ -44,6 +44,16 @@ const Signup = () => {
       },
     })
 
+    if (data) {
+      const response = await fetch("/api/create-customer", {
+        method: "POST",
+        body: JSON.stringify({ email: data.user.email, uid: data.user.id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    }
+
     if (error) {
       return <p>Something went wrong, try again later</p>
     } else {
