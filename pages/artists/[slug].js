@@ -4,7 +4,7 @@ import ProfileLayout from "@/components/ProfileLayout"
 export async function getServerSideProps({ params }) {
   let { data: artist, error } = await supabase
     .from("profiles")
-    .select("*")
+    .select("*, releases(*, codes(*))")
     .eq("type", "Artist")
     .eq("slug", params.slug)
     .single()
@@ -18,6 +18,8 @@ export default function ArtistPage({ artist }) {
       avatar={artist.avatar_url}
       name={artist.name}
       location={artist.location}
+      releases={artist.releases}
+      slug={artist.slug}
     />
   ) : (
     <div>Loading...</div>

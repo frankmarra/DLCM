@@ -59,11 +59,13 @@ export default function ReleaseCard({
         <h5>{label}</h5>
         <h6>{type}</h6>
         <p>Codes remaining: {codeCount}</p>
-        <AddCodes
-          userId={userId}
-          releaseId={releaseId}
-          setOnCodeAdded={setOnCodeAdded}
-        />
+        {userId ? (
+          <AddCodes
+            userId={userId}
+            releaseId={releaseId}
+            setOnCodeAdded={setOnCodeAdded}
+          />
+        ) : null}
       </div>
     </li>
   )
