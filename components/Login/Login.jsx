@@ -17,8 +17,8 @@ export default function Login() {
 
   return (
     <article
-      className="container stack inline-max"
-      style={{ "--max-inline-size": "var(--input-screen-inline-max-size)" }}
+      className="container stack inline-max center-stage"
+      style={{ "--max-inline-size": "400px" }}
     >
       <h2>Sign In</h2>
 
