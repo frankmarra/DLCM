@@ -3,6 +3,7 @@ import AddCodes from "../AddCodes/AddCodes"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import cn from "classnames"
 import styles from "./ReleaseCard.module.css"
+import Link from "next/link"
 
 export default function ReleaseCard({
   title,
@@ -13,6 +14,7 @@ export default function ReleaseCard({
   size,
   releaseId,
   userId,
+  slug,
   releaseCodes,
 }) {
   const supabase = useSupabaseClient()
@@ -38,7 +40,7 @@ export default function ReleaseCard({
       setOnCodeAdded(false)
     }
   }, [setCodeCount, supabase, releaseId, onCodeAdded])
-
+  console.log({ slug })
   return (
     <li className={cn(styles.component, "container")}>
       {artworkUrl ? (
@@ -52,12 +54,13 @@ export default function ReleaseCard({
       ) : (
         <div className={styles.image} />
       )}
-
-      <div>
-        <h3>{title}</h3>
-        <h4>{artist}</h4>
-        <h5>{label}</h5>
-        <h6>{type}</h6>
+      <div class={styles.content}>
+        <h2 class={styles.title}>
+          <Link href={`/releases/${slug}`}>{title}</Link>
+        </h2>
+        <p class={styles.artist}>{artist}</p>
+        <p>{label}</p>
+        <p>{type}</p>
         <p>Codes remaining: {codeCount}</p>
         {userId ? (
           <AddCodes

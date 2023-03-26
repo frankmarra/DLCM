@@ -1,4 +1,6 @@
-import ReleaseCard from "./Releases/ReleaseCard"
+import ReleaseCard from "@/components/Releases/ReleaseCard"
+import styles from "./Profile.module.css"
+import cn from "classnames"
 
 export default function ProfileLayout({
   avatar,
@@ -25,6 +27,7 @@ export default function ProfileLayout({
               size={250}
               releaseId={release.id}
               releaseCodes={release.codes}
+              slug={release.release_slug}
             />
           ) : null
         )}

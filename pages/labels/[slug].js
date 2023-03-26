@@ -1,5 +1,5 @@
 import { supabase } from "@/utils/supabase"
-import ProfileLayout from "@/components/ProfileLayout"
+import ProfileLayout from "@/components/Profile/Profile"
 
 export async function getServerSideProps({ params }) {
   let { data: label, error } = await supabase

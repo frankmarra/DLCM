@@ -42,7 +42,7 @@ export default function Account({ session }) {
       setLoading(false)
     }
   }
-
+  console.log("user: ", user)
   return !loading ? (
     <div
       className="stack max-inline"
