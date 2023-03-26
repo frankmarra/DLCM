@@ -61,14 +61,23 @@
 }
 
 .button[data-variant="primary"] {
-  --button-bg-color: var(--brand);
-  --button-border-color: var(--brand);
-  --button-text-color: var(--brand-text);
+  --button-bg-color: var(--brand-1);
+  --button-border-color: var(--brand-1);
+  --button-text-color: var(--brand-1-text);
 }
 
 .button[data-variant="primary"]:hover {
-  --button-bg-color: var(--brand-hover);
-  --button-border-color: var(--brand-hover);
+  --button-bg-color: var(--brand-1-hover);
+  --button-border-color: var(--brand-1-hover);
+}
+
+.button[data-variant="containerless"] {
+  --button-border-color: transparent;
+  --button-text-color: var(--text-1);
+}
+
+.button[data-variant="containerless"]:hover {
+  --button-text-color: var(--text-2);
 }
 
 .button[data-variant="dashed"] {

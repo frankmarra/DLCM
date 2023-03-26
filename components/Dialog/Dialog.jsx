@@ -7,7 +7,7 @@ export const DialogContent = forwardRef(({ children, ...props }, ref) => (
   <DialogPrimitive.Portal>
     <DialogPrimitive.Overlay className={styles.overlay} />
     <DialogPrimitive.Content
-      className={cn(styles.content, "max-inline")}
+      className={cn(styles.content, "inline-max")}
       {...props}
       ref={ref}
     >

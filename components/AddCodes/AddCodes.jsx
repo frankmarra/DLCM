@@ -65,7 +65,7 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
           ></textarea>
         </div>
 
-        <footer className="button-actions block-wrap">
+        <footer className="button-actions inline-wrap">
           <button
             className="button"
             data-variant="primary"

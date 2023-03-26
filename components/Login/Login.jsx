@@ -17,8 +17,8 @@ export default function Login() {
 
   return (
     <article
-      className="container stack max-inline"
-      style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
+      className="container stack inline-max"
+      style={{ "--max-inline-size": "var(--input-screen-inline-max-size)" }}
     >
       <h2>Sign In</h2>
 

@@ -3,6 +3,8 @@ import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import Avatar from "@/components/Avatar/Avatar"
 import Releases from "@/components/Releases/Releases"
 import UpdateProfile from "../UpdateProfile/UpdateProfile"
+import styles from "./Account.module.css"
+import cn from "classnames"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
@@ -33,7 +35,6 @@ export default function Account({ session }) {
 
       if (data) {
         setProfileData(data)
-        console.log(profileData)
       }
     } catch (error) {
       alert("Error loading user data!")
@@ -43,20 +44,35 @@ export default function Account({ session }) {
     }
   }
 
-  return !loading ? (
-    <div
-      className="stack max-inline"
-      style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
-    >
-      {!showUpdateView ? (
-        <>
-          <Avatar url={profileData.avatar_url} size={250} />
+  if (loading) {
+    return <p>Loading...</p>
+  }
 
-          <h1>{profileData.username}</h1>
+  console.log(user)
+
+  return (
+    <>
+      {!showUpdateView ? (
+        <article className={cn(styles.profile, "inline-wrap")}>
+          <Avatar url={profileData.avatar_url} size={100} />
+          <div>
+            <div className="badge">{user.user_metadata.type}</div>
+            <h1>{user.user_metadata.name}</h1>
+            <div>
+              <strong>Location: </strong>
+              {user.user_metadata.location}
+            </div>
+            <div className={styles.url}>
+              <strong>Profile page: </strong>
+              <a href={`/${user.user_metadata.slug}`}>
+                {user.user_metadata.slug}
+              </a>
+            </div>
+          </div>
           <button className="button" onClick={() => setShowUpdateView(true)}>
-            Update profile?
+            Update profile
           </button>
-        </>
+        </article>
       ) : (
         <>
           <UpdateProfile
@@ -70,15 +86,7 @@ export default function Account({ session }) {
         </>
       )}
 
-      <div className="button-actions block-wrap">
-        <button className="button" onClick={() => supabase.auth.signOut()}>
-          Sign Out
-        </button>
-      </div>
-
       <Releases />
-    </div>
-  ) : (
-    <p>Loading...</p>
+    </>
   )
 }
