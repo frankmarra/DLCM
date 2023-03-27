@@ -60,15 +60,17 @@ export default function ReleaseCard({
           </div>
         )}
         <div className={styles.details}>
-          <h3 className={styles.title}>{title}</h3>
-          <div className={styles.artist}>{artist}</div>
-          <div className={styles.label}>{label}</div>
-          <div className={styles.type}>
-            <IconRecord aria-hidden="true" /> {type}
+          <div>
+            <h3 className={styles.title}>{title}</h3>
+            <div className={styles.artist}>{artist}</div>
+            <div className={styles.label}>{label}</div>
+            <div className={styles.type}>
+              <IconRecord aria-hidden="true" /> {type}
+            </div>
           </div>
           <div className={cn(styles.codes, codeCount <= 0 && styles.empty)}>
             <IconDownload aria-label="Available download codes" />
-            {codeCount}
+            {codeCount} <small style={{ fontWeight: "normal" }}>left</small>
           </div>
         </div>
       </div>

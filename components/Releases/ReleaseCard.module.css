@@ -50,6 +50,10 @@
   grid-column: 1;
 }
 
+.title {
+  line-height: 1.2;
+}
+
 .type {
   display: flex;
   align-items: center;
