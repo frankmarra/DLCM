@@ -72,6 +72,7 @@ export default function Releases() {
             releaseId={release.id}
             userId={user.id}
             releaseCodes={release.codes}
+            slug={release.release_slug}
           />
         ))}
       </ul>

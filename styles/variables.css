@@ -1,6 +1,7 @@
 :where(html) {
   color-scheme: light dark;
 
+
   --brand-1: var(--blue-6);
   --brand-1-hover: var(--blue-7);
   --brand-1-text: var(--gray-0);
@@ -13,6 +14,7 @@
   --text-inverse-1: var(--gray-1);
   --text-inverse-2: var(--gray-2);
   --text-hover-1: var(--gray-12);
+
 
   --surface-1: var(--gray-0);
   --surface-2: var(--gray-1);
@@ -29,8 +31,10 @@
   --input-icon-color: var(--gray-5);
   --input-screen-max-inline-size: 450px;
 
+
   --page-max-inline-size: 1000px;
   --page-padding: clamp(var(--size-2), 8vw, var(--size-3));
+
 }
 
 @media (prefers-color-scheme: dark) {

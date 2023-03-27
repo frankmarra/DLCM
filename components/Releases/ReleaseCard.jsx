@@ -3,6 +3,7 @@ import AddCodes from "../AddCodes/AddCodes"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import cn from "classnames"
 import styles from "./ReleaseCard.module.css"
+import Link from "next/link"
 import IconDownload from "@/icons/download.svg"
 import IconRecord from "@/icons/vinyl-record.svg"
 import IconMusicNotes from "@/icons/music-notes.svg"
@@ -17,6 +18,7 @@ export default function ReleaseCard({
   size,
   releaseId,
   userId,
+  slug,
   releaseCodes,
 }) {
   const supabase = useSupabaseClient()
@@ -42,7 +44,7 @@ export default function ReleaseCard({
       setOnCodeAdded(false)
     }
   }, [setCodeCount, supabase, releaseId, onCodeAdded])
-
+  console.log({ slug })
   return (
     <li className={styles.component}>
       <div className={styles.content}>
@@ -61,7 +63,7 @@ export default function ReleaseCard({
         )}
         <div className={styles.details}>
           <div>
-            <h3 className={styles.title}>{title}</h3>
+            <h3 className={styles.title}><Link href={`/releases/${slug}`}>{title}</Link></h3>
             <div className={styles.artist}>{artist}</div>
             <div className={styles.label}>{label}</div>
             <div className={styles.type}>

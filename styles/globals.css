@@ -10,7 +10,16 @@ body {
   color: var(--text-1);
   background-color: var(--surface-1);
   font-family: var(--font-sans);
+  font-size: var(--step-0);
   line-height: 1.4;
+}
+
+a, a:visited {
+  color: var(--link);
+}
+
+a:hover {
+  color: var(--link-hover);
 }
 
 #__next {
@@ -18,3 +27,4 @@ body {
   grid-template-rows: auto 1fr auto;
   gap: var(--size-3);
 }
+
