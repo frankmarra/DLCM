@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import AddCodes from "../AddCodes/AddCodes"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import cn from "classnames"
 import styles from "./ReleaseCard.module.css"
 import Link from "next/link"
@@ -9,52 +8,19 @@ import IconRecord from "@/icons/vinyl-record.svg"
 import IconMusicNotes from "@/icons/music-notes.svg"
 import IconEdit from "@/icons/edit.svg"
 
-export default function ReleaseCard({
-  title,
-  artist,
-  label,
-  type,
-  artworkUrl,
-  size,
-  releaseId,
-  userId,
-  slug,
-  releaseCodes,
-}) {
-  const supabase = useSupabaseClient()
-  const [codeCount, setCodeCount] = useState(0)
+export default function ReleaseCard({ release, user }) {
   const [onCodeAdded, setOnCodeAdded] = useState(true)
 
-  useEffect(() => {
-    async function getCodeCount() {
-      try {
-        const { count, error } = await supabase
-          .from("codes")
-          .select("*", { count: "exact", head: true })
-          .eq("release_id", releaseId)
-          .eq("redeemed", false)
-        if (error) throw error
-        setCodeCount(count)
-      } catch (error) {
-        throw error
-      }
-    }
-    if (onCodeAdded) {
-      getCodeCount()
-      setOnCodeAdded(false)
-    }
-  }, [setCodeCount, supabase, releaseId, onCodeAdded])
-  console.log({ slug })
   return (
     <li className={styles.component}>
       <div className={styles.content}>
-        {artworkUrl ? (
+        {release.artwork_url ? (
           <img
             className={styles.image}
-            src={artworkUrl}
+            src={release.artwork_url}
             alt=""
-            height={size}
-            width={size}
+            height={250}
+            width={250}
           />
         ) : (
           <div className={styles.image}>
@@ -63,29 +29,43 @@ export default function ReleaseCard({
         )}
         <div className={styles.details}>
           <div>
-            <h3 className={styles.title}><Link href={`/releases/${slug}`}>{title}</Link></h3>
-            <div className={styles.artist}>{artist}</div>
-            <div className={styles.label}>{label}</div>
+            <h3 className={styles.title}>
+              <Link href={`/releases/${release.release_slug}`}>
+                {release.title}
+              </Link>
+            </h3>
+            <div className={styles.artist}>{release.artist}</div>
+            <div className={styles.label}>{release.label}</div>
             <div className={styles.type}>
-              <IconRecord aria-hidden="true" /> {type}
+              <IconRecord aria-hidden="true" /> {release.type}
             </div>
           </div>
-          <div className={cn(styles.codes, codeCount <= 0 && styles.empty)}>
+          <div
+            className={cn(
+              styles.codes,
+              release.codes.length <= 0 && styles.empty
+            )}
+          >
             <IconDownload aria-label="Available download codes" />
-            {codeCount} <small style={{ fontWeight: "normal" }}>left</small>
+            {release.codes.length}{" "}
+            <small style={{ fontWeight: "normal" }}>left</small>
           </div>
         </div>
       </div>
-      <div className={cn(styles.actions, "inline-wrap")}>
-        <button className="button" data-variant="primary" data-size="small">
-          <IconEdit aria-hidden="true" /> Edit
-        </button>
-        <AddCodes
-          userId={userId}
-          releaseId={releaseId}
-          setOnCodeAdded={setOnCodeAdded}
-        />
-      </div>
+      {user ? (
+        user.id === release.user_id ? (
+          <div className={cn(styles.actions, "inline-wrap")}>
+            <button className="button" data-variant="primary" data-size="small">
+              <IconEdit aria-hidden="true" /> Edit
+            </button>
+            <AddCodes
+              userId={release.user_id}
+              releaseId={release.release_id}
+              setOnCodeAdded={setOnCodeAdded}
+            />
+          </div>
+        ) : null
+      ) : null}
     </li>
   )
 }

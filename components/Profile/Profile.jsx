@@ -17,18 +17,7 @@ export default function ProfileLayout({
       <ul className="stack" role="list">
         {releases.map((release) =>
           release.codes.length > 0 && release.is_active ? (
-            <ReleaseCard
-              key={release.id}
-              title={release.title}
-              artist={release.artist}
-              label={release.label}
-              type={release.type}
-              artworkUrl={release.artwork_url}
-              size={250}
-              releaseId={release.id}
-              releaseCodes={release.codes}
-              slug={release.release_slug}
-            />
+            <ReleaseCard key={release.id} release={release} />
           ) : null
         )}
       </ul>

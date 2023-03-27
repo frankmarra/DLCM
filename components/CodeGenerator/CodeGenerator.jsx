@@ -48,7 +48,7 @@ export default function CodeGenerator({ releaseId }) {
     }
   }
 
-  return activeCodes ? (
+  return activeCodes.length > 0 ? (
     <div>
       {code ? (
         <>
