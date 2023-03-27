@@ -16,7 +16,11 @@ export default function Layout({ children }) {
                 <a href="#">Account</a>
               </li>
               <li>
-                <button onClick={() => supabase.auth.signOut()}>
+                <button
+                  className="button"
+                  data-size="small"
+                  onClick={() => supabase.auth.signOut()}
+                >
                   Sign Out
                 </button>
               </li>

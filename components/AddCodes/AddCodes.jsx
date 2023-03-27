@@ -42,7 +42,11 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="button" data-variant="primary">
+      <DialogTrigger
+        className="button"
+        data-variant="secondary"
+        data-size="small"
+      >
         Add codes
       </DialogTrigger>
 

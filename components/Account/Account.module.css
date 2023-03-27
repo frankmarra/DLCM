@@ -9,6 +9,6 @@
   border-radius: var(--radius-2);
 }
 
-.profile button {
-  margin-inline-start: auto;
+.details {
+  flex-grow: 1;
 }

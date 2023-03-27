@@ -78,9 +78,14 @@
   gap: var(--size-1);
   padding: 2px var(--size-2);
   font-weight: var(--font-weight-6);
-  color: var(--brand-2-text);
-  background-color: var(--brand-2);
+  color: var(--text-success);
+  background-color: var(--surface-success-1);
   border-radius: var(--radius-1);
+}
+
+.codes.empty {
+  color: var(--text-warning);
+  background-color: var(--surface-warning-1);
 }
 
 .codes svg {
@@ -91,7 +96,6 @@
 
 .actions {
   --inline-wrap-gap: var(--size-2);
-  justify-content: space-between;
   padding: var(--inline-wrap-gap);
   border-block-start: var(--border);
 }

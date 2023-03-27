@@ -6,6 +6,7 @@ import styles from "./ReleaseCard.module.css"
 import IconDownload from "@/icons/download.svg"
 import IconRecord from "@/icons/vinyl-record.svg"
 import IconMusicNotes from "@/icons/music-notes.svg"
+import IconEdit from "@/icons/edit.svg"
 
 export default function ReleaseCard({
   title,
@@ -65,14 +66,16 @@ export default function ReleaseCard({
           <div className={styles.type}>
             <IconRecord aria-hidden="true" /> {type}
           </div>
-          <div className={styles.codes}>
+          <div className={cn(styles.codes, codeCount <= 0 && styles.empty)}>
             <IconDownload aria-label="Available download codes" />
             {codeCount}
           </div>
         </div>
       </div>
       <div className={cn(styles.actions, "inline-wrap")}>
-        <button className="button">Edit release</button>
+        <button className="button" data-variant="primary" data-size="small">
+          <IconEdit aria-hidden="true" /> Edit
+        </button>
         <AddCodes
           userId={userId}
           releaseId={releaseId}

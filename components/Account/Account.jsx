@@ -55,7 +55,7 @@ export default function Account({ session }) {
       {!showUpdateView ? (
         <article className={cn(styles.profile, "inline-wrap")}>
           <Avatar url={profileData.avatar_url} size={100} />
-          <div>
+          <div className={styles.details}>
             <div className="badge">{user.user_metadata.type}</div>
             <h1>{user.user_metadata.name}</h1>
             <div>
@@ -69,7 +69,11 @@ export default function Account({ session }) {
               </a>
             </div>
           </div>
-          <button className="button" onClick={() => setShowUpdateView(true)}>
+          <button
+            className="button"
+            data-size="small"
+            onClick={() => setShowUpdateView(true)}
+          >
             Update profile
           </button>
         </article>

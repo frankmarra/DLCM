@@ -2,8 +2,8 @@
   font-size: var(--font-size-0);
   font-weight: var(--font-weight-7);
   letter-spacing: -0.025em;
-  color: var(--brand-1-text);
-  background-color: var(--brand-1);
+  color: var(--brand-2-text);
+  background-color: var(--brand-2);
   display: inline-block;
   padding: 2px var(--size-3);
   border-radius: var(--radius-1);
