@@ -3,8 +3,8 @@ import CodeGenerator from "../CodeGenerator/CodeGenerator"
 export default function ReleaseLayout({ release }) {
   return (
     <div
-      className="stack max-inline"
-      style={{ "--max-inline-size": "var(--input-screen-max-inline-size" }}
+      className="stack inline-max"
+      style={{ "--max-inline-size": "var(--input-screen-inline-max-size" }}
     >
       {release.artwork_url ? (
         <img

@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogClose,
 } from "@/components/Dialog/Dialog"
+import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 
 const releaseTypes = [
   { id: 1, text: "LP" },
@@ -71,7 +72,7 @@ export default function CreateRelease() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="button" data-variant="primary">
-        Create new release
+        <IconMusicNotesPlus aria-hidden="true" /> Create new release
       </DialogTrigger>
 
       <DialogContent>
@@ -164,7 +165,7 @@ export default function CreateRelease() {
           </select>
         </div>
 
-        <footer className="button-actions block-wrap">
+        <footer className="button-actions inline-wrap">
           <button
             className="button"
             data-variant="primary"

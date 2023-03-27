@@ -1,4 +1,32 @@
 .header {
-  padding: var(--size-4);
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--size-2);
+  padding: var(--size-2) var(--size-4);
+  border-bottom: var(--border-size-1) solid var(--surface-4);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
+  font-size: var(--font-size-3);
+  line-height: normal;
+}
+
+.title::before {
+  --size: 1em;
+  content: "";
+  display: inline-block;
+  margin-inline-end: -0.1em;
+  inline-size: var(--size);
+  block-size: var(--size);
+  border: 8px solid currentcolor;
+  border-radius: 50%;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: var(--size-3);
 }

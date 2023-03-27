@@ -3,6 +3,7 @@
 @import "variables";
 @import "composition";
 @import "utilities";
+@import "blocks";
 @import "forms";
 
 body {
@@ -10,4 +11,10 @@ body {
   background-color: var(--surface-1);
   font-family: var(--font-sans);
   line-height: 1.4;
+}
+
+#__next {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--size-3);
 }
