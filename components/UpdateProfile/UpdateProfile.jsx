@@ -41,8 +41,8 @@ export default function UpdateProfile({
 
   return (
     <div
-      classname="stack max-inline"
-      style={{ "--max-inline-size": "var(--input-screen-max-inline-size" }}
+      classname="stack inline-max"
+      style={{ "--max-inline-size": "var(--input-screen-inline-max-size" }}
     >
       <h1>Update profile</h1>
 
@@ -90,7 +90,7 @@ export default function UpdateProfile({
         </>
       ) : null}
 
-      <div className="button-actions block-wrap">
+      <div className="button-actions inline-wrap">
         <button
           className="button"
           data-variant="primary"

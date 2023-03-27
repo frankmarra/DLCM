@@ -6,7 +6,7 @@
 }
 
 .content {
-  --max-inline-size: var(--dialog-max-inline-size, 450px);
+  --max-inline-size: var(--dialog-inline-max-size, 450px);
   overflow: hidden;
   background-color: var(--surface-1);
   border-radius: 6px;

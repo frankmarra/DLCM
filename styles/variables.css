@@ -1,33 +1,28 @@
 :where(html) {
   color-scheme: light dark;
 
-  /* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 
-  --step--2: clamp(0.69rem, calc(0.66rem + 0.18vw), 0.80rem);
-  --step--1: clamp(0.83rem, calc(0.78rem + 0.29vw), 1.00rem);
-  --step-0: clamp(1.00rem, calc(0.91rem + 0.43vw), 1.25rem);
-  --step-1: clamp(1.20rem, calc(1.07rem + 0.63vw), 1.56rem);
-  --step-2: clamp(1.44rem, calc(1.26rem + 0.89vw), 1.95rem);
-  --step-3: clamp(1.73rem, calc(1.48rem + 1.24vw), 2.44rem);
-  --step-4: clamp(2.07rem, calc(1.73rem + 1.70vw), 3.05rem);
-  --step-5: clamp(2.49rem, calc(2.03rem + 2.31vw), 3.82rem);
-
-  --brand: var(--blue-6);
-  --brand-hover: var(--blue-7);
-  --brand-text: var(--gray-0);
+  --brand-1: var(--blue-6);
+  --brand-1-hover: var(--blue-7);
+  --brand-1-text: var(--gray-0);
+  --brand-2: var(--stone-3);
+  --brand-2-hover: var(--stone-4);
+  --brand-2-text: var(--gray-9);
 
   --text-1: var(--gray-8);
   --text-2: var(--gray-7);
-  --link: var(--blue-6);
-  --link-hover: var(--blue-7);
+  --text-inverse-1: var(--gray-1);
+  --text-inverse-2: var(--gray-2);
+  --text-hover-1: var(--gray-12);
+
 
   --surface-1: var(--gray-0);
   --surface-2: var(--gray-1);
-  --surface-3: var(--gray-2);
-  --surface-4: var(--gray-3);
+  --surface-3: var(--gray-3);
+  --surface-4: var(--gray-4);
 
-  --surface-success-1: var(--green-2);
-  --surface-success-2: var(--green-3);
+  --surface-success-1: var(--green-1);
+  --surface-success-2: var(--green-2);
   --surface-warning-1: var(--red-2);
   --surface-warning-2: var(--red-3);
   --text-success: var(--green-9);
@@ -36,23 +31,38 @@
   --input-icon-color: var(--gray-5);
   --input-screen-max-inline-size: 450px;
 
-  --page-max-inline-size: 800px;
-  --page-padding: clamp(var(--size-2), 8vw, var(--size-6));
+
+  --page-max-inline-size: 1000px;
+  --page-padding: clamp(var(--size-2), 8vw, var(--size-3));
+
 }
 
 @media (prefers-color-scheme: dark) {
   :where(html) {
-    --brand: var(--red-6);
-    --brand-hover: var(--red-7);
-    --brand-text: var(--gray-9);
+    --brand-1: var(--blue-9);
+    --brand-1-hover: var(--blue-8);
+    --brand-1-text: var(--blue-1);
+    --brand-2: var(--stone-10);
+    --brand-2-hover: var(--stone-9);
+    --brand-2-text: var(--stone-1);
 
     --text-1: var(--gray-2);
     --text-2: var(--gray-3);
+    --text-inverse-1: var(--gray-7);
+    --text-inverse-2: var(--gray-8);
+    --text-hover-1: var(--gray-3);
 
-    --surface-1: var(--gray-10);
-    --surface-2: var(--gray-9);
-    --surface-3: var(--gray-8);
-    --surface-4: var(--gray-7);
+    --surface-1: var(--gray-11);
+    --surface-2: var(--gray-10);
+    --surface-3: var(--gray-9);
+    --surface-4: var(--gray-8);
+
+    --surface-success-1: var(--green-10);
+    --surface-success-2: var(--green-8);
+    --surface-warning-1: var(--red-10);
+    --surface-warning-2: var(--red-8);
+    --text-success: var(--green-1);
+    --text-warning: var(--red-1);
 
     --input-icon-color: var(--gray-6);
   }

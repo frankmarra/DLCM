@@ -3,6 +3,7 @@
 @import "variables";
 @import "composition";
 @import "utilities";
+@import "blocks";
 @import "forms";
 
 body {
@@ -20,3 +21,10 @@ a, a:visited {
 a:hover {
   color: var(--link-hover);
 }
+
+#__next {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--size-3);
+}
+

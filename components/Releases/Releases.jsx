@@ -53,16 +53,13 @@ export default function Releases() {
     .subscribe()
 
   return (
-    <section
-      className="stack max-inline"
-      style={{ "--max-inline-size": "var(--input-screen-max-inline-size)" }}
-    >
-      <hr></hr>
-      <h2>Releases</h2>
+    <article className="stack">
+      <header className="article-heading inline-wrap">
+        <h2>Releases</h2>
+        <CreateRelease />
+      </header>
 
-      <CreateRelease />
-
-      <ul className="stack" role="list">
+      <ul className="grid" role="list">
         {releases.map((release) => (
           <ReleaseCard
             key={release.id}
@@ -79,6 +76,6 @@ export default function Releases() {
           />
         ))}
       </ul>
-    </section>
+    </article>
   )
 }

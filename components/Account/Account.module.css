@@ -2,3 +2,13 @@
   --stack-space: var(--size-8);
   justify-content: space-between;
 }
+
+.profile {
+  padding: var(--size-3);
+  background-color: var(--surface-2);
+  border-radius: var(--radius-2);
+}
+
+.details {
+  flex-grow: 1;
+}
