@@ -7,9 +7,11 @@ import IconDownload from "@/icons/download.svg"
 import IconRecord from "@/icons/vinyl-record.svg"
 import IconMusicNotes from "@/icons/music-notes.svg"
 import IconEdit from "@/icons/edit.svg"
+import UpdateRelease from "./UpdateRelease"
 
-export default function ReleaseCard({ release, user }) {
+export default function ReleaseCard({ release, user, getReleases }) {
   const [onCodeAdded, setOnCodeAdded] = useState(true)
+  const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
 
   return (
     <li className={styles.component}>
@@ -55,9 +57,11 @@ export default function ReleaseCard({ release, user }) {
       {user ? (
         user.id === release.user_id ? (
           <div className={cn(styles.actions, "inline-wrap")}>
-            <button className="button" data-variant="primary" data-size="small">
-              <IconEdit aria-hidden="true" /> Edit
-            </button>
+            <UpdateRelease
+              setShowReleaseUpdateView={setShowReleaseUpdateView}
+              release={release}
+              getReleases={getReleases}
+            />
             <AddCodes
               userId={release.user_id}
               releaseId={release.release_id}
