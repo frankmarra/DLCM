@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import Avatar from "@/components/Avatar/Avatar"
 import Releases from "@/components/Releases/Releases"
 import UpdateProfile from "../UpdateProfile/UpdateProfile"
@@ -8,16 +8,14 @@ import cn from "classnames"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
-  const user = useUser()
   const [loading, setLoading] = useState(true)
-  // const [username, setUsername] = useState(null)
-  // const [avatarUrl, setAvatarUrl] = useState(null)
   const [showUpdateView, setShowUpdateView] = useState(false)
   const [profileData, setProfileData] = useState(null)
 
   useEffect(() => {
     getProfile()
-  }, [session, supabase, user.id])
+    console.log("use effect")
+  }, [])
 
   async function getProfile() {
     try {
@@ -26,7 +24,7 @@ export default function Account({ session }) {
       let { data, error, status } = await supabase
         .from("profiles")
         .select(`*`)
-        .eq("id", user.id)
+        .eq("id", session.user.id)
         .single()
 
       if (error && status !== 406) {
@@ -48,7 +46,7 @@ export default function Account({ session }) {
     return <p>Loading...</p>
   }
 
-  console.log(user)
+  console.log("profile data: ", profileData)
 
   return (
     <>
@@ -56,16 +54,16 @@ export default function Account({ session }) {
         <article className={cn(styles.profile, "inline-wrap")}>
           <Avatar url={profileData.avatar_url} size={100} />
           <div className={styles.details}>
-            <div className="badge">{user.user_metadata.type}</div>
-            <h1>{user.user_metadata.name}</h1>
+            <div className="badge">{session.user.user_metadata.type}</div>
+            <h1>{session.user.user_metadata.name}</h1>
             <div>
               <strong>Location: </strong>
-              {user.user_metadata.location}
+              {session.user.user_metadata.location}
             </div>
             <div className={styles.url}>
               <strong>Profile page: </strong>
-              <a href={`/${user.user_metadata.slug}`}>
-                {user.user_metadata.slug}
+              <a href={`/${session.user.user_metadata.slug}`}>
+                {session.user.user_metadata.slug}
               </a>
             </div>
           </div>
