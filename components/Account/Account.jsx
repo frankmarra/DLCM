@@ -11,10 +11,9 @@ export default function Account({ session }) {
   const [loading, setLoading] = useState(true)
   const [showUpdateView, setShowUpdateView] = useState(false)
   const [profileData, setProfileData] = useState(null)
-
+  const { user } = session
   useEffect(() => {
     getProfile()
-    console.log("use effect")
   }, [])
 
   async function getProfile() {
@@ -24,7 +23,7 @@ export default function Account({ session }) {
       let { data, error, status } = await supabase
         .from("profiles")
         .select(`*`)
-        .eq("id", session.user.id)
+        .eq("id", user.id)
         .single()
 
       if (error && status !== 406) {
@@ -54,16 +53,16 @@ export default function Account({ session }) {
         <article className={cn(styles.profile, "inline-wrap")}>
           <Avatar url={profileData.avatar_url} size={100} />
           <div className={styles.details}>
-            <div className="badge">{session.user.user_metadata.type}</div>
-            <h1>{session.user.user_metadata.name}</h1>
+            <div className="badge">{user.user_metadata.type}</div>
+            <h1>{user.user_metadata.name}</h1>
             <div>
               <strong>Location: </strong>
-              {session.user.user_metadata.location}
+              {user.user_metadata.location}
             </div>
             <div className={styles.url}>
               <strong>Profile page: </strong>
-              <a href={`/${session.user.user_metadata.slug}`}>
-                {session.user.user_metadata.slug}
+              <a href={`/${user.user_metadata.slug}`}>
+                {user.user_metadata.slug}
               </a>
             </div>
           </div>
