@@ -8,10 +8,19 @@ import IconRecord from "@/icons/vinyl-record.svg"
 import IconMusicNotes from "@/icons/music-notes.svg"
 import IconEdit from "@/icons/edit.svg"
 import UpdateRelease from "./UpdateRelease"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
 export default function ReleaseCard({ release, user, getReleases }) {
-  const [onCodeAdded, setOnCodeAdded] = useState(true)
+  const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
+  const supabase = useSupabaseClient()
+
+  useEffect(() => {
+    if (onCodeAdded) {
+      getReleases()
+      setOnCodeAdded(false)
+    }
+  }, [onCodeAdded])
 
   return (
     <li className={styles.component}>
@@ -64,7 +73,7 @@ export default function ReleaseCard({ release, user, getReleases }) {
             />
             <AddCodes
               userId={release.user_id}
-              releaseId={release.release_id}
+              releaseId={release.id}
               setOnCodeAdded={setOnCodeAdded}
             />
           </div>

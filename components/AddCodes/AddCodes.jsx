@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import {
   Dialog,
@@ -6,18 +6,37 @@ import {
   DialogContent,
   DialogClose,
 } from "@/components/Dialog/Dialog"
+import Papa from "papaparse"
 
 export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
   const [open, setOpen] = useState(false)
+  const [displayCodes, toggleDisplayCodes] = useState(false)
 
+  function handleUpload(e) {
+    Papa.parse(e.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: function (results) {
+        let codeString = ""
+        results.data.map((d, index) => {
+          if (index >= 8) {
+            let code = Object.values(d)
+
+            codeString = codeString + " " + code[0]
+          }
+        })
+        setCodes(codeString.trimStart().split(/\s/g))
+        toggleDisplayCodes(true)
+      },
+    })
+  }
   async function createCodes() {
     try {
       let codeArray = []
 
-      let newCodes = codes.split(/\s/g)
-      newCodes.forEach((code) => {
+      codes.forEach((code) => {
         let newCode = {
           release_id: releaseId,
           user_id: userId,
@@ -38,6 +57,11 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
 
       setOpen(false)
     }
+  }
+
+  function closeModal() {
+    setCodes()
+    toggleDisplayCodes(false)
   }
 
   return (
@@ -67,6 +91,27 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
             rows="8"
             onChange={(e) => setCodes(e.target.value)}
           ></textarea>
+
+          <label className="label" htmlFor="csvcodes">
+            Upload with CSV
+          </label>
+          <input
+            type="file"
+            id="csvcodes"
+            accept=".csv"
+            onChange={(e) => handleUpload(e)}
+          />
+
+          {displayCodes ? (
+            <>
+              <p>Codes to add:</p>
+              <ul>
+                {codes.map((code, index) => (
+                  <li key={index}>{code}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
         </div>
 
         <footer className="button-actions inline-wrap">
@@ -78,7 +123,9 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
             Add
           </button>
 
-          <DialogClose className="button">Cancel</DialogClose>
+          <DialogClose className="button" onClick={closeModal}>
+            Cancel
+          </DialogClose>
         </footer>
       </DialogContent>
     </Dialog>
