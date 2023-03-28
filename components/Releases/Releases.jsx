@@ -9,29 +9,29 @@ export default function Releases() {
   const [releases, setReleases] = useState([])
 
   useEffect(() => {
-    async function getReleases() {
-      try {
-        let { data, error } = await supabase
-          .from("releases")
-          .select("*, codes (*)")
-          .eq("user_id", user.id)
-          .eq("codes.redeemed", "false")
-
-        if (error) {
-          throw error
-        }
-
-        if (data) {
-          setReleases(data)
-        }
-      } catch (error) {
-        alert("Error loading user releases!")
-        console.log(error)
-      }
-    }
-
     getReleases()
   }, [supabase, user.id])
+  async function getReleases() {
+    try {
+      let { data, error } = await supabase
+        .from("releases")
+        .select("*, codes (*)")
+        .eq("user_id", user.id)
+        .eq("codes.redeemed", "false")
+        .order("created_at", { ascending: true })
+
+      if (error) {
+        throw error
+      }
+
+      if (data) {
+        setReleases(data)
+      }
+    } catch (error) {
+      alert("Error loading user releases!")
+      console.log(error)
+    }
+  }
 
   const newReleases = supabase
     .channel("new-release-added")
@@ -56,23 +56,16 @@ export default function Releases() {
     <article className="stack">
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
+
         <CreateRelease />
       </header>
-
       <ul className="grid" role="list">
         {releases.map((release) => (
           <ReleaseCard
             key={release.id}
-            title={release.title}
-            artist={release.artist}
-            label={release.label}
-            type={release.type}
-            artworkUrl={release.artwork_url}
-            size={250}
-            releaseId={release.id}
-            userId={user.id}
-            releaseCodes={release.codes}
-            slug={release.release_slug}
+            release={release}
+            user={user}
+            getReleases={getReleases}
           />
         ))}
       </ul>
