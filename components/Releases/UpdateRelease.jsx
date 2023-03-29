@@ -56,6 +56,38 @@ export default function UpdateRelease({
     }
   }
 
+  async function deleteRelease() {
+    const deleteCheck = window.prompt(
+      `Please enter '${release.title}' to delete this release.`
+    )
+
+    if (deleteCheck === release.title) {
+      try {
+        let { error: codeError } = await supabase
+          .from("codes")
+          .delete()
+          .eq("release_id", release.id)
+
+        let { error: releaseError } = await supabase
+          .from("releases")
+          .delete()
+          .eq("id", release.id)
+
+        if (codeError) throw error
+        if (releaseError) throw error
+        alert("Release deleted.")
+      } catch (error) {
+        alert("Error deleting data!")
+        console.log(error)
+      } finally {
+        getReleases()
+        setShowReleaseUpdateView(false)
+      }
+    } else {
+      alert("Incorrect input")
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
@@ -142,6 +174,14 @@ export default function UpdateRelease({
             }
           >
             Update
+          </button>
+
+          <button
+            className="button"
+            data-variant="secondary"
+            onClick={deleteRelease}
+          >
+            Delete
           </button>
           <DialogClose className="button">Cancel</DialogClose>
         </footer>
