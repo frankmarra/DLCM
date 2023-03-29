@@ -47,43 +47,28 @@ export default function Account({ session }) {
 
   return (
     <>
-      {!showUpdateView ? (
-        <article className={cn(styles.profile, "inline-wrap")}>
-          <Avatar url={profileData.avatar_url} size={100} />
-          <div className={styles.details}>
-            <div className="badge">{user.user_metadata.type}</div>
-            <h1>{user.user_metadata.name}</h1>
-            <div>
-              <strong>Location: </strong>
-              {user.user_metadata.location}
-            </div>
-            <div className={styles.url}>
-              <strong>Profile page: </strong>
-              <a href={`/${user.user_metadata.slug}`}>
-                {user.user_metadata.slug}
-              </a>
-            </div>
+      <article className={cn(styles.profile, "inline-wrap")}>
+        <Avatar url={profileData.avatar_url} size={100} />
+        <div className={styles.details}>
+          <div className="badge">{user.user_metadata.type}</div>
+          <h1>{user.user_metadata.name}</h1>
+          <div>
+            <strong>Location: </strong>
+            {user.user_metadata.location}
           </div>
-          <button
-            className="button"
-            data-size="small"
-            onClick={() => setShowUpdateView(true)}
-          >
-            Update profile
-          </button>
-        </article>
-      ) : (
-        <>
-          <UpdateProfile
-            getProfile={getProfile}
-            profileData={profileData}
-            setShowUpdateView={setShowUpdateView}
-          />
-          <button className="button" onClick={() => setShowUpdateView(false)}>
-            Cancel
-          </button>
-        </>
-      )}
+          <div className={styles.url}>
+            <strong>Profile page: </strong>
+            <a href={`/${user.user_metadata.slug}`}>
+              {user.user_metadata.slug}
+            </a>
+          </div>
+        </div>
+        <UpdateProfile
+          getProfile={getProfile}
+          profileData={profileData}
+          setShowUpdateView={setShowUpdateView}
+        />
+      </article>
 
       <Releases />
     </>

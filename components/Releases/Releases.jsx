@@ -11,6 +11,7 @@ export default function Releases() {
   useEffect(() => {
     getReleases()
   }, [supabase, user.id])
+
   async function getReleases() {
     try {
       let { data, error } = await supabase
@@ -32,25 +33,6 @@ export default function Releases() {
       console.log(error)
     }
   }
-
-  const newReleases = supabase
-    .channel("new-release-added")
-    .on(
-      "postgres_changes",
-      {
-        event: "INSERT",
-        schema: "public",
-        table: "releases",
-      },
-      (payload) => {
-        if (payload.new.user_id === user.id) {
-          const newRelease = payload.new
-
-          setReleases([...releases, newRelease])
-        }
-      }
-    )
-    .subscribe()
 
   return (
     <article className="stack">
