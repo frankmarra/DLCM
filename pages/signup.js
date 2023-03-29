@@ -40,7 +40,7 @@ const Signup = () => {
       },
     })
 
-    if (data) {
+    if (data && !error) {
       const response = await fetch("/api/create-customer", {
         method: "POST",
         body: JSON.stringify({ email: data.user.email, uid: data.user.id }),
@@ -51,7 +51,15 @@ const Signup = () => {
     }
 
     if (error) {
-      return <p>Something went wrong, try again later</p>
+      setNewUser({
+        email: "",
+        password: "",
+        passwordCheck: "",
+        type: accountTypes[2].text,
+        name: "",
+        location: "",
+      })
+      alert(error.message)
     } else {
       setUserCreated(true)
     }
