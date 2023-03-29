@@ -84,7 +84,7 @@ export default function UpdateRelease({
           </label>
           <input
             className="input"
-            id="artowkrUrl"
+            id="artworkUrl"
             type="text"
             value={artworkUrl}
             onChange={(e) => setArtworkUrl(e.target.value)}

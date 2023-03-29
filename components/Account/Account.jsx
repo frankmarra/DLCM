@@ -45,8 +45,6 @@ export default function Account({ session }) {
     return <p>Loading...</p>
   }
 
-  console.log("profile data: ", profileData)
-
   return (
     <>
       {!showUpdateView ? (

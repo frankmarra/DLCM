@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import {
   Dialog,
@@ -6,18 +6,34 @@ import {
   DialogContent,
   DialogClose,
 } from "@/components/Dialog/Dialog"
+import Papa from "papaparse"
 
 export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
   const [open, setOpen] = useState(false)
+  const [displayCodes, toggleDisplayCodes] = useState(false)
 
+  function handleUpload(e) {
+    Papa.parse(e.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: function (results) {
+        let codeArray = results.data.map((d, index) => {
+          if (index >= 8) {
+            codeArray.push(Object.values(d)[0])
+          }
+        })
+        setCodes(codeArray)
+        toggleDisplayCodes(true)
+      },
+    })
+  }
   async function createCodes() {
     try {
       let codeArray = []
 
-      let newCodes = codes.split(/\s/g)
-      newCodes.forEach((code) => {
+      codes.forEach((code) => {
         let newCode = {
           release_id: releaseId,
           user_id: userId,
@@ -40,6 +56,11 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
     }
   }
 
+  function closeModal() {
+    setCodes()
+    toggleDisplayCodes(false)
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
@@ -57,16 +78,39 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
 
         <div className="stack block-overflow">
           <label className="label" htmlFor="codes">
-            Codes
+            Enter manually
           </label>
           <textarea
             className="input block-resize"
-            id="albumCodes"
-            placeholder="Enter your codes separated by a space"
+            id="codes"
+            placeholder="Copy and paste codes here"
             cols="20"
             rows="8"
-            onChange={(e) => setCodes(e.target.value)}
+            onChange={(e) => setCodes(e.target.value.split(/\s/g))}
           ></textarea>
+
+          <label className="label" htmlFor="csvcodes">
+            Upload with Bandcamp CSV
+          </label>
+          <br />
+          <small>Must be Bandcamp codes CSV or this will not work.</small>
+          <input
+            type="file"
+            id="csvcodes"
+            accept=".csv"
+            onChange={(e) => handleUpload(e)}
+          />
+
+          {displayCodes ? (
+            <>
+              <p>Codes to add:</p>
+              <ul>
+                {codes.map((code, index) => (
+                  <li key={index}>{code}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
         </div>
 
         <footer className="button-actions inline-wrap">
@@ -78,7 +122,9 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
             Add
           </button>
 
-          <DialogClose className="button">Cancel</DialogClose>
+          <DialogClose className="button" onClick={closeModal}>
+            Cancel
+          </DialogClose>
         </footer>
       </DialogContent>
     </Dialog>

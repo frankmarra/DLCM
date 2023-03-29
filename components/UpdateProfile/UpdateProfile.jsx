@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import Avatar from "../Avatar/Avatar"
 import AddImage from "../AddImage/AddImage"
+import slugify from "slugify"
 
 export default function UpdateProfile({
   getProfile,
@@ -9,16 +10,22 @@ export default function UpdateProfile({
   setShowUpdateView,
 }) {
   const supabase = useSupabaseClient()
+  const [username, setUsername] = useState(profileData.username)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
   const [location, setLocation] = useState(profileData.location)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     profileData.is_password_protected
   )
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
+  const [sluggedName, setSluggedName] = useState(profileData.slug)
 
+  useEffect(() => {
+    setSluggedName(slugify(username, { lower: true }))
+  }, [username])
   async function updateUserProfile(avatarUrl) {
     try {
       const updates = {
+        username: username,
         id: profileData.id,
         avatar_url: avatarUrl,
         updated_at: new Date().toISOString(),
@@ -41,7 +48,7 @@ export default function UpdateProfile({
 
   return (
     <div
-      classname="stack inline-max"
+      className="stack inline-max"
       style={{ "--max-inline-size": "var(--input-screen-inline-max-size" }}
     >
       <h1>Update profile</h1>
@@ -53,6 +60,23 @@ export default function UpdateProfile({
         setPublicUrl={(url) => setAvatarUrl(url)}
       />
       <br />
+
+      <label className="label" htmlFor="username">
+        Username
+      </label>
+      <br />
+      <small>
+        This will change your profile URL. https://downloadcodemanager.com/
+        {`${sluggedName}`}
+      </small>
+      <input
+        className="input"
+        id="username"
+        type="text"
+        value={username || ""}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+      />
 
       <label className="label" htmlFor="location">
         Location
@@ -95,6 +119,7 @@ export default function UpdateProfile({
           className="button"
           data-variant="primary"
           onClick={() => updateUserProfile(avatarUrl)}
+          disabled={!username}
         >
           Update
         </button>
