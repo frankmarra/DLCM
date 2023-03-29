@@ -17,10 +17,10 @@ export default function UpdateProfile({
     profileData.is_password_protected
   )
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
-  const [sluggedName, setSluggedNamed] = useState(profileData.slug)
+  const [sluggedName, setSluggedName] = useState(profileData.slug)
 
   useEffect(() => {
-    setSluggedNamed(slugify(username, { lower: true }))
+    setSluggedName(slugify(username, { lower: true }))
   }, [username])
   async function updateUserProfile(avatarUrl) {
     try {

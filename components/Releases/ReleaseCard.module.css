@@ -18,9 +18,6 @@
   padding: var(--padding);
 }
 
-.content {
-  display: grid;
-}
 
 .title {
   font-size: var(--step-2);

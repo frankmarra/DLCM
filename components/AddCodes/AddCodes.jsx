@@ -19,15 +19,12 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
       header: true,
       skipEmptyLines: true,
       complete: function (results) {
-        let codeString = ""
-        results.data.map((d, index) => {
+        let codeArray = results.data.map((d, index) => {
           if (index >= 8) {
-            let code = Object.values(d)
-
-            codeString = codeString + " " + code[0]
+            codeArray.push(Object.values(d)[0])
           }
         })
-        setCodes(codeString.trimStart().split(/\s/g))
+        setCodes(codeArray)
         toggleDisplayCodes(true)
       },
     })
@@ -85,7 +82,7 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
           </label>
           <textarea
             className="input block-resize"
-            id="albumCodes"
+            id="codes"
             placeholder="Copy and paste codes here"
             cols="20"
             rows="8"
