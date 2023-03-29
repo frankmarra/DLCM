@@ -81,20 +81,22 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
 
         <div className="stack block-overflow">
           <label className="label" htmlFor="codes">
-            Codes
+            Enter manually
           </label>
           <textarea
             className="input block-resize"
             id="albumCodes"
-            placeholder="Enter your codes separated by a space"
+            placeholder="Copy and paste codes here"
             cols="20"
             rows="8"
-            onChange={(e) => setCodes(e.target.value)}
+            onChange={(e) => setCodes(e.target.value.split(/\s/g))}
           ></textarea>
 
           <label className="label" htmlFor="csvcodes">
-            Upload with CSV
+            Upload with Bandcamp CSV
           </label>
+          <br />
+          <small>Must be Bandcamp codes CSV or this will not work.</small>
           <input
             type="file"
             id="csvcodes"

@@ -52,7 +52,7 @@ export default function CreateRelease() {
         artwork_url: artworkUrl,
         download_url: downloadUrl,
         type: type,
-        release_slug: slugify(title),
+        release_slug: slugify(title, { lower: true }),
         user_id: user.id,
       }
       const { data, error } = await supabase
