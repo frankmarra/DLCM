@@ -4,7 +4,12 @@ import IconUpload from "@/icons/upload.svg"
 import cn from "classnames"
 import { v4 as uuidv4 } from "uuid"
 
-export default function AddImage({ uid, setPublicUrl }) {
+export default function AddImage({
+  uid,
+  setPublicUrl,
+  imagePath,
+  setImagePath,
+}) {
   const supabase = useSupabaseClient()
   const [uploading, setUploading] = useState(false)
 
@@ -24,10 +29,17 @@ export default function AddImage({ uid, setPublicUrl }) {
         throw new Error("You must select an image to upload.")
       }
 
+      if (imagePath) {
+        let { data, error } = await supabase.storage
+          .from("images")
+          .remove([imagePath])
+
+        if (error) {
+          alert(error)
+        }
+      }
+
       const file = event.target.files[0]
-      const fileExt = file.name.split(".").pop()
-      const fileName = `${uid}.${fileExt}`
-      const filePath = `${fileName}`
 
       let { data, error: uploadError } = await supabase.storage
         .from("images")
@@ -38,7 +50,7 @@ export default function AddImage({ uid, setPublicUrl }) {
       }
 
       if (data) {
-        console.log("upload image: ", data)
+        setImagePath(data.path)
         getPublicUrl(data)
       } else {
         console.log(error)

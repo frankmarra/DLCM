@@ -24,24 +24,13 @@ export default function UpdateRelease({
   )
   const [pagePassword, setPagePassword] = useState(release.page_password)
   const [artworkId, setArtworkId] = useState()
+  const [imagePath, setImagePath] = useState(release.artwork_path)
 
-  useEffect(() => {
-    if (artworkUrl) {
-      let urlArray = artworkUrl.split("/")
-      console.log(urlArray)
-      setArtworkId(urlArray[9])
-    }
-  }, [artworkUrl])
-
-  async function updateRelease(
-    artworkUrl,
-    downloadUrl,
-    isPasswordProtected,
-    pagePassword
-  ) {
+  async function updateRelease() {
     try {
       const update = {
         artwork_url: artworkUrl,
+        artwork_path: imagePath,
         download_url: downloadUrl,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -71,6 +60,10 @@ export default function UpdateRelease({
 
     if (deleteCheck === release.title) {
       try {
+        let { data, error } = await supabase.storage
+          .from("images")
+          .remove([release.artwork_path])
+
         let { error: codeError } = await supabase
           .from("codes")
           .delete()
@@ -89,7 +82,7 @@ export default function UpdateRelease({
         console.log(error)
       } finally {
         getReleases()
-        setShowReleaseUpdateView(false)
+        setOpen(false)
       }
     } else {
       alert("Incorrect input")
@@ -117,6 +110,8 @@ export default function UpdateRelease({
             setPublicUrl={(url) => {
               setArtworkUrl(url)
             }}
+            setImagePath={setImagePath}
+            imagePath={imagePath}
           />
           <br />
           <label className="label" htmlFor="artworkUrl">
@@ -172,14 +167,7 @@ export default function UpdateRelease({
           <button
             className="button"
             data-variant="primary"
-            onClick={() =>
-              updateRelease(
-                artworkUrl,
-                downloadUrl,
-                isPasswordProtected,
-                pagePassword
-              )
-            }
+            onClick={updateRelease}
           >
             Update
           </button>
