@@ -81,7 +81,8 @@ export default function UpdateProfile({
           </label>
           <br />
           <small>
-            This will change your profile URL. https://downloadcodemanager.com/
+            This will change your profile URL.{" "}
+            {proccess.env.NEXT_PUBLIC_DLCM_URL}
             {`${sluggedName}`}
           </small>
           <input
