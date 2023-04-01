@@ -1,0 +1,21 @@
+.empty {
+  grid-column: 1 / -1;
+  padding: var(--size-6);
+}
+
+.actionCard {
+  display: grid;
+  place-content: center;
+  place-items: center;
+  transition: border-color 200ms ease-out;
+}
+
+.actionCardButton {
+  --button-icon-size: 2em;
+  gap: var(--size-1);
+  flex-direction: column;
+}
+
+.actionCard:has(button:hover) {
+  border-color: var(--link-hover);
+}
