@@ -13,10 +13,6 @@ export default function Releases() {
   const [openCreateRelease, setOpenCreateRelease] = useState(false)
 
   useEffect(() => {
-    console.log(openCreateRelease)
-  }, [openCreateRelease])
-
-  useEffect(() => {
     getReleases()
   }, [supabase, user.id])
   async function getReleases() {
