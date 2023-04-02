@@ -33,6 +33,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--size-1);
   text-align: center;
   position: relative;
   cursor: pointer;
@@ -45,12 +46,9 @@
 
 .button svg {
   flex-shrink: 0;
-  position: relative;
-  top: 0.1em;
   inline-size: var(--button-icon-size, 1.25em);
   block-size: var(--button-icon-size, 1.25em);
   margin-inline-start: calc(var(--size-1) * -1);
-  margin-inline-end: var(--size-2);
 }
 
 .button:not(:disabled) {
