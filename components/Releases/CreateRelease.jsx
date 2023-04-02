@@ -22,6 +22,7 @@ const releaseTypes = [
 export default function CreateRelease({ trigger }) {
   const user = useUser()
   const supabase = useSupabaseClient()
+  const [open, setOpen] = useState(false)
   const [title, setTitle] = useState()
   const [artist, setArtist] = useState(
     user.user_metadata.type === "Artist" ? user.user_metadata.name : ""
@@ -63,20 +64,12 @@ export default function CreateRelease({ trigger }) {
       alert("Error creating new release!")
     } finally {
       console.log("All done!")
-
-      onOpenChange(false)
+      setOpen(false)
     }
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={onOpenChange}
-      onCloseAutoFocus={(e) => {
-        console.log("hi")
-        e.preventDefault()
-      }}
-    >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent>
