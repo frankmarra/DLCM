@@ -19,7 +19,7 @@ const releaseTypes = [
   { id: 6, text: "Choose release type", isDisabled: true },
 ]
 
-export default function CreateRelease({ open, onOpenChange, trigger }) {
+export default function CreateRelease({ trigger }) {
   const user = useUser()
   const supabase = useSupabaseClient()
   const [title, setTitle] = useState()
