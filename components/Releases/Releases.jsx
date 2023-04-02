@@ -10,7 +10,6 @@ export default function Releases() {
   const supabase = useSupabaseClient()
   const user = useUser()
   const [releases, setReleases] = useState([])
-  const [openCreateRelease, setOpenCreateRelease] = useState(false)
 
   useEffect(() => {
     getReleases()
@@ -60,12 +59,15 @@ export default function Releases() {
     <article className="stack">
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
-
         <CreateRelease
-          open={openCreateRelease}
-          onOpenChange={setOpenCreateRelease}
+          trigger={
+            <button className="button" data-variant="primary">
+              <IconMusicNotesPlus aria-hidden="true" /> Create new release
+            </button>
+          }
         />
       </header>
+
       <ul className="grid" role="list">
         {releases.length ? (
           <>
@@ -81,14 +83,17 @@ export default function Releases() {
               className={cn(styles.actionCard, "container")}
               data-variant="empty"
             >
-              <button
-                className={cn(styles.actionCardButton, "button")}
-                data-variant="text"
-                onClick={() => setOpenCreateRelease(true)}
-              >
-                <IconMusicNotesPlus aria-hidden="true" />
-                Create a new release
-              </button>
+              <CreateRelease
+                trigger={
+                  <button
+                    className={cn(styles.actionCardButton, "button")}
+                    data-variant="text"
+                  >
+                    <IconMusicNotesPlus aria-hidden="true" />
+                    Create a new release
+                  </button>
+                }
+              />
             </li>
           </>
         ) : (
