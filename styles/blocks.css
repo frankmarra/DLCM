@@ -8,3 +8,31 @@
   padding: 2px var(--size-3);
   border-radius: var(--radius-1);
 }
+
+.container {
+  padding: var(--size-3);
+  border-radius: var(--radius-conditional-2);
+  border: var(--border-size-1) solid var(--surface-3);
+  background-color: var(--surface-2);
+  box-shadow: var(--shadow-3);
+}
+
+.container[data-variant="empty"] {
+  text-align: center;
+  border-style: dashed;
+  background-color: transparent;
+  box-shadow: unset;
+}
+
+.input-screen {
+  display: grid;
+  place-items: center;
+  min-height: 80vh;
+  padding-block: var(--size-8);
+}
+
+.article-heading {
+  --inline-wrap-gap: var(--size-2);
+  justify-content: space-between;
+  align-items: baseline;
+}

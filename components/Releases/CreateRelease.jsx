@@ -19,7 +19,9 @@ const releaseTypes = [
   { id: 6, text: "Choose release type", isDisabled: true },
 ]
 
-export default function CreateRelease({ getReleases }) {
+
+export default function CreateRelease({ trigger }) {
+
   const user = useUser()
   const supabase = useSupabaseClient()
   const [open, setOpen] = useState(false)
@@ -66,16 +68,14 @@ export default function CreateRelease({ getReleases }) {
       alert("Error creating new release!")
     } finally {
       console.log("All done!")
-      getReleases()
+
       setOpen(false)
     }
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="button" data-variant="primary">
-        <IconMusicNotesPlus aria-hidden="true" /> Create new release
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent>
         <header>

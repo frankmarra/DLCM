@@ -29,7 +29,11 @@ export default function Layout({ children }) {
         ) : null}
       </header>
       <main className="inline-max stack">{children}</main>
-      <footer></footer>
+      <footer className={styles.footer}>
+        <p>
+          Footer content: copyright info, contact links, privacy policy, etc.
+        </p>
+      </footer>
     </>
   )
 }

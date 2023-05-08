@@ -1,5 +1,5 @@
 .label {
-  display: inline-block;
+  display: block;
 }
 
 .input {
@@ -31,6 +31,10 @@
 
 .button {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-1);
+  text-align: center;
   position: relative;
   cursor: pointer;
   border-width: 1px;
@@ -42,12 +46,9 @@
 
 .button svg {
   flex-shrink: 0;
-  position: relative;
-  top: 0.1em;
   inline-size: var(--button-icon-size, 1.25em);
   block-size: var(--button-icon-size, 1.25em);
   margin-inline-start: calc(var(--size-1) * -1);
-  margin-inline-end: var(--size-2);
 }
 
 .button:not(:disabled) {
@@ -84,17 +85,28 @@
 
 .button[data-variant="secondary"] {
   --button-bg-color: var(--brand-2);
-  --button-border-color: var(--brand-2);
+  --button-border-color: var(--button-bg-color);
   --button-text-color: var(--brand-2-text);
 }
 
 .button[data-variant="secondary"]:hover {
   --button-bg-color: var(--brand-2-hover);
-  --button-border-color: var(--brand-2-hover);
+  --button-border-color: var(--button-bg-color);
 }
 
 .button[data-variant="dashed"] {
   border-style: dashed;
+}
+
+.button[data-variant="text"] {
+  --button-bg-color: transparent;
+  --button-border-color: transparent;
+  --button-text-color: var(--link);
+  box-shadow: unset;
+}
+
+.button[data-variant="text"]:hover {
+  --button-text-color: var(--link-hover);
 }
 
 .button-actions {
