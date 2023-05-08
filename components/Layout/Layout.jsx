@@ -13,7 +13,7 @@ export default function Layout({ children }) {
           <nav>
             <ul className={styles.list} role="list">
               <li>
-                <a href="#">Account</a>
+                <a href="/subscribe">Subscribe</a>
               </li>
               <li>
                 <button
