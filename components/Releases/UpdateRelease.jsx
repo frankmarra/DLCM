@@ -1,13 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
-import Avatar from "../Avatar/Avatar"
 import AddImage from "../AddImage/AddImage"
 import {
   Dialog,
   DialogTrigger,
   DialogContent,
   DialogClose,
-} from "@radix-ui/react-dialog"
+} from "@/components/Dialog/Dialog"
 import IconEdit from "@/icons/edit.svg"
 
 export default function UpdateRelease({
@@ -24,6 +23,15 @@ export default function UpdateRelease({
     release.is_password_protected
   )
   const [pagePassword, setPagePassword] = useState(release.page_password)
+  const [artworkId, setArtworkId] = useState()
+
+  useEffect(() => {
+    if (artworkUrl) {
+      let urlArray = artworkUrl.split("/")
+      console.log(urlArray)
+      setArtworkId(urlArray[9])
+    }
+  }, [artworkUrl])
 
   async function updateRelease(
     artworkUrl,
