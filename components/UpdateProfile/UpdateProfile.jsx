@@ -82,7 +82,7 @@ export default function UpdateProfile({
           <br />
           <small>
             This will change your profile URL.{" "}
-            {proccess.env.NEXT_PUBLIC_DLCM_URL}
+            {process.env.NEXT_PUBLIC_DLCM_URL}
             {`${sluggedName}`}
           </small>
           <input
