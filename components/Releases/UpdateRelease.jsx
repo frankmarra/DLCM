@@ -1,13 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
-import Avatar from "../Avatar/Avatar"
 import AddImage from "../AddImage/AddImage"
 import {
   Dialog,
   DialogTrigger,
   DialogContent,
   DialogClose,
-} from "@radix-ui/react-dialog"
+} from "@/components/Dialog/Dialog"
 import IconEdit from "@/icons/edit.svg"
 
 export default function UpdateRelease({
@@ -24,16 +23,14 @@ export default function UpdateRelease({
     release.is_password_protected
   )
   const [pagePassword, setPagePassword] = useState(release.page_password)
+  const [artworkId, setArtworkId] = useState()
+  const [imagePath, setImagePath] = useState(release.artwork_path)
 
-  async function updateRelease(
-    artworkUrl,
-    downloadUrl,
-    isPasswordProtected,
-    pagePassword
-  ) {
+  async function updateRelease() {
     try {
       const update = {
         artwork_url: artworkUrl,
+        artwork_path: imagePath,
         download_url: downloadUrl,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -53,6 +50,42 @@ export default function UpdateRelease({
     } finally {
       getReleases()
       setShowReleaseUpdateView(false)
+    }
+  }
+
+  async function deleteRelease() {
+    const deleteCheck = window.prompt(
+      `Please enter '${release.title}' to delete this release.`
+    )
+
+    if (deleteCheck === release.title) {
+      try {
+        let { data, error } = await supabase.storage
+          .from("images")
+          .remove([release.artwork_path])
+
+        let { error: codeError } = await supabase
+          .from("codes")
+          .delete()
+          .eq("release_id", release.id)
+
+        let { error: releaseError } = await supabase
+          .from("releases")
+          .delete()
+          .eq("id", release.id)
+
+        if (codeError) throw error
+        if (releaseError) throw error
+        alert("Release deleted.")
+      } catch (error) {
+        alert("Error deleting data!")
+        console.log(error)
+      } finally {
+        getReleases()
+        setOpen(false)
+      }
+    } else {
+      alert("Incorrect input")
     }
   }
 
@@ -77,6 +110,8 @@ export default function UpdateRelease({
             setPublicUrl={(url) => {
               setArtworkUrl(url)
             }}
+            setImagePath={setImagePath}
+            imagePath={imagePath}
           />
           <br />
           <label className="label" htmlFor="artworkUrl">
@@ -132,16 +167,17 @@ export default function UpdateRelease({
           <button
             className="button"
             data-variant="primary"
-            onClick={() =>
-              updateRelease(
-                artworkUrl,
-                downloadUrl,
-                isPasswordProtected,
-                pagePassword
-              )
-            }
+            onClick={updateRelease}
           >
             Update
+          </button>
+
+          <button
+            className="button"
+            data-variant="secondary"
+            onClick={deleteRelease}
+          >
+            Delete
           </button>
           <DialogClose className="button">Cancel</DialogClose>
         </footer>

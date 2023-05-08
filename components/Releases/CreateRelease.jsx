@@ -19,7 +19,9 @@ const releaseTypes = [
   { id: 6, text: "Choose release type", isDisabled: true },
 ]
 
+
 export default function CreateRelease({ trigger }) {
+
   const user = useUser()
   const supabase = useSupabaseClient()
   const [open, setOpen] = useState(false)
@@ -35,6 +37,7 @@ export default function CreateRelease({ trigger }) {
   const [pagePassword, setPagePassword] = useState()
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
   const [type, setType] = useState(releaseTypes[5].text)
+  const [imagePath, setImagePath] = useState()
 
   async function createNewRelease({
     title,
@@ -50,6 +53,7 @@ export default function CreateRelease({ trigger }) {
         artist: artist,
         label: label,
         artwork_url: artworkUrl,
+        artwork_path: imagePath,
         download_url: downloadUrl,
         type: type,
         release_slug: slugify(title, { lower: true }),
@@ -64,6 +68,7 @@ export default function CreateRelease({ trigger }) {
       alert("Error creating new release!")
     } finally {
       console.log("All done!")
+
       setOpen(false)
     }
   }
@@ -116,6 +121,8 @@ export default function CreateRelease({ trigger }) {
             setPublicUrl={(url) => {
               setArtworkUrl(url)
             }}
+            setImagePath={setImagePath}
+            imagePath={imagePath}
           />
 
           <label className="label" htmlFor="artworkUrl">

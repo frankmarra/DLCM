@@ -14,6 +14,7 @@ export default function Releases() {
   useEffect(() => {
     getReleases()
   }, [supabase, user.id])
+
   async function getReleases() {
     try {
       let { data, error } = await supabase
@@ -36,29 +37,11 @@ export default function Releases() {
     }
   }
 
-  const newReleases = supabase
-    .channel("new-release-added")
-    .on(
-      "postgres_changes",
-      {
-        event: "INSERT",
-        schema: "public",
-        table: "releases",
-      },
-      (payload) => {
-        if (payload.new.user_id === user.id) {
-          const newRelease = payload.new
-
-          setReleases([...releases, newRelease])
-        }
-      }
-    )
-    .subscribe()
-
   return (
     <article className="stack">
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
+
         <CreateRelease
           trigger={
             <button className="button" data-variant="primary">
@@ -66,6 +49,7 @@ export default function Releases() {
             </button>
           }
         />
+
       </header>
 
       <ul className="grid" role="list">

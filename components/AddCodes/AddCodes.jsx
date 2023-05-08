@@ -19,7 +19,8 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
       header: true,
       skipEmptyLines: true,
       complete: function (results) {
-        let codeArray = results.data.map((d, index) => {
+        let codeArray = []
+        results.data.map((d, index) => {
           if (index >= 8) {
             codeArray.push(Object.values(d)[0])
           }
