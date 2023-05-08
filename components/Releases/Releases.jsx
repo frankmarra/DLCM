@@ -39,7 +39,7 @@ export default function Releases() {
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
 
-        <CreateRelease />
+        <CreateRelease getReleases={getReleases} />
       </header>
       <ul className="grid" role="list">
         {releases.map((release) => (

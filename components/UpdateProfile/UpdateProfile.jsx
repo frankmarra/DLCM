@@ -25,16 +25,18 @@ export default function UpdateProfile({
   )
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
   const [sluggedName, setSluggedName] = useState(profileData.slug)
+  const [imagePath, setImagePath] = useState(profileData.avatar_path)
 
   useEffect(() => {
     setSluggedName(slugify(username, { lower: true }))
   }, [username])
-  async function updateUserProfile(avatarUrl) {
+  async function updateUserProfile() {
     try {
       const updates = {
         username: username,
         id: profileData.id,
         avatar_url: avatarUrl,
+        avatar_path: imagePath,
         updated_at: new Date().toISOString(),
       }
 
@@ -69,6 +71,8 @@ export default function UpdateProfile({
           <AddImage
             uid={profileData.id}
             setPublicUrl={(url) => setAvatarUrl(url)}
+            setImagePath={setImagePath}
+            imagePath={imagePath}
           />
           <br />
 
@@ -77,7 +81,8 @@ export default function UpdateProfile({
           </label>
           <br />
           <small>
-            This will change your profile URL. https://downloadcodemanager.com/
+            This will change your profile URL.{" "}
+            {process.env.NEXT_PUBLIC_DLCM_URL}
             {`${sluggedName}`}
           </small>
           <input

@@ -5,9 +5,9 @@ import slugify from "slugify"
 import { useRouter } from "next/router"
 
 const accountTypes = [
-  { id: 1, text: "Label" },
-  { id: 2, text: "Artist" },
-  { id: 3, text: "Choose account type", isDisabled: true },
+  { value: "", label: "Choose account type", disabled: true },
+  { value: "label", label: "Label" },
+  { value: "artist", label: "Artist" },
 ]
 
 const Signup = () => {
@@ -127,9 +127,9 @@ const Signup = () => {
               >
                 {accountTypes.map((accountType) => (
                   <option
-                    key={accountType.id}
-                    value={accountType.text}
-                    disabled={accountType.isDisabled}
+                    key={accountType.value}
+                    value={accountType.value}
+                    disabled={accountType.disabled}
                   >
                     {accountType.text}
                   </option>
@@ -140,7 +140,7 @@ const Signup = () => {
               "Label" ? (
               <>
                 <div className="input-wrapper">
-                  <label htmlFor="name">Label Name</label>
+                  <label htmlFor="name">Label name</label>
                   <input
                     className="input"
                     onChange={handleChange}
@@ -165,7 +165,7 @@ const Signup = () => {
             ) : (
               <>
                 <div className="input-wrapper">
-                  <label htmlFor="name">Artist Name</label>
+                  <label htmlFor="name">Artist name</label>
                   <input
                     className="input"
                     onChange={handleChange}
@@ -188,29 +188,31 @@ const Signup = () => {
                 </div>
               </>
             )}
-            <button
-              type="submit"
-              className="button"
-              data-variant="primary"
-              disabled={
-                !newUser.email ||
-                !newUser.password ||
-                newUser.password.length < 6 ||
-                newUser.password != newUser.passwordCheck ||
-                !newUser.name ||
-                newUser.type === accountTypes[2].text
-              }
-            >
-              Sign Up
-            </button>
-            <button
-              type="button"
-              className="button"
-              data-variant="secondary"
-              onClick={() => router.push("/")}
-            >
-              Cancel
-            </button>
+            <div class="button-actions inline-wrap">
+              <button
+                type="submit"
+                className="button"
+                data-variant="primary"
+                disabled={
+                  !newUser.email ||
+                  !newUser.password ||
+                  newUser.password.length < 6 ||
+                  newUser.password != newUser.passwordCheck ||
+                  !newUser.name ||
+                  newUser.type === accountTypes[2].text
+                }
+              >
+                Sign Up
+              </button>
+              <button
+                type="button"
+                className="button"
+                data-variant="secondary"
+                onClick={() => router.push("/")}
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       )}
