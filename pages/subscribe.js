@@ -7,7 +7,7 @@ export default function subscribe() {
 
       <stripe-pricing-table
         pricing-table-id="prctbl_1N4qtHJSrZPUTrMcsHWioXkw"
-        publishable-key={process.env.NEXT_PUBLIC_STRIP_SHAREABLE_KEY}
+        publishable-key={process.env.NEXT_PUBLIC_STRIPE_TEST_SHAREABLE_KEY}
       ></stripe-pricing-table>
     </>
   )

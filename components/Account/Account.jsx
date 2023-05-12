@@ -12,6 +12,7 @@ export default function Account({ session }) {
   const [showUpdateView, setShowUpdateView] = useState(false)
   const [profileData, setProfileData] = useState(null)
   const { user } = session
+
   useEffect(() => {
     getProfile()
   }, [])
@@ -51,6 +52,9 @@ export default function Account({ session }) {
         <Avatar url={profileData.avatar_url} size={100} />
         <div className={styles.details}>
           <div className="badge">{user.user_metadata.type}</div>
+          <div className="badge">
+            {user.user_metadata.is_subscribed ? "Pro User" : "Free User"}
+          </div>
           <h1>{user.user_metadata.name}</h1>
           <div>
             <strong>Location: </strong>
@@ -70,7 +74,7 @@ export default function Account({ session }) {
         />
       </article>
 
-      <Releases />
+      <Releases profileData={profileData} />
     </>
   )
 }
