@@ -1,4 +1,5 @@
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import Link from "next/link"
 import styles from "./Layout.module.css"
 
 export default function Layout({ children }) {
@@ -13,7 +14,7 @@ export default function Layout({ children }) {
           <nav>
             <ul className={styles.list} role="list">
               <li>
-                <a href="/subscribe">Subscribe</a>
+                <Link href="/subscribe">Subscribe</Link>
               </li>
               <li>
                 <button

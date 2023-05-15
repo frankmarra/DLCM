@@ -20,8 +20,13 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
       skipEmptyLines: true,
       complete: function (results) {
         let codeArray = []
+        let start = 0
+
         results.data.map((d, index) => {
-          if (index >= 8) {
+          if (Object.values(d) == "code") {
+            start = index
+          }
+          if (start != 0 && start < index) {
             codeArray.push(Object.values(d)[0])
           }
         })

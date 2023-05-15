@@ -53,7 +53,7 @@ export default function Account({ session }) {
         <div className={styles.details}>
           <div className="badge">{user.user_metadata.type}</div>
           <div className="badge">
-            {user.user_metadata.is_subscribed ? "Pro User" : "Free User"}
+            {profileData.is_subscribed ? "Pro User" : "Free User"}
           </div>
           <h1>{user.user_metadata.name}</h1>
           <div>
