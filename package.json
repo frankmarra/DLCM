@@ -17,6 +17,7 @@
     "classnames": "^2.3.2",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
+    "micro": "^10.0.1",
     "next": "13.2.3",
     "open-props": "^1.5.6",
     "papaparse": "^5.4.1",
