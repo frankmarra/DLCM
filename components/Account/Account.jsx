@@ -5,6 +5,7 @@ import Releases from "@/components/Releases/Releases"
 import UpdateProfile from "../UpdateProfile/UpdateProfile"
 import styles from "./Account.module.css"
 import cn from "classnames"
+import Link from "next/link"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
@@ -55,6 +56,7 @@ export default function Account({ session }) {
           <div className="badge">
             {profileData.is_subscribed ? "Pro User" : "Free User"}
           </div>
+
           <h1>{user.user_metadata.name}</h1>
           <div>
             <strong>Location: </strong>
@@ -62,16 +64,33 @@ export default function Account({ session }) {
           </div>
           <div className={styles.url}>
             <strong>Profile page: </strong>
-            <a href={`/${user.user_metadata.slug}`}>
+            <a href={`/${user.user_metadata.type}/${user.user_metadata.slug}`}>
               {user.user_metadata.slug}
             </a>
           </div>
         </div>
-        <UpdateProfile
-          getProfile={getProfile}
-          profileData={profileData}
-          setShowUpdateView={setShowUpdateView}
-        />
+        <div>
+          <UpdateProfile
+            getProfile={getProfile}
+            profileData={profileData}
+            setShowUpdateView={setShowUpdateView}
+          />
+          <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
+            Subscribe
+          </Link>
+          {/*profileData.is_subscribed ? (
+            <Link
+              style={{ display: "block" }}
+              href="/api/stripe-customer-portal"
+            >
+              Manage Subscription
+            </Link>
+          ) : (
+            <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
+              Subscribe
+            </Link>
+          )*/}
+        </div>
       </article>
 
       <Releases profileData={profileData} />

@@ -52,7 +52,7 @@ export default function Releases({ profileData }) {
             }
           />
         ) : releases.length >= 2 ? (
-          <Link href="/subscribe">Subscribe</Link>
+          <Link href="/api/subscribe-to-dlcm">Subscribe</Link>
         ) : (
           <CreateRelease
             trigger={

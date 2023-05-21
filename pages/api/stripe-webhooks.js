@@ -18,42 +18,65 @@ export default async function handler(req, res) {
     console.log(err)
     return res.status(400).send(`Webhook Error: ${err.message}`)
   }
+
   async function createdSub(customer) {
     console.log(`subscription created for: ${customer}`)
     await supabase
       .from("profiles")
       .update({ is_subscribed: true })
       .eq("stripe_customer_id", customer)
+
+    const { data: profileData, error } = await supabase
+      .from("profiles")
+      .select()
+      .eq("stripe_customer_id", customer)
+
+    const { data: userReleases, error: userReleasesError } = await supabase
+      .from("releases")
+      .select("*")
+      .eq("user_id", profileData[0].id)
+      .order("created_at", { ascending: false })
+
+    let releasesToDelete = []
+    userReleases.map((release, index) => {
+      if (index > 2) {
+        releasesToDelete.push(release.id)
+      }
+    })
+    console.log("releases to delete: ", releasesToDelete)
+    await supabase.from("releases").delete().in("id", releasesToDelete)
   }
 
   async function canceledSub(customer) {
     console.log(`subscription canceled for customer: ${customer}`)
     await supabase
       .from("profiles")
-      .update({ is_subscribed: "false" })
+      .update({ is_subscribed: false })
       .eq("stripe_customer_id", customer)
-  }
-  switch (event.type) {
-    case "customer.subscription.created":
-      const customerSubscriptionCreated = event.data.object
-      createdSub(customerSubscriptionCreated.customer)
-      // Then define and call a function to handle the event customer.subscription.created
-      break
-    case "customer.subscription.deleted":
-      const customerSubscriptionDeleted = event.data.object
-      canceledSub(subscriptionScheduleCanceled.customer)
-      // Then define and call a function to handle the event customer.subscription.deleted
-      break
-    case "subscription_schedule.updated":
-      const subscriptionScheduleCanceled = event.data.object
 
-      // Then define and call a function to handle the event subscription_schedule.canceled
-      break
-    // ... handle other event types
-    default:
-      console.log(`Unhandled event type ${event.type}`)
+    const { profileData, profileDataError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("stripe_customer_id", customer)
+    const { userReleases, userReleasesError } = await supabase
+      .from("releases")
+      .select("*")
+      .eq("user_id", profileData.id)
+      .order("created_at", { ascending: true })
+  }
+
+  if (event.type == "customer.subscription.created") {
+    const customerSubscriptionCreated = event.data.object
+    createdSub(customerSubscriptionCreated.customer)
+    // Then define and call a function to handle the event customer.subscription.created
+  }
+
+  if (event.type == "customer.subscription.deleted") {
+    const customerSubscriptionDeleted = event.data.object
+    canceledSub(subscriptionScheduleCanceled.customer)
+    // Then define and call a function to handle the event customer.subscription.deleted
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  res.send({ received: true })
+  res.send({ data: event.data.object, received: true })
 }

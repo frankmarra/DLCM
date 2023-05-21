@@ -9,13 +9,14 @@ export default function Layout({ children }) {
   return (
     <>
       <header className={styles.header}>
-        <h1 className={styles.title}>DLCM</h1>
+        <h1 className={styles.title}>
+          <Link href="/" style={{ "text-decoration": "none", color: "white" }}>
+            DLCM
+          </Link>
+        </h1>
         {user ? (
           <nav>
             <ul className={styles.list} role="list">
-              <li>
-                <Link href="/subscribe">Subscribe</Link>
-              </li>
               <li>
                 <button
                   className="button"
