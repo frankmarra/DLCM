@@ -25,6 +25,7 @@ export default function UpdateRelease({
   const [pagePassword, setPagePassword] = useState(release.page_password)
   const [artworkId, setArtworkId] = useState()
   const [imagePath, setImagePath] = useState(release.artwork_path)
+  const [isActive, setIsActive] = useState(release.is_active)
 
   async function updateRelease() {
     try {
@@ -32,6 +33,7 @@ export default function UpdateRelease({
         artwork_url: artworkUrl,
         artwork_path: imagePath,
         download_url: downloadUrl,
+        is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
         updated_at: new Date().toISOString(),
@@ -135,17 +137,24 @@ export default function UpdateRelease({
             value={downloadUrl}
             onChange={(e) => setDownloadUrl(e.target.value)}
           />
-
+          <label className="label" htmlFor="isActive">
+            Allow fans to access?
+          </label>
+          <input
+            id="isActive"
+            type="checkbox"
+            checked={isActive}
+            onChange={() => setIsActive(!isActive)}
+          />
+          <label className="label" htmlFor="passwordProtect">
+            Password protect page?
+          </label>
           <input
             id="passwordProtect"
             type="checkbox"
             checked={isPasswordProtected}
             onChange={() => setIsPasswordProtected(!isPasswordProtected)}
           />
-
-          <label className="label" htmlFor="passwordProtect">
-            Password protect page?
-          </label>
 
           {isPasswordProtected ? (
             <>

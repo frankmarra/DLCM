@@ -21,9 +21,21 @@ export default async function handler(req, res) {
 
   async function createdSub(customer) {
     console.log(`subscription created for: ${customer}`)
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ is_subscribed: true })
+        .eq("stripe_customer_id", customer)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async function canceledSub(customer) {
+    console.log(`subscription canceled for customer: ${customer}`)
     await supabase
       .from("profiles")
-      .update({ is_subscribed: true })
+      .update({ is_subscribed: false })
       .eq("stripe_customer_id", customer)
 
     const { data: profileData, error } = await supabase
@@ -39,30 +51,12 @@ export default async function handler(req, res) {
 
     let releasesToDelete = []
     userReleases.map((release, index) => {
-      if (index > 2) {
+      if (index > 1) {
         releasesToDelete.push(release.id)
       }
     })
-    console.log("releases to delete: ", releasesToDelete)
+
     await supabase.from("releases").delete().in("id", releasesToDelete)
-  }
-
-  async function canceledSub(customer) {
-    console.log(`subscription canceled for customer: ${customer}`)
-    await supabase
-      .from("profiles")
-      .update({ is_subscribed: false })
-      .eq("stripe_customer_id", customer)
-
-    const { profileData, profileDataError } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("stripe_customer_id", customer)
-    const { userReleases, userReleasesError } = await supabase
-      .from("releases")
-      .select("*")
-      .eq("user_id", profileData.id)
-      .order("created_at", { ascending: true })
   }
 
   if (event.type == "customer.subscription.created") {
