@@ -10,7 +10,12 @@ import IconEdit from "@/icons/edit.svg"
 import UpdateRelease from "./UpdateRelease"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
-export default function ReleaseCard({ release, user, getReleases }) {
+export default function ReleaseCard({
+  release,
+  user,
+  getReleases,
+  profileData,
+}) {
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
   const supabase = useSupabaseClient()
@@ -70,11 +75,13 @@ export default function ReleaseCard({ release, user, getReleases }) {
               setShowReleaseUpdateView={setShowReleaseUpdateView}
               release={release}
               getReleases={getReleases}
+              profileData={profileData}
             />
             <AddCodes
               userId={release.user_id}
               releaseId={release.id}
               setOnCodeAdded={setOnCodeAdded}
+              profileData={profileData}
             />
           </div>
         ) : null

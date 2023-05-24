@@ -8,7 +8,12 @@ import {
 } from "@/components/Dialog/Dialog"
 import Papa from "papaparse"
 
-export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
+export default function AddCodes({
+  userId,
+  releaseId,
+  setOnCodeAdded,
+  profileData,
+}) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
   const [open, setOpen] = useState(false)
@@ -94,18 +99,21 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
             rows="8"
             onChange={(e) => setCodes(e.target.value.split(/\s/g))}
           ></textarea>
-
-          <label className="label" htmlFor="csvcodes">
-            Upload with Bandcamp CSV
-          </label>
-          <br />
-          <small>Must be Bandcamp codes CSV or this will not work.</small>
-          <input
-            type="file"
-            id="csvcodes"
-            accept=".csv"
-            onChange={(e) => handleUpload(e)}
-          />
+          {profileData.is_subscribed ? (
+            <>
+              <label className="label" htmlFor="csvcodes">
+                Upload with Bandcamp CSV
+              </label>
+              <br />
+              <small>Must be Bandcamp codes CSV or this will not work.</small>
+              <input
+                type="file"
+                id="csvcodes"
+                accept=".csv"
+                onChange={(e) => handleUpload(e)}
+              />
+            </>
+          ) : null}
 
           {displayCodes ? (
             <>

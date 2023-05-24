@@ -13,6 +13,7 @@ export default function UpdateRelease({
   release,
   setShowReleaseUpdateView,
   getReleases,
+  profileData,
 }) {
   const supabase = useSupabaseClient()
   const user = useUser()
@@ -137,37 +138,40 @@ export default function UpdateRelease({
             value={downloadUrl}
             onChange={(e) => setDownloadUrl(e.target.value)}
           />
-          <label className="label" htmlFor="isActive">
-            Allow fans to access?
-          </label>
-          <input
-            id="isActive"
-            type="checkbox"
-            checked={isActive}
-            onChange={() => setIsActive(!isActive)}
-          />
-          <label className="label" htmlFor="passwordProtect">
-            Password protect page?
-          </label>
-          <input
-            id="passwordProtect"
-            type="checkbox"
-            checked={isPasswordProtected}
-            onChange={() => setIsPasswordProtected(!isPasswordProtected)}
-          />
-
-          {isPasswordProtected ? (
+          {profileData.is_subscribed ? (
             <>
-              <label className="label" htmlFor="pagePassword">
-                Page password
+              <label className="label" htmlFor="isActive">
+                Allow fans to access?
               </label>
               <input
-                className="input"
-                id="pagePassword"
-                type="password"
-                value={pagePassword || ""}
-                onChange={(e) => setPagePassword(e.target.value)}
+                id="isActive"
+                type="checkbox"
+                checked={isActive}
+                onChange={() => setIsActive(!isActive)}
               />
+              <label className="label" htmlFor="passwordProtect">
+                Password protect page?
+              </label>
+              <input
+                id="passwordProtect"
+                type="checkbox"
+                checked={isPasswordProtected}
+                onChange={() => setIsPasswordProtected(!isPasswordProtected)}
+              />{" "}
+              {isPasswordProtected ? (
+                <>
+                  <label className="label" htmlFor="pagePassword">
+                    Page password
+                  </label>
+                  <input
+                    className="input"
+                    id="pagePassword"
+                    type="password"
+                    value={pagePassword || ""}
+                    onChange={(e) => setPagePassword(e.target.value)}
+                  />
+                </>
+              ) : null}
             </>
           ) : null}
         </div>

@@ -75,6 +75,7 @@ export default function Releases({ profileData }) {
                   release={release}
                   user={user}
                   getReleases={getReleases}
+                  profileData={profileData}
                 />
               ) : null
             )}

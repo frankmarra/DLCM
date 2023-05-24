@@ -10,7 +10,7 @@ export default function Layout({ children }) {
     <>
       <header className={styles.header}>
         <h1 className={styles.title}>
-          <Link href="/" style={{ "text-decoration": "none", color: "white" }}>
+          <Link href="/" style={{ textDecoration: "none", color: "white" }}>
             DLCM
           </Link>
         </h1>

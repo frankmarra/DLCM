@@ -64,7 +64,7 @@ export default function Account({ session }) {
           </div>
           <div className={styles.url}>
             <strong>Profile page: </strong>
-            <a href={`/${user.user_metadata.type}/${user.user_metadata.slug}`}>
+            <a href={`/${user.user_metadata.type}s/${user.user_metadata.slug}`}>
               {user.user_metadata.slug}
             </a>
           </div>
@@ -75,10 +75,8 @@ export default function Account({ session }) {
             profileData={profileData}
             setShowUpdateView={setShowUpdateView}
           />
-          <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
-            Subscribe
-          </Link>
-          {/*profileData.is_subscribed ? (
+
+          {profileData.is_subscribed ? (
             <Link
               style={{ display: "block" }}
               href="/api/stripe-customer-portal"
@@ -89,7 +87,7 @@ export default function Account({ session }) {
             <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
               Subscribe
             </Link>
-          )*/}
+          )}
         </div>
       </article>
 

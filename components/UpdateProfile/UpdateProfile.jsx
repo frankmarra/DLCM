@@ -83,7 +83,7 @@ export default function UpdateProfile({
           <small>
             This will change your profile URL.{" "}
             {process.env.NEXT_PUBLIC_DLCM_URL}
-            {`${sluggedName}`}
+            {profileData.type}/{`${sluggedName}`}
           </small>
           <input
             className="input"
@@ -104,29 +104,32 @@ export default function UpdateProfile({
             value={location || ""}
             onChange={(e) => setLocation(e.target.value)}
           />
-
-          <input
-            id="passwordProtect"
-            type="checkbox"
-            checked={isPasswordProtected}
-            onChange={() => setIsPasswordProtected(!isPasswordProtected)}
-          />
-          <label className="label" htmlFor="passwordProtect">
-            Password protect page?
-          </label>
-
-          {isPasswordProtected ? (
+          {profileData.is_subscribed ? (
             <>
-              <label className="label" htmlFor="pagePassword">
-                Page password
-              </label>
               <input
-                className="input"
-                id="pagePassword"
-                type="password"
-                value={pagePassword || ""}
-                onChange={(e) => setPagePassword(e.target.value)}
+                id="passwordProtect"
+                type="checkbox"
+                checked={isPasswordProtected}
+                onChange={() => setIsPasswordProtected(!isPasswordProtected)}
               />
+              <label className="label" htmlFor="passwordProtect">
+                Password protect page?
+              </label>
+
+              {isPasswordProtected ? (
+                <>
+                  <label className="label" htmlFor="pagePassword">
+                    Page password
+                  </label>
+                  <input
+                    className="input"
+                    id="pagePassword"
+                    type="password"
+                    value={pagePassword || ""}
+                    onChange={(e) => setPagePassword(e.target.value)}
+                  />
+                </>
+              ) : null}
             </>
           ) : null}
         </div>
