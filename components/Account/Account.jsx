@@ -5,6 +5,7 @@ import Releases from "@/components/Releases/Releases"
 import UpdateProfile from "../UpdateProfile/UpdateProfile"
 import styles from "./Account.module.css"
 import cn from "classnames"
+import Link from "next/link"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
@@ -12,6 +13,7 @@ export default function Account({ session }) {
   const [showUpdateView, setShowUpdateView] = useState(false)
   const [profileData, setProfileData] = useState(null)
   const { user } = session
+
   useEffect(() => {
     getProfile()
   }, [])
@@ -51,6 +53,10 @@ export default function Account({ session }) {
         <Avatar url={profileData.avatar_url} size={100} />
         <div className={styles.details}>
           <div className="badge">{user.user_metadata.type}</div>
+          <div className="badge">
+            {profileData.is_subscribed ? "Pro User" : "Free User"}
+          </div>
+
           <h1>{user.user_metadata.name}</h1>
           <div>
             <strong>Location: </strong>
@@ -58,19 +64,34 @@ export default function Account({ session }) {
           </div>
           <div className={styles.url}>
             <strong>Profile page: </strong>
-            <a href={`/${user.user_metadata.slug}`}>
+            <a href={`/${user.user_metadata.type}s/${user.user_metadata.slug}`}>
               {user.user_metadata.slug}
             </a>
           </div>
         </div>
-        <UpdateProfile
-          getProfile={getProfile}
-          profileData={profileData}
-          setShowUpdateView={setShowUpdateView}
-        />
+        <div>
+          <UpdateProfile
+            getProfile={getProfile}
+            profileData={profileData}
+            setShowUpdateView={setShowUpdateView}
+          />
+
+          {profileData.is_subscribed ? (
+            <Link
+              style={{ display: "block" }}
+              href="/api/stripe-customer-portal"
+            >
+              Manage Subscription
+            </Link>
+          ) : (
+            <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
+              Subscribe
+            </Link>
+          )}
+        </div>
       </article>
 
-      <Releases />
+      <Releases profileData={profileData} />
     </>
   )
 }

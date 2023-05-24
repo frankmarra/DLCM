@@ -1,4 +1,5 @@
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import Link from "next/link"
 import styles from "./Layout.module.css"
 
 export default function Layout({ children }) {
@@ -8,13 +9,14 @@ export default function Layout({ children }) {
   return (
     <>
       <header className={styles.header}>
-        <h1 className={styles.title}>DLCM</h1>
+        <h1 className={styles.title}>
+          <Link href="/" style={{ textDecoration: "none", color: "white" }}>
+            DLCM
+          </Link>
+        </h1>
         {user ? (
           <nav>
             <ul className={styles.list} role="list">
-              <li>
-                <a href="#">Account</a>
-              </li>
               <li>
                 <button
                   className="button"

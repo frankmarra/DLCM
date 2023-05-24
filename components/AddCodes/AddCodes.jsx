@@ -8,7 +8,12 @@ import {
 } from "@/components/Dialog/Dialog"
 import Papa from "papaparse"
 
-export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
+export default function AddCodes({
+  userId,
+  releaseId,
+  setOnCodeAdded,
+  profileData,
+}) {
   const supabase = useSupabaseClient()
   const [codes, setCodes] = useState()
   const [open, setOpen] = useState(false)
@@ -20,8 +25,13 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
       skipEmptyLines: true,
       complete: function (results) {
         let codeArray = []
+        let start = 0
+
         results.data.map((d, index) => {
-          if (index >= 8) {
+          if (Object.values(d) == "code") {
+            start = index
+          }
+          if (start != 0 && start < index) {
             codeArray.push(Object.values(d)[0])
           }
         })
@@ -89,18 +99,21 @@ export default function AddCodes({ userId, releaseId, setOnCodeAdded }) {
             rows="8"
             onChange={(e) => setCodes(e.target.value.split(/\s/g))}
           ></textarea>
-
-          <label className="label" htmlFor="csvcodes">
-            Upload with Bandcamp CSV
-          </label>
-          <br />
-          <small>Must be Bandcamp codes CSV or this will not work.</small>
-          <input
-            type="file"
-            id="csvcodes"
-            accept=".csv"
-            onChange={(e) => handleUpload(e)}
-          />
+          {profileData.is_subscribed ? (
+            <>
+              <label className="label" htmlFor="csvcodes">
+                Upload with Bandcamp CSV
+              </label>
+              <br />
+              <small>Must be Bandcamp codes CSV or this will not work.</small>
+              <input
+                type="file"
+                id="csvcodes"
+                accept=".csv"
+                onChange={(e) => handleUpload(e)}
+              />
+            </>
+          ) : null}
 
           {displayCodes ? (
             <>
