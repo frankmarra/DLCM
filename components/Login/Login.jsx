@@ -7,12 +7,19 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    supabase.auth.signInWithPassword({
+
+    let { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
+
+    if (error) {
+      setEmail("")
+      setPassword("")
+      alert(error.message)
+    }
   }
 
   return (

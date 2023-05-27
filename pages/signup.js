@@ -6,8 +6,8 @@ import { useRouter } from "next/router"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
-  { value: "label", label: "Label" },
-  { value: "artist", label: "Artist" },
+  { value: "label", label: "Label", disabled: false },
+  { value: "artist", label: "Artist", disabled: false },
 ]
 
 const Signup = () => {
@@ -15,7 +15,7 @@ const Signup = () => {
     email: "",
     password: "",
     passwordCheck: "",
-    type: accountTypes[2].text,
+    type: accountTypes[0].value,
     name: "",
     location: "",
   })
@@ -55,7 +55,7 @@ const Signup = () => {
         email: "",
         password: "",
         passwordCheck: "",
-        type: accountTypes[2].text,
+        type: accountTypes[0].value,
         name: "",
         location: "",
       })
@@ -131,13 +131,13 @@ const Signup = () => {
                     value={accountType.value}
                     disabled={accountType.disabled}
                   >
-                    {accountType.text}
+                    {accountType.label}
                   </option>
                 ))}
               </select>
             </div>
-            {newUser.type === accountTypes[2].text ? null : newUser.type ===
-              "Label" ? (
+            {newUser.type === accountTypes[0].value ? null : newUser.type ===
+              "label" ? (
               <>
                 <div className="input-wrapper">
                   <label htmlFor="name">Label name</label>
@@ -199,7 +199,7 @@ const Signup = () => {
                   newUser.password.length < 6 ||
                   newUser.password != newUser.passwordCheck ||
                   !newUser.name ||
-                  newUser.type === accountTypes[2].text
+                  newUser.type === accountTypes[0].value
                 }
               >
                 Sign Up
