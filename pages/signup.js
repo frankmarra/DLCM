@@ -15,7 +15,7 @@ const Signup = () => {
     email: "",
     password: "",
     passwordCheck: "",
-    type: accountTypes[2].text,
+    type: accountTypes[0].value,
     name: "",
     location: "",
   })
@@ -55,7 +55,7 @@ const Signup = () => {
         email: "",
         password: "",
         passwordCheck: "",
-        type: accountTypes[2].text,
+        type: accountTypes[0].value,
         name: "",
         location: "",
       })
@@ -199,7 +199,7 @@ const Signup = () => {
                   newUser.password.length < 6 ||
                   newUser.password != newUser.passwordCheck ||
                   !newUser.name ||
-                  newUser.type === accountTypes[2].text
+                  newUser.type === accountTypes[0].value
                 }
               >
                 Sign Up
