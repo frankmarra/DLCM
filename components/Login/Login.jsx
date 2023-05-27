@@ -9,10 +9,15 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    supabase.auth.signInWithPassword({
+
+    const { error } = supabase.auth.signInWithPassword({
       email,
       password,
     })
+
+    if (error) {
+      alert(error.message)
+    }
   }
 
   return (
