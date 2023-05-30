@@ -15,7 +15,6 @@ export default function RequestPasswordReset() {
 
     if (error) {
       setEmail("")
-      setPassword("")
       alert(error.message)
     } else {
       setEmailSent(true)
