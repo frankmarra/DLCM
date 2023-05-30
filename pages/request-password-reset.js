@@ -9,8 +9,7 @@ export default function RequestPasswordReset() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     let { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo:
-        "http://https://unrivaled-pie-1255ea.netlify.app/reset-password",
+      redirectTo: "https://unrivaled-pie-1255ea.netlify.app/reset-password",
     })
 
     if (error) {
