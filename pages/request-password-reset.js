@@ -10,7 +10,7 @@ export default function RequestPasswordReset() {
     e.preventDefault()
     let { data, error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo:
-        "http://https://unrivaled-pie-1255ea.netlify.app//reset-password",
+        "http://https://unrivaled-pie-1255ea.netlify.app/reset-password",
     })
 
     if (error) {
