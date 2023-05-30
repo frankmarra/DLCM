@@ -1,33 +1,37 @@
-import { useState } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
-import Link from "next/link"
+import { useState } from "react"
 
-export default function Login() {
+export default function RequestPasswordReset() {
   const supabase = useSupabaseClient()
   const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [emailSent, setEmailSent] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    let { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    let { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo:
+        "http://https://unrivaled-pie-1255ea.netlify.app//reset-password",
     })
 
     if (error) {
       setEmail("")
       setPassword("")
       alert(error.message)
+    } else {
+      setEmailSent(true)
     }
   }
-
-  return (
+  return emailSent ? (
+    <div className="password-updated">
+      <h1>Reset Password Email Sent</h1>
+      <p>Please check your email for a link to reset your password.</p>
+    </div>
+  ) : (
     <article
       className="container stack inline-max center-stage"
       style={{ "--max-inline-size": "400px" }}
     >
-      <h2>Sign In</h2>
+      <h2>Reset Password</h2>
 
       <form className="stack" onSubmit={handleSubmit}>
         <label className="label" htmlFor="email">
@@ -41,33 +45,15 @@ export default function Login() {
           value={email}
           required
         />
-
-        <label className="label" htmlFor="password">
-          Password
-        </label>
-        <input
-          onChange={(e) => setPassword(e.target.value)}
-          className="input"
-          id="password"
-          type="password"
-          value={password}
-          required
-        />
-
         <button
           className="button"
           data-variant="primary"
           type="submit"
-          disabled={!email || !password}
+          disabled={!email}
         >
-          Sign In
+          Reset Password
         </button>
       </form>
-
-      <p>
-        Not a member? <Link href="/signup">Sign up!</Link>
-      </p>
-      <Link href="/request-password-reset">Forgot Password?</Link>
     </article>
   )
 }
