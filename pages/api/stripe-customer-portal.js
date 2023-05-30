@@ -25,7 +25,7 @@ const handler = async (req, res) => {
 
   const stripeSession = await stripe.billingPortal.sessions.create({
     customer: stripe_customer_id,
-    return_url: "http://localhost:3000",
+    return_url: "https://unrivaled-pie-1255ea.netlify.app/",
   })
 
   res.redirect(stripeSession.url)
