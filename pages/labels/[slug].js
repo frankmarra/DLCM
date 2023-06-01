@@ -4,7 +4,7 @@ import ProfileLayout from "@/components/Profile/Profile"
 export async function getServerSideProps({ params }) {
   let { data: label, error } = await supabase
     .from("profiles")
-    .select("*")
+    .select("*, releases(*, codes(*))")
     .eq("type", "label")
     .eq("slug", params.slug)
     .single()
@@ -18,6 +18,8 @@ export default function LabelPage({ label }) {
       avatar={label.avatar_url}
       name={label.name}
       location={label.location}
+      releases={label.releases}
+      slug={label.slug}
     />
   ) : (
     <div>Loading...</div>
