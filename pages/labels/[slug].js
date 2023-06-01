@@ -5,7 +5,7 @@ export async function getServerSideProps({ params }) {
   let { data: label, error } = await supabase
     .from("profiles")
     .select("*")
-    .eq("type", "Label")
+    .eq("type", "label")
     .eq("slug", params.slug)
     .single()
 
