@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
-export default function CodeGenerator({ releaseId }) {
+export default function CodeGenerator({ releaseId, yumUrl }) {
   const supabase = useSupabaseClient()
   const [activeCodes, setActiveCodes] = useState([])
   const [code, setCode] = useState()
@@ -66,7 +66,7 @@ export default function CodeGenerator({ releaseId }) {
               Copy Code
             </button>
           )}
-          <a href="https://bandcamp.com">Redeem</a>
+          <a href={`${yumUrl}`}>Redeem</a>
         </>
       ) : (
         <button
@@ -74,7 +74,7 @@ export default function CodeGenerator({ releaseId }) {
           data-variant="primary"
           onClick={() => getRandomCode()}
         >
-          Get Random Code
+          Generate Code
         </button>
       )}
     </div>

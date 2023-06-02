@@ -12,10 +12,12 @@ export default function Releases({ profileData }) {
   const user = useUser()
   const [releases, setReleases] = useState([])
   const [allowNew, setAllowNew] = useState(true)
+  const [addedNewRelease, setAddedNewRelease] = useState(false)
 
   useEffect(() => {
     getReleases()
-  }, [supabase, profileData.id])
+    setAddedNewRelease(false)
+  }, [supabase, profileData.id, addedNewRelease])
 
   async function getReleases() {
     try {
@@ -45,6 +47,8 @@ export default function Releases({ profileData }) {
         <h2>Releases</h2>
         {profileData.is_subscribed ? (
           <CreateRelease
+            setAddedNewRelease={setAddedNewRelease}
+            profileData={profileData}
             trigger={
               <button className="button" data-variant="primary">
                 <IconMusicNotesPlus aria-hidden="true" /> Create new release
@@ -55,6 +59,8 @@ export default function Releases({ profileData }) {
           <Link href="/api/subscribe-to-dlcm">Subscribe</Link>
         ) : (
           <CreateRelease
+            setAddedNewRelease={setAddedNewRelease}
+            profileData={profileData}
             trigger={
               <button className="button" data-variant="primary">
                 <IconMusicNotesPlus aria-hidden="true" />
@@ -85,6 +91,8 @@ export default function Releases({ profileData }) {
             >
               {profileData.is_subscribed || releases.length <= 1 ? (
                 <CreateRelease
+                  setAddedNewRelease={setAddedNewRelease}
+                  profileData={profileData}
                   trigger={
                     <button
                       className={cn(styles.actionCardButton, "button")}

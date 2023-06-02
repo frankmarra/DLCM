@@ -19,7 +19,7 @@ export default function UpdateRelease({
   const user = useUser()
   const [open, setOpen] = useState(false)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
-  const [downloadUrl, setDownloadUrl] = useState(release.download_url)
+  const [yumUrl, setYumUrl] = useState(release.yum_url)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     release.is_password_protected
   )
@@ -33,7 +33,7 @@ export default function UpdateRelease({
       const update = {
         artwork_url: artworkUrl,
         artwork_path: imagePath,
-        download_url: downloadUrl,
+        yum_url: yumUrl,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -128,15 +128,15 @@ export default function UpdateRelease({
             onChange={(e) => setArtworkUrl(e.target.value)}
           />
 
-          <label className="label" htmlFor="downloadUrl">
-            Download Url
+          <label className="label" htmlFor="yumUrl">
+            Redemption Link
           </label>
           <input
             className="input"
-            id="downloadUrl"
+            id="yumUrl"
             type="text"
-            value={downloadUrl}
-            onChange={(e) => setDownloadUrl(e.target.value)}
+            value={yumUrl}
+            onChange={(e) => setYumUrl(e.target.value)}
           />
           {profileData.is_subscribed ? (
             <>

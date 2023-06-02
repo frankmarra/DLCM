@@ -26,6 +26,7 @@ export default function UpdateProfile({
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
   const [sluggedName, setSluggedName] = useState(profileData.slug)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
+  const [yumUrl, setYumUrl] = useState(profileData.yum_url)
 
   useEffect(() => {
     setSluggedName(slugify(username, { lower: true }))
@@ -37,6 +38,7 @@ export default function UpdateProfile({
         id: profileData.id,
         avatar_url: avatarUrl,
         avatar_path: imagePath,
+        yum_url: yumUrl,
         updated_at: new Date().toISOString(),
       }
 
@@ -103,6 +105,17 @@ export default function UpdateProfile({
             type="text"
             value={location || ""}
             onChange={(e) => setLocation(e.target.value)}
+          />
+
+          <label className="label" htmlFor="yumUrl">
+            Redemption{`(yum)`} Link
+          </label>
+          <input
+            className="input"
+            id="yumUrl"
+            type="text"
+            value={yumUrl || ""}
+            onChange={(e) => setYumUrl(e.target.value)}
           />
           {profileData.is_subscribed ? (
             <>

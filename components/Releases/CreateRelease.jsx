@@ -19,21 +19,23 @@ const releaseTypes = [
   { id: 6, text: "Choose release type", isDisabled: true },
 ]
 
-
-export default function CreateRelease({ trigger }) {
-
+export default function CreateRelease({
+  trigger,
+  setAddedNewRelease,
+  profileData,
+}) {
   const user = useUser()
   const supabase = useSupabaseClient()
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState()
   const [artist, setArtist] = useState(
-    user.user_metadata.type === "Artist" ? user.user_metadata.name : ""
+    user.user_metadata.type == "artist" ? user.user_metadata.username : ""
   )
   const [label, setLabel] = useState(
-    user.user_metadata.type === "Label" ? user.user_metadata.name : ""
+    user.user_metadata.type == "label" ? user.user_metadata.username : ""
   )
   const [artworkUrl, setArtworkUrl] = useState()
-  const [downloadUrl, setDownloadUrl] = useState()
+  const [yumUrl, setYumUrl] = useState(profileData.yum_url)
   const [pagePassword, setPagePassword] = useState()
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
   const [type, setType] = useState(releaseTypes[5].text)
@@ -44,7 +46,7 @@ export default function CreateRelease({ trigger }) {
     artist,
     label,
     artworkUrl,
-    downloadUrl,
+    yumUrl,
     type,
   }) {
     try {
@@ -54,7 +56,7 @@ export default function CreateRelease({ trigger }) {
         label: label,
         artwork_url: artworkUrl,
         artwork_path: imagePath,
-        download_url: downloadUrl,
+        yum_url: yumUrl,
         type: type,
         release_slug: slugify(title, { lower: true }),
         user_id: user.id,
@@ -68,7 +70,7 @@ export default function CreateRelease({ trigger }) {
       alert("Error creating new release!")
     } finally {
       console.log("All done!")
-
+      setAddedNewRelease(true)
       setOpen(false)
     }
   }
@@ -136,15 +138,15 @@ export default function CreateRelease({ trigger }) {
             onChange={(e) => setArtworkUrl(e.target.value)}
           />
 
-          <label className="label" htmlFor="downloadUrl">
-            Download Url
+          <label className="label" htmlFor="yumUrl">
+            Redemption Link
           </label>
           <input
             className="input"
-            id="downloadUrl"
+            id="yumUrl"
             type="text"
-            value={downloadUrl}
-            onChange={(e) => setDownloadUrl(e.target.value)}
+            value={yumUrl}
+            onChange={(e) => setYumUrl(e.target.value)}
           />
 
           <label className="label" htmlFor="type">
@@ -180,7 +182,7 @@ export default function CreateRelease({ trigger }) {
                 label,
                 type,
                 artworkUrl,
-                downloadUrl,
+                yumUrl,
               })
             }
             disabled={!title || !artist || !type}

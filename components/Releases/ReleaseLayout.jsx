@@ -36,7 +36,7 @@ export default function ReleaseLayout({ release }) {
       <h4>{release.type}</h4>
       {authorized ? (
         release.is_active ? (
-          <CodeGenerator releaseId={release.id} />
+          <CodeGenerator releaseId={release.id} yumUrl={release.yum_url} />
         ) : (
           <p>No Codes Available</p>
         )
