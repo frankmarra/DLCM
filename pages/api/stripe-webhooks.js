@@ -50,13 +50,16 @@ export default async function handler(req, res) {
       .order("created_at", { ascending: false })
 
     let releasesToDelete = []
+    let imagesToDelete = []
     userReleases.map((release, index) => {
       if (index > 1) {
         releasesToDelete.push(release.id)
+        imagesToDelete.push(release.artwork_path)
       }
     })
 
     await supabase.from("releases").delete().in("id", releasesToDelete)
+    await supabase.storage.from("images").remove(imagesToDelete)
   }
 
   if (event.type == "customer.subscription.created") {
@@ -67,7 +70,7 @@ export default async function handler(req, res) {
 
   if (event.type == "customer.subscription.deleted") {
     const customerSubscriptionDeleted = event.data.object
-    canceledSub(subscriptionScheduleCanceled.customer)
+    canceledSub(customerSubscriptionDeleted.customer)
     // Then define and call a function to handle the event customer.subscription.deleted
   }
 
