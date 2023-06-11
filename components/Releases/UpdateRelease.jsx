@@ -26,18 +26,30 @@ export default function UpdateRelease({
   const [pagePassword, setPagePassword] = useState(release.page_password)
   const [artworkId, setArtworkId] = useState()
   const [imagePath, setImagePath] = useState(release.artwork_path)
+  const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
 
   async function updateRelease() {
     try {
       const update = {
         artwork_url: artworkUrl,
-        artwork_path: imagePath,
+        artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: yumUrl,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
         updated_at: new Date().toISOString(),
+      }
+
+      if (newImagePath) {
+        try {
+          let { error } = await supabase.storage
+            .from("images")
+            .remove([imagePath])
+          if (error) alert(error)
+        } catch (error) {
+          throw error
+        }
       }
 
       let { error } = await supabase
@@ -53,6 +65,20 @@ export default function UpdateRelease({
     } finally {
       getReleases()
       setShowReleaseUpdateView(false)
+    }
+  }
+
+  async function cancelUpdate() {
+    if (newImagePath) {
+      try {
+        let { error } = await supabase.storage
+          .from("images")
+          .remove([newImagePath])
+        if (error) alert(error)
+        setOpen(false)
+      } catch (error) {
+        throw error
+      }
     }
   }
 
@@ -113,8 +139,7 @@ export default function UpdateRelease({
             setPublicUrl={(url) => {
               setArtworkUrl(url)
             }}
-            setImagePath={setImagePath}
-            imagePath={imagePath}
+            setNewImagePath={setNewImagePath}
           />
           <br />
           <label className="label" htmlFor="artworkUrl">
@@ -192,7 +217,9 @@ export default function UpdateRelease({
           >
             Delete
           </button>
-          <DialogClose className="button">Cancel</DialogClose>
+          <button className="button" onClick={() => cancelUpdate()}>
+            Cancel
+          </button>
         </footer>
       </DialogContent>
     </Dialog>

@@ -26,20 +26,33 @@ export default function UpdateProfile({
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
   const [sluggedName, setSluggedName] = useState(profileData.slug)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
+  const [newImagePath, setNewImagePath] = useState()
   const [yumUrl, setYumUrl] = useState(profileData.yum_url)
 
   useEffect(() => {
     setSluggedName(slugify(username, { lower: true }))
   }, [username])
+
   async function updateUserProfile() {
     try {
       const updates = {
         username: username,
         id: profileData.id,
         avatar_url: avatarUrl,
-        avatar_path: imagePath,
+        avatar_path: newImagePath ? newImagePath : imagePath,
         yum_url: yumUrl,
         updated_at: new Date().toISOString(),
+      }
+
+      if (newImagePath) {
+        try {
+          let { error } = await supabase.storage
+            .from("images")
+            .remove([imagePath])
+          if (error) alert(error)
+        } catch (error) {
+          throw error
+        }
       }
 
       let { error } = await supabase
@@ -54,6 +67,20 @@ export default function UpdateProfile({
     } finally {
       getProfile()
       setShowUpdateView(false)
+    }
+  }
+
+  async function cancelUpdate() {
+    if (newImagePath) {
+      try {
+        let { error } = await supabase.storage
+          .from("images")
+          .remove([newImagePath])
+        if (error) alert(error)
+        setOpen(false)
+      } catch (error) {
+        throw error
+      }
     }
   }
 
@@ -73,8 +100,7 @@ export default function UpdateProfile({
           <AddImage
             uid={profileData.id}
             setPublicUrl={(url) => setAvatarUrl(url)}
-            setImagePath={setImagePath}
-            imagePath={imagePath}
+            setNewImagePath={setNewImagePath}
           />
           <br />
 
@@ -150,14 +176,18 @@ export default function UpdateProfile({
           <button
             className="button"
             data-variant="primary"
-            onClick={() => updateUserProfile(avatarUrl)}
+            onClick={() => updateUserProfile()}
             disabled={!username}
           >
             Update
           </button>
-          <DialogClose className="button">Cancel</DialogClose>
+          <button className="button" onClick={() => cancelUpdate()}>
+            Cancel
+          </button>
         </footer>
       </DialogContent>
     </Dialog>
   )
 }
+
+// <DialogClose className="button">Cancel</DialogClose>
