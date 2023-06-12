@@ -16,7 +16,7 @@ export default function ProfileLayout({
       <h2>{location}</h2>
       <ul className="stack" role="list">
         {releases.map((release) =>
-          release.codes.length > 0 && release.is_active ? (
+          release.is_active ? (
             <ReleaseCard key={release.id} release={release} />
           ) : null
         )}
