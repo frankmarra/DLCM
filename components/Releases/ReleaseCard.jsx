@@ -15,6 +15,7 @@ export default function ReleaseCard({
   user,
   getReleases,
   profileData,
+  profileSlug,
 }) {
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
@@ -46,7 +47,7 @@ export default function ReleaseCard({
         <div className={styles.details}>
           <div>
             <h3 className={styles.title}>
-              <Link href={`/releases/${release.release_slug}`}>
+              <Link href={`/${profileSlug}/${release.release_slug}`}>
                 {release.title}
               </Link>
             </h3>

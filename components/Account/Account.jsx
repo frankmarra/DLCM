@@ -64,7 +64,7 @@ export default function Account({ session }) {
           </div>
           <div className={styles.url}>
             <strong>Profile page: </strong>
-            <a href={`/${user.user_metadata.type}s/${user.user_metadata.slug}`}>
+            <a href={`/${user.user_metadata.slug}`}>
               {user.user_metadata.slug}
             </a>
           </div>
