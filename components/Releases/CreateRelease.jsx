@@ -42,11 +42,11 @@ export default function CreateRelease({
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(true)
   const [sites, setSites] = useState({
-    apple: "",
-    spotify: "",
-    bandcamp: "",
-    soundcloud: "",
-    youtube: "",
+    apple: null,
+    spotify: null,
+    bandcamp: null,
+    soundcloud: null,
+    youtube: null,
   })
 
   async function createNewRelease({
