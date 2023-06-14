@@ -21,6 +21,7 @@ export default function ProfilePage({ profile, params }) {
         location={profile.location}
         releases={profile.releases}
         profileSlug={profile.slug}
+        sites={profile.sites}
       />
     ) : (
       <div>Loading...</div>
@@ -31,7 +32,7 @@ export default function ProfilePage({ profile, params }) {
     return profile ? (
       profile.releases.map((release, index) =>
         release.release_slug == params.slug[1] ? (
-          <ReleaseLayout key={index} release={release} />
+          <ReleaseLayout key={index} release={release} sites={profile.sites} />
         ) : null
       )
     ) : (

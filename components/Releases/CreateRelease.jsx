@@ -29,10 +29,10 @@ export default function CreateRelease({
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState()
   const [artist, setArtist] = useState(
-    user.user_metadata.type == "artist" ? user.user_metadata.username : ""
+    profileData.type == "artist" ? profileData.username : ""
   )
   const [label, setLabel] = useState(
-    user.user_metadata.type == "label" ? user.user_metadata.username : ""
+    profileData.type == "label" ? profileData.username : ""
   )
   const [artworkUrl, setArtworkUrl] = useState()
   const [yumUrl, setYumUrl] = useState(profileData.yum_url)
@@ -40,6 +40,14 @@ export default function CreateRelease({
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
   const [type, setType] = useState(releaseTypes[5].text)
   const [newImagePath, setNewImagePath] = useState()
+  const [isActive, setIsActive] = useState(true)
+  const [sites, setSites] = useState({
+    apple: "",
+    spotify: "",
+    bandcamp: "",
+    soundcloud: "",
+    youtube: "",
+  })
 
   async function createNewRelease({
     title,
@@ -48,6 +56,9 @@ export default function CreateRelease({
     artworkUrl,
     yumUrl,
     type,
+    sites,
+    isActive,
+    isPasswordProtected,
   }) {
     try {
       let newRelease = {
@@ -58,6 +69,9 @@ export default function CreateRelease({
         artwork_path: newImagePath,
         yum_url: yumUrl,
         type: type,
+        sites: sites,
+        is_active: isActive,
+        is_password_protected: isPasswordProtected,
         release_slug: slugify(title, { lower: true }),
         user_id: user.id,
       }
@@ -182,6 +196,102 @@ export default function CreateRelease({
               </option>
             ))}
           </select>
+          {profileData.is_subscribed ? (
+            <>
+              <label className="label" htmlFor="apple">
+                Apple Music Link
+              </label>
+              <input
+                className="input"
+                id="apple"
+                type="text"
+                value={sites.apple}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="bandcamp">
+                Bandcamp Link
+              </label>
+              <input
+                className="input"
+                id="bandcamp"
+                type="text"
+                value={sites.bandcamp}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="spotify">
+                Spotify Link
+              </label>
+              <input
+                className="input"
+                id="spotify"
+                type="text"
+                value={sites.spotify}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="soundcloud">
+                Soundcloud Link
+              </label>
+              <input
+                className="input"
+                id="soundcloud"
+                type="text"
+                value={sites.soundcloud}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="youtube">
+                YouTube Link
+              </label>
+              <input
+                className="input"
+                id="youtube"
+                type="text"
+                value={sites.youtube}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="isActive">
+                Allow fans to access?
+              </label>
+              <input
+                id="isActive"
+                type="checkbox"
+                checked={isActive}
+                onChange={() => setIsActive(!isActive)}
+              />
+              <label className="label" htmlFor="passwordProtect">
+                Password protect page?
+              </label>
+              <input
+                id="passwordProtect"
+                type="checkbox"
+                checked={isPasswordProtected}
+                onChange={() => setIsPasswordProtected(!isPasswordProtected)}
+              />{" "}
+              {isPasswordProtected ? (
+                <>
+                  <label className="label" htmlFor="pagePassword">
+                    Page password
+                  </label>
+                  <input
+                    className="input"
+                    id="pagePassword"
+                    type="password"
+                    value={pagePassword || ""}
+                    onChange={(e) => setPagePassword(e.target.value)}
+                  />
+                </>
+              ) : null}
+            </>
+          ) : null}
         </div>
 
         <footer className="button-actions inline-wrap">
@@ -196,6 +306,9 @@ export default function CreateRelease({
                 type,
                 artworkUrl,
                 yumUrl,
+                sites,
+                isActive,
+                isPasswordProtected,
               })
             }
             disabled={!title || !artist || !type}
