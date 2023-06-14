@@ -39,7 +39,7 @@ export default function CreateRelease({
   const [pagePassword, setPagePassword] = useState()
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
   const [type, setType] = useState(releaseTypes[5].text)
-  const [imagePath, setImagePath] = useState()
+  const [newImagePath, setNewImagePath] = useState()
 
   async function createNewRelease({
     title,
@@ -55,7 +55,7 @@ export default function CreateRelease({
         artist: artist,
         label: label,
         artwork_url: artworkUrl,
-        artwork_path: imagePath,
+        artwork_path: newImagePath,
         yum_url: yumUrl,
         type: type,
         release_slug: slugify(title, { lower: true }),
@@ -72,6 +72,20 @@ export default function CreateRelease({
       console.log("All done!")
       setAddedNewRelease(true)
       setOpen(false)
+    }
+  }
+
+  async function cancelCreate() {
+    if (newImagePath) {
+      try {
+        let { error } = await supabase.storage
+          .from("images")
+          .remove([newImagePath])
+        if (error) alert(error)
+        setOpen(false)
+      } catch (error) {
+        throw error
+      }
     }
   }
 
@@ -123,8 +137,7 @@ export default function CreateRelease({
             setPublicUrl={(url) => {
               setArtworkUrl(url)
             }}
-            setImagePath={setImagePath}
-            imagePath={imagePath}
+            setNewImagePath={setNewImagePath}
           />
 
           <label className="label" htmlFor="artworkUrl">
@@ -189,7 +202,9 @@ export default function CreateRelease({
           >
             Create
           </button>
-          <DialogClose className="button">Cancel</DialogClose>
+          <button className="button" onClick={() => cancelCreate()}>
+            Cancel
+          </button>
         </footer>
       </DialogContent>
     </Dialog>

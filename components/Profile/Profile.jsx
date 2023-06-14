@@ -7,7 +7,7 @@ export default function ProfileLayout({
   name,
   location,
   releases,
-  slug,
+  profileSlug,
 }) {
   return (
     <div className="label-wrapper">
@@ -16,8 +16,12 @@ export default function ProfileLayout({
       <h2>{location}</h2>
       <ul className="stack" role="list">
         {releases.map((release) =>
-          release.codes.length > 0 && release.is_active ? (
-            <ReleaseCard key={release.id} release={release} />
+          release.is_active ? (
+            <ReleaseCard
+              key={release.id}
+              release={release}
+              profileSlug={profileSlug}
+            />
           ) : null
         )}
       </ul>

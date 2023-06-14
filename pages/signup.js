@@ -21,6 +21,7 @@ const Signup = () => {
   })
   const [userCreated, setUserCreated] = useState(false)
   const router = useRouter()
+
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.id]: e.target.value })
   }

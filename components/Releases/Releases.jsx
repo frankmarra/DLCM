@@ -82,6 +82,7 @@ export default function Releases({ profileData }) {
                   user={user}
                   getReleases={getReleases}
                   profileData={profileData}
+                  profileSlug={user.user_metadata.slug}
                 />
               ) : null
             )}
