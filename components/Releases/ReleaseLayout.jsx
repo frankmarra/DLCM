@@ -39,13 +39,27 @@ export default function ReleaseLayout({ release }) {
         />
       ) : null}
       <div className="social-sites">
-        {release.sites.bandcamp ? <FontAwesomeIcon icon={faBandcamp} /> : null}
-        {release.sites.apple ? <FontAwesomeIcon icon={faApple} /> : null}
+        {release.sites.bandcamp ? (
+          <a href={`${release.sites.bandcamp}`}>
+            <FontAwesomeIcon icon={faBandcamp} />
+          </a>
+        ) : null}
+        {release.sites.apple ? (
+          <a href={`${release.sites.apple}`}>
+            <FontAwesomeIcon icon={faApple} />
+          </a>
+        ) : null}
         {release.sites.spotify ? <FontAwesomeIcon icon={faSpotify} /> : null}
         {release.sites.soundcloud ? (
-          <FontAwesomeIcon icon={faSoundcloud} />
+          <a href={`${release.sites.soundcloud}`}>
+            <FontAwesomeIcon icon={faSoundcloud} />
+          </a>
         ) : null}
-        {release.sites.youtube ? <FontAwesomeIcon icon={faYoutube} /> : null}
+        {release.sites.youtube ? (
+          <a href={`${release.youtube.apple}`}>
+            <FontAwesomeIcon icon={faYoutube} />
+          </a>
+        ) : null}
       </div>
       <h1>{release.title}</h1>
       <h2>{release.artist}</h2>

@@ -25,11 +25,31 @@ export default function ProfileLayout({
       <h2>{location}</h2>
       <div className="social-sites">
         <ul>
-          {sites.bandcamp ? <FontAwesomeIcon icon={faBandcamp} /> : null}
-          {sites.apple ? <FontAwesomeIcon icon={faApple} /> : null}
-          {sites.spotify ? <FontAwesomeIcon icon={faSpotify} /> : null}
-          {sites.soundcloud ? <FontAwesomeIcon icon={faSoundcloud} /> : null}
-          {sites.youtube ? <FontAwesomeIcon icon={faYoutube} /> : null}
+          {sites.bandcamp ? (
+            <a href={`${sites.bandcamp}`}>
+              <FontAwesomeIcon icon={faBandcamp} />
+            </a>
+          ) : null}
+          {sites.apple ? (
+            <a href={`${sites.apple}`}>
+              <FontAwesomeIcon icon={faApple} />
+            </a>
+          ) : null}
+          {sites.spotify ? (
+            <a href={`${sites.spotify}`}>
+              <FontAwesomeIcon icon={faSpotify} />
+            </a>
+          ) : null}
+          {sites.soundcloud ? (
+            <a href={`${sites.soundcloud}`}>
+              <FontAwesomeIcon icon={faSoundcloud} />
+            </a>
+          ) : null}
+          {sites.youtube ? (
+            <a href={`${sites.youtube}`}>
+              <FontAwesomeIcon icon={faYoutube} />
+            </a>
+          ) : null}
         </ul>
       </div>
       <ul className="stack" role="list">
