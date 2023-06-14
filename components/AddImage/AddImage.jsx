@@ -24,16 +24,6 @@ export default function AddImage({ uid, setPublicUrl, setNewImagePath }) {
         throw new Error("You must select an image to upload.")
       }
 
-      // if (imagePath) {
-      //   let { data, error } = await supabase.storage
-      //     .from("images")
-      //     .remove([imagePath])
-
-      //   if (error) {
-      //     alert(error)
-      //   }
-      // }
-
       const file = event.target.files[0]
 
       let { data, error: uploadError } = await supabase.storage

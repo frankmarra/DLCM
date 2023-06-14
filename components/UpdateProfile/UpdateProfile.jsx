@@ -40,6 +40,7 @@ export default function UpdateProfile({
         id: profileData.id,
         avatar_url: avatarUrl,
         avatar_path: newImagePath ? newImagePath : imagePath,
+        sites: socialLinks,
         yum_url: yumUrl,
         updated_at: new Date().toISOString(),
       }
@@ -77,11 +78,11 @@ export default function UpdateProfile({
           .from("images")
           .remove([newImagePath])
         if (error) alert(error)
-        setOpen(false)
       } catch (error) {
         throw error
       }
     }
+    setOpen(false)
   }
 
   return (
@@ -111,7 +112,7 @@ export default function UpdateProfile({
           <small>
             This will change your profile URL.{" "}
             {process.env.NEXT_PUBLIC_DLCM_URL}
-            {profileData.type}/{`${sluggedName}`}
+            {`${sluggedName}`}
           </small>
           <input
             className="input"
