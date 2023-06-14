@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react"
 import CodeGenerator from "../CodeGenerator/CodeGenerator"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faApple,
+  faSpotify,
+  faBandcamp,
+  faYoutube,
+  faSoundcloud,
+} from "@fortawesome/free-brands-svg-icons"
 
-export default function ReleaseLayout({ release, sites }) {
+export default function ReleaseLayout({ release }) {
   const [password, setPassword] = useState()
   const [authorized, setAuthorized] = useState(
     release.is_password_protected ? false : true
@@ -30,6 +38,15 @@ export default function ReleaseLayout({ release, sites }) {
           width={250}
         />
       ) : null}
+      <div className="social-sites">
+        {release.sites.bandcamp ? <FontAwesomeIcon icon={faBandcamp} /> : null}
+        {release.sites.apple ? <FontAwesomeIcon icon={faApple} /> : null}
+        {release.sites.spotify ? <FontAwesomeIcon icon={faSpotify} /> : null}
+        {release.sites.soundcloud ? (
+          <FontAwesomeIcon icon={faSoundcloud} />
+        ) : null}
+        {release.sites.youtube ? <FontAwesomeIcon icon={faYoutube} /> : null}
+      </div>
       <h1>{release.title}</h1>
       <h2>{release.artist}</h2>
       <h3>{release.label}</h3>

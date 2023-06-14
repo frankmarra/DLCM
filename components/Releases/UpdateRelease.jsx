@@ -28,6 +28,13 @@ export default function UpdateRelease({
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
+  const [sites, setSites] = useState({
+    apple: release.sites.apple ? release.sites.apple : null,
+    bandcamp: release.sites.bandcamp ? release.sites.bandcamp : null,
+    spotify: release.sites.spotify ? release.sites.spotify : null,
+    soundcloud: release.sites.soundcloud ? release.sites.soundcloud : null,
+    youtube: release.sites.youtube ? release.sites.youtube : null,
+  })
 
   async function updateRelease() {
     try {
@@ -35,6 +42,7 @@ export default function UpdateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: yumUrl,
+        sites: sites,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -64,8 +72,8 @@ export default function UpdateRelease({
       console.log(error)
     } finally {
       getReleases()
-      setShowReleaseUpdateView(false)
     }
+    setShowReleaseUpdateView(false)
   }
 
   async function cancelUpdate() {
@@ -75,11 +83,11 @@ export default function UpdateRelease({
           .from("images")
           .remove([newImagePath])
         if (error) alert(error)
-        setOpen(false)
       } catch (error) {
         throw error
       }
     }
+    setOpen(false)
   }
 
   async function deleteRelease() {
@@ -165,6 +173,66 @@ export default function UpdateRelease({
           />
           {profileData.is_subscribed ? (
             <>
+              <label className="label" htmlFor="apple">
+                Apple Music Link
+              </label>
+              <input
+                className="input"
+                id="apple"
+                type="text"
+                value={sites.apple}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="bandcamp">
+                Bandcamp Link
+              </label>
+              <input
+                className="input"
+                id="bandcamp"
+                type="text"
+                value={sites.bandcamp}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="spotify">
+                Spotify Link
+              </label>
+              <input
+                className="input"
+                id="spotify"
+                type="text"
+                value={sites.spotify}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="soundcloud">
+                Soundcloud Link
+              </label>
+              <input
+                className="input"
+                id="soundcloud"
+                type="text"
+                value={sites.soundcloud}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+              <label className="label" htmlFor="youtube">
+                YouTube Link
+              </label>
+              <input
+                className="input"
+                id="youtube"
+                type="text"
+                value={sites.youtube}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
               <label className="label" htmlFor="isActive">
                 Allow fans to access?
               </label>

@@ -37,6 +37,7 @@ export default function UpdateProfile({
       : null,
     youtube: profileData.sites.youtube ? profileData.sites.youtube : null,
   })
+
   useEffect(() => {
     setSluggedName(slugify(username, { lower: true }))
   }, [username])
@@ -46,6 +47,7 @@ export default function UpdateProfile({
       const updates = {
         username: username,
         id: profileData.id,
+        location: location,
         avatar_url: avatarUrl,
         avatar_path: newImagePath ? newImagePath : imagePath,
         sites: sites,
@@ -73,10 +75,9 @@ export default function UpdateProfile({
     } catch (error) {
       alert("Error updating the data!")
       console.log(error)
-    } finally {
-      getProfile()
-      setShowUpdateView(false)
     }
+    getProfile()
+    setShowUpdateView(false)
   }
 
   async function cancelUpdate() {
