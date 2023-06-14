@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import CodeGenerator from "../CodeGenerator/CodeGenerator"
 
-export default function ReleaseLayout({ release }) {
+export default function ReleaseLayout({ release, sites }) {
   const [password, setPassword] = useState()
   const [authorized, setAuthorized] = useState(
     release.is_password_protected ? false : true
@@ -34,6 +34,7 @@ export default function ReleaseLayout({ release }) {
       <h2>{release.artist}</h2>
       <h3>{release.label}</h3>
       <h4>{release.type}</h4>
+
       {authorized ? (
         release.is_active ? (
           <CodeGenerator releaseId={release.id} yumUrl={release.yum_url} />

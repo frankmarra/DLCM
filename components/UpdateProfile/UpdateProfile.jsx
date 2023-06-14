@@ -28,7 +28,15 @@ export default function UpdateProfile({
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
   const [yumUrl, setYumUrl] = useState(profileData.yum_url)
-
+  const [sites, setSites] = useState({
+    apple: profileData.sites.apple ? profileData.sites.apple : null,
+    bandcamp: profileData.sites.bandcamp ? profileData.sites.bandcamp : null,
+    spotify: profileData.sites.spotify ? profileData.sites.spotify : null,
+    soundcloud: profileData.sites.soundcloud
+      ? profileData.sites.soundcloud
+      : null,
+    youtube: profileData.sites.youtube ? profileData.sites.youtube : null,
+  })
   useEffect(() => {
     setSluggedName(slugify(username, { lower: true }))
   }, [username])
@@ -40,7 +48,7 @@ export default function UpdateProfile({
         id: profileData.id,
         avatar_url: avatarUrl,
         avatar_path: newImagePath ? newImagePath : imagePath,
-        sites: socialLinks,
+        sites: sites,
         yum_url: yumUrl,
         updated_at: new Date().toISOString(),
       }
@@ -146,6 +154,71 @@ export default function UpdateProfile({
           />
           {profileData.is_subscribed ? (
             <>
+              <label className="label" htmlFor="apple">
+                Apple Music Link
+              </label>
+              <input
+                className="input"
+                id="apple"
+                type="text"
+                value={sites.apple}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+
+              <label className="label" htmlFor="bandcamp">
+                Bandcamp Link
+              </label>
+              <input
+                className="input"
+                id="bandcamp"
+                type="text"
+                value={sites.bandcamp}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+
+              <label className="label" htmlFor="spotify">
+                Spotify Link
+              </label>
+              <input
+                className="input"
+                id="spotify"
+                type="text"
+                value={sites.spotify}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+
+              <label className="label" htmlFor="soundcloud">
+                Soundcloud Link
+              </label>
+              <input
+                className="input"
+                id="soundcloud"
+                type="text"
+                value={sites.soundcloud}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+
+              <label className="label" htmlFor="youtube">
+                YouTube Link
+              </label>
+              <input
+                className="input"
+                id="youtube"
+                type="text"
+                value={sites.youtube}
+                onChange={(e) =>
+                  setSites({ ...sites, [e.target.id]: e.target.value })
+                }
+              />
+
               <input
                 id="passwordProtect"
                 type="checkbox"
