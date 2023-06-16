@@ -1,33 +1,25 @@
 import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
-export default function CodeGenerator({ releaseId, yumUrl }) {
+export default function CodeGenerator({ release }) {
   const supabase = useSupabaseClient()
   const [activeCodes, setActiveCodes] = useState([])
   const [code, setCode] = useState()
   const [copiedToClipboard, setCopiedToClipboard] = useState(false)
 
   useEffect(() => {
-    async function getActiveCodes() {
-      try {
-        let { data, error } = await supabase
-          .from("codes")
-          .select("*")
-          .eq("release_id", releaseId)
-          .eq("redeemed", false)
-
-        if (error) throw error
-
-        if (data) {
-          setActiveCodes(data)
-        }
-      } catch (error) {
-        alert("Error loading codes!")
-        console.log(error)
-      }
-    }
     getActiveCodes()
-  }, [supabase, releaseId])
+  }, [])
+
+  function getActiveCodes() {
+    let codeCheck = []
+    release.codes.forEach((code) => {
+      if (code.redeemed == false) {
+        codeCheck.push(code)
+      }
+    })
+    setActiveCodes(codeCheck)
+  }
 
   async function getRandomCode() {
     let rng = Math.floor(Math.random() * activeCodes.length)
@@ -66,7 +58,7 @@ export default function CodeGenerator({ releaseId, yumUrl }) {
               Copy Code
             </button>
           )}
-          <a href={`${yumUrl}`}>Redeem</a>
+          <a href={`${release.yum_url}`}>Redeem</a>
         </>
       ) : (
         <button

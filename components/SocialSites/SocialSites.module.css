@@ -1,0 +1,19 @@
+.sites ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  width: 50%;
+  
+}
+
+.sites ul li {
+  margin-inline-end: 1rem;
+}
+
+.sites {
+  margin: 1.25rem;
+}
+
+.bandcamp {
+  color: gray;
+}
