@@ -17,7 +17,7 @@ export default function ProfilePage({ profile, params }) {
     return profile ? (
       <ProfileLayout
         avatar={profile.avatar_url}
-        name={profile.name}
+        name={profile.username}
         location={profile.location}
         releases={profile.releases}
         profileSlug={profile.slug}
@@ -32,7 +32,7 @@ export default function ProfilePage({ profile, params }) {
     return profile ? (
       profile.releases.map((release, index) =>
         release.release_slug == params.slug[1] ? (
-          <ReleaseLayout key={index} release={release} sites={profile.sites} />
+          <ReleaseLayout key={index} release={release} />
         ) : null
       )
     ) : (
