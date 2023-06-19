@@ -145,7 +145,7 @@ export default function CreateRelease({
             value={label}
             onChange={(e) => setLabel(e.target.value)}
           />
-
+          <label className="label">Artwork</label>
           <AddImage
             uid={user.id}
             setPublicUrl={(url) => {
@@ -155,7 +155,7 @@ export default function CreateRelease({
           />
 
           <label className="label" htmlFor="artworkUrl">
-            Artwork
+            Artwork URL
           </label>
           <input
             className="input"
@@ -164,7 +164,7 @@ export default function CreateRelease({
             value={artworkUrl}
             onChange={(e) => setArtworkUrl(e.target.value)}
           />
-
+          <p>Upload an image or paste an external link</p>
           <label className="label" htmlFor="yumUrl">
             Redemption Link
           </label>

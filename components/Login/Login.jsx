@@ -60,7 +60,7 @@ export default function Login() {
           type="submit"
           disabled={!email || !password}
         >
-          Sign In
+          Log In
         </button>
       </form>
 

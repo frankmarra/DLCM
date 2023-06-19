@@ -89,7 +89,7 @@ export default function AddCodes({
 
         <div className="stack block-overflow">
           <label className="label" htmlFor="codes">
-            Enter manually
+            Paste codes from bandcamp CSV here.
           </label>
           <textarea
             className="input block-resize"

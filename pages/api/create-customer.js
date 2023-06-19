@@ -7,9 +7,18 @@ export default async function handler(req, res) {
   const customer = await stripe.customers.create({
     email: req.body.email,
   })
-  res.send({ message: `stripe customer created: ${customer.id}` })
-  await supabase
-    .from("profiles")
-    .update({ stripe_customer_id: customer.id })
-    .eq("id", req.body.uid)
+  try {
+    let { error } = await supabase
+      .from("profiles")
+      .update({ stripe_customer_id: customer.id })
+      .eq("id", req.body.uid)
+
+    if (error) alert(error.message)
+  } catch (error) {
+    throw error
+  }
+
+  res.send({
+    message: `stripe customer created: ${customer.id} for user: ${req.body.uid}`,
+  })
 }
