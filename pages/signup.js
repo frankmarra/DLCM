@@ -20,6 +20,7 @@ const Signup = () => {
     location: "",
   })
   const [userCreated, setUserCreated] = useState(false)
+  const [createdUser, setCreatedUser] = useState()
   const router = useRouter()
 
   const handleChange = (e) => {
@@ -49,6 +50,7 @@ const Signup = () => {
           "Content-Type": "application/json",
         },
       })
+      setCreatedUser(data.user)
     }
 
     if (error) {
@@ -73,6 +75,19 @@ const Signup = () => {
       {userCreated ? (
         <div className="user-created">
           <h1>New User Created</h1>
+          <br />
+          {createdUser.user_metadata.type == "artist" ? (
+            <p>
+              An artist account has been made for{" "}
+              {`${createdUser.user_metadata.username}`}
+            </p>
+          ) : (
+            <p>
+              A label account has been made for{" "}
+              {`${createdUser.user_metadata.username}`}
+            </p>
+          )}
+          <br />
           <p>
             Thank you for signing up! Please sign in to access your dashboard.
           </p>
@@ -116,6 +131,10 @@ const Signup = () => {
                 value={newUser.passwordCheck}
                 required
               />
+              {newUser.password != newUser.passwordCheck &&
+              newUser.password.length > 0 ? (
+                <p style={{ color: "red" }}>Passwords do not match</p>
+              ) : null}
             </div>
             <div className="input-wrapper">
               <label htmlFor="type">Account type</label>

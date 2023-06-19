@@ -27,7 +27,7 @@ export default function Login() {
       className="container stack inline-max center-stage"
       style={{ "--max-inline-size": "400px" }}
     >
-      <h2>Sign In</h2>
+      <h2>Log In</h2>
 
       <form className="stack" onSubmit={handleSubmit}>
         <label className="label" htmlFor="email">
@@ -64,9 +64,9 @@ export default function Login() {
         </button>
       </form>
 
-      <p>
+      <h2>
         Not a member? <Link href="/signup">Sign up!</Link>
-      </p>
+      </h2>
       <Link href="/request-password-reset">Forgot Password?</Link>
     </article>
   )
