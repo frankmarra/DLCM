@@ -9,9 +9,15 @@ import {
 } from "@fortawesome/free-brands-svg-icons"
 
 export default function SocialSites({ sites }) {
+  let showSites = false
+  Object.values(sites).forEach((site) => {
+    if (site) {
+      showSites = true
+    }
+  })
   //change icon size (xs, s, null, lg, xl, 2xl, #x)
   let iconSize = "2x"
-  return (
+  return showSites ? (
     <>
       <h3>Social Sites</h3>
       <div className={styles.sites}>
@@ -74,5 +80,5 @@ export default function SocialSites({ sites }) {
         </ul>
       </div>
     </>
-  )
+  ) : null
 }
