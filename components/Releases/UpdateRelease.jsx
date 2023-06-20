@@ -148,6 +148,7 @@ export default function UpdateRelease({
               setArtworkUrl(url)
             }}
             setNewImagePath={setNewImagePath}
+            imagePath={imagePath}
           />
           <br />
           <label className="label" htmlFor="artworkUrl">

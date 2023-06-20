@@ -52,12 +52,14 @@ export default function Account({ session }) {
       <article className={cn(styles.profile, "inline-wrap")}>
         <Avatar url={profileData.avatar_url} size={100} />
         <div className={styles.details}>
-          <div className="badge">{profileData.type}</div>
+          <div style={{ "margin-inline-end": "1em" }} className="badge">
+            {profileData.type}
+          </div>
           <div className="badge">
             {profileData.is_subscribed ? "Pro User" : "Free User"}
           </div>
 
-          <h1>{profileData.name}</h1>
+          <h1>{profileData.username}</h1>
           <div>
             <strong>Location: </strong>
             {profileData.location}
@@ -67,7 +69,7 @@ export default function Account({ session }) {
             <a href={`/${profileData.slug}`}>{profileData.slug}</a>
           </div>
         </div>
-        <div>
+        <div className={styles.update}>
           <UpdateProfile
             getProfile={getProfile}
             profileData={profileData}
