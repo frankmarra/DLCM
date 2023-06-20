@@ -9,6 +9,7 @@ import IconMusicNotes from "@/icons/music-notes.svg"
 import IconEdit from "@/icons/edit.svg"
 import UpdateRelease from "./UpdateRelease"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import Image from "next/image"
 
 export default function ReleaseCard({
   release,
@@ -19,6 +20,7 @@ export default function ReleaseCard({
 }) {
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
+
   const supabase = useSupabaseClient()
 
   useEffect(() => {

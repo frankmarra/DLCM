@@ -22,7 +22,11 @@ export default function RequestPasswordReset() {
   return emailSent ? (
     <div className="password-updated">
       <h1>Reset Password Email Sent</h1>
-      <p>Please check your email for a link to reset your password.</p>
+      <p>
+        Please check your email for a link to reset your password. It is
+        possible that the email is in your spam folder. It will be from
+        noreply@mail.app.supabase.io
+      </p>
     </div>
   ) : (
     <article
