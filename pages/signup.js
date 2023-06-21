@@ -3,6 +3,7 @@ import { useState } from "react"
 import Link from "next/link"
 import slugify from "slugify"
 import { useRouter } from "next/router"
+import Script from "next/script"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -21,10 +22,70 @@ const Signup = () => {
   })
   const [userCreated, setUserCreated] = useState(false)
   const [createdUser, setCreatedUser] = useState()
+  const [namesTaken, setNamesTaken] = useState({
+    color: "transparent",
+    message: "",
+  })
+  const [emailsTaken, setEmailsTaken] = useState()
+  const [passwordMessage, setPasswordMessage] = useState({
+    color: "transparent",
+    message: "",
+  })
   const router = useRouter()
 
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.id]: e.target.value })
+  }
+
+  const checkEmail = async (e) => {
+    e.preventDefault()
+    if (newUser.email.length > 0) {
+      let { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("email", newUser.email)
+
+      if (data.length > 0) {
+        setEmailsTaken(true)
+      } else if (data.length == 0) {
+        setEmailsTaken(false)
+      }
+
+      if (error) throw error
+    }
+  }
+
+  const checkPassword = () => {
+    if (newUser.password.length > 0) {
+      if (newUser.password === newUser.passwordCheck) {
+        setPasswordMessage({ color: "green", message: "Passwords match!" })
+      } else if (newUser.password != newUser.passwordCheck) {
+        setPasswordMessage({ color: "red", message: "Passwords don't match!" })
+      }
+    }
+  }
+
+  const checkName = async (e) => {
+    if (newUser.name.length > 0) {
+      e.preventDefault()
+      let sluggedName = slugify(newUser.name, { lower: true })
+
+      let { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("slug", sluggedName)
+
+      if (data.length > 0) {
+        setNamesTaken({ color: "red", message: "Names taken, try again" })
+      } else if (data.length == 0) {
+        setNamesTaken({
+          color: "green",
+          message: "This name is available, snag it!",
+        })
+      }
+
+      if (error) throw error
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -67,6 +128,7 @@ const Signup = () => {
       setUserCreated(true)
     }
   }
+
   return (
     <article
       className="container stack inline-max center-stage"
@@ -105,9 +167,16 @@ const Signup = () => {
                 id="email"
                 type="email"
                 value={newUser.email}
+                onFocus={() => setEmailsTaken(null)}
+                onBlur={checkEmail}
                 required
               />
             </div>
+            {emailsTaken ? (
+              <small style={{ color: "red" }}>
+                Account for this email already exists
+              </small>
+            ) : null}
 
             <div className="input-wrapper">
               <label htmlFor="password">Password</label>
@@ -129,12 +198,17 @@ const Signup = () => {
                 id="passwordCheck"
                 type="password"
                 value={newUser.passwordCheck}
+                onFocus={() =>
+                  setPasswordMessage({ color: "transparent", message: "" })
+                }
+                onBlur={checkPassword}
                 required
               />
-              {newUser.password != newUser.passwordCheck &&
-              newUser.password.length > 0 ? (
-                <p style={{ color: "red" }}>Passwords do not match</p>
-              ) : null}
+              {
+                <small
+                  style={{ color: `${passwordMessage.color}` }}
+                >{`${passwordMessage.message}`}</small>
+              }
             </div>
             <div className="input-wrapper">
               <label htmlFor="type">Account type</label>
@@ -167,9 +241,17 @@ const Signup = () => {
                     id="name"
                     type="text"
                     value={newUser.name}
+                    onFocus={() =>
+                      setNamesTaken({ color: "transparent", message: "" })
+                    }
+                    onBlur={checkName}
                     required
                   />
                 </div>
+
+                <small style={{ color: `${namesTaken.color}` }}>
+                  {namesTaken.message}
+                </small>
 
                 <div className="input-wrapper">
                   <label htmlFor="location">Label location</label>
@@ -192,9 +274,16 @@ const Signup = () => {
                     id="name"
                     type="text"
                     value={newUser.name}
+                    onFocus={() =>
+                      setNamesTaken({ color: "transparent", message: "" })
+                    }
+                    onBlur={checkName}
                     required
                   />
                 </div>
+                <small style={{ color: `${namesTaken.color}` }}>
+                  {namesTaken.message}
+                </small>
 
                 <div className="input-wrapper">
                   <label htmlFor="location">Artist location</label>
@@ -208,7 +297,7 @@ const Signup = () => {
                 </div>
               </>
             )}
-            <div class="button-actions inline-wrap">
+            <div className="button-actions inline-wrap">
               <button
                 type="submit"
                 className="button"

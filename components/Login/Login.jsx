@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import Link from "next/link"
+import styles from "./Login.module.css"
 
 export default function Login() {
   const supabase = useSupabaseClient()
@@ -23,51 +24,57 @@ export default function Login() {
   }
 
   return (
-    <article
-      className="container stack inline-max center-stage"
-      style={{ "--max-inline-size": "400px" }}
-    >
-      <h2>Log In</h2>
+    <>
+      <div className={styles.hero}>
+        <h1>DLCM</h1>
+        <h2>All of the Codes, Managed.</h2>
+      </div>
+      <article
+        className="container stack inline-max center-stage"
+        style={{ "--max-inline-size": "400px" }}
+      >
+        <h2>Log In</h2>
 
-      <form className="stack" onSubmit={handleSubmit}>
-        <label className="label" htmlFor="email">
-          Email
-        </label>
-        <input
-          onChange={(e) => setEmail(e.target.value)}
-          className="input"
-          id="email"
-          type="email"
-          value={email}
-          required
-        />
+        <form className="stack" onSubmit={handleSubmit}>
+          <label className="label" htmlFor="email">
+            Email
+          </label>
+          <input
+            onChange={(e) => setEmail(e.target.value)}
+            className="input"
+            id="email"
+            type="email"
+            value={email}
+            required
+          />
 
-        <label className="label" htmlFor="password">
-          Password
-        </label>
-        <input
-          onChange={(e) => setPassword(e.target.value)}
-          className="input"
-          id="password"
-          type="password"
-          value={password}
-          required
-        />
+          <label className="label" htmlFor="password">
+            Password
+          </label>
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            className="input"
+            id="password"
+            type="password"
+            value={password}
+            required
+          />
 
-        <button
-          className="button"
-          data-variant="primary"
-          type="submit"
-          disabled={!email || !password}
-        >
-          Log In
-        </button>
-      </form>
+          <button
+            className="button"
+            data-variant="primary"
+            type="submit"
+            disabled={!email || !password}
+          >
+            Log In
+          </button>
+        </form>
 
-      <h2>
-        Not a member? <Link href="/signup">Sign up!</Link>
-      </h2>
-      <Link href="/request-password-reset">Forgot Password?</Link>
-    </article>
+        <h2>
+          Not a member? <Link href="/signup">Sign up!</Link>
+        </h2>
+        <Link href="/request-password-reset">Forgot Password?</Link>
+      </article>
+    </>
   )
 }

@@ -4,7 +4,12 @@ import IconUpload from "@/icons/upload.svg"
 import cn from "classnames"
 import { v4 as uuidv4 } from "uuid"
 
-export default function AddImage({ uid, setPublicUrl, setNewImagePath }) {
+export default function AddImage({
+  uid,
+  setPublicUrl,
+  setNewImagePath,
+  imagePath,
+}) {
   const supabase = useSupabaseClient()
   const [uploading, setUploading] = useState(false)
 
@@ -57,7 +62,11 @@ export default function AddImage({ uid, setPublicUrl, setNewImagePath }) {
         htmlFor="single"
       >
         <IconUpload aria-hidden="true" />{" "}
-        {uploading ? "Uploading..." : "Upload image"}
+        {uploading
+          ? "Uploading..."
+          : !imagePath
+          ? "Upload image"
+          : "Replace Profile Image"}
       </label>
       <input
         style={{

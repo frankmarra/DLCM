@@ -111,18 +111,16 @@ export default function UpdateProfile({
             uid={profileData.id}
             setPublicUrl={(url) => setAvatarUrl(url)}
             setNewImagePath={setNewImagePath}
+            imagePath={imagePath}
           />
           <br />
 
           <label className="label" htmlFor="username">
-            Username
+            {profileData.type.charAt(0).toUpperCase() +
+              profileData.type.slice(1)}{" "}
+            name
           </label>
-          <br />
-          <small>
-            This will change your profile URL.{" "}
-            {process.env.NEXT_PUBLIC_DLCM_URL}
-            {`${sluggedName}`}
-          </small>
+
           <input
             className="input"
             id="username"
@@ -131,6 +129,11 @@ export default function UpdateProfile({
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+          <small>
+            This will change your profile URL.{" "}
+            {process.env.NEXT_PUBLIC_DLCM_URL}
+            {`${sluggedName}`}
+          </small>
 
           <label className="label" htmlFor="location">
             Location
@@ -153,6 +156,10 @@ export default function UpdateProfile({
             value={yumUrl || ""}
             onChange={(e) => setYumUrl(e.target.value)}
           />
+          <small>
+            This is the link your customers will visit to redeem their code. It
+            is usually &quot;your-name.bandcamp/yum&quot;
+          </small>
           {profileData.is_subscribed ? (
             <>
               <label className="label" htmlFor="apple">

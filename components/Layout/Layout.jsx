@@ -5,6 +5,7 @@ import styles from "./Layout.module.css"
 export default function Layout({ children }) {
   const supabase = useSupabaseClient()
   const user = useUser()
+  const date = new Date()
 
   return (
     <>
@@ -32,9 +33,15 @@ export default function Layout({ children }) {
       </header>
       <main className="inline-max stack">{children}</main>
       <footer className={styles.footer}>
-        <p>
-          Footer content: copyright info, contact links, privacy policy, etc.
-        </p>
+        <div className={styles.terms}>
+          <p>&copy; {`${date.getFullYear()}`} Mystery Circles</p>
+
+          <Link href="/terms">Terms and Conditions</Link>
+        </div>
+        <div className={styles.contact}>
+          <a href="mailto:dlcm.app@gmail.com">Contact Us</a>
+          <Link href="/privacy">Privacy Policy</Link>
+        </div>
       </footer>
     </>
   )
