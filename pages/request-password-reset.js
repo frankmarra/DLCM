@@ -24,8 +24,8 @@ export default function RequestPasswordReset() {
       <h1>Reset Password Email Sent</h1>
       <p>
         Please check your email for a link to reset your password. It is
-        possible that the email is in your spam folder. It will be from
-        noreply@mail.app.supabase.io
+        possible that the email is in your spam folder. Make sure to look for an
+        email from dlcm.app@google.com
       </p>
     </div>
   ) : (
