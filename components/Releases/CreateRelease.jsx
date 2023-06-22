@@ -9,6 +9,7 @@ import {
   DialogClose,
 } from "@/components/Dialog/Dialog"
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
+import Avatar from "../Avatar/Avatar"
 
 const releaseTypes = [
   { id: 1, text: "LP" },
@@ -96,11 +97,11 @@ export default function CreateRelease({
           .from("images")
           .remove([newImagePath])
         if (error) alert(error)
-        setOpen(false)
       } catch (error) {
         throw error
       }
     }
+    setOpen(false)
   }
 
   return (
@@ -145,7 +146,10 @@ export default function CreateRelease({
             value={label}
             onChange={(e) => setLabel(e.target.value)}
           />
-          <label className="label">Artwork</label>
+          <label className="label">Artwork </label>
+          <Avatar url={newImagePath} size={250} />
+          <small>{"Must be 1MB or less"}</small>
+          <br />
           <AddImage
             uid={user.id}
             setPublicUrl={(url) => {
@@ -154,7 +158,7 @@ export default function CreateRelease({
             setNewImagePath={setNewImagePath}
           />
 
-          <label className="label" htmlFor="artworkUrl">
+          {/*<label className="label" htmlFor="artworkUrl">
             Artwork URL
           </label>
           <input
@@ -164,7 +168,7 @@ export default function CreateRelease({
             value={artworkUrl}
             onChange={(e) => setArtworkUrl(e.target.value)}
           />
-          <p>Upload an image or paste an external link</p>
+          <p>Upload an image or paste an external link</p>*/}
           <label className="label" htmlFor="yumUrl">
             Redemption Link
           </label>

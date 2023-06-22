@@ -9,6 +9,7 @@ export default function ReleaseLayout({ release }) {
     release.is_password_protected ? false : true
   )
   const [showError, setShowError] = useState(false)
+  const [artwork, setArtwork] = useState(release.artwork_url)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -29,12 +30,20 @@ export default function ReleaseLayout({ release }) {
       >
         {release.artwork_url ? (
           <img
-            src={release.artwork_url}
+            src={artwork}
+            alt={release.title}
+            height={250}
+            width={250}
+            onError={() => setArtwork("/DLCM_Default_Image.png")}
+          />
+        ) : (
+          <img
+            src="/DLCM_Default_Image.png"
             alt={release.title}
             height={250}
             width={250}
           />
-        ) : null}
+        )}
         <h1>{release.title}</h1>
         <h2>{release.artist}</h2>
         <h3>{release.label}</h3>

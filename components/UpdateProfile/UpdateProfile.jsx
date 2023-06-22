@@ -107,6 +107,8 @@ export default function UpdateProfile({
 
         <div className="stack block-overflow">
           <Avatar url={avatarUrl} size={250} />
+          <small>{"Must be 1MB or less"}</small>
+          <br />
           <AddImage
             uid={profileData.id}
             setPublicUrl={(url) => setAvatarUrl(url)}
@@ -115,7 +117,7 @@ export default function UpdateProfile({
           />
           <br />
 
-          <label className="label" htmlFor="username">
+          {/*<label className="label" htmlFor="username">
             {profileData.type.charAt(0).toUpperCase() +
               profileData.type.slice(1)}{" "}
             name
@@ -133,7 +135,7 @@ export default function UpdateProfile({
             This will change your profile URL.{" "}
             {process.env.NEXT_PUBLIC_DLCM_URL}
             {`${sluggedName}`}
-          </small>
+            </small>*/}
 
           <label className="label" htmlFor="location">
             Location

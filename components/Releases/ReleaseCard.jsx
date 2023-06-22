@@ -9,7 +9,6 @@ import IconMusicNotes from "@/icons/music-notes.svg"
 import IconEdit from "@/icons/edit.svg"
 import UpdateRelease from "./UpdateRelease"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
-import Image from "next/image"
 
 export default function ReleaseCard({
   release,
@@ -20,6 +19,7 @@ export default function ReleaseCard({
 }) {
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
+  const [artwork, setArtwork] = useState(release.artwork_url)
 
   const supabase = useSupabaseClient()
 
@@ -33,14 +33,17 @@ export default function ReleaseCard({
   return (
     <li className={styles.component}>
       <div className={styles.content}>
-        {release.artwork_url ? (
-          <img
-            className={styles.image}
-            src={release.artwork_url}
-            alt=""
-            height={250}
-            width={250}
-          />
+        {artwork ? (
+          <Link href={`/${profileSlug}/${release.release_slug}`}>
+            <img
+              className={styles.image}
+              src={artwork != "     " ? artwork : "/DLCM_Default_Image.png"}
+              alt={release.title}
+              height={250}
+              width={250}
+              onError={() => setArtwork("/DLCM_Default_Image.png")}
+            />
+          </Link>
         ) : (
           <div className={styles.image}>
             <IconMusicNotes aria-hidden="true" />
