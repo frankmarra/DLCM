@@ -1,5 +1,5 @@
 import Stripe from "stripe"
-import { supabase } from "@/utils/supabase"
+import { getServiceSupabase } from "@/utils/supabase"
 import { buffer } from "micro"
 
 export const config = { api: { bodyParser: false } }
@@ -9,6 +9,7 @@ export default async function handler(req, res) {
   const sig = req.headers["stripe-signature"]
   const signingSecret = process.env.STRIPE_WEBHOOK_TEST_KEY
   const reqBuffer = await buffer(req)
+  const supabase = getServiceSupabase()
 
   let event
 
