@@ -2,6 +2,7 @@ import ReleaseCard from "@/components/Releases/ReleaseCard"
 import styles from "./Profile.module.css"
 import cn from "classnames"
 import SocialSites from "../SocialSites/SocialSites"
+import { useState } from "react"
 
 export default function ProfileLayout({
   avatar,
@@ -11,9 +12,25 @@ export default function ProfileLayout({
   profileSlug,
   sites,
 }) {
+  const [artwork, setArtwork] = useState(avatar)
   return (
     <div className="label-wrapper">
-      {avatar ? <img src={avatar} alt={name} width={200} height={200} /> : null}
+      {avatar ? (
+        <img
+          src={artwork}
+          alt={name}
+          width={200}
+          height={200}
+          onError={() => setArtwork("/DLCM_Default_Image.png")}
+        />
+      ) : (
+        <img
+          src="/DLCM_Default_Image.png"
+          alt={name}
+          width={200}
+          height={200}
+        />
+      )}
       <h1>{name}</h1>
       <h2>{location}</h2>
       <SocialSites sites={sites} />

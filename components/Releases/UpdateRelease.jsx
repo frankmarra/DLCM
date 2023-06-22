@@ -8,6 +8,9 @@ import {
   DialogClose,
 } from "@/components/Dialog/Dialog"
 import IconEdit from "@/icons/edit.svg"
+import Avatar from "../Avatar/Avatar"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
 
 export default function UpdateRelease({
   release,
@@ -142,6 +145,9 @@ export default function UpdateRelease({
         </header>
 
         <div className="stack block-overflow">
+          <Avatar url={artworkUrl} size={250} />
+          <small>{"Must be 1MB or less"}</small>
+          <br />
           <AddImage
             uid={user.id}
             setPublicUrl={(url) => {
@@ -151,7 +157,7 @@ export default function UpdateRelease({
             imagePath={imagePath}
           />
           <br />
-          <label className="label" htmlFor="artworkUrl">
+          {/*<label className="label" htmlFor="artworkUrl">
             Artwork Url
           </label>
           <input
@@ -160,7 +166,7 @@ export default function UpdateRelease({
             type="text"
             value={artworkUrl}
             onChange={(e) => setArtworkUrl(e.target.value)}
-          />
+          />*/}
 
           <label className="label" htmlFor="yumUrl">
             Redemption Link
@@ -271,23 +277,28 @@ export default function UpdateRelease({
         </div>
 
         <footer className="button-actions inline-wrap">
-          <button
-            className="button"
-            data-variant="primary"
-            onClick={updateRelease}
-          >
-            Update
-          </button>
+          <div className="update-buttons">
+            <button
+              className="button"
+              data-variant="primary"
+              onClick={updateRelease}
+              style={{ marginInlineEnd: "1em" }}
+            >
+              Update
+            </button>
+
+            <button className="button" onClick={() => cancelUpdate()}>
+              Cancel
+            </button>
+          </div>
 
           <button
             className="button"
             data-variant="secondary"
+            style={{ "background-color": "red" }}
             onClick={deleteRelease}
           >
-            Delete
-          </button>
-          <button className="button" onClick={() => cancelUpdate()}>
-            Cancel
+            <FontAwesomeIcon icon={faTrashCan} />
           </button>
         </footer>
       </DialogContent>

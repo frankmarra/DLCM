@@ -66,7 +66,7 @@ export default function AddImage({
           ? "Uploading..."
           : !imagePath
           ? "Upload image"
-          : "Replace Profile Image"}
+          : "Replace Image"}
       </label>
       <input
         style={{
