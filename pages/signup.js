@@ -1,5 +1,5 @@
 import { supabase } from "@/utils/supabase"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import slugify from "slugify"
 import { useRouter } from "next/router"
@@ -31,7 +31,12 @@ const Signup = () => {
     color: "transparent",
     message: "",
   })
+  const [sluggedName, setSluggedName] = useState()
   const router = useRouter()
+
+  useEffect(() => {
+    setSluggedName(slugify(newUser.name, { lower: true }))
+  }, [newUser.name])
 
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.id]: e.target.value })
@@ -68,7 +73,7 @@ const Signup = () => {
   const checkName = async (e) => {
     if (newUser.name.length > 0) {
       e.preventDefault()
-      let sluggedName = slugify(newUser.name, { lower: true })
+      // setSluggedName(slugify(newUser.name, { lower: true }))
 
       let { data, error } = await supabase
         .from("profiles")
@@ -248,7 +253,11 @@ const Signup = () => {
                     required
                   />
                 </div>
-
+                <small>
+                  Public Address: {process.env.NEXT_PUBLIC_DLCM_URL}
+                  {`${sluggedName}`}
+                </small>
+                <br />
                 <small style={{ color: `${namesTaken.color}` }}>
                   {namesTaken.message}
                 </small>
@@ -281,6 +290,11 @@ const Signup = () => {
                     required
                   />
                 </div>
+                <small>
+                  Public Address: {process.env.NEXT_PUBLIC_DLCM_URL}
+                  {`${sluggedName}`}
+                </small>
+                <br />
                 <small style={{ color: `${namesTaken.color}` }}>
                   {namesTaken.message}
                 </small>
