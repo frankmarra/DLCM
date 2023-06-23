@@ -32,11 +32,8 @@ const Signup = () => {
     message: "",
   })
   const [sluggedName, setSluggedName] = useState()
+  const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    setSluggedName(slugify(newUser.name, { lower: true }))
-  }, [newUser.name])
 
   const handleChange = (e) => {
     setNewUser({ ...newUser, [e.target.id]: e.target.value })
@@ -71,21 +68,25 @@ const Signup = () => {
   }
 
   const checkName = async (e) => {
-    if (newUser.name.length > 0) {
-      e.preventDefault()
-      // setSluggedName(slugify(newUser.name, { lower: true }))
+    e.preventDefault()
 
+    if (firstSlugCheck == false) {
+      setFirstSlugCheck(true)
+    }
+
+    if (sluggedName.length > 0) {
+      setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("slug", sluggedName)
 
       if (data.length > 0) {
-        setNamesTaken({ color: "red", message: "Names taken, try again" })
+        setNamesTaken({ color: "red", message: "Urls taken, try again" })
       } else if (data.length == 0) {
         setNamesTaken({
           color: "green",
-          message: "This name is available, snag it!",
+          message: "This url is available, snag it!",
         })
       }
 
@@ -103,7 +104,7 @@ const Signup = () => {
           type: newUser.type,
           username: newUser.name,
           location: newUser.location,
-          slug: slugify(newUser.name, { lower: true }),
+          slug: sluggedName,
         },
       },
     })
@@ -246,32 +247,42 @@ const Signup = () => {
                     id="name"
                     type="text"
                     value={newUser.name}
-                    onFocus={() =>
-                      setNamesTaken({ color: "transparent", message: "" })
+                    onInput={
+                      firstSlugCheck
+                        ? null
+                        : (e) =>
+                            setSluggedName(
+                              slugify(e.target.value, { lower: true })
+                            )
                     }
-                    onBlur={checkName}
+                    onBlur={firstSlugCheck ? null : checkName}
                     required
                   />
                 </div>
+
+                <div className="input-wrapper">
+                  <label htmlFor="slug">Label slug</label>
+                  <input
+                    className="input"
+                    onChange={(e) => setSluggedName(e.target.value)}
+                    id="slug"
+                    type="text"
+                    value={
+                      sluggedName
+                        ? slugify(sluggedName, { lower: true, trim: false })
+                        : sluggedName
+                    }
+                    onBlur={checkName}
+                  />
+                </div>
                 <small>
-                  Public Address: {process.env.NEXT_PUBLIC_DLCM_URL}
+                  Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
                   {`${sluggedName}`}
                 </small>
                 <br />
                 <small style={{ color: `${namesTaken.color}` }}>
                   {namesTaken.message}
                 </small>
-
-                <div className="input-wrapper">
-                  <label htmlFor="location">Label location</label>
-                  <input
-                    className="input"
-                    onChange={handleChange}
-                    id="location"
-                    type="text"
-                    value={newUser.location}
-                  />
-                </div>
               </>
             ) : (
               <>
@@ -283,11 +294,32 @@ const Signup = () => {
                     id="name"
                     type="text"
                     value={newUser.name}
-                    onFocus={() =>
-                      setNamesTaken({ color: "transparent", message: "" })
+                    onInput={
+                      firstSlugCheck
+                        ? null
+                        : (e) =>
+                            setSluggedName(
+                              slugify(e.target.value, { lower: true })
+                            )
+                    }
+                    onBlur={firstSlugCheck ? null : checkName}
+                    required
+                  />
+                </div>
+
+                <div className="input-wrapper">
+                  <label htmlFor="slug">Artist slug</label>
+                  <input
+                    className="input"
+                    onChange={(e) => setSluggedName(e.target.value)}
+                    id="slug"
+                    type="text"
+                    value={
+                      sluggedName
+                        ? slugify(sluggedName, { lower: true, trim: false })
+                        : sluggedName
                     }
                     onBlur={checkName}
-                    required
                   />
                 </div>
                 <small>
@@ -298,17 +330,6 @@ const Signup = () => {
                 <small style={{ color: `${namesTaken.color}` }}>
                   {namesTaken.message}
                 </small>
-
-                <div className="input-wrapper">
-                  <label htmlFor="location">Artist location</label>
-                  <input
-                    className="input"
-                    onChange={handleChange}
-                    id="location"
-                    type="text"
-                    value={newUser.location}
-                  />
-                </div>
               </>
             )}
             <div className="button-actions inline-wrap">

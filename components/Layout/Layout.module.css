@@ -8,6 +8,7 @@
 
 .footer {
   display: flex;
+  /* flex-direction: column; */
   justify-content: center;
   gap: 1.25em 1.25em;
   padding: var(--size-6) var(--size-4);
@@ -40,6 +41,9 @@
 }
 
 .contact {
-  display: flex;
-  flex-direction: column;
+  text-align: center;
+}
+.contact a {
+  margin-inline: 1em;
+  
 }
