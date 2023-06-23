@@ -19,6 +19,7 @@ export default function UpdateProfile({
   const [open, setOpen] = useState(false)
   const [username, setUsername] = useState(profileData.username)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
+
   const [location, setLocation] = useState(profileData.location)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     profileData.is_password_protected
@@ -28,6 +29,10 @@ export default function UpdateProfile({
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
   const [yumUrl, setYumUrl] = useState(profileData.yum_url)
+  const [namesTaken, setNamesTaken] = useState({
+    color: "transparent",
+    message: "",
+  })
   const [sites, setSites] = useState({
     apple: profileData.sites.apple ? profileData.sites.apple : null,
     bandcamp: profileData.sites.bandcamp ? profileData.sites.bandcamp : null,
@@ -38,9 +43,28 @@ export default function UpdateProfile({
     youtube: profileData.sites.youtube ? profileData.sites.youtube : null,
   })
 
-  useEffect(() => {
-    setSluggedName(slugify(username, { lower: true }))
-  }, [username])
+  const checkName = async (e) => {
+    e.preventDefault()
+
+    if (sluggedName.length > 0) {
+      setSluggedName(slugify(sluggedName))
+      let { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("slug", sluggedName)
+
+      if (data.length > 0) {
+        setNamesTaken({ color: "red", message: "Urls taken, try again" })
+      } else if (data.length == 0) {
+        setNamesTaken({
+          color: "green",
+          message: "This url is available, snag it!",
+        })
+      }
+
+      if (error) throw error
+    }
+  }
 
   async function updateUserProfile() {
     try {
@@ -50,6 +74,7 @@ export default function UpdateProfile({
         location: location,
         avatar_url: avatarUrl,
         avatar_path: newImagePath ? newImagePath : imagePath,
+        slug: sluggedName,
         sites: sites,
         yum_url: yumUrl,
         updated_at: new Date().toISOString(),
@@ -116,13 +141,11 @@ export default function UpdateProfile({
             imagePath={imagePath}
           />
           <br />
-
-          {/*<label className="label" htmlFor="username">
+          <label className="label" htmlFor="username">
             {profileData.type.charAt(0).toUpperCase() +
               profileData.type.slice(1)}{" "}
             name
           </label>
-
           <input
             className="input"
             id="username"
@@ -131,12 +154,36 @@ export default function UpdateProfile({
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+          {profileData.is_subscribed ? (
+            <>
+              <label className="label" htmlFor="slug">
+                {profileData.type.charAt(0).toUpperCase() +
+                  profileData.type.slice(1)}{" "}
+                slug
+              </label>
+              <input
+                className="input"
+                id="slug"
+                type="text"
+                value={
+                  sluggedName
+                    ? slugify(sluggedName, { lower: true, trim: false })
+                    : sluggedName
+                }
+                onChange={(e) => setSluggedName(e.target.value)}
+                onBlur={checkName}
+                required
+              />
+            </>
+          ) : null}
           <small>
-            This will change your profile URL.{" "}
-            {process.env.NEXT_PUBLIC_DLCM_URL}
+            Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
             {`${sluggedName}`}
-            </small>*/}
-
+          </small>{" "}
+          <br />
+          <small style={{ color: `${namesTaken.color}` }}>
+            {namesTaken.message}
+          </small>
           <label className="label" htmlFor="location">
             Location
           </label>
@@ -147,7 +194,6 @@ export default function UpdateProfile({
             value={location || ""}
             onChange={(e) => setLocation(e.target.value)}
           />
-
           <label className="label" htmlFor="yumUrl">
             Redemption{`(yum)`} Link
           </label>
