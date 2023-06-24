@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogClose,
 } from "@/components/Dialog/Dialog"
+import PopoverTip from "../PopoverTip/PopoverTip"
 
 export default function UpdateProfile({
   getProfile,
@@ -160,7 +161,11 @@ export default function UpdateProfile({
                 {profileData.type.charAt(0).toUpperCase() +
                   profileData.type.slice(1)}{" "}
                 slug
+                <PopoverTip
+                  message={`If you change this, your previous slug will not redirect your fans to this page. Make sure you want to do this.`}
+                />
               </label>
+
               <input
                 className="input"
                 id="slug"
