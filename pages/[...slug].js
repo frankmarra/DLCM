@@ -29,12 +29,12 @@ export default function ProfilePage({ profile, params }) {
   }
 
   if (params.slug.length == 2) {
-    return profile ? (
-      profile.releases.map((release, index) =>
-        release.release_slug == params.slug[1] ? (
-          <ReleaseLayout key={index} release={release} />
-        ) : null
-      )
+    let album
+    profile.releases.map((release, index) =>
+      release.release_slug == params.slug[1] ? (album = release) : null
+    )
+    return profile && album ? (
+      <ReleaseLayout release={album} />
     ) : (
       <div>No Release Found</div>
     )
