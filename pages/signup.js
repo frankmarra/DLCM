@@ -4,6 +4,7 @@ import Link from "next/link"
 import slugify from "slugify"
 import { useRouter } from "next/router"
 import Script from "next/script"
+import PopoverTip from "@/components/PopoverTip/PopoverTip"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -31,7 +32,7 @@ const Signup = () => {
     color: "transparent",
     message: "",
   })
-  const [sluggedName, setSluggedName] = useState()
+  const [sluggedName, setSluggedName] = useState("")
   const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const router = useRouter()
 
@@ -262,6 +263,9 @@ const Signup = () => {
 
                 <div className="input-wrapper">
                   <label htmlFor="slug">Label slug</label>
+                  <PopoverTip
+                    message={`Your public profile URL. You won't be able to change this again unless you subscribe to the pro plan.`}
+                  />
                   <input
                     className="input"
                     onChange={(e) => setSluggedName(e.target.value)}
@@ -309,6 +313,9 @@ const Signup = () => {
 
                 <div className="input-wrapper">
                   <label htmlFor="slug">Artist slug</label>
+                  <PopoverTip
+                    message={`Your public profile URL. You won't be able to change this again unless you subscribe to the pro plan.`}
+                  />
                   <input
                     className="input"
                     onChange={(e) => setSluggedName(e.target.value)}

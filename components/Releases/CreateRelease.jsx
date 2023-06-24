@@ -10,6 +10,7 @@ import {
 } from "@/components/Dialog/Dialog"
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Avatar from "../Avatar/Avatar"
+import PopoverTip from "../PopoverTip/PopoverTip"
 
 const releaseTypes = [
   { id: 1, text: "LP" },
@@ -29,7 +30,7 @@ export default function CreateRelease({
   const supabase = useSupabaseClient()
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState()
-  const [sluggedName, setSluggedName] = useState()
+  const [sluggedName, setSluggedName] = useState("")
   const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const [namesTaken, setNamesTaken] = useState({
     color: "transparent",
@@ -59,10 +60,10 @@ export default function CreateRelease({
 
   const checkName = async (e) => {
     e.preventDefault()
-    if (firstSlugCheck == false) {
-      setFirstSlugCheck(true)
-    }
     if (sluggedName.length > 0) {
+      if (firstSlugCheck == false) {
+        setFirstSlugCheck(true)
+      }
       setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase
         .from("releases")
@@ -169,6 +170,9 @@ export default function CreateRelease({
 
           <div className="input-wrapper">
             <label htmlFor="slug">Release slug</label>
+            <PopoverTip
+              message={`This is where you will send your fans. You will not be able to change this. Release slugs are unique to you, so no two can be named the same. If you do have multiple releases with the same name, add an identifier such as the release year to the slug.`}
+            />
             <input
               className="input"
               onChange={(e) => setSluggedName(e.target.value)}
