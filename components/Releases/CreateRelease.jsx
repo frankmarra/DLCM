@@ -170,7 +170,7 @@ export default function CreateRelease({
           />
           <p>Upload an image or paste an external link</p>*/}
           <label className="label" htmlFor="yumUrl">
-            Redemption Link
+            Redemption{`(yum)`} Link
           </label>
           <input
             className="input"
@@ -179,6 +179,10 @@ export default function CreateRelease({
             value={yumUrl}
             onChange={(e) => setYumUrl(e.target.value)}
           />
+          <small>
+            This is the link your customers will visit to redeem their code. It
+            is usually &quot;your-name.bandcamp/yum&quot;
+          </small>
 
           <label className="label" htmlFor="type">
             Type
