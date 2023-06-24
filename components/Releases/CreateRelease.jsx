@@ -29,6 +29,13 @@ export default function CreateRelease({
   const supabase = useSupabaseClient()
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState()
+  const [sluggedName, setSluggedName] = useState()
+  const [firstSlugCheck, setFirstSlugCheck] = useState(false)
+  const [namesTaken, setNamesTaken] = useState({
+    color: "transparent",
+    message: "",
+  })
+  const [noGO, setNoGO] = useState(true)
   const [artist, setArtist] = useState(
     profileData.type == "artist" ? profileData.username : ""
   )
@@ -49,6 +56,34 @@ export default function CreateRelease({
     soundcloud: null,
     youtube: null,
   })
+
+  const checkName = async (e) => {
+    e.preventDefault()
+    if (firstSlugCheck == false) {
+      setFirstSlugCheck(true)
+    }
+    if (sluggedName.length > 0) {
+      setSluggedName(slugify(sluggedName))
+      let { data, error } = await supabase
+        .from("releases")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("release_slug", sluggedName)
+
+      if (data.length > 0) {
+        setNamesTaken({ color: "red", message: "Urls taken, try again" })
+        setNoGO(true)
+      } else if (data.length == 0) {
+        setNamesTaken({
+          color: "green",
+          message: "This url is available, snag it!",
+        })
+        setNoGO(false)
+      }
+
+      if (error) throw error
+    }
+  }
 
   async function createNewRelease({
     title,
@@ -73,7 +108,7 @@ export default function CreateRelease({
         sites: sites,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
-        release_slug: slugify(title, { lower: true }),
+        release_slug: sluggedName,
         user_id: user.id,
       }
       const { data, error } = await supabase
@@ -123,7 +158,39 @@ export default function CreateRelease({
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            onInput={
+              firstSlugCheck
+                ? null
+                : (e) =>
+                    setSluggedName(slugify(e.target.value, { lower: true }))
+            }
+            onBlur={firstSlugCheck ? null : checkName}
           />
+
+          <div className="input-wrapper">
+            <label htmlFor="slug">Release slug</label>
+            <input
+              className="input"
+              onChange={(e) => setSluggedName(e.target.value)}
+              id="slug"
+              type="text"
+              value={
+                sluggedName
+                  ? slugify(sluggedName, { lower: true, trim: false })
+                  : sluggedName
+              }
+              onBlur={checkName}
+            />
+          </div>
+          <small>
+            Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
+            {profileData.slug}
+            {`/${sluggedName}`}
+          </small>
+          <br />
+          <small style={{ color: `${namesTaken.color}` }}>
+            {namesTaken.message}
+          </small>
 
           <label className="label" htmlFor="artist">
             Artist
@@ -319,7 +386,7 @@ export default function CreateRelease({
                 isPasswordProtected,
               })
             }
-            disabled={!title || !artist || !type}
+            disabled={!title && !artist && !type && noGO}
           >
             Create
           </button>
