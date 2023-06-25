@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import styles from "./CodeGenerator.module.css"
+import cn from "classnames"
 
 export default function CodeGenerator({ release }) {
   const supabase = useSupabaseClient()
@@ -41,10 +43,12 @@ export default function CodeGenerator({ release }) {
   }
 
   return activeCodes.length > 0 ? (
-    <div>
+    <div className={cn(styles.codes, "stack")}>
       {code ? (
         <>
-          <p>{code.code}</p>
+          <p style={{ fontSize: 25, fontWeight: 600, letterSpacing: ".1em" }}>
+            {code.code}
+          </p>
           {copiedToClipboard ? (
             <button type="button" data-variant="primary" disabled>
               Copied!
@@ -58,7 +62,12 @@ export default function CodeGenerator({ release }) {
               Copy Code
             </button>
           )}
-          <a href={`${release.yum_url}`}>Redeem</a>
+          <a
+            href={`${release.yum_url}`}
+            style={{ fontSize: 20, fontWeight: 600 }}
+          >
+            Redeem
+          </a>
         </>
       ) : (
         <button
