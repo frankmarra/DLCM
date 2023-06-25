@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import slugify from "slugify"
 import { useRouter } from "next/router"
-import Script from "next/script"
 import PopoverTip from "@/components/PopoverTip/PopoverTip"
 
 const accountTypes = [
@@ -27,7 +26,7 @@ const Signup = () => {
     color: "transparent",
     message: "",
   })
-  const [emailsTaken, setEmailsTaken] = useState()
+  const [emailsTaken, setEmailsTaken] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState({
     color: "transparent",
     message: "",
@@ -83,7 +82,7 @@ const Signup = () => {
         .eq("slug", sluggedName)
 
       if (data.length > 0) {
-        setNamesTaken({ color: "red", message: "Urls taken, try again" })
+        setNamesTaken({ color: "red", message: "This URL is already in use" })
       } else if (data.length == 0) {
         setNamesTaken({
           color: "green",
@@ -264,7 +263,7 @@ const Signup = () => {
                 <div className="input-wrapper">
                   <label htmlFor="slug">Label slug</label>
                   <PopoverTip
-                    message={`Your public profile URL. You won't be able to change this again unless you subscribe to the pro plan.`}
+                    message={`Your public label URL. You won't be able to change this again unless you subscribe to the pro plan.`}
                   />
                   <input
                     className="input"
@@ -280,7 +279,7 @@ const Signup = () => {
                   />
                 </div>
                 <small>
-                  Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
+                  Public label URL will be: {process.env.NEXT_PUBLIC_DLCM_URL}
                   {`${sluggedName}`}
                 </small>
                 <br />
@@ -314,7 +313,7 @@ const Signup = () => {
                 <div className="input-wrapper">
                   <label htmlFor="slug">Artist slug</label>
                   <PopoverTip
-                    message={`Your public profile URL. You won't be able to change this again unless you subscribe to the pro plan.`}
+                    message={`Your public artist URL. You won't be able to change this again unless you subscribe to the pro plan.`}
                   />
                   <input
                     className="input"
@@ -327,10 +326,11 @@ const Signup = () => {
                         : sluggedName
                     }
                     onBlur={checkName}
+                    required
                   />
                 </div>
                 <small>
-                  Public Address: {process.env.NEXT_PUBLIC_DLCM_URL}
+                  Public artist URL will be: {process.env.NEXT_PUBLIC_DLCM_URL}
                   {`${sluggedName}`}
                 </small>
                 <br />
@@ -345,12 +345,9 @@ const Signup = () => {
                 className="button"
                 data-variant="primary"
                 disabled={
-                  !newUser.email ||
-                  !newUser.password ||
-                  newUser.password.length < 6 ||
-                  newUser.password != newUser.passwordCheck ||
-                  !newUser.name ||
-                  newUser.type === accountTypes[0].value
+                  !emailsTaken &&
+                  newUser.password != newUser.passwordCheck &&
+                  newUser.type !== accountTypes[0].value
                 }
               >
                 Sign Up

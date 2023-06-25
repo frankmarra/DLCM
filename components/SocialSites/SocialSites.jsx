@@ -23,7 +23,7 @@ export default function SocialSites({ sites }) {
       <div className={styles.sites}>
         <ul>
           {sites.bandcamp ? (
-            <li>
+            <li className="bandcamp">
               <a href={`${sites.bandcamp}`}>
                 <FontAwesomeIcon
                   icon={faBandcamp}

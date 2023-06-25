@@ -2,3 +2,20 @@
   display: flex;
   justify-content: center;
 }
+
+.release {
+  display: flex;
+  gap: 25px;
+}
+
+.info {
+display: flex;
+flex-direction: column;
+
+}
+
+.codes {
+  margin-block: 40px;
+  display: flex;
+  justify-content: center;
+}

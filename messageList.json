@@ -1,0 +1,11 @@
+{
+  "popovers": {
+    "signup": {
+      "labelSlug": "Your public label URL. You won't be able to change this again unless you subscribe to the pro plan.",
+      "artistSlug": "Your public artist URL. You won't be able to change this again unless you subscribe to the pro plan."
+    }
+  },
+  "errors": {
+    "signup": {}
+  }
+}
