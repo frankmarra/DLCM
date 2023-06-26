@@ -99,7 +99,7 @@ export default function AddCodes({
             rows="8"
             onChange={(e) => setCodes(e.target.value.split(/\s/g))}
           ></textarea>
-          {profileData.is_subscribed ? (
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
               <label className="label" htmlFor="csvcodes">
                 Upload with Bandcamp CSV

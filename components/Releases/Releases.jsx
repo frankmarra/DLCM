@@ -45,7 +45,7 @@ export default function Releases({ profileData }) {
     <article className="stack">
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
-        {profileData.is_subscribed ? (
+        {profileData.is_subscribed || profileData.dlcm_friend ? (
           <CreateRelease
             setAddedNewRelease={setAddedNewRelease}
             profileData={profileData}
@@ -75,7 +75,9 @@ export default function Releases({ profileData }) {
         {releases.length ? (
           <>
             {releases.map((release, index) =>
-              profileData.is_subscribed || index <= 1 ? (
+              profileData.is_subscribed ||
+              profileData.dlcm_friend ||
+              index <= 1 ? (
                 <ReleaseCard
                   key={release.id}
                   release={release}
@@ -90,7 +92,9 @@ export default function Releases({ profileData }) {
               className={cn(styles.actionCard, "container")}
               data-variant="empty"
             >
-              {profileData.is_subscribed || releases.length <= 1 ? (
+              {profileData.is_subscribed ||
+              profileData.dlcm_friend ||
+              releases.length <= 1 ? (
                 <CreateRelease
                   setAddedNewRelease={setAddedNewRelease}
                   profileData={profileData}

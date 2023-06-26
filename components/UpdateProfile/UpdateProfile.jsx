@@ -155,7 +155,7 @@ export default function UpdateProfile({
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-          {profileData.is_subscribed ? (
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
               <label className="label" htmlFor="slug">
                 {profileData.type.charAt(0).toUpperCase() +

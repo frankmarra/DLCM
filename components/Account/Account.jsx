@@ -56,7 +56,9 @@ export default function Account({ session }) {
             {profileData.type}
           </div>
           <div className="badge">
-            {profileData.is_subscribed ? "Pro User" : "Free User"}
+            {profileData.is_subscribed || profileData.dlcm_friend
+              ? "Pro User"
+              : "Free User"}
           </div>
 
           <h1>{profileData.username}</h1>
@@ -76,18 +78,20 @@ export default function Account({ session }) {
             setShowUpdateView={setShowUpdateView}
           />
 
-          {profileData.is_subscribed ? (
-            <Link
-              style={{ display: "block" }}
-              href="/api/stripe-customer-portal"
-            >
-              Manage Subscription
-            </Link>
-          ) : (
-            <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
-              Subscribe
-            </Link>
-          )}
+          {!profileData.dlcm_friend ? (
+            profileData.is_subscribed ? (
+              <Link
+                style={{ display: "block" }}
+                href="/api/stripe-customer-portal"
+              >
+                Manage Subscription
+              </Link>
+            ) : (
+              <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
+                Subscribe
+              </Link>
+            )
+          ) : null}
         </div>
       </article>
 
