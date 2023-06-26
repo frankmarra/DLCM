@@ -52,7 +52,7 @@ export default function Account({ session }) {
       <article className={cn(styles.profile, "inline-wrap")}>
         <Avatar url={profileData.avatar_url} size={100} />
         <div className={styles.details}>
-          <div style={{ "margin-inline-end": "1em" }} className="badge">
+          <div style={{ marginInlineEnd: "1em" }} className="badge">
             {profileData.type}
           </div>
           <div className="badge">
