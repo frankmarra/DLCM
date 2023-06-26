@@ -213,7 +213,7 @@ export default function UpdateProfile({
             This is the link your customers will visit to redeem their code. It
             is usually &quot;your-name.bandcamp/yum&quot;
           </small>
-          {profileData.is_subscribed ? (
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
               <label className="label" htmlFor="apple">
                 Apple Music Link
