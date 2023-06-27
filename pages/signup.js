@@ -275,6 +275,14 @@ const Signup = () => {
                         ? slugify(sluggedName, { lower: true, trim: false })
                         : sluggedName
                     }
+                    onInput={
+                      firstSlugCheck
+                        ? null
+                        : (e) =>
+                            setSluggedName(
+                              slugify(e.target.value, { lower: true })
+                            )
+                    }
                     onBlur={checkName}
                   />
                 </div>
