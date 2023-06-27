@@ -35,7 +35,12 @@ export default function AddCodes({
             codeArray.push(Object.values(d)[0])
           }
         })
-        setCodes(codeArray)
+
+        if (!codeArray) {
+          setCodes(["No Codes Found"])
+        } else {
+          setCodes(codeArray)
+        }
         toggleDisplayCodes(true)
       },
     })
