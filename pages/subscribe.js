@@ -35,8 +35,8 @@ export default function Subscribe() {
 
       <div className="subscribe-link" style={{ textAlign: "center" }}>
         {user ? (
-          <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
-            Subscribe
+          <Link style={{ display: "block" }} href="/">
+            Subscribe from your user dashboard
           </Link>
         ) : (
           <Link style={{ display: "block" }} href="/signup">
