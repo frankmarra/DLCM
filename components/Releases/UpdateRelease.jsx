@@ -178,7 +178,7 @@ export default function UpdateRelease({
             value={yumUrl}
             onChange={(e) => setYumUrl(e.target.value)}
           />
-          {profileData.is_subscribed ? (
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
               <label className="label" htmlFor="apple">
                 Apple Music Link

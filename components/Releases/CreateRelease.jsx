@@ -275,7 +275,7 @@ export default function CreateRelease({
               </option>
             ))}
           </select>
-          {profileData.is_subscribed ? (
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
               <label className="label" htmlFor="apple">
                 Apple Music Link

@@ -52,11 +52,13 @@ export default function Account({ session }) {
       <article className={cn(styles.profile, "inline-wrap")}>
         <Avatar url={profileData.avatar_url} size={100} />
         <div className={styles.details}>
-          <div style={{ "margin-inline-end": "1em" }} className="badge">
+          <div style={{ marginInlineEnd: "1em" }} className="badge">
             {profileData.type}
           </div>
           <div className="badge">
-            {profileData.is_subscribed ? "Pro User" : "Free User"}
+            {profileData.is_subscribed || profileData.dlcm_friend
+              ? "Pro User"
+              : "Free User"}
           </div>
 
           <h1>{profileData.username}</h1>
@@ -76,18 +78,20 @@ export default function Account({ session }) {
             setShowUpdateView={setShowUpdateView}
           />
 
-          {profileData.is_subscribed ? (
-            <Link
-              style={{ display: "block" }}
-              href="/api/stripe-customer-portal"
-            >
-              Manage Subscription
-            </Link>
-          ) : (
-            <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
-              Subscribe
-            </Link>
-          )}
+          {!profileData.dlcm_friend ? (
+            profileData.is_subscribed ? (
+              <Link
+                style={{ display: "block" }}
+                href="/api/stripe-customer-portal"
+              >
+                Manage Subscription
+              </Link>
+            ) : (
+              <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
+                Subscribe
+              </Link>
+            )
+          ) : null}
         </div>
       </article>
 

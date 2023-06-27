@@ -15,16 +15,14 @@ const handler = async (req, res) => {
       description:
         "The user does not have an active session or is not authenticated",
     })
-  const {
-    data: { stripe_customer_id },
-  } = await supabase
+  const { data: profileData } = await supabase
     .from("profiles")
     .select("stripe_customer_id")
     .eq("id", session.user.id)
     .single()
 
   const stripeSession = await stripe.checkout.sessions.create({
-    customer: stripe_customer_id,
+    customer: profileData.stripe_customer_id,
     mode: "subscription",
     line_items: [
       {
@@ -33,7 +31,7 @@ const handler = async (req, res) => {
       },
     ],
     success_url: "https://unrivaled-pie-1255ea.netlify.app/payment/success",
-    cancel_url: "https://unrivaled-pie-1255ea.netlify.app/payment/cancel",
+    cancel_url: "https://unrivaled-pie-1255ea.netlify.app/payment/cancelled",
   })
 
   res.redirect(stripeSession.url)
