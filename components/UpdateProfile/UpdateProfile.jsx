@@ -27,6 +27,7 @@ export default function UpdateProfile({
   )
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
   const [sluggedName, setSluggedName] = useState(profileData.slug)
+  const [noGo, setNoGo] = useState(false)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
   const [yumUrl, setYumUrl] = useState(profileData.yum_url)
@@ -49,21 +50,28 @@ export default function UpdateProfile({
 
     if (sluggedName.length > 0) {
       setSluggedName(slugify(sluggedName))
-      let { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("slug", sluggedName)
+      if (sluggedName == profileData.slug) {
+        setNamesTaken({ color: "green", message: "This is your current URL" })
+        setNoGo(false)
+      } else {
+        let { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("slug", sluggedName)
 
-      if (data.length > 0) {
-        setNamesTaken({ color: "red", message: "Urls taken, try again" })
-      } else if (data.length == 0) {
-        setNamesTaken({
-          color: "green",
-          message: "This url is available, snag it!",
-        })
+        if (data.length > 0) {
+          setNamesTaken({ color: "red", message: "Urls taken, try again" })
+          setNoGo(true)
+        } else if (data.length == 0) {
+          setNamesTaken({
+            color: "green",
+            message: "This url is available, snag it!",
+          })
+          setNoGo(false)
+        }
+
+        if (error) throw error
       }
-
-      if (error) throw error
     }
   }
 
@@ -312,7 +320,7 @@ export default function UpdateProfile({
             className="button"
             data-variant="primary"
             onClick={() => updateUserProfile()}
-            disabled={!username}
+            disabled={noGo}
           >
             Update
           </button>
