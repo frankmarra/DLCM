@@ -31,7 +31,9 @@ const Signup = () => {
     color: "transparent",
     message: "",
   })
+  const [passwordGood, setPasswordGood] = useState(false)
   const [sluggedName, setSluggedName] = useState("")
+  const [noGo, setNoGO] = useState(true)
   const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const router = useRouter()
 
@@ -61,8 +63,10 @@ const Signup = () => {
     if (newUser.password.length > 0) {
       if (newUser.password === newUser.passwordCheck) {
         setPasswordMessage({ color: "green", message: "Passwords match!" })
+        setPasswordGood(true)
       } else if (newUser.password != newUser.passwordCheck) {
         setPasswordMessage({ color: "red", message: "Passwords don't match!" })
+        setPasswordGood(false)
       }
     }
   }
@@ -83,11 +87,13 @@ const Signup = () => {
 
       if (data.length > 0) {
         setNamesTaken({ color: "red", message: "This URL is already in use" })
+        setNoGO(true)
       } else if (data.length == 0) {
         setNamesTaken({
           color: "green",
           message: "This url is available, snag it!",
         })
+        setNoGO(false)
       }
 
       if (error) throw error
@@ -129,6 +135,7 @@ const Signup = () => {
         name: "",
         location: "",
       })
+      setPasswordGood(false)
       alert(error.message)
     } else {
       setUserCreated(true)
@@ -236,6 +243,7 @@ const Signup = () => {
                 ))}
               </select>
             </div>
+
             {newUser.type === accountTypes[0].value ? null : newUser.type ===
               "label" ? (
               <>
@@ -347,19 +355,17 @@ const Signup = () => {
                 </small>
               </>
             )}
+
             <div className="button-actions inline-wrap">
               <button
                 type="submit"
                 className="button"
                 data-variant="primary"
-                disabled={
-                  !emailsTaken &&
-                  newUser.password != newUser.passwordCheck &&
-                  newUser.type !== accountTypes[0].value
-                }
+                disabled={noGo || emailsTaken || !passwordGood}
               >
                 Sign Up
               </button>
+
               <button
                 type="button"
                 className="button"
