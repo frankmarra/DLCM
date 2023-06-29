@@ -30,8 +30,8 @@ const handler = async (req, res) => {
         quantity: 1,
       },
     ],
-    success_url: "https://unrivaled-pie-1255ea.netlify.app/payment/success",
-    cancel_url: "https://unrivaled-pie-1255ea.netlify.app/payment/cancelled",
+    success_url: "https://dlcm.app/payment/success",
+    cancel_url: "https://dlcm.app/payment/cancelled",
   })
 
   res.redirect(stripeSession.url)

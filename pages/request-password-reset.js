@@ -23,9 +23,8 @@ export default function RequestPasswordReset() {
     <div className="password-updated">
       <h1>Reset Password Email Sent</h1>
       <p>
-        Please check your email for a link to reset your password. It is
-        possible that the email is in your spam folder. Make sure to look for an
-        email from dlcm.app@google.com
+        Please check your email for a link from dlcm.app to reset your password.
+        Make sure to check your spam if you don&apos;t see it.
       </p>
     </div>
   ) : (

@@ -19,8 +19,8 @@ export default function ResetPassword() {
       })
 
       if (!error) {
-        // await supabase.auth.signOut()
         setPasswordUpdated(true)
+        await supabase.auth.signOut()
       }
     } catch (error) {
       throw error

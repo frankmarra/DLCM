@@ -29,7 +29,7 @@ export default function ReleaseLayout({ release }) {
           "--max-inline-size": "var(--input-screen-inline-max-size)",
         }}
       >
-        <div className={styles.release}>
+        <div className={cn(styles.release, "container")}>
           {release.artwork_url ? (
             <img
               src={artwork}
