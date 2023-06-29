@@ -1,6 +1,6 @@
 .sites ul {
   list-style: none;
-  padding: 0;
+  
   display: flex;
   /* width: 50%; */
   
@@ -11,7 +11,8 @@
 }
 
 .sites {
-  margin: 1.25rem;
+  
+  display: flex;
 }
 
 .bandcamp:hover {

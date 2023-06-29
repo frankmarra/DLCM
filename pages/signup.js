@@ -199,6 +199,7 @@ const Signup = () => {
                 id="password"
                 type="password"
                 value={newUser.password}
+                onBlur={newUser.passwordCheck ? checkPassword : null}
                 required
               />
               <small>Password must be at least six characters long</small>
@@ -214,6 +215,7 @@ const Signup = () => {
                 onFocus={() =>
                   setPasswordMessage({ color: "transparent", message: "" })
                 }
+                disabled={newUser.password.length < 6}
                 onBlur={checkPassword}
                 required
               />

@@ -150,6 +150,17 @@ export default function CreateRelease({
         </header>
 
         <div className="stack block-overflow">
+          <label className="label">Artwork </label>
+          <Avatar url={artworkUrl} size={250} />
+          <small>{"Must be 1MB or less"}</small>
+          <br />
+          <AddImage
+            uid={user.id}
+            setPublicUrl={(url) => {
+              setArtworkUrl(url)
+            }}
+            setNewImagePath={setNewImagePath}
+          />
           <label className="label" htmlFor="title">
             Title
           </label>
@@ -216,17 +227,6 @@ export default function CreateRelease({
             type="text"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
-          />
-          <label className="label">Artwork </label>
-          <Avatar url={newImagePath} size={250} />
-          <small>{"Must be 1MB or less"}</small>
-          <br />
-          <AddImage
-            uid={user.id}
-            setPublicUrl={(url) => {
-              setArtworkUrl(url)
-            }}
-            setNewImagePath={setNewImagePath}
           />
 
           {/*<label className="label" htmlFor="artworkUrl">

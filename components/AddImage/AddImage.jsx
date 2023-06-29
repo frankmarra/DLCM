@@ -25,25 +25,29 @@ export default function AddImage({
     try {
       setUploading(true)
 
-      if (!event.target.files || event.target.files.length === 0) {
-        throw new Error("You must select an image to upload.")
-      }
+      // if (!event.target.files || event.target.files.length === 0) {
+      //   alert("You must select an image to upload.")
+      // }
 
-      const file = event.target.files[0]
-
-      let { data, error: uploadError } = await supabase.storage
-        .from("images")
-        .upload(uid + "/" + uuidv4(), file)
-
-      if (uploadError) {
-        throw uploadError
-      }
-
-      if (data) {
-        setNewImagePath(data.path)
-        getPublicUrl(data)
+      if (event.target.files[0].size / 1048576 > 1) {
+        alert("Image too large. File must be 1MB or less")
       } else {
-        console.log(error)
+        const file = event.target.files[0]
+
+        let { data, error: uploadError } = await supabase.storage
+          .from("images")
+          .upload(uid + "/" + uuidv4(), file)
+
+        if (uploadError) {
+          throw uploadError
+        }
+
+        if (data) {
+          setNewImagePath(data.path)
+          getPublicUrl(data)
+        } else {
+          console.log(error)
+        }
       }
     } catch (error) {
       alert("Error uploading avatar!")

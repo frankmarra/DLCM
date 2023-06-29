@@ -19,3 +19,12 @@ flex-direction: column;
   display: flex;
   justify-content: center;
 }
+
+@media screen and (max-width: 480px) {
+  .release {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: 5vh;
+  }
+  
+}
