@@ -7,18 +7,40 @@
   padding: var(--size-3);
   background-color: var(--surface-2);
   border-radius: var(--radius-2);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .details {
   flex-grow: 1;
+  margin-inline-start: 1vw;
 }
 
 .update {
   display: flex;
   flex-direction: column;
+ 
   
 }
 
 .update a {
   margin-block-start: 2.3rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-wrap: nowrap;
+  
+}
+@media screen and (max-width: 480px) {
+  .details {
+    font-size: .85rem;
+    margin-inline-start: 4vw;
+  }
+  
+  .update {
+    margin-block-start: 2vh;
+  }
+ 
 }

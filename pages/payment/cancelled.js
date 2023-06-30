@@ -1,11 +1,12 @@
 import Link from "next/link"
+import { useUser } from "@supabase/auth-helpers-react"
+
 export default function Cancelled() {
+  const user = useUser()
   return (
-    <p>
-      All good. Maybe next time. You have not been charged.
-      <span>
-        <Link href="/">Go Home</Link>
-      </span>
-    </p>
+    <section className="container stack inline-max center-stage">
+      <p>All good. Maybe next time. You have not been charged.</p>
+      <Link href="/">Go Home</Link>
+    </section>
   )
 }

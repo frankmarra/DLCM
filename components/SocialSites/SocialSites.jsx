@@ -17,7 +17,7 @@ export default function SocialSites({ sites }) {
     }
   })
   const vw = Math.max(window.innerWidth || 0)
-  console.log("vh: ", vw)
+
   //change icon size (xs, s, null, lg, xl, 2xl, #x)
   if (vw < 480) {
     iconSize = "xl"

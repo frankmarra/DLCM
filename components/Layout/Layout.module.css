@@ -43,13 +43,27 @@
 .contact {
   text-align: center;
 }
-.contact a {
+.contact a, .copyright a {
   margin-inline: 1em;
   
 }
 
+.copyright {
+  display: flex;
+  justify-content: center;
+}
+
 @media screen and (max-width: 480px) {
+  .footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .77em 1.25em;
+    padding: var(--size-2) var(--size-4);
+    text-align: center;
+  }
+
   .contact, .copyright {
-    font-size: small;
+    font-size: .74rem;
   }
 }

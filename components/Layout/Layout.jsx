@@ -35,7 +35,16 @@ export default function Layout({ children }) {
               </ul>
             </nav>
           </>
-        ) : null}
+        ) : (
+          <h1 className={styles.title}>
+            <Link
+              href="/"
+              style={{ textDecoration: "none", color: "var(--text-1)" }}
+            >
+              DLCM
+            </Link>
+          </h1>
+        )}
       </header>
       <main className="inline-max stack">{children}</main>
       <footer className={styles.footer}>
@@ -45,6 +54,9 @@ export default function Layout({ children }) {
           <Link href="/terms">Terms and Conditions</Link>
         </div>
         <div className={styles.copyright}>
+          <Link href="https://mysterycircles.com/donate-to-mc">
+            Buy us a coffee
+          </Link>
           <p>&copy; {`${date.getFullYear()}`} Mystery Circles</p>
         </div>
       </footer>
