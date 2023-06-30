@@ -6,3 +6,53 @@
   font-size: 4rem;
   letter-spacing: .8rem;
 }
+
+.about {
+  display: flex;
+  flex-direction: column;
+  padding-inline: var(--size-5);
+  font-weight: 600;
+  font-size: 1.25rem;
+  width: 45%;
+ 
+  /* align-items: center; */
+}
+
+
+
+.subscription {
+  text-align: center;
+}
+
+.cost {
+  padding: var(--size-3);
+
+  font-weight: 600;
+  font-size: 1.3rem;
+  border-radius: var(--radius-conditional-2);
+  border: var(--border-size-1) solid var(--surface-3);
+  background-color: var(--surface-4);
+  box-shadow: var(--shadow-3);
+}
+
+.plans {
+  display: flex;
+  gap: var(--grid-gap, var(--size-3));
+  align-items: stretch;
+}
+
+.free, .pro {
+  /* width: 50%; */
+  text-align: left;
+  flex: 1;
+}
+
+.subscribe a{
+  color: white;
+  text-decoration: none;
+}
+@media screen and (max-width: 480px) {
+  .plans {
+    flex-direction: column;
+  }
+}
