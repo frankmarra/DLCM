@@ -2,7 +2,8 @@ import Stripe from "stripe"
 import { getServiceSupabase } from "@/utils/supabase"
 
 export default async function handler(req, res) {
-  const stripe = Stripe(process.env.STRIPE_TEST_SECRET_KEY)
+  // const stripe = Stripe(process.env.STRIPE_TEST_SECRET_KEY)
+  const stripe = Stripe(process.env.STRIPE_LIVE_SECRET_KEY)
   const supabase = getServiceSupabase()
 
   const customer = await stripe.customers.create({

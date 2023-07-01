@@ -2,7 +2,8 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import Stripe from "stripe"
 
 const handler = async (req, res) => {
-  const stripe = Stripe(process.env.STRIPE_TEST_SECRET_KEY)
+  // const stripe = Stripe(process.env.STRIPE_TEST_SECRET_KEY)
+  const stripe = Stripe(process.env.STRIPE_LIVE_SECRET_KEY)
   const supabase = createServerSupabaseClient({ req, res })
 
   const {
@@ -26,7 +27,7 @@ const handler = async (req, res) => {
     mode: "subscription",
     line_items: [
       {
-        price: "price_1MoanYJSrZPUTrMcGu9jpmi9",
+        price: "price_1NOtWvJSrZPUTrMcCt3Ptjs1",
         quantity: 1,
       },
     ],
