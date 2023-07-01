@@ -5,16 +5,20 @@ import { buffer } from "micro"
 export const config = { api: { bodyParser: false } }
 
 export default async function handler(req, res) {
-  const stripe = Stripe(process.env.STRIPE_TEST_SECRET_KEY)
+  // const stripe = Stripe(process.env.STRIPE_TEST_SECRET_KEY)
+  const stripe = Stripe(process.env.STRIPE_LIVE_SECRET_KEY)
   const sig = req.headers["stripe-signature"]
-  const signingSecret = process.env.STRIPE_WEBHOOK_TEST_KEY
+  // const signingSecret = process.env.STRIPE_WEBHOOK_TEST_KEY
+  const signingSecret = process.env.STRIPE_WEBHOOK_LIVE_KEY
   const reqBuffer = await buffer(req)
+
   const supabase = getServiceSupabase()
 
   let event
 
   try {
     event = stripe.webhooks.constructEvent(reqBuffer, sig, signingSecret)
+    console.log("event: ", event)
   } catch (err) {
     console.log(err)
     return res.status(400).send(`Webhook Error: ${err.message}`)

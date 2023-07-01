@@ -2,7 +2,8 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import Stripe from "stripe"
 
 const handler = async (req, res) => {
-  const stripe = Stripe(process.env.STRIPE_TEST_SECRET_KEY)
+  // const stripe = Stripe(process.env.STRIPE_TEST_SECRET_KEY)
+  const stripe = Stripe(process.env.STRIPE_LIVE_SECRET_KEY)
   const supabase = createServerSupabaseClient({ req, res })
 
   const {
