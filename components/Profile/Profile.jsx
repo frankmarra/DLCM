@@ -14,26 +14,32 @@ export default function ProfileLayout({
 }) {
   const [artwork, setArtwork] = useState(avatar)
   return (
-    <div className="label-wrapper">
-      {avatar ? (
-        <img
-          src={artwork}
-          alt={name}
-          width={200}
-          height={200}
-          onError={() => setArtwork("/DLCM_Default_Image.png")}
-        />
-      ) : (
-        <img
-          src="/DLCM_Default_Image.png"
-          alt={name}
-          width={200}
-          height={200}
-        />
-      )}
-      <h1>{name}</h1>
-      <h2>{location}</h2>
-      <SocialSites sites={sites} />
+    <div className={styles.wrapper}>
+      <div className={cn(styles.profile, "container")}>
+        {avatar ? (
+          <img
+            src={artwork}
+            alt={name}
+            width={200}
+            height={200}
+            onError={() => setArtwork("/DLCM_Default_Image.png")}
+          />
+        ) : (
+          <img
+            src="/DLCM_Default_Image.png"
+            alt={name}
+            width={200}
+            height={200}
+          />
+        )}
+        <div className={cn(styles.info, "stack")}>
+          <div>
+            <h1>{name}</h1>
+            <h2>{location}</h2>
+          </div>
+          <SocialSites sites={sites} />
+        </div>
+      </div>
       <ul className="grid" role="list">
         {releases.map((release) =>
           release.is_active ? (

@@ -10,20 +10,16 @@ import {
 
 export default function SocialSites({ sites }) {
   let showSites = false
-  let iconSize
+
   Object.values(sites).forEach((site) => {
     if (site) {
       showSites = true
     }
   })
-  const vw = Math.max(window.innerWidth || 0)
 
   //change icon size (xs, s, null, lg, xl, 2xl, #x)
-  if (vw < 480) {
-    iconSize = "xl"
-  } else {
-    iconSize = "2x"
-  }
+
+  let iconSize = "xl"
 
   return showSites ? (
     <>
