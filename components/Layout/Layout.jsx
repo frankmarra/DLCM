@@ -54,6 +54,7 @@ export default function Layout({ children }) {
           <Link href="/terms">Terms and Conditions</Link>
         </div>
         <div className={styles.copyright}>
+          <Link href="/signup">Join</Link>
           <Link href="https://mysterycircles.com/donate-to-mc">
             Buy us a coffee
           </Link>

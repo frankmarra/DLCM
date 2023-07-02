@@ -23,3 +23,14 @@
   gap: 3vh;
   justify-content: center;
 }
+
+@media screen and (max-width: 480px) {
+  .profile img {
+    height: 100px;
+    width: 100px;
+  }
+
+  .info h1 {
+    font-size: 28px;
+  }
+}
