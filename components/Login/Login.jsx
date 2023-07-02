@@ -107,7 +107,7 @@ export default function Login() {
               <p>$5/mth</p>
               <p>or</p>
               <p>
-                $50/year <small>{`(Save $10 a year)`}</small>
+                $50/yr <small>{`(Save $10)`}</small>
               </p>
             </div>
             <div className={styles.perks}>
