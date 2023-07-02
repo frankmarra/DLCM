@@ -3,3 +3,19 @@
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 }
+
+.profile {
+  display: flex;
+  gap: 25px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  
+  }
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
