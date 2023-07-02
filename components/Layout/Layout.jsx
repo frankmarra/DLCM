@@ -24,6 +24,16 @@ export default function Layout({ children }) {
             <nav>
               <ul className={styles.list} role="list">
                 <li>
+                  <Link
+                    className="button"
+                    data-size="small"
+                    href="/help"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Docs
+                  </Link>
+                </li>
+                <li>
                   <button
                     className="button"
                     data-size="small"
@@ -36,14 +46,30 @@ export default function Layout({ children }) {
             </nav>
           </>
         ) : (
-          <h1 className={styles.title}>
-            <Link
-              href="/"
-              style={{ textDecoration: "none", color: "var(--text-1)" }}
-            >
-              DLCM
-            </Link>
-          </h1>
+          <>
+            <h1 className={styles.title}>
+              <Link
+                href="/"
+                style={{ textDecoration: "none", color: "var(--text-1)" }}
+              >
+                DLCM
+              </Link>
+            </h1>
+            <nav>
+              <ul className={styles.list} role="list">
+                <li>
+                  <Link
+                    className="button"
+                    data-size="small"
+                    href="/help"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Docs
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </>
         )}
       </header>
       <main className="inline-max stack">{children}</main>
