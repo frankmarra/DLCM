@@ -28,7 +28,7 @@ export default function Login() {
     <>
       <div className={styles.hero}>
         <h1>DLCM</h1>
-        <h2>All of the Codes, Managed.</h2>
+        <small>Download Code Manager</small>
       </div>
       <article
         className="container stack inline-max center-stage"
@@ -91,9 +91,9 @@ export default function Login() {
       <section className={cn(styles.subscription, "stack")}>
         <h2>Subscribe to DLCM</h2>
         <div className={styles.plans}>
-          <section className={cn(styles.free, "container")}>
+          <section className={cn(styles.free, "container", "stack")}>
             <h2>Free Plan</h2>
-            <div className="perks">
+            <div className={styles.perks}>
               <ul role="list">
                 <li>Two Releases</li>
                 <li>Unlimited Codes</li>
@@ -101,19 +101,24 @@ export default function Login() {
             </div>
           </section>
 
-          <section className={cn(styles.pro, "container")}>
+          <section className={cn(styles.pro, "container", "stack")}>
             <h2>Pro Plan</h2>
             <div className={styles.cost}>
               <p>$5/mth</p>
+              <p>or</p>
+              <p>
+                $50/year <small>{`(Save $10 a year)`}</small>
+              </p>
             </div>
-            <div className="perks">
+            <div className={styles.perks}>
               <ul role="list">
                 <li>Unlimited Releases</li>
                 <li>Custom URLs</li>
-                <li>Password Protected Public & Release Pages</li>
+                <li>Release Level URLs</li>
+                <li>Password Protected Pages</li>
                 <li>Turn Releases On/Off</li>
                 <li>Bandcamp CSV Code Upload</li>
-                <li>Social Site Links</li>
+                <li>Social/Streaming Links</li>
               </ul>
             </div>
           </section>
