@@ -6,7 +6,9 @@
 
 .profile {
   display: flex;
+  
   gap: 25px;
+
 }
 
 .info {
@@ -17,5 +19,7 @@
 
 .wrapper {
   display: flex;
+  flex-direction: column;
+  gap: 3vh;
   justify-content: center;
 }
