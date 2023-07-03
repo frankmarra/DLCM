@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1.25em 1.25em;
+  gap: var(--size-6);
   padding: var(--size-6) var(--size-4);
   text-align: center;
 }
@@ -41,29 +41,16 @@
 }
 
 .contact {
-  text-align: center;
-}
-.contact a, .copyright a {
-  margin-inline: 1em;
-  
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-2) clamp(var(--size-3), 4vw, var(--size-6));
+  align-items: center;
+  justify-content: center;
 }
 
 .copyright {
   display: flex;
-  justify-content: center;
-}
-
-@media screen and (max-width: 480px) {
-  .footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: .77em 1.25em;
-    padding: var(--size-2) var(--size-4);
-    text-align: center;
-  }
-
-  .contact, .copyright {
-    font-size: .74rem;
-  }
+  flex-direction: column;
+  gap: var(--size-2);
+  align-items: center;
 }
