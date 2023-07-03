@@ -86,6 +86,7 @@ export default function UpdateProfile({
         avatar_path: newImagePath ? newImagePath : imagePath,
         slug: sluggedName,
         sites: sites,
+        page_password: pagePassword,
         yum_url: yumUrl,
         updated_at: new Date().toISOString(),
       }
@@ -232,6 +233,7 @@ export default function UpdateProfile({
           </small>
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
+              <h3>You must include https:// in your links</h3>
               <label className="label" htmlFor="apple">
                 Apple Music Link
               </label>
