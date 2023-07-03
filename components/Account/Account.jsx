@@ -54,12 +54,13 @@ export default function Account({ session }) {
           <Avatar url={profileData.avatar_url} size={100} />
           <div className={styles.details}>
             <div style={{ marginInlineEnd: "1em" }} className="badge">
-              {profileData.type}
+              {profileData.type.charAt(0).toUpperCase() +
+                profileData.type.slice(1)}
             </div>
             <div className="badge">
               {profileData.is_subscribed || profileData.dlcm_friend
-                ? "Pro User"
-                : "Free User"}
+                ? "Pro user"
+                : "Free user"}
             </div>
 
             <h1>{profileData.username}</h1>
@@ -84,13 +85,20 @@ export default function Account({ session }) {
           {!profileData.dlcm_friend ? (
             profileData.is_subscribed ? (
               <Link
-                style={{ display: "block" }}
+                className="button"
+                data-variant="primary"
+                style={{ display: "block", textDecoration: "none" }}
                 href="/api/stripe-customer-portal"
               >
-                Manage Subscription
+                Manage subscription
               </Link>
             ) : (
-              <Link style={{ display: "block" }} href="/api/subscribe-to-dlcm">
+              <Link
+                className="button"
+                data-variant="primary"
+                style={{ display: "block", textDecoration: "none" }}
+                href="/api/subscribe-to-dlcm"
+              >
                 Subscribe
               </Link>
             )
