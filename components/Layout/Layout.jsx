@@ -103,7 +103,7 @@ export default function Layout({ children }) {
         </ul>
         <div className={styles.copyright}>
           <ThemeToggle></ThemeToggle>
-          <p>&copy; {`${date.getFullYear()}`} Mystery Circles</p>
+          <p>&copy; {`${date.getFullYear()}`} DLCM</p>
         </div>
       </footer>
     </>
