@@ -1,5 +1,5 @@
-:where(html) {
-  color-scheme: light dark;
+@define-mixin light-theme {
+  color-scheme: light;
 
   --brand-1: var(--blue-6);
   --brand-1-hover: var(--blue-7);
@@ -35,33 +35,50 @@
   --page-padding: clamp(var(--size-2), 8vw, var(--size-3));
 }
 
+@define-mixin dark-theme {
+  color-scheme: dark;
+
+  --brand-1: var(--blue-9);
+  --brand-1-hover: var(--blue-8);
+  --brand-1-text: var(--blue-1);
+  --brand-2: var(--stone-10);
+  --brand-2-hover: var(--stone-9);
+  --brand-2-text: var(--stone-1);
+
+  --text-1: var(--gray-2);
+  --text-2: var(--gray-3);
+  --text-inverse-1: var(--gray-7);
+  --text-inverse-2: var(--gray-8);
+  --text-hover-1: var(--gray-3);
+
+  --surface-1: var(--gray-11);
+  --surface-2: var(--gray-10);
+  --surface-3: var(--gray-9);
+  --surface-4: var(--gray-8);
+
+  --surface-success-1: var(--green-10);
+  --surface-success-2: var(--green-8);
+  --surface-warning-1: var(--red-10);
+  --surface-warning-2: var(--red-8);
+  --text-success: var(--green-1);
+  --text-warning: var(--red-1);
+
+  --input-icon-color: var(--gray-6);
+}
+
+:where(html) {
+  @mixin light-theme;
+}
+
+[data-theme="dark"] {
+  @mixin dark-theme;
+}
+
 @media (prefers-color-scheme: dark) {
   :where(html) {
-    --brand-1: var(--blue-9);
-    --brand-1-hover: var(--blue-8);
-    --brand-1-text: var(--blue-1);
-    --brand-2: var(--stone-10);
-    --brand-2-hover: var(--stone-9);
-    --brand-2-text: var(--stone-1);
-
-    --text-1: var(--gray-2);
-    --text-2: var(--gray-3);
-    --text-inverse-1: var(--gray-7);
-    --text-inverse-2: var(--gray-8);
-    --text-hover-1: var(--gray-3);
-
-    --surface-1: var(--gray-11);
-    --surface-2: var(--gray-10);
-    --surface-3: var(--gray-9);
-    --surface-4: var(--gray-8);
-
-    --surface-success-1: var(--green-10);
-    --surface-success-2: var(--green-8);
-    --surface-warning-1: var(--red-10);
-    --surface-warning-2: var(--red-8);
-    --text-success: var(--green-1);
-    --text-warning: var(--red-1);
-
-    --input-icon-color: var(--gray-6);
+    @mixin dark-theme;
+  }
+  [data-theme="light"] {
+    @mixin light-theme;
   }
 }
