@@ -11,46 +11,92 @@ export default function ProfileLayout({
   releases,
   profileSlug,
   sites,
+  pagePassword,
+  isPasswordProtected,
 }) {
   const [artwork, setArtwork] = useState(avatar)
+  const [password, setPassword] = useState()
+  const [authorized, setAuthorized] = useState(isPasswordProtected)
+  const [showError, setShowError] = useState(false)
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    if (pagePassword == password) {
+      setAuthorized(true)
+    } else {
+      setPassword("")
+      setShowError(true)
+    }
+  }
+
   return (
-    <div className={styles.wrapper}>
-      <div className={cn(styles.profile, "container")}>
-        {avatar ? (
-          <img
-            src={artwork}
-            alt={name}
-            width={200}
-            height={200}
-            onError={() => setArtwork("/DLCM_Default_Image.png")}
-          />
-        ) : (
-          <img
-            src="/DLCM_Default_Image.png"
-            alt={name}
-            width={200}
-            height={200}
-          />
-        )}
-        <div className={cn(styles.info, "stack")}>
-          <div>
-            <h1>{name}</h1>
-            <h2>{location}</h2>
-          </div>
-          <SocialSites sites={sites} />
-        </div>
-      </div>
-      <ul className="grid" role="list">
-        {releases.map((release) =>
-          release.is_active ? (
-            <ReleaseCard
-              key={release.id}
-              release={release}
-              profileSlug={profileSlug}
+    <>
+      {!authorized ? (
+        <div className={styles.wrapper}>
+          <form
+            className="container inline-max center-stage stack"
+            style={{
+              "--max-inline-size": "400px",
+            }}
+            onSubmit={handleSubmit}
+          >
+            <label htmlFor="password">Enter page password</label>
+
+            <input
+              className="input"
+              id="password"
+              type="password"
+              value={password || ""}
+              onChange={(e) => setPassword(e.target.value)}
             />
-          ) : null
-        )}
-      </ul>
-    </div>
+            <button type="submit">Submit</button>
+            {showError ? (
+              <p style={{ color: "red" }}>Incorrect password. Try Again.</p>
+            ) : null}
+          </form>
+        </div>
+      ) : (
+        <>
+          <div className={styles.wrapper}>
+            <div className={cn(styles.profile, "container")}>
+              {avatar ? (
+                <img
+                  src={artwork}
+                  alt={name}
+                  width={200}
+                  height={200}
+                  onError={() => setArtwork("/DLCM_Default_Image.png")}
+                />
+              ) : (
+                <img
+                  src="/DLCM_Default_Image.png"
+                  alt={name}
+                  width={200}
+                  height={200}
+                />
+              )}
+              <div className={cn(styles.info, "stack")}>
+                <div>
+                  <h1>{name}</h1>
+                  <h2>{location}</h2>
+                </div>
+                <SocialSites sites={sites} />
+              </div>
+            </div>
+          </div>
+          <ul className="grid" role="list">
+            {releases.map((release) =>
+              release.is_active ? (
+                <ReleaseCard
+                  key={release.id}
+                  release={release}
+                  profileSlug={profileSlug}
+                />
+              ) : null
+            )}
+          </ul>
+        </>
+      )}
+    </>
   )
 }

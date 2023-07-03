@@ -69,14 +69,15 @@ export default function UpdateRelease({
         .eq("id", release.id)
 
       if (error) throw error
-      alert("Release updated!")
     } catch (error) {
       alert("Error updating the data!")
       console.log(error)
     } finally {
       getReleases()
+      setShowReleaseUpdateView(false)
+      alert("Release updated!")
+      setOpen(false)
     }
-    setShowReleaseUpdateView(false)
   }
 
   async function cancelUpdate() {
