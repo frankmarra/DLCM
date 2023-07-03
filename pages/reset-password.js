@@ -27,15 +27,15 @@ export default function ResetPassword() {
     }
   }
 
-  if (!user) {
+  if (!user && !passwordUpdated) {
     return <p>You are not permitted to do this.</p>
   }
 
   return passwordUpdated ? (
     <div className="password-updated">
       <h1>Password Updated</h1>
-      <p>Please sign in to access your dashboard.</p>
-      <Link href="/">Go to account</Link>
+      <p>Please log in to access your dashboard.</p>
+      <Link href="/">Log In</Link>
     </div>
   ) : (
     <div
