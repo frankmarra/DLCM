@@ -1,11 +1,18 @@
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import Link from "next/link"
 import styles from "./Layout.module.css"
+import { useRouter } from "next/router"
 
 export default function Layout({ children }) {
   const supabase = useSupabaseClient()
   const user = useUser()
   const date = new Date()
+  const router = useRouter()
+
+  async function signOut() {
+    await supabase.auth.signOut()
+    router.push("/")
+  }
 
   return (
     <>
@@ -37,9 +44,9 @@ export default function Layout({ children }) {
                   <button
                     className="button"
                     data-size="small"
-                    onClick={() => supabase.auth.signOut()}
+                    onClick={signOut}
                   >
-                    Sign Out
+                    Log Out
                   </button>
                 </li>
               </ul>

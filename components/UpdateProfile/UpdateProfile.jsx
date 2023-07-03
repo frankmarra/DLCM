@@ -10,6 +10,7 @@ import {
   DialogClose,
 } from "@/components/Dialog/Dialog"
 import PopoverTip from "../PopoverTip/PopoverTip"
+import Link from "next/link"
 
 export default function UpdateProfile({
   getProfile,
@@ -131,7 +132,7 @@ export default function UpdateProfile({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="button" data-variant="primary">
-        Update Profile
+        Update profile
       </DialogTrigger>
 
       <DialogContent>
@@ -197,6 +198,14 @@ export default function UpdateProfile({
           <small style={{ color: `${namesTaken.color}` }}>
             {namesTaken.message}
           </small>
+          <Link
+            className="button"
+            data-variant="primary"
+            style={{ textDecoration: "none" }}
+            href="/reset-password"
+          >
+            Change your password
+          </Link>
           <label className="label" htmlFor="location">
             Location
           </label>
@@ -287,16 +296,20 @@ export default function UpdateProfile({
                   setSites({ ...sites, [e.target.id]: e.target.value })
                 }
               />
+              <div style={{ display: "flex" }}>
+                <label className="label" htmlFor="passwordProtect">
+                  Password protect profile page?
+                </label>
 
-              <input
-                id="passwordProtect"
-                type="checkbox"
-                checked={isPasswordProtected}
-                onChange={() => setIsPasswordProtected(!isPasswordProtected)}
-              />
-              <label className="label" htmlFor="passwordProtect">
-                Password protect page?
-              </label>
+                <input
+                  className="input"
+                  style={{ inlineSize: "50%", width: "20%" }}
+                  id="passwordProtect"
+                  type="checkbox"
+                  checked={isPasswordProtected}
+                  onChange={() => setIsPasswordProtected(!isPasswordProtected)}
+                />
+              </div>
 
               {isPasswordProtected ? (
                 <>

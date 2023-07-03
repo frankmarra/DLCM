@@ -337,24 +337,32 @@ export default function CreateRelease({
                   setSites({ ...sites, [e.target.id]: e.target.value })
                 }
               />
-              <label className="label" htmlFor="isActive">
-                Allow fans to access?
-              </label>
-              <input
-                id="isActive"
-                type="checkbox"
-                checked={isActive}
-                onChange={() => setIsActive(!isActive)}
-              />
-              <label className="label" htmlFor="passwordProtect">
-                Password protect page?
-              </label>
-              <input
-                id="passwordProtect"
-                type="checkbox"
-                checked={isPasswordProtected}
-                onChange={() => setIsPasswordProtected(!isPasswordProtected)}
-              />{" "}
+              <div style={{ display: "flex" }}>
+                <label className="label" htmlFor="isActive">
+                  Show Release?
+                </label>
+                <input
+                  className="input"
+                  style={{ inlineSize: "50%", width: "20%" }}
+                  id="isActive"
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={() => setIsActive(!isActive)}
+                />
+              </div>
+              <div style={{ display: "flex" }}>
+                <label className="label" htmlFor="passwordProtect">
+                  Password protect page?
+                </label>
+                <input
+                  className="input"
+                  style={{ inlineSize: "50%", width: "20%" }}
+                  id="passwordProtect"
+                  type="checkbox"
+                  checked={isPasswordProtected}
+                  onChange={() => setIsPasswordProtected(!isPasswordProtected)}
+                />{" "}
+              </div>
               {isPasswordProtected ? (
                 <>
                   <label className="label" htmlFor="pagePassword">

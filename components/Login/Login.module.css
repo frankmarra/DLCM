@@ -13,7 +13,7 @@
   padding-inline: var(--size-5);
   font-weight: 600;
   font-size: 1.25rem;
-  width: 50ch;
+  max-inline-size: "50ch";
  
   align-items: center;
 }
