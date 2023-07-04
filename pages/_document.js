@@ -1,7 +1,18 @@
 import { Html, Head, Main, NextScript } from "next/document"
-import Script from "next/script"
 
 export default function Document() {
+  const setInitialTheme = `
+    function getUserPreference() {
+      if (window.localStorage.getItem('theme')) {
+        return window.localStorage.getItem('theme')
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+    }
+    document.documentElement.dataset.theme = getUserPreference();
+  `
+
   return (
     <Html lang="en">
       <Head>
@@ -10,9 +21,9 @@ export default function Document() {
         <meta property="og:image" content="/DLCM_OG_IMAGE.png" />
       </Head>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
         <Main />
         <NextScript />
-        <Script src="/theme.js" strategy="beforeInteractive" />
       </body>
     </Html>
   )
