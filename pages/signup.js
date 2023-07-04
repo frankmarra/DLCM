@@ -4,6 +4,7 @@ import Link from "next/link"
 import slugify from "slugify"
 import { useRouter } from "next/router"
 import PopoverTip from "@/components/PopoverTip/PopoverTip"
+import Head from "next/head"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -143,244 +144,257 @@ const Signup = () => {
   }
 
   return (
-    <article
-      className="container stack inline-max center-stage"
-      style={{ "--max-inline-size": "400px" }}
-    >
-      {userCreated ? (
-        <div className="user-created">
-          <h1>New User Created</h1>
-          <br />
-          {createdUser.user_metadata.type == "artist" ? (
-            <p>
-              An artist account has been made for{" "}
-              {`${createdUser.user_metadata.username}`}
-            </p>
-          ) : (
-            <p>
-              A label account has been made for{" "}
-              {`${createdUser.user_metadata.username}`}
-            </p>
-          )}
-          <br />
-          <p>
-            Thank you for signing up! Please sign in to access your dashboard.
-          </p>
-          <Link href="/">Sign In</Link>
-        </div>
-      ) : (
-        <div>
-          <h1>Create User</h1>
-          <form className="stack" onSubmit={handleSubmit}>
-            <div className="input-wrapper">
-              <label htmlFor="email">Email</label>
-              <input
-                className="input"
-                onChange={handleChange}
-                id="email"
-                type="email"
-                value={newUser.email}
-                onFocus={() => setEmailsTaken(null)}
-                onBlur={checkEmail}
-                required
-              />
-            </div>
-            {emailsTaken ? (
-              <small style={{ color: "red" }}>
-                Account for this email already exists
-              </small>
-            ) : null}
+    <>
+      <Head>
+        <title>Sign up to DLCM</title>
+        <meta property="og:title" content="Sign up to DLCM" key="title" />
+        <meta
+          property="og:description"
+          content="Sign up to start using DLCM"
+          key="description"
+        />
+      </Head>
 
-            <div className="input-wrapper">
-              <label htmlFor="password">Password</label>
-              <input
-                className="input"
-                onChange={handleChange}
-                id="password"
-                type="password"
-                value={newUser.password}
-                onBlur={newUser.passwordCheck ? checkPassword : null}
-                required
-              />
-              <small>Password must be at least six characters long</small>
-            </div>
-            <div className="input-wrapper">
-              <label htmlFor="passwordCheck">Re-enter password</label>
-              <input
-                className="input"
-                onChange={handleChange}
-                id="passwordCheck"
-                type="password"
-                value={newUser.passwordCheck}
-                onFocus={() =>
-                  setPasswordMessage({ color: "transparent", message: "" })
-                }
-                disabled={newUser.password.length < 6}
-                onBlur={checkPassword}
-                required
-              />
-              {
-                <small
-                  style={{ color: `${passwordMessage.color}` }}
-                >{`${passwordMessage.message}`}</small>
-              }
-            </div>
-            <div className="input-wrapper">
-              <label htmlFor="type">Account type</label>
-              <select
-                className="input"
-                onChange={handleChange}
-                id="type"
-                value={newUser.type}
-                required
-              >
-                {accountTypes.map((accountType) => (
-                  <option
-                    key={accountType.value}
-                    value={accountType.value}
-                    disabled={accountType.disabled}
-                  >
-                    {accountType.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {newUser.type === accountTypes[0].value ? null : newUser.type ===
-              "label" ? (
-              <>
-                <div className="input-wrapper">
-                  <label htmlFor="name">Label name</label>
-                  <input
-                    className="input"
-                    onChange={handleChange}
-                    id="name"
-                    type="text"
-                    value={newUser.name}
-                    onInput={
-                      firstSlugCheck
-                        ? null
-                        : (e) =>
-                            setSluggedName(
-                              slugify(e.target.value, { lower: true })
-                            )
-                    }
-                    onBlur={firstSlugCheck ? null : checkName}
-                    required
-                  />
-                </div>
-
-                <div className="input-wrapper">
-                  <label htmlFor="slug">Label slug</label>
-                  <PopoverTip
-                    message={`Your public label URL. You won't be able to change this again unless you subscribe to the pro plan.`}
-                  />
-                  <input
-                    className="input"
-                    onChange={(e) => setSluggedName(e.target.value)}
-                    id="slug"
-                    type="text"
-                    value={
-                      sluggedName
-                        ? slugify(sluggedName, { lower: true, trim: false })
-                        : sluggedName
-                    }
-                    onInput={
-                      firstSlugCheck
-                        ? null
-                        : (e) =>
-                            setSluggedName(
-                              slugify(e.target.value, { lower: true })
-                            )
-                    }
-                    onBlur={checkName}
-                  />
-                </div>
-                <small>
-                  Public label URL will be: {process.env.NEXT_PUBLIC_DLCM_URL}
-                  {`${sluggedName}`}
-                </small>
-                <br />
-                <small style={{ color: `${namesTaken.color}` }}>
-                  {namesTaken.message}
-                </small>
-              </>
+      <article
+        className="container stack inline-max center-stage"
+        style={{ "--max-inline-size": "400px" }}
+      >
+        {userCreated ? (
+          <div className="user-created">
+            <h1>New User Created</h1>
+            <br />
+            {createdUser.user_metadata.type == "artist" ? (
+              <p>
+                An artist account has been made for{" "}
+                {`${createdUser.user_metadata.username}`}
+              </p>
             ) : (
-              <>
-                <div className="input-wrapper">
-                  <label htmlFor="name">Artist name</label>
-                  <input
-                    className="input"
-                    onChange={handleChange}
-                    id="name"
-                    type="text"
-                    value={newUser.name}
-                    onInput={
-                      firstSlugCheck
-                        ? null
-                        : (e) =>
-                            setSluggedName(
-                              slugify(e.target.value, { lower: true })
-                            )
-                    }
-                    onBlur={firstSlugCheck ? null : checkName}
-                    required
-                  />
-                </div>
-
-                <div className="input-wrapper">
-                  <label htmlFor="slug">Artist slug</label>
-                  <PopoverTip
-                    message={`Your public artist URL. You won't be able to change this again unless you subscribe to the pro plan.`}
-                  />
-                  <input
-                    className="input"
-                    onChange={(e) => setSluggedName(e.target.value)}
-                    id="slug"
-                    type="text"
-                    value={
-                      sluggedName
-                        ? slugify(sluggedName, { lower: true, trim: false })
-                        : sluggedName
-                    }
-                    onBlur={checkName}
-                    required
-                  />
-                </div>
-                <small>
-                  Public artist URL will be: {process.env.NEXT_PUBLIC_DLCM_URL}
-                  {`${sluggedName}`}
-                </small>
-                <br />
-                <small style={{ color: `${namesTaken.color}` }}>
-                  {namesTaken.message}
-                </small>
-              </>
+              <p>
+                A label account has been made for{" "}
+                {`${createdUser.user_metadata.username}`}
+              </p>
             )}
+            <br />
+            <p>
+              Thank you for signing up! Please sign in to access your dashboard.
+            </p>
+            <Link href="/">Sign In</Link>
+          </div>
+        ) : (
+          <div>
+            <h1>Create User</h1>
+            <form className="stack" onSubmit={handleSubmit}>
+              <div className="input-wrapper">
+                <label htmlFor="email">Email</label>
+                <input
+                  className="input"
+                  onChange={handleChange}
+                  id="email"
+                  type="email"
+                  value={newUser.email}
+                  onFocus={() => setEmailsTaken(null)}
+                  onBlur={checkEmail}
+                  required
+                />
+              </div>
+              {emailsTaken ? (
+                <small style={{ color: "red" }}>
+                  Account for this email already exists
+                </small>
+              ) : null}
 
-            <div className="button-actions inline-wrap">
-              <button
-                type="submit"
-                className="button"
-                data-variant="primary"
-                disabled={noGo || emailsTaken || !passwordGood}
-              >
-                Sign Up
-              </button>
+              <div className="input-wrapper">
+                <label htmlFor="password">Password</label>
+                <input
+                  className="input"
+                  onChange={handleChange}
+                  id="password"
+                  type="password"
+                  value={newUser.password}
+                  onBlur={newUser.passwordCheck ? checkPassword : null}
+                  required
+                />
+                <small>Password must be at least six characters long</small>
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="passwordCheck">Re-enter password</label>
+                <input
+                  className="input"
+                  onChange={handleChange}
+                  id="passwordCheck"
+                  type="password"
+                  value={newUser.passwordCheck}
+                  onFocus={() =>
+                    setPasswordMessage({ color: "transparent", message: "" })
+                  }
+                  disabled={newUser.password.length < 6}
+                  onBlur={checkPassword}
+                  required
+                />
+                {
+                  <small
+                    style={{ color: `${passwordMessage.color}` }}
+                  >{`${passwordMessage.message}`}</small>
+                }
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="type">Account type</label>
+                <select
+                  className="input"
+                  onChange={handleChange}
+                  id="type"
+                  value={newUser.type}
+                  required
+                >
+                  {accountTypes.map((accountType) => (
+                    <option
+                      key={accountType.value}
+                      value={accountType.value}
+                      disabled={accountType.disabled}
+                    >
+                      {accountType.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              <button
-                type="button"
-                className="button"
-                data-variant="secondary"
-                onClick={() => router.push("/")}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-    </article>
+              {newUser.type === accountTypes[0].value ? null : newUser.type ===
+                "label" ? (
+                <>
+                  <div className="input-wrapper">
+                    <label htmlFor="name">Label name</label>
+                    <input
+                      className="input"
+                      onChange={handleChange}
+                      id="name"
+                      type="text"
+                      value={newUser.name}
+                      onInput={
+                        firstSlugCheck
+                          ? null
+                          : (e) =>
+                              setSluggedName(
+                                slugify(e.target.value, { lower: true })
+                              )
+                      }
+                      onBlur={firstSlugCheck ? null : checkName}
+                      required
+                    />
+                  </div>
+
+                  <div className="input-wrapper">
+                    <label htmlFor="slug">Label slug</label>
+                    <PopoverTip
+                      message={`Your public label URL. You won't be able to change this again unless you subscribe to the pro plan.`}
+                    />
+                    <input
+                      className="input"
+                      onChange={(e) => setSluggedName(e.target.value)}
+                      id="slug"
+                      type="text"
+                      value={
+                        sluggedName
+                          ? slugify(sluggedName, { lower: true, trim: false })
+                          : sluggedName
+                      }
+                      onInput={
+                        firstSlugCheck
+                          ? null
+                          : (e) =>
+                              setSluggedName(
+                                slugify(e.target.value, { lower: true })
+                              )
+                      }
+                      onBlur={checkName}
+                    />
+                  </div>
+                  <small>
+                    Public label URL will be: {process.env.NEXT_PUBLIC_DLCM_URL}
+                    {`${sluggedName}`}
+                  </small>
+                  <br />
+                  <small style={{ color: `${namesTaken.color}` }}>
+                    {namesTaken.message}
+                  </small>
+                </>
+              ) : (
+                <>
+                  <div className="input-wrapper">
+                    <label htmlFor="name">Artist name</label>
+                    <input
+                      className="input"
+                      onChange={handleChange}
+                      id="name"
+                      type="text"
+                      value={newUser.name}
+                      onInput={
+                        firstSlugCheck
+                          ? null
+                          : (e) =>
+                              setSluggedName(
+                                slugify(e.target.value, { lower: true })
+                              )
+                      }
+                      onBlur={firstSlugCheck ? null : checkName}
+                      required
+                    />
+                  </div>
+
+                  <div className="input-wrapper">
+                    <label htmlFor="slug">Artist slug</label>
+                    <PopoverTip
+                      message={`Your public artist URL. You won't be able to change this again unless you subscribe to the pro plan.`}
+                    />
+                    <input
+                      className="input"
+                      onChange={(e) => setSluggedName(e.target.value)}
+                      id="slug"
+                      type="text"
+                      value={
+                        sluggedName
+                          ? slugify(sluggedName, { lower: true, trim: false })
+                          : sluggedName
+                      }
+                      onBlur={checkName}
+                      required
+                    />
+                  </div>
+                  <small>
+                    Public artist URL will be:{" "}
+                    {process.env.NEXT_PUBLIC_DLCM_URL}
+                    {`${sluggedName}`}
+                  </small>
+                  <br />
+                  <small style={{ color: `${namesTaken.color}` }}>
+                    {namesTaken.message}
+                  </small>
+                </>
+              )}
+
+              <div className="button-actions inline-wrap">
+                <button
+                  type="submit"
+                  className="button"
+                  data-variant="primary"
+                  disabled={noGo || emailsTaken || !passwordGood}
+                >
+                  Sign Up
+                </button>
+
+                <button
+                  type="button"
+                  className="button"
+                  data-variant="secondary"
+                  onClick={() => router.push("/")}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+      </article>
+    </>
   )
 }
 

@@ -1,5 +1,6 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import { useState } from "react"
+import Head from "next/head"
 
 export default function RequestPasswordReset() {
   const supabase = useSupabaseClient()
@@ -19,42 +20,59 @@ export default function RequestPasswordReset() {
       setEmailSent(true)
     }
   }
-  return emailSent ? (
-    <div className="password-updated">
-      <h1>Reset Password Email Sent</h1>
-      <p>
-        Please check your email for a link from dlcm.app to reset your password.
-        Make sure to check your spam if you don&apos;t see it.
-      </p>
-    </div>
-  ) : (
-    <article
-      className="container stack inline-max center-stage"
-      style={{ "--max-inline-size": "400px" }}
-    >
-      <h2>Reset Password</h2>
-
-      <form className="stack" onSubmit={handleSubmit}>
-        <label className="label" htmlFor="email">
-          Email
-        </label>
-        <input
-          onChange={(e) => setEmail(e.target.value)}
-          className="input"
-          id="email"
-          type="email"
-          value={email}
-          required
+  return (
+    <>
+      <Head>
+        <title>Password reset</title>
+        <meta
+          property="og:title"
+          content="Request a password reset"
+          key="title"
         />
-        <button
-          className="button"
-          data-variant="primary"
-          type="submit"
-          disabled={!email}
+        <meta
+          property="og:description"
+          content="Request a password reset for your DLCM account"
+          key="description"
+        />
+      </Head>
+      {emailSent ? (
+        <div className="password-updated">
+          <h1>Reset Password Email Sent</h1>
+          <p>
+            Please check your email for a link from dlcm.app to reset your
+            password. Make sure to check your spam if you don&apos;t see it.
+          </p>
+        </div>
+      ) : (
+        <article
+          className="container stack inline-max center-stage"
+          style={{ "--max-inline-size": "400px" }}
         >
-          Reset Password
-        </button>
-      </form>
-    </article>
+          <h2>Reset Password</h2>
+
+          <form className="stack" onSubmit={handleSubmit}>
+            <label className="label" htmlFor="email">
+              Email
+            </label>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              className="input"
+              id="email"
+              type="email"
+              value={email}
+              required
+            />
+            <button
+              className="button"
+              data-variant="primary"
+              type="submit"
+              disabled={!email}
+            >
+              Reset Password
+            </button>
+          </form>
+        </article>
+      )}
+    </>
   )
 }

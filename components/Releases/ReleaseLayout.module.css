@@ -21,10 +21,23 @@ flex-direction: column;
 }
 
 @media screen and (max-width: 480px) {
-  .release {
+  /* .release {
     display: flex;
     flex-direction: column;
     margin-block-start: 5vh;
+  } */
+  .release img {
+    height: 100px;
+    width: 100px;
   }
-  
+  .info h1 {
+    font-size: 24px;
+  }
+  .info h2 {
+    font-size: 18px;
+  }
+
+  .info p {
+    font-size: 14px;
+  }
 }

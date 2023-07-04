@@ -3,6 +3,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import Link from "next/link"
 import styles from "./Login.module.css"
 import cn from "classnames"
+import Head from "next/head"
 
 export default function Login() {
   const supabase = useSupabaseClient()
@@ -26,6 +27,15 @@ export default function Login() {
 
   return (
     <>
+      <Head>
+        <title>Log in to DLCM</title>
+        <meta property="og:title" content="Log in to DLCM" key="title" />
+        <meta
+          property="og:description"
+          content="Log in to your DLCM account"
+          key="description"
+        />
+      </Head>
       <div className={styles.hero}>
         <h1>DLCM</h1>
         <small>Download Code Manager</small>

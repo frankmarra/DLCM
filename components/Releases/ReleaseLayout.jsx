@@ -3,6 +3,7 @@ import CodeGenerator from "../CodeGenerator/CodeGenerator"
 import SocialSites from "../SocialSites/SocialSites"
 import styles from "./ReleaseLayout.module.css"
 import cn from "classnames"
+import Head from "next/head"
 
 export default function ReleaseLayout({ release }) {
   const [password, setPassword] = useState()
@@ -22,24 +23,21 @@ export default function ReleaseLayout({ release }) {
     }
   }
   return (
-    <div className={styles.wrapper}>
-      {!authorized ? (
-        <form className="stack" onSubmit={handleSubmit}>
-          <label htmlFor="password">Enter Password</label>
-
-          <input
-            className="input"
-            id="password"
-            type="password"
-            value={password || ""}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Submit</button>
-          {showError ? (
-            <p style={{ color: "red" }}>Incorrect Password. Try Again.</p>
-          ) : null}
-        </form>
-      ) : (
+    <>
+      <Head>
+        <title>{release.title}</title>
+        <meta
+          property="og:title"
+          content={`${release.title}'s code page`}
+          key="title"
+        />
+        <meta
+          property="og:description"
+          content={`Grab a code for ${release.title} if there is one available.`}
+          key="description"
+        />
+      </Head>
+      <div className={styles.wrapper}>
         <div
           className="stack "
           style={{
@@ -65,7 +63,7 @@ export default function ReleaseLayout({ release }) {
             )}
             <div className={cn(styles.info, "stack")}>
               <div>
-                <h1 style={{ fontSize: "3rem" }}>{release.title}</h1>
+                <h1>{release.title}</h1>
                 <h2>{release.artist}</h2>
                 <h3>{release.label}</h3>
                 <p>{release.type}</p>
@@ -73,12 +71,33 @@ export default function ReleaseLayout({ release }) {
               <SocialSites sites={release.sites} />
             </div>
           </div>
+          {!authorized ? (
+            <form
+              className="container inline-max stack"
+              style={{ "--max-inline-size": "400px" }}
+              onSubmit={handleSubmit}
+            >
+              <label htmlFor="password">Enter Password</label>
 
-          <div className={styles.codes}>
-            <CodeGenerator release={release} />
-          </div>
+              <input
+                className="input"
+                id="password"
+                type="password"
+                value={password || ""}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button type="submit">Submit</button>
+              {showError ? (
+                <p style={{ color: "red" }}>Incorrect Password. Try Again.</p>
+              ) : null}
+            </form>
+          ) : (
+            <div className={styles.codes}>
+              <CodeGenerator release={release} />
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   )
 }

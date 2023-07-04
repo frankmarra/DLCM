@@ -6,6 +6,7 @@ import UpdateProfile from "../UpdateProfile/UpdateProfile"
 import styles from "./Account.module.css"
 import cn from "classnames"
 import Link from "next/link"
+import Head from "next/head"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
@@ -49,6 +50,19 @@ export default function Account({ session }) {
 
   return (
     <>
+      <Head>
+        <title>{profileData.username}&apos;s DLCM dashboard</title>
+        <meta
+          property="og:title"
+          content={`${profileData.username}'s DLCM dashboard`}
+          key="title"
+        />
+        <meta
+          property="og:description"
+          content="This is the home dashboard for DLCM. Users have full access of their account from here."
+          key="description"
+        />
+      </Head>
       <article className={cn(styles.profile)}>
         <div className={cn(styles.userInfo)}>
           <Avatar url={profileData.avatar_url} size={100} />
@@ -75,7 +89,7 @@ export default function Account({ session }) {
           </div>
         </div>
 
-        <div className={styles.update}>
+        <div className={cn(styles.update, "stack")}>
           <UpdateProfile
             getProfile={getProfile}
             profileData={profileData}
@@ -87,6 +101,7 @@ export default function Account({ session }) {
               <Link
                 className="button"
                 data-variant="primary"
+                data-size="small"
                 style={{ display: "block", textDecoration: "none" }}
                 href="/api/stripe-customer-portal"
               >
@@ -96,6 +111,7 @@ export default function Account({ session }) {
               <Link
                 className="button"
                 data-variant="primary"
+                data-size="small"
                 style={{ display: "block", textDecoration: "none" }}
                 href="/api/subscribe-to-dlcm"
               >

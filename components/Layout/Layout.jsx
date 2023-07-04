@@ -38,7 +38,7 @@ export default function Layout({ children }) {
                     href="/help"
                     style={{ textDecoration: "none" }}
                   >
-                    Docs
+                    FAQs
                   </Link>
                 </li>
                 <li>
