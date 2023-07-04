@@ -50,12 +50,18 @@ export default function CodeGenerator({ release }) {
             {code.code}
           </p>
           {copiedToClipboard ? (
-            <button type="button" data-variant="primary" disabled>
+            <button
+              className="button"
+              type="button"
+              data-variant="primary"
+              disabled
+            >
               Copied!
             </button>
           ) : (
             <button
               type="button"
+              className="button"
               data-variant="primary"
               onClick={() => copyToClipboard(code.code)}
             >
@@ -72,7 +78,9 @@ export default function CodeGenerator({ release }) {
       ) : (
         <button
           type="button"
+          className="button"
           data-variant="primary"
+          style={{ fontSize: "24px" }}
           onClick={() => getRandomCode()}
         >
           Generate Code

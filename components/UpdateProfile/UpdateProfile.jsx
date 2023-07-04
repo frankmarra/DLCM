@@ -87,6 +87,7 @@ export default function UpdateProfile({
         slug: sluggedName,
         sites: sites,
         page_password: pagePassword,
+        is_password_protected: isPasswordProtected,
         yum_url: yumUrl,
         updated_at: new Date().toISOString(),
       }
@@ -299,14 +300,14 @@ export default function UpdateProfile({
                 }
               />
               <div style={{ display: "flex" }}>
-                <label className="label" htmlFor="passwordProtect">
+                <label className="label" htmlFor="isPasswordProtected">
                   Password protect profile page?
                 </label>
 
                 <input
                   className="input"
                   style={{ inlineSize: "50%", width: "20%" }}
-                  id="passwordProtect"
+                  id="isPasswordProtected"
                   type="checkbox"
                   checked={isPasswordProtected}
                   onChange={() => setIsPasswordProtected(!isPasswordProtected)}

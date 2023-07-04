@@ -16,7 +16,9 @@ export default function ProfileLayout({
 }) {
   const [artwork, setArtwork] = useState(avatar)
   const [password, setPassword] = useState()
-  const [authorized, setAuthorized] = useState(isPasswordProtected)
+  const [authorized, setAuthorized] = useState(
+    isPasswordProtected ? false : true
+  )
   const [showError, setShowError] = useState(false)
 
   function handleSubmit(e) {
