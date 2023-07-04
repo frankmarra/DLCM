@@ -398,7 +398,7 @@ export default function CreateRelease({
                 isPasswordProtected,
               })
             }
-            disabled={!title && !artist && !type && noGO}
+            disabled={!title && !artist && type != releaseTypes[5].text && noGO}
           >
             Create
           </button>

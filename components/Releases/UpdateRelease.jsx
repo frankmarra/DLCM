@@ -12,6 +12,15 @@ import Avatar from "../Avatar/Avatar"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
 
+const releaseTypes = [
+  { id: 1, text: "LP" },
+  { id: 2, text: "EP" },
+  { id: 3, text: "Single" },
+  { id: 4, text: "Compilation" },
+  { id: 5, text: "Soundtrack" },
+  { id: 6, text: "Choose release type", isDisabled: true },
+]
+
 export default function UpdateRelease({
   release,
   setShowReleaseUpdateView,
@@ -31,6 +40,7 @@ export default function UpdateRelease({
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
+  const [type, setType] = useState(releaseTypes[5].text)
   const [sites, setSites] = useState({
     apple: release.sites.apple ? release.sites.apple : null,
     bandcamp: release.sites.bandcamp ? release.sites.bandcamp : null,
@@ -45,6 +55,7 @@ export default function UpdateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: yumUrl,
+        type: type,
         sites: sites,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
@@ -179,6 +190,26 @@ export default function UpdateRelease({
             value={yumUrl}
             onChange={(e) => setYumUrl(e.target.value)}
           />
+          <label className="label" htmlFor="type">
+            Type
+          </label>
+          <select
+            className="input select"
+            onChange={(e) => setType(e.target.value)}
+            id="type"
+            value={type}
+            required
+          >
+            {releaseTypes.map((releaseType) => (
+              <option
+                key={releaseType.id}
+                value={releaseType.value}
+                disabled={releaseType.isDisabled}
+              >
+                {releaseType.text}
+              </option>
+            ))}
+          </select>
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
               <label className="label" htmlFor="apple">
