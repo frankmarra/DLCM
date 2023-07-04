@@ -24,9 +24,7 @@
   
 }
 
-.update a {
-  margin-block-start: 2.3rem;
-}
+
 
 .userInfo {
   display: flex;
@@ -40,7 +38,13 @@
   }
   
   .update {
-    margin-block-start: 2vh;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    
+    justify-content: space-between ;
   }
+
+  
  
 }
