@@ -7,6 +7,7 @@ export async function getServerSideProps({ params }) {
     .from("profiles")
     .select("*, releases(*, codes(*))")
     .eq("slug", params.slug[0])
+    .eq("releases.codes.redeemed", false)
     .single()
 
   return { props: { profile, params } }
