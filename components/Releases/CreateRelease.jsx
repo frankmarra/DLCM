@@ -182,7 +182,7 @@ export default function CreateRelease({
           <div className="input-wrapper">
             <label htmlFor="slug">Release slug</label>
             <PopoverTip
-              message={`This is where you will send your fans. You will not be able to change this. Release slugs are unique to you, so no two can be named the same. If you do have multiple releases with the same name, add an identifier such as the release year to the slug.`}
+              message={`This is where you will send your fans. Release slugs are unique to you, so no two can be named the same. If you do have multiple releases with the same name, add an identifier such as the release year to the slug.`}
             />
             <input
               className="input"
