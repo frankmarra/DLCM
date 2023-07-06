@@ -21,7 +21,7 @@ export default function UpdateProfile({
   const [open, setOpen] = useState(false)
   const [username, setUsername] = useState(profileData.username)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
-
+  const [aboutBlurb, setAboutBlurb] = useState(profileData.about_blurb)
   const [location, setLocation] = useState(profileData.location)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     profileData.is_password_protected
@@ -89,6 +89,7 @@ export default function UpdateProfile({
         page_password: pagePassword,
         is_password_protected: isPasswordProtected,
         yum_url: yumUrl,
+        about_blurb: aboutBlurb,
         updated_at: new Date().toISOString(),
       }
 
@@ -222,6 +223,20 @@ export default function UpdateProfile({
             value={location || ""}
             onChange={(e) => setLocation(e.target.value)}
           />
+          <label className="label" htmlFor="aboutBlurb">
+            About blurb
+          </label>
+          <textarea
+            className="input"
+            id="aboutBlurb"
+            name="aboutBlurb"
+            rows="5"
+            cols="30"
+            value={aboutBlurb}
+            onChange={(e) => setAboutBlurb(e.target.value)}
+            placeholder="Enter a brief about section for your fans"
+          ></textarea>
+          <h3>You must include https:// in your links</h3>
           <label className="label" htmlFor="yumUrl">
             Redemption{`(yum)`} Link
           </label>
@@ -238,7 +253,6 @@ export default function UpdateProfile({
           </small>
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              <h3>You must include https:// in your links</h3>
               <label className="label" htmlFor="apple">
                 Apple Music Link
               </label>

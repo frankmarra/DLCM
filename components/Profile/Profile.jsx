@@ -14,6 +14,7 @@ export default function ProfileLayout({
   sites,
   pagePassword,
   isPasswordProtected,
+  aboutBlurb,
 }) {
   const [artwork, setArtwork] = useState(avatar)
   const [password, setPassword] = useState()
@@ -71,6 +72,7 @@ export default function ProfileLayout({
               <div>
                 <h1>{name}</h1>
                 <h2>{location}</h2>
+                <h3>{aboutBlurb}</h3>
               </div>
               <SocialSites sites={sites} />
             </div>

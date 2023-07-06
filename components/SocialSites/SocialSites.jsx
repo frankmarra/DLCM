@@ -24,7 +24,7 @@ export default function SocialSites({ sites }) {
   return showSites ? (
     <>
       <div className={styles.sites}>
-        <h3>Listen</h3>
+        <p>Listen</p>
         <ul>
           {sites.bandcamp ? (
             <li className="bandcamp">
