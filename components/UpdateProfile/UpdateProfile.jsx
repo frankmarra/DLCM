@@ -234,7 +234,7 @@ export default function UpdateProfile({
             cols="30"
             value={aboutBlurb}
             onChange={(e) => setAboutBlurb(e.target.value)}
-            placeholder="Enter a brief about section for your fans"
+            placeholder="Enter a brief about section for your fans (optional)"
           ></textarea>
           <h3>You must include https:// in your links</h3>
           <label className="label" htmlFor="yumUrl">
