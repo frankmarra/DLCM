@@ -33,4 +33,8 @@
   .info h1 {
     font-size: 28px;
   }
+
+  .info h2 h3 {
+    font-size: 20px;
+  }
 }

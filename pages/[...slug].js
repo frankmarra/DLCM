@@ -25,6 +25,7 @@ export default function ProfilePage({ profile, params }) {
         sites={profile.sites}
         pagePassword={profile.page_password}
         isPasswordProtected={profile.is_password_protected}
+        aboutBlurb={profile.about_blurb}
       />
     ) : (
       <div>Loading...</div>
