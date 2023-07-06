@@ -11,6 +11,8 @@ import IconEdit from "@/icons/edit.svg"
 import Avatar from "../Avatar/Avatar"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import PopoverTip from "../PopoverTip/PopoverTip"
+import slugify from "slugify"
 
 const releaseTypes = [
   { id: 1, text: "LP" },
@@ -30,6 +32,14 @@ export default function UpdateRelease({
   const supabase = useSupabaseClient()
   const user = useUser()
   const [open, setOpen] = useState(false)
+  const [title, setTitle] = useState(release.title)
+  const [sluggedName, setSluggedName] = useState(slugify(release.title))
+  const [namesTaken, setNamesTaken] = useState({
+    color: "transparent",
+    message: "",
+  })
+  const [firstSlugCheck, setFirstSlugCheck] = useState(false)
+  const [noGO, setNoGO] = useState(true)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
   const [yumUrl, setYumUrl] = useState(release.yum_url)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
@@ -40,7 +50,7 @@ export default function UpdateRelease({
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
-  const [type, setType] = useState(releaseTypes[5].text)
+  const [type, setType] = useState(release.type)
   const [sites, setSites] = useState({
     apple: release.sites.apple ? release.sites.apple : null,
     bandcamp: release.sites.bandcamp ? release.sites.bandcamp : null,
@@ -49,9 +59,39 @@ export default function UpdateRelease({
     youtube: release.sites.youtube ? release.sites.youtube : null,
   })
 
+  const checkName = async (e) => {
+    e.preventDefault()
+    if (sluggedName.length > 0) {
+      if (firstSlugCheck == false) {
+        setFirstSlugCheck(true)
+      }
+      setSluggedName(slugify(sluggedName))
+      let { data, error } = await supabase
+        .from("releases")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("release_slug", sluggedName)
+
+      if (data.length > 0) {
+        setNamesTaken({ color: "red", message: "Urls taken, try again" })
+        setNoGO(true)
+      } else if (data.length == 0) {
+        setNamesTaken({
+          color: "green",
+          message: "This url is available, snag it!",
+        })
+        setNoGO(false)
+      }
+
+      if (error) throw error
+    }
+  }
+
   async function updateRelease() {
     try {
       const update = {
+        title: title,
+        release_slug: sluggedName,
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: yumUrl,
@@ -179,6 +219,51 @@ export default function UpdateRelease({
             value={artworkUrl}
             onChange={(e) => setArtworkUrl(e.target.value)}
           />*/}
+          <label className="label" htmlFor="title">
+            Title
+          </label>
+          <input
+            className="input"
+            id="title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onInput={
+              firstSlugCheck
+                ? null
+                : (e) =>
+                    setSluggedName(slugify(e.target.value, { lower: true }))
+            }
+            onBlur={firstSlugCheck ? null : checkName}
+          />
+
+          <div className="input-wrapper">
+            <label htmlFor="slug">Release slug</label>
+            <PopoverTip
+              message={`This is where you will send your fans. Release slugs are unique to you, so no two can be named the same. If you do have multiple releases with the same name, add an identifier such as the release year to the slug. WARNING: If changed, the previous url for this release will no longer be available to visit. `}
+            />
+            <input
+              className="input"
+              onChange={(e) => setSluggedName(e.target.value)}
+              id="slug"
+              type="text"
+              value={
+                sluggedName
+                  ? slugify(sluggedName, { lower: true, trim: false })
+                  : sluggedName
+              }
+              onBlur={checkName}
+            />
+          </div>
+          <small>
+            Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
+            {profileData.slug}
+            {`/${sluggedName}`}
+          </small>
+          <br />
+          <small style={{ color: `${namesTaken.color}` }}>
+            {namesTaken.message}
+          </small>
 
           <label className="label" htmlFor="yumUrl">
             Redemption Link
