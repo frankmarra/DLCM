@@ -130,7 +130,7 @@ export default function ProfileLayout({
               </label>
 
               <select
-                className="select"
+                className="input select"
                 id="order"
                 onChange={(e) => handleSort(e.target.value)}
               >
