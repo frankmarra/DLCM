@@ -22,6 +22,26 @@ export default function ProfileLayout({
     isPasswordProtected ? false : true
   )
   const [showError, setShowError] = useState(false)
+  const [sortedReleases, setSortedReleases] = useState(releases)
+
+  const handleSort = (value) => {
+    let arr
+
+    if (value === "created oldest first") {
+      arr = [...releases].sort((a, b) => (a.created_at > b.created_at ? 1 : -1))
+    }
+    if (value === "created newest first") {
+      arr = [...releases].sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+    }
+    if (value === "alphabetical a to z") {
+      arr = [...releases].sort((a, b) => (a.title > b.title ? 1 : -1))
+    }
+    if (value === "alphabetical z to a") {
+      arr = [...releases].sort((a, b) => (a.title < b.title ? 1 : -1))
+    }
+
+    setSortedReleases(arr)
+  }
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -103,17 +123,37 @@ export default function ProfileLayout({
             </form>
           </div>
         ) : (
-          <ul className="grid" role="list">
-            {releases.map((release) =>
-              release.is_active ? (
-                <ReleaseCard
-                  key={release.id}
-                  release={release}
-                  profileSlug={profileSlug}
-                />
-              ) : null
-            )}
-          </ul>
+          <>
+            <div className={styles.filter}>
+              <label className="label" htmlFor="order">
+                Order
+              </label>
+
+              <select
+                className="select"
+                id="order"
+                onChange={(e) => handleSort(e.target.value)}
+              >
+                <option value="created oldest first" selected>
+                  Oldest First
+                </option>
+                <option value="created newest first">Newest First</option>
+                <option value="alphabetical a to z">A to Z</option>
+                <option value="alphabetical z to a">Z to A</option>
+              </select>
+            </div>
+            <ul className="grid" role="list">
+              {sortedReleases.map((release) =>
+                release.is_active ? (
+                  <ReleaseCard
+                    key={release.id}
+                    release={release}
+                    profileSlug={profileSlug}
+                  />
+                ) : null
+              )}
+            </ul>
+          </>
         )}
       </>
     </>

@@ -13,34 +13,30 @@ export default function Releases({ profileData }) {
   const [releases, setReleases] = useState([])
   const [allowNew, setAllowNew] = useState(true)
   const [addedNewRelease, setAddedNewRelease] = useState(false)
-  const [filter, setFilter] = useState("oldest")
 
   useEffect(() => {
     getReleases()
     setAddedNewRelease(false)
   }, [supabase, profileData.id, addedNewRelease])
 
-  useEffect(() => {
-    if (releases) {
-      let sortedReleases = releases
-      if (filter === "alphabetical") {
-        sortedReleases.sort((a, b) => {
-          let titleOne = a.title.toLowerCase()
-          let titleTwo = b.title.toLowerCase()
+  const handleSort = (value) => {
+    let arr
 
-          if (titleOne < titleTwo) {
-            return -1
-          }
-          if (titleOne > titleTwo) {
-            return 1
-          }
-          return 0
-        })
-      }
-
-      setReleases(sortedReleases)
+    if (value === "created oldest first") {
+      arr = [...releases].sort((a, b) => (a.created_at > b.created_at ? 1 : -1))
     }
-  }, [filter])
+    if (value === "created newest first") {
+      arr = [...releases].sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+    }
+    if (value === "alphabetical a to z") {
+      arr = [...releases].sort((a, b) => (a.title > b.title ? 1 : -1))
+    }
+    if (value === "alphabetical z to a") {
+      arr = [...releases].sort((a, b) => (a.title < b.title ? 1 : -1))
+    }
+
+    setReleases(arr)
+  }
 
   async function getReleases() {
     try {
@@ -69,12 +65,22 @@ export default function Releases({ profileData }) {
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
         <div className={styles.filter}>
-          <button
-            className="button"
-            data-variant="primary"
-            type="button"
-            onClick={() => setFilter("alphabetical")}
-          >{`a -> z`}</button>
+          <label className="label" htmlFor="order">
+            Order
+          </label>
+
+          <select
+            className="select"
+            id="order"
+            onChange={(e) => handleSort(e.target.value)}
+          >
+            <option value="created oldest first" selected>
+              Oldest First
+            </option>
+            <option value="created newest first">Newest First</option>
+            <option value="alphabetical a to z">A to Z</option>
+            <option value="alphabetical z to a">Z to A</option>
+          </select>
         </div>
         {profileData.is_subscribed || profileData.dlcm_friend ? (
           <CreateRelease

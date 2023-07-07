@@ -24,6 +24,15 @@
   justify-content: center;
 }
 
+.filter {
+  display: flex;
+  align-items: center;
+}
+
+.filter select {
+  margin-inline-start: 1em;
+}
+
 @media screen and (max-width: 480px) {
   .profile img {
     height: 100px;
