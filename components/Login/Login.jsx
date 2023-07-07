@@ -84,7 +84,7 @@ export default function Login() {
         <h3>
           Not a member? <Link href="/signup">Sign up!</Link>
         </h3>
-        <Link href="/request-password-reset">Forgot Password?</Link>
+        <Link href="/request-password-reset">Forgot/Update Password?</Link>
       </article>
 
       <section className={cn(styles.about, "stack inline-max")}>

@@ -146,7 +146,9 @@ export default function Releases({ profileData }) {
                   }
                 />
               ) : (
-                <Link href="/subscribe">Subscribe to add more releases</Link>
+                <Link href="/api/subscribe-to-dlcm">
+                  Subscribe to add more releases
+                </Link>
               )}
             </li>
           </>
