@@ -19,3 +19,12 @@
 .actionCard:has(button:hover) {
   border-color: var(--link-hover);
 }
+
+.filter {
+  display: flex;
+  align-items: center;
+}
+
+.filter select {
+  margin-inline-start: 1em;
+}
