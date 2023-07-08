@@ -4,15 +4,26 @@ import cn from "classnames"
 import SocialSites from "../SocialSites/SocialSites"
 import { useState } from "react"
 import Head from "next/head"
+import Link from "next/link"
 
 const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
 const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
 
 const filterOptions = [
-  { "label": "Oldest First", "value": "oldest", "method": sortByCreatedAt, "direction": "asc" },
-  { "label": "Newest First", "value": "newest", "method": sortByCreatedAt, "direction": "desc" },
-  { "label": "A to Z", "value": "a-z", "method": sortByTitle, "direction": "asc" },
-  { "label": "Z to A", "value": "z-a", "method": sortByTitle, "direction": "desc" }
+  {
+    label: "Oldest First",
+    value: "oldest",
+    method: sortByCreatedAt,
+    direction: "asc",
+  },
+  {
+    label: "Newest First",
+    value: "newest",
+    method: sortByCreatedAt,
+    direction: "desc",
+  },
+  { label: "A to Z", value: "a-z", method: sortByTitle, direction: "asc" },
+  { label: "Z to A", value: "z-a", method: sortByTitle, direction: "desc" },
 ]
 
 export default function ProfileLayout({
@@ -25,6 +36,7 @@ export default function ProfileLayout({
   pagePassword,
   isPasswordProtected,
   aboutBlurb,
+  isSubscribed,
 }) {
   const [artwork, setArtwork] = useState(avatar)
   const [password, setPassword] = useState()
@@ -35,13 +47,13 @@ export default function ProfileLayout({
   const [sortedReleases, setSortedReleases] = useState(releases)
 
   const handleSort = (value) => {
-    const selected = filterOptions.find(option => option.value === value);
-    let sortedItems;
+    const selected = filterOptions.find((option) => option.value === value)
+    let sortedItems
 
     sortedItems = [...releases].sort(selected.method)
 
     if (selected.direction === "desc") {
-      sortedItems.reverse();
+      sortedItems.reverse()
     }
 
     setSortedReleases(sortedItems)
@@ -92,13 +104,19 @@ export default function ProfileLayout({
                 height={200}
               />
             )}
-            <div className={cn(styles.info, "stack")}>
+            <div className={cn(styles.info, "stack", "block-overflow")}>
               <div>
-                <h1>{name}</h1>
-                <h2>{location}</h2>
-                <h3>{aboutBlurb}</h3>
+                <div className={cn(styles.name)}>
+                  <h1>{name}</h1>
+                </div>
+                <div className={cn(styles.location)}>
+                  <h2>{location}</h2>
+                </div>
+                <div className={cn(styles.blurb)}>
+                  <p>{aboutBlurb}</p>
+                </div>
               </div>
-              <SocialSites sites={sites} />
+              <SocialSites sites={sites} isSubscribed={isSubscribed} />
             </div>
           </div>
         </div>
@@ -128,31 +146,44 @@ export default function ProfileLayout({
           </div>
         ) : (
           <>
-            <div className={styles.filter}>
-              <label className="label" htmlFor="order">
-                Order
-              </label>
-              <select
-                className="input select"
-                style={{ inlineSize: "auto" }}
-                id="order"
-                onChange={(e) => handleSort(e.target.value)}
-              >
-                {filterOptions.map(({ label, value }) => (
-                  <option value={value} key={value}>
-                    {label}
-                  </option> 
-                ))}
-              </select>
-            </div>
+            {isSubscribed ? (
+              <div className={styles.filter}>
+                <label className="label" htmlFor="order">
+                  Order
+                </label>
+                <select
+                  className="input select"
+                  style={{ inlineSize: "auto" }}
+                  id="order"
+                  onChange={(e) => handleSort(e.target.value)}
+                >
+                  {filterOptions.map(({ label, value }) => (
+                    <option value={value} key={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : null}
             <ul className="grid" role="list">
-              {sortedReleases.map((release) =>
+              {sortedReleases.map((release, index) =>
                 release.is_active ? (
-                  <ReleaseCard
-                    key={release.id}
-                    release={release}
-                    profileSlug={profileSlug}
-                  />
+                  <li key={index}>
+                    <Link
+                      className={styles.release}
+                      href={`/${profileSlug}/${release.release_slug}`}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--text-1)",
+                      }}
+                    >
+                      <ReleaseCard
+                        key={release.id}
+                        release={release}
+                        profileSlug={profileSlug}
+                      />
+                    </Link>
+                  </li>
                 ) : null
               )}
             </ul>

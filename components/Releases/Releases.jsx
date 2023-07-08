@@ -11,10 +11,20 @@ const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
 const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
 
 const filterOptions = [
-  { "label": "Oldest First", "value": "oldest", "method": sortByCreatedAt, "direction": "asc" },
-  { "label": "Newest First", "value": "newest", "method": sortByCreatedAt, "direction": "desc" },
-  { "label": "A to Z", "value": "a-z", "method": sortByTitle, "direction": "asc" },
-  { "label": "Z to A", "value": "z-a", "method": sortByTitle, "direction": "desc" }
+  {
+    label: "Oldest First",
+    value: "oldest",
+    method: sortByCreatedAt,
+    direction: "asc",
+  },
+  {
+    label: "Newest First",
+    value: "newest",
+    method: sortByCreatedAt,
+    direction: "desc",
+  },
+  { label: "A to Z", value: "a-z", method: sortByTitle, direction: "asc" },
+  { label: "Z to A", value: "z-a", method: sortByTitle, direction: "desc" },
 ]
 
 export default function Releases({ profileData }) {
@@ -30,13 +40,13 @@ export default function Releases({ profileData }) {
   }, [supabase, profileData.id, addedNewRelease])
 
   const handleSort = (value) => {
-    const selected = filterOptions.find(option => option.value === value);
-    let sortedItems;
+    const selected = filterOptions.find((option) => option.value === value)
+    let sortedItems
 
     sortedItems = [...releases].sort(selected.method)
 
     if (selected.direction === "desc") {
-      sortedItems.reverse();
+      sortedItems.reverse()
     }
 
     setReleases(sortedItems)
@@ -68,23 +78,25 @@ export default function Releases({ profileData }) {
     <article className="stack">
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
-        <div className={styles.filter}>
-          <label className="label" htmlFor="order">
-            Order
-          </label>
+        {profileData.is_subscribed ? (
+          <div className={styles.filter}>
+            <label className="label" htmlFor="order">
+              Order
+            </label>
 
-          <select
-            className="input select"
-            id="order"
-            onChange={(e) => handleSort(e.target.value)}
-          >
-            {filterOptions.map(({ label, value }) => (
-              <option value={value} key={value}>
-                {label}
-              </option> 
-            ))}
-          </select>
-        </div>
+            <select
+              className="input select"
+              id="order"
+              onChange={(e) => handleSort(e.target.value)}
+            >
+              {filterOptions.map(({ label, value }) => (
+                <option value={value} key={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
         {profileData.is_subscribed || profileData.dlcm_friend ? (
           <CreateRelease
             setAddedNewRelease={setAddedNewRelease}

@@ -26,6 +26,7 @@ export default function ProfilePage({ profile, params }) {
         pagePassword={profile.page_password}
         isPasswordProtected={profile.is_password_protected}
         aboutBlurb={profile.about_blurb}
+        isSubscribed={profile.is_subscribed}
       />
     ) : (
       <div>Loading...</div>
@@ -38,7 +39,7 @@ export default function ProfilePage({ profile, params }) {
       release.release_slug == params.slug[1] ? (album = release) : null
     )
     return profile && album ? (
-      <ReleaseLayout release={album} />
+      <ReleaseLayout release={album} isSubscribed={profile.is_subscribed} />
     ) : (
       <div>No Release Found</div>
     )

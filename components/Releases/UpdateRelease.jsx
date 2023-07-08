@@ -264,17 +264,6 @@ export default function UpdateRelease({
           <small style={{ color: `${namesTaken.color}` }}>
             {namesTaken.message}
           </small>
-
-          <label className="label" htmlFor="yumUrl">
-            Redemption Link
-          </label>
-          <input
-            className="input"
-            id="yumUrl"
-            type="text"
-            value={yumUrl}
-            onChange={(e) => setYumUrl(e.target.value)}
-          />
           <label className="label" htmlFor="type">
             Type
           </label>
@@ -295,6 +284,28 @@ export default function UpdateRelease({
               </option>
             ))}
           </select>
+          <label className="label" htmlFor="yumUrl">
+            Redemption Link
+          </label>
+          <input
+            className="input"
+            id="yumUrl"
+            type="text"
+            value={yumUrl}
+            onChange={(e) => setYumUrl(e.target.value)}
+          />
+          <label className="label" htmlFor="bandcamp">
+            Bandcamp Link
+          </label>
+          <input
+            className="input"
+            id="bandcamp"
+            type="text"
+            value={sites.bandcamp}
+            onChange={(e) =>
+              setSites({ ...sites, [e.target.id]: e.target.value })
+            }
+          />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
               <label className="label" htmlFor="apple">
@@ -309,18 +320,7 @@ export default function UpdateRelease({
                   setSites({ ...sites, [e.target.id]: e.target.value })
                 }
               />
-              <label className="label" htmlFor="bandcamp">
-                Bandcamp Link
-              </label>
-              <input
-                className="input"
-                id="bandcamp"
-                type="text"
-                value={sites.bandcamp}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
-              />
+
               <label className="label" htmlFor="spotify">
                 Spotify Link
               </label>

@@ -8,7 +8,7 @@ import {
   faItunesNote,
 } from "@fortawesome/free-brands-svg-icons"
 
-export default function SocialSites({ sites }) {
+export default function SocialSites({ sites, isSubscribed }) {
   let showSites = false
 
   Object.values(sites).forEach((site) => {
@@ -26,61 +26,79 @@ export default function SocialSites({ sites }) {
       <div className={styles.sites}>
         <p>Listen</p>
         <ul>
-          {sites.bandcamp ? (
-            <li className="bandcamp">
-              <a href={`${sites.bandcamp}`}>
-                <FontAwesomeIcon
-                  icon={faBandcamp}
-                  size={iconSize}
-                  color="#3B98AA"
-                />
-              </a>
-            </li>
-          ) : null}
-          {sites.apple ? (
-            <li className="apple">
-              <a href={`${sites.apple}`}>
-                <FontAwesomeIcon
-                  icon={faItunesNote}
-                  size={iconSize}
-                  color="#FF354D"
-                />
-              </a>
-            </li>
-          ) : null}
-          {sites.spotify ? (
-            <li className="spotify">
-              <a href={`${sites.spotify}`}>
-                <FontAwesomeIcon
-                  icon={faSpotify}
-                  size={iconSize}
-                  color="#1DD461"
-                />
-              </a>
-            </li>
-          ) : null}
-          {sites.soundcloud ? (
-            <li className="soundcloud">
-              <a href={`${sites.soundcloud}`}>
-                <FontAwesomeIcon
-                  icon={faSoundcloud}
-                  size={iconSize}
-                  color="#FE8A23"
-                />
-              </a>
-            </li>
-          ) : null}
-          {sites.youtube ? (
-            <li className="youtube">
-              <a href={`${sites.youtube}`}>
-                <FontAwesomeIcon
-                  icon={faYoutube}
-                  size={iconSize}
-                  color="#FE0100"
-                />
-              </a>
-            </li>
-          ) : null}
+          {isSubscribed ? (
+            <>
+              {sites.bandcamp ? (
+                <li className="bandcamp">
+                  <a href={`${sites.bandcamp}`}>
+                    <FontAwesomeIcon
+                      icon={faBandcamp}
+                      size={iconSize}
+                      color="#3B98AA"
+                    />
+                  </a>
+                </li>
+              ) : null}
+              {sites.apple ? (
+                <li className="apple">
+                  <a href={`${sites.apple}`}>
+                    <FontAwesomeIcon
+                      icon={faItunesNote}
+                      size={iconSize}
+                      color="#FF354D"
+                    />
+                  </a>
+                </li>
+              ) : null}
+              {sites.spotify ? (
+                <li className="spotify">
+                  <a href={`${sites.spotify}`}>
+                    <FontAwesomeIcon
+                      icon={faSpotify}
+                      size={iconSize}
+                      color="#1DD461"
+                    />
+                  </a>
+                </li>
+              ) : null}
+              {sites.soundcloud ? (
+                <li className="soundcloud">
+                  <a href={`${sites.soundcloud}`}>
+                    <FontAwesomeIcon
+                      icon={faSoundcloud}
+                      size={iconSize}
+                      color="#FE8A23"
+                    />
+                  </a>
+                </li>
+              ) : null}
+              {sites.youtube ? (
+                <li className="youtube">
+                  <a href={`${sites.youtube}`}>
+                    <FontAwesomeIcon
+                      icon={faYoutube}
+                      size={iconSize}
+                      color="#FE0100"
+                    />
+                  </a>
+                </li>
+              ) : null}
+            </>
+          ) : (
+            <>
+              {sites.bandcamp ? (
+                <li className="bandcamp">
+                  <a href={`${sites.bandcamp}`}>
+                    <FontAwesomeIcon
+                      icon={faBandcamp}
+                      size={iconSize}
+                      color="#3B98AA"
+                    />
+                  </a>
+                </li>
+              ) : null}
+            </>
+          )}
         </ul>
       </div>
     </>
