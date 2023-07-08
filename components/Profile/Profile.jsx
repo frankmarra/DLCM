@@ -115,7 +115,7 @@ export default function ProfileLayout({
                   <p>{aboutBlurb}</p>
                 </div>
               </div>
-              <SocialSites sites={sites} />
+              <SocialSites sites={sites} isSubscribed={isSubscribed} />
             </div>
           </div>
         </div>

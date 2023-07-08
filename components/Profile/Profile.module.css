@@ -22,7 +22,7 @@
 }
 
 .location {
-  font-size: clamp(.5rem, 2vw, var(--size-3));
+  font-size: clamp(.75rem, 2vw, var(--size-3));
 }
 .blurb {
   font-size: clamp(.75rem, 2vw, var(--size-4));
@@ -53,16 +53,5 @@
     width: 100px;
   }
 
-  /* .info h1 {
-    font-size: 28px;
-  }
-
-  .info h2{
-    font-size: 20px;
-  } */
-
-  /* .blurb {
-    height: 8.8vh;
-    overflow-y: scroll;
-  } */
+ 
 }

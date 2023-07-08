@@ -251,6 +251,18 @@ export default function UpdateProfile({
             This is the link your customers will visit to redeem their code. It
             is usually &quot;your-name.bandcamp/yum&quot;
           </small>
+          <label className="label" htmlFor="bandcamp">
+            Bandcamp Link
+          </label>
+          <input
+            className="input"
+            id="bandcamp"
+            type="text"
+            value={sites.bandcamp}
+            onChange={(e) =>
+              setSites({ ...sites, [e.target.id]: e.target.value })
+            }
+          />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
               <label className="label" htmlFor="apple">
@@ -261,19 +273,6 @@ export default function UpdateProfile({
                 id="apple"
                 type="text"
                 value={sites.apple}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
-              />
-
-              <label className="label" htmlFor="bandcamp">
-                Bandcamp Link
-              </label>
-              <input
-                className="input"
-                id="bandcamp"
-                type="text"
-                value={sites.bandcamp}
                 onChange={(e) =>
                   setSites({ ...sites, [e.target.id]: e.target.value })
                 }

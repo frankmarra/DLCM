@@ -5,7 +5,7 @@ import styles from "./ReleaseLayout.module.css"
 import cn from "classnames"
 import Head from "next/head"
 
-export default function ReleaseLayout({ release }) {
+export default function ReleaseLayout({ release, isSubscribed }) {
   const [password, setPassword] = useState()
   const [authorized, setAuthorized] = useState(
     release.is_password_protected ? false : true
@@ -63,12 +63,18 @@ export default function ReleaseLayout({ release }) {
             )}
             <div className={cn(styles.info, "stack")}>
               <div>
-                <h1>{release.title}</h1>
-                <h2>{release.artist}</h2>
-                <h3>{release.label}</h3>
+                <div className={styles.title}>
+                  <h1>{release.title}</h1>
+                </div>
+                <div className={styles.artist}>
+                  <h2>{release.artist}</h2>
+                </div>
+                <div className={styles.label}>
+                  <h3>{release.label}</h3>
+                </div>
                 <p>{release.type}</p>
               </div>
-              <SocialSites sites={release.sites} />
+              <SocialSites sites={release.sites} isSubscribed={isSubscribed} />
             </div>
           </div>
           {!authorized ? (

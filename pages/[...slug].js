@@ -39,7 +39,7 @@ export default function ProfilePage({ profile, params }) {
       release.release_slug == params.slug[1] ? (album = release) : null
     )
     return profile && album ? (
-      <ReleaseLayout release={album} />
+      <ReleaseLayout release={album} isSubscribed={profile.is_subscribed} />
     ) : (
       <div>No Release Found</div>
     )
