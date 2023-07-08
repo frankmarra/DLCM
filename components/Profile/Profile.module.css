@@ -10,8 +10,14 @@
   gap: 25px;
 
 }
-
-
+/* .release {
+  text-decoration: none;
+  color: var(--text-1);
+} */
+.release :hover {
+  color: var(--link-hover);
+  border-color: var(--brand-1-hover);
+}
 .info {
   display: flex;
   flex-direction: column; 

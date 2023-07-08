@@ -4,6 +4,7 @@ import cn from "classnames"
 import SocialSites from "../SocialSites/SocialSites"
 import { useState } from "react"
 import Head from "next/head"
+import Link from "next/link"
 
 const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
 const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
@@ -165,13 +166,24 @@ export default function ProfileLayout({
               </div>
             ) : null}
             <ul className="grid" role="list">
-              {sortedReleases.map((release) =>
+              {sortedReleases.map((release, index) =>
                 release.is_active ? (
-                  <ReleaseCard
-                    key={release.id}
-                    release={release}
-                    profileSlug={profileSlug}
-                  />
+                  <li key={index}>
+                    <Link
+                      className={styles.release}
+                      href={`/${profileSlug}/${release.release_slug}`}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--text-1)",
+                      }}
+                    >
+                      <ReleaseCard
+                        key={release.id}
+                        release={release}
+                        profileSlug={profileSlug}
+                      />
+                    </Link>
+                  </li>
                 ) : null
               )}
             </ul>

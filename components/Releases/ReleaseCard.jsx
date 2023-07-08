@@ -31,7 +31,7 @@ export default function ReleaseCard({
   }, [onCodeAdded])
 
   return (
-    <li className={styles.component}>
+    <div className={styles.component}>
       <div className={styles.content}>
         {artwork ? (
           <Link href={`/${profileSlug}/${release.release_slug}`}>
@@ -92,6 +92,6 @@ export default function ReleaseCard({
           </div>
         ) : null
       ) : null}
-    </li>
+    </div>
   )
 }
