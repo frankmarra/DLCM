@@ -103,11 +103,17 @@ export default function ProfileLayout({
                 height={200}
               />
             )}
-            <div className={cn(styles.info, "stack")}>
+            <div className={cn(styles.info, "stack", "block-overflow")}>
               <div>
-                <h1>{name}</h1>
-                <h2>{location}</h2>
-                <h3>{aboutBlurb}</h3>
+                <div className={cn(styles.name)}>
+                  <h1>{name}</h1>
+                </div>
+                <div className={cn(styles.location)}>
+                  <h2>{location}</h2>
+                </div>
+                <div className={cn(styles.blurb)}>
+                  <p>{aboutBlurb}</p>
+                </div>
               </div>
               <SocialSites sites={sites} />
             </div>
