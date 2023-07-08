@@ -7,6 +7,16 @@ import cn from "classnames"
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Link from "next/link"
 
+const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
+const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
+
+const filterOptions = [
+  { "label": "Oldest First", "value": "oldest", "method": sortByCreatedAt, "direction": "asc" },
+  { "label": "Newest First", "value": "newest", "method": sortByCreatedAt, "direction": "desc" },
+  { "label": "A to Z", "value": "a-z", "method": sortByTitle, "direction": "asc" },
+  { "label": "Z to A", "value": "z-a", "method": sortByTitle, "direction": "desc" }
+]
+
 export default function Releases({ profileData }) {
   const supabase = useSupabaseClient()
   const user = useUser()
@@ -20,22 +30,16 @@ export default function Releases({ profileData }) {
   }, [supabase, profileData.id, addedNewRelease])
 
   const handleSort = (value) => {
-    let arr
+    const selected = filterOptions.find(option => option.value === value);
+    let sortedItems;
 
-    if (value === "created oldest first") {
-      arr = [...releases].sort((a, b) => (a.created_at > b.created_at ? 1 : -1))
-    }
-    if (value === "created newest first") {
-      arr = [...releases].sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
-    }
-    if (value === "alphabetical a to z") {
-      arr = [...releases].sort((a, b) => (a.title > b.title ? 1 : -1))
-    }
-    if (value === "alphabetical z to a") {
-      arr = [...releases].sort((a, b) => (a.title < b.title ? 1 : -1))
+    sortedItems = [...releases].sort(selected.method)
+
+    if (selected.direction === "desc") {
+      sortedItems.reverse();
     }
 
-    setReleases(arr)
+    setReleases(sortedItems)
   }
 
   async function getReleases() {
@@ -70,16 +74,15 @@ export default function Releases({ profileData }) {
           </label>
 
           <select
-            className="select"
+            className="input select"
             id="order"
             onChange={(e) => handleSort(e.target.value)}
           >
-            <option value="created oldest first" selected>
-              Oldest First
-            </option>
-            <option value="created newest first">Newest First</option>
-            <option value="alphabetical a to z">A to Z</option>
-            <option value="alphabetical z to a">Z to A</option>
+            {filterOptions.map(({ label, value }) => (
+              <option value={value} key={value}>
+                {label}
+              </option> 
+            ))}
           </select>
         </div>
         {profileData.is_subscribed || profileData.dlcm_friend ? (

@@ -5,6 +5,16 @@ import SocialSites from "../SocialSites/SocialSites"
 import { useState } from "react"
 import Head from "next/head"
 
+const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
+const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
+
+const filterOptions = [
+  { "label": "Oldest First", "value": "oldest", "method": sortByCreatedAt, "direction": "asc" },
+  { "label": "Newest First", "value": "newest", "method": sortByCreatedAt, "direction": "desc" },
+  { "label": "A to Z", "value": "a-z", "method": sortByTitle, "direction": "asc" },
+  { "label": "Z to A", "value": "z-a", "method": sortByTitle, "direction": "desc" }
+]
+
 export default function ProfileLayout({
   avatar,
   name,
@@ -25,22 +35,16 @@ export default function ProfileLayout({
   const [sortedReleases, setSortedReleases] = useState(releases)
 
   const handleSort = (value) => {
-    let arr
+    const selected = filterOptions.find(option => option.value === value);
+    let sortedItems;
 
-    if (value === "created oldest first") {
-      arr = [...releases].sort((a, b) => (a.created_at > b.created_at ? 1 : -1))
-    }
-    if (value === "created newest first") {
-      arr = [...releases].sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
-    }
-    if (value === "alphabetical a to z") {
-      arr = [...releases].sort((a, b) => (a.title > b.title ? 1 : -1))
-    }
-    if (value === "alphabetical z to a") {
-      arr = [...releases].sort((a, b) => (a.title < b.title ? 1 : -1))
+    sortedItems = [...releases].sort(selected.method)
+
+    if (selected.direction === "desc") {
+      sortedItems.reverse();
     }
 
-    setSortedReleases(arr)
+    setSortedReleases(sortedItems)
   }
 
   function handleSubmit(e) {
@@ -128,18 +132,17 @@ export default function ProfileLayout({
               <label className="label" htmlFor="order">
                 Order
               </label>
-
               <select
-                className="select"
+                className="input select"
+                style={{ inlineSize: "auto" }}
                 id="order"
                 onChange={(e) => handleSort(e.target.value)}
               >
-                <option value="created oldest first" selected>
-                  Oldest First
-                </option>
-                <option value="created newest first">Newest First</option>
-                <option value="alphabetical a to z">A to Z</option>
-                <option value="alphabetical z to a">Z to A</option>
+                {filterOptions.map(({ label, value }) => (
+                  <option value={value} key={value}>
+                    {label}
+                  </option> 
+                ))}
               </select>
             </div>
             <ul className="grid" role="list">
