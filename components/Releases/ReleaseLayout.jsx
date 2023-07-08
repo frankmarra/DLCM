@@ -5,7 +5,7 @@ import styles from "./ReleaseLayout.module.css"
 import cn from "classnames"
 import Head from "next/head"
 
-export default function ReleaseLayout({ release, isSubscribed }) {
+export default function ReleaseLayout({ release, isSubscribed, isDlcmFriend }) {
   const [password, setPassword] = useState()
   const [authorized, setAuthorized] = useState(
     release.is_password_protected ? false : true
@@ -74,7 +74,11 @@ export default function ReleaseLayout({ release, isSubscribed }) {
                 </div>
                 <p>{release.type}</p>
               </div>
-              <SocialSites sites={release.sites} isSubscribed={isSubscribed} />
+              <SocialSites
+                sites={release.sites}
+                isSubscribed={isSubscribed}
+                isDlcmFriend={isDlcmFriend}
+              />
             </div>
           </div>
           {!authorized ? (

@@ -8,7 +8,7 @@ import {
   faItunesNote,
 } from "@fortawesome/free-brands-svg-icons"
 
-export default function SocialSites({ sites, isSubscribed }) {
+export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
   let showSites = false
 
   Object.values(sites).forEach((site) => {
@@ -26,7 +26,7 @@ export default function SocialSites({ sites, isSubscribed }) {
       <div className={styles.sites}>
         <p>Listen</p>
         <ul>
-          {isSubscribed ? (
+          {isSubscribed || isDlcmFriend ? (
             <>
               {sites.bandcamp ? (
                 <li className="bandcamp">

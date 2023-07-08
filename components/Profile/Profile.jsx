@@ -37,6 +37,7 @@ export default function ProfileLayout({
   isPasswordProtected,
   aboutBlurb,
   isSubscribed,
+  isDlcmFriend,
 }) {
   const [artwork, setArtwork] = useState(avatar)
   const [password, setPassword] = useState()
@@ -116,7 +117,11 @@ export default function ProfileLayout({
                   <p>{aboutBlurb}</p>
                 </div>
               </div>
-              <SocialSites sites={sites} isSubscribed={isSubscribed} />
+              <SocialSites
+                sites={sites}
+                isSubscribed={isSubscribed}
+                isDlcmFriend={isDlcmFriend}
+              />
             </div>
           </div>
         </div>
@@ -146,7 +151,7 @@ export default function ProfileLayout({
           </div>
         ) : (
           <>
-            {isSubscribed ? (
+            {isSubscribed || isDlcmFriend ? (
               <div className={styles.filter}>
                 <label className="label" htmlFor="order">
                   Order

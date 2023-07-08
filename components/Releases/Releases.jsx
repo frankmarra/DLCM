@@ -78,7 +78,7 @@ export default function Releases({ profileData }) {
     <article className="stack">
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
-        {profileData.is_subscribed ? (
+        {profileData.is_subscribed || profileData.dlcm_friend ? (
           <div className={styles.filter}>
             <label className="label" htmlFor="order">
               Order
