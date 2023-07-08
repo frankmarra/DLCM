@@ -5,6 +5,8 @@ import slugify from "slugify"
 import { useRouter } from "next/router"
 import PopoverTip from "@/components/PopoverTip/PopoverTip"
 import Head from "next/head"
+import cn from "classnames"
+import styles from "../components/Login/Login.module.css"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -394,6 +396,42 @@ const Signup = () => {
           </div>
         )}
       </article>
+      <section className={cn(styles.subscription, "stack")}>
+        <h2>Subscribe to DLCM</h2>
+        <div className={styles.plans}>
+          <section className={cn(styles.free, "container", "stack")}>
+            <h2>Free Plan</h2>
+            <div className={styles.perks}>
+              <ul role="list">
+                <li>Two Releases</li>
+                <li>Unlimited Codes</li>
+              </ul>
+            </div>
+          </section>
+
+          <section className={cn(styles.pro, "container", "stack")}>
+            <h2>Pro Plan</h2>
+            <div className={styles.cost}>
+              <p>$5/mth</p>
+              <p>or</p>
+              <p>
+                $50/yr <small>{`(Save $10)`}</small>
+              </p>
+            </div>
+            <div className={styles.perks}>
+              <ul role="list">
+                <li>Unlimited Releases</li>
+                <li>Custom URLs</li>
+                <li>Release Level URLs</li>
+                <li>Password Protected Pages</li>
+                <li>Turn Releases On/Off</li>
+                <li>Bandcamp CSV Code Upload</li>
+                <li>Social/Streaming Links</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </section>
     </>
   )
 }
