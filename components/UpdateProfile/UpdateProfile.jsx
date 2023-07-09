@@ -48,7 +48,10 @@ export default function UpdateProfile({
 
   const checkName = async (e) => {
     e.preventDefault()
-
+    if (sluggedName.length == 0) {
+      setNamesTaken({ color: "red", message: "Profile must have a slug" })
+      setNoGo(true)
+    }
     if (sluggedName.length > 0) {
       setSluggedName(slugify(sluggedName))
       if (sluggedName == profileData.slug) {

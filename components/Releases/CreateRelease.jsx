@@ -60,6 +60,10 @@ export default function CreateRelease({
 
   const checkName = async (e) => {
     e.preventDefault()
+    if (sluggedName.length == 0) {
+      setNamesTaken({ color: "red", message: "Release must have a slug" })
+      setNoGO(true)
+    }
     if (sluggedName.length > 0) {
       if (firstSlugCheck == false) {
         setFirstSlugCheck(true)
@@ -400,7 +404,7 @@ export default function CreateRelease({
                 isPasswordProtected,
               })
             }
-            disabled={!title && !artist && type != releaseTypes[5].text && noGO}
+            disabled={!title || type == releaseTypes[5].text || noGO}
           >
             Create
           </button>
