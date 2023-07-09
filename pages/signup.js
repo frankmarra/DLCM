@@ -80,7 +80,10 @@ const Signup = () => {
     if (firstSlugCheck == false) {
       setFirstSlugCheck(true)
     }
-
+    if (sluggedName.length == 0) {
+      setNamesTaken({ color: "red", message: "User must have a slug" })
+      setNoGO(true)
+    }
     if (sluggedName.length > 0) {
       setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase

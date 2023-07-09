@@ -63,6 +63,10 @@ export default function UpdateRelease({
 
   const checkName = async (e) => {
     e.preventDefault()
+    if (sluggedName.length == 0) {
+      setNamesTaken({ color: "red", message: "Release must have a slug" })
+      setNoGO(true)
+    }
     if (sluggedName.length > 0) {
       if (firstSlugCheck == false) {
         setFirstSlugCheck(true)
@@ -410,6 +414,7 @@ export default function UpdateRelease({
               data-variant="primary"
               onClick={updateRelease}
               style={{ marginInlineEnd: "1em" }}
+              disabled={sluggedName.length == 0}
             >
               Update
             </button>
