@@ -33,7 +33,9 @@ export default function UpdateRelease({
   const user = useUser()
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState(release.title)
-  const [sluggedName, setSluggedName] = useState(slugify(release.title))
+  const [sluggedName, setSluggedName] = useState(
+    release.release_slug ?? slugify(release.title)
+  )
   const [namesTaken, setNamesTaken] = useState({
     color: "transparent",
     message: "",
