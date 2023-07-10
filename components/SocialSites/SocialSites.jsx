@@ -31,6 +31,9 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
               {sites.bandcamp ? (
                 <li className="bandcamp">
                   <a href={`${sites.bandcamp}`}>
+                    <span className="visually-hidden">
+                      Visit profile on Bandcamp
+                    </span>
                     <FontAwesomeIcon
                       icon={faBandcamp}
                       size={iconSize}
@@ -42,6 +45,9 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
               {sites.apple ? (
                 <li className="apple">
                   <a href={`${sites.apple}`}>
+                    <span className="visually-hidden">
+                      Listen on Apple Music
+                    </span>
                     <FontAwesomeIcon
                       icon={faItunesNote}
                       size={iconSize}
@@ -53,6 +59,7 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
               {sites.spotify ? (
                 <li className="spotify">
                   <a href={`${sites.spotify}`}>
+                    <span className="visually-hidden">Listen on Spotify</span>
                     <FontAwesomeIcon
                       icon={faSpotify}
                       size={iconSize}
@@ -64,6 +71,9 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
               {sites.soundcloud ? (
                 <li className="soundcloud">
                   <a href={`${sites.soundcloud}`}>
+                    <span className="visually-hidden">
+                      Listen on Soundcloud
+                    </span>
                     <FontAwesomeIcon
                       icon={faSoundcloud}
                       size={iconSize}
@@ -75,6 +85,7 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
               {sites.youtube ? (
                 <li className="youtube">
                   <a href={`${sites.youtube}`}>
+                    <span className="visually-hidden">Watch on YouTube</span>
                     <FontAwesomeIcon
                       icon={faYoutube}
                       size={iconSize}
