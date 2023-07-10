@@ -6,3 +6,7 @@
 .block-resize {
   resize: vertical;
 }
+
+.visually-hidden {
+  display: none;
+}
