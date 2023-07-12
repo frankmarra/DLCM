@@ -11,7 +11,7 @@ export default function Terms() {
   return (
     <>
       <Head>
-        <title>Terms and Conditions</title>
+        <title>{"Terms and Conditions"}</title>
         <meta property="og:title" content="Terms and Conditions" key="title" />
         <meta
           property="og:description"

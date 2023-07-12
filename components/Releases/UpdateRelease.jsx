@@ -61,6 +61,30 @@ export default function UpdateRelease({
     youtube: release.sites.youtube ? release.sites.youtube : null,
   })
 
+  const resetForm = () => {
+    setTitle(release.title)
+    setSluggedName(release.release_slug ?? slugify(release.title))
+    setFirstSlugCheck(false)
+    setNoGO(true)
+    setArtworkUrl(release.artwork_url)
+    setPagePassword(release.page_password)
+    setIsPasswordProtected(release.is_password_protected)
+    setType(release.type)
+    setNewImagePath()
+    setIsActive(release.is_active)
+    setNamesTaken({
+      color: "transparent",
+      message: "",
+    })
+    setSites({
+      apple: release.sites.apple ? release.sites.apple : null,
+      spotify: release.sites.spotify ? release.sites.spotify : null,
+      bandcamp: release.sites.bandcamp ? release.sites.bandcamp : null,
+      soundcloud: release.sites.soundcloud ? release.sites.soundcloud : null,
+      youtube: release.sites.youtube ? release.sites.youtube : null,
+    })
+  }
+
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
@@ -133,6 +157,7 @@ export default function UpdateRelease({
       getReleases()
       setShowReleaseUpdateView(false)
       alert("Release updated!")
+      resetForm()
       setOpen(false)
     }
   }
@@ -148,6 +173,7 @@ export default function UpdateRelease({
         throw error
       }
     }
+    resetForm()
     setOpen(false)
   }
 

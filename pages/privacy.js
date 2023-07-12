@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
   return (
     <>
       <Head>
-        <title>Sign up to DLCM</title>
+        <title>{"Sign up to DLCM"}</title>
         <meta property="og:title" content="Sign up to DLCM" key="title" />
         <meta
           property="og:description"

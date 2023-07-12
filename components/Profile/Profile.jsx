@@ -73,7 +73,7 @@ export default function ProfileLayout({
   return (
     <>
       <Head>
-        <title>{name}&apos;s public profile</title>
+        <title>{`${name}'s public profile`}</title>
         <meta
           property="og:title"
           content={`${name}'s public profile`}

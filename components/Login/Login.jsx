@@ -28,7 +28,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Log in to DLCM</title>
+        <title>{"Log in to DLCM"}</title>
         <meta property="og:title" content="Log in to DLCM" key="title" />
         <meta
           property="og:description"
