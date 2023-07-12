@@ -23,7 +23,7 @@ export default function RequestPasswordReset() {
   return (
     <>
       <Head>
-        <title>Password reset</title>
+        <title>{"Password reset"}</title>
         <meta
           property="og:title"
           content="Request a password reset"

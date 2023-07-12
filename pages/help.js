@@ -8,7 +8,7 @@ export default function Help() {
   return (
     <>
       <Head>
-        <title>DLCM FAQs</title>
+        <title>{"DLCM FAQs"}</title>
         <meta property="og:title" content="DLCM FAQs" key="title" />
         <meta
           property="og:description"

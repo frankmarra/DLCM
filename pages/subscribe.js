@@ -8,7 +8,7 @@ export default function Subscribe() {
   return (
     <>
       <Head>
-        <title>Subscribe to DLCM</title>
+        <title>{"Subscribe to DLCM"}</title>
         <meta property="og:title" content="Subscribe to DLCM" key="title" />
         <meta
           property="og:description"

@@ -52,7 +52,7 @@ export default function ResetPassword() {
   return (
     <>
       <Head>
-        <title>Update your password</title>
+        <title>{"Update your password"}</title>
         <meta property="og:title" content="Update your password" key="title" />
         <meta
           property="og:description"

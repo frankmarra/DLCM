@@ -58,6 +58,30 @@ export default function CreateRelease({
     youtube: null,
   })
 
+  const resetForm = () => {
+    setTitle()
+    setSluggedName("")
+    setFirstSlugCheck(false)
+    setNoGO(true)
+    setArtworkUrl()
+    setPagePassword()
+    setIsPasswordProtected(false)
+    setType(releaseTypes[5].text)
+    setNewImagePath()
+    setIsActive(true)
+    setNamesTaken({
+      color: "transparent",
+      message: "",
+    })
+    setSites({
+      apple: null,
+      spotify: null,
+      bandcamp: null,
+      soundcloud: null,
+      youtube: null,
+    })
+  }
+
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
@@ -124,8 +148,8 @@ export default function CreateRelease({
     } catch (error) {
       alert("Error creating new release!")
     } finally {
-      console.log("All done!")
       setAddedNewRelease(true)
+      resetForm()
       setOpen(false)
     }
   }
@@ -141,6 +165,7 @@ export default function CreateRelease({
         throw error
       }
     }
+    resetForm()
     setOpen(false)
   }
 
