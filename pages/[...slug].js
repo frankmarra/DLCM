@@ -45,6 +45,7 @@ export default function ProfilePage({ profile, params }) {
         release={album}
         isSubscribed={profile.is_subscribed}
         isDlcmFriend={profile.dlcm_friend}
+        profileYumLink={profile.yum_url}
       />
     ) : (
       <div>No Release Found</div>

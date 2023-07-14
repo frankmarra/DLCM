@@ -5,7 +5,12 @@ import styles from "./ReleaseLayout.module.css"
 import cn from "classnames"
 import Head from "next/head"
 
-export default function ReleaseLayout({ release, isSubscribed, isDlcmFriend }) {
+export default function ReleaseLayout({
+  release,
+  isSubscribed,
+  isDlcmFriend,
+  profileYumLink,
+}) {
   const [password, setPassword] = useState()
   const [authorized, setAuthorized] = useState(
     release.is_password_protected ? false : true
@@ -103,7 +108,10 @@ export default function ReleaseLayout({ release, isSubscribed, isDlcmFriend }) {
             </form>
           ) : (
             <div className={styles.codes}>
-              <CodeGenerator release={release} />
+              <CodeGenerator
+                release={release}
+                profileYumLink={profileYumLink}
+              />
             </div>
           )}
         </div>

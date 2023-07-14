@@ -3,7 +3,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import styles from "./CodeGenerator.module.css"
 import cn from "classnames"
 
-export default function CodeGenerator({ release }) {
+export default function CodeGenerator({ release, profileYumLink }) {
   const supabase = useSupabaseClient()
   const [activeCodes, setActiveCodes] = useState([])
   const [code, setCode] = useState()
@@ -68,12 +68,21 @@ export default function CodeGenerator({ release }) {
               Copy Code
             </button>
           )}
-          <a
-            href={`${release.yum_url}?code=${code.code}`}
-            style={{ fontSize: 20, fontWeight: 600 }}
-          >
-            Redeem
-          </a>
+          {release.yum_url ? (
+            <a
+              href={`${release.yum_url}?code=${code.code}`}
+              style={{ fontSize: 20, fontWeight: 600 }}
+            >
+              Redeem
+            </a>
+          ) : (
+            <a
+              href={`${profileYumLink}?code=${code.code}`}
+              style={{ fontSize: 20, fontWeight: 600 }}
+            >
+              Redeem
+            </a>
+          )}
         </>
       ) : (
         <button
