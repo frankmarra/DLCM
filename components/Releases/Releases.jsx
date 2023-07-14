@@ -8,26 +8,6 @@ import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Link from "next/link"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
 
-// const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
-// const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
-
-// const filterOptions = [
-//   {
-//     label: "Oldest First",
-//     value: "oldest",
-//     method: sortByCreatedAt,
-//     direction: "asc",
-//   },
-//   {
-//     label: "Newest First",
-//     value: "newest",
-//     method: sortByCreatedAt,
-//     direction: "desc",
-//   },
-//   { label: "A to Z", value: "a-z", method: sortByTitle, direction: "asc" },
-//   { label: "Z to A", value: "z-a", method: sortByTitle, direction: "desc" },
-// ]
-
 export default function Releases({ profileData }) {
   const supabase = useSupabaseClient()
   const user = useUser()
