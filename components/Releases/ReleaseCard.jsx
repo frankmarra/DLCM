@@ -34,16 +34,14 @@ export default function ReleaseCard({
     <div className={styles.component}>
       <div className={styles.content}>
         {artwork ? (
-          <Link href={`/${profileSlug}/${release.release_slug}`}>
-            <img
-              className={styles.image}
-              src={artwork != "     " ? artwork : "/DLCM_Default_Image.png"}
-              alt={release.title}
-              height={250}
-              width={250}
-              onError={() => setArtwork("/DLCM_Default_Image.png")}
-            />
-          </Link>
+          <img
+            className={styles.image}
+            src={artwork != "     " ? artwork : "/DLCM_Default_Image.png"}
+            alt={release.title}
+            height={250}
+            width={250}
+            onError={() => setArtwork("/DLCM_Default_Image.png")}
+          />
         ) : (
           <div className={styles.image}>
             <IconMusicNotes aria-hidden="true" />
@@ -51,11 +49,7 @@ export default function ReleaseCard({
         )}
         <div className={styles.details}>
           <div>
-            <h3 className={styles.title}>
-              <Link href={`/${profileSlug}/${release.release_slug}`}>
-                {release.title}
-              </Link>
-            </h3>
+            <h3 className={styles.title}>{release.title}</h3>
             <div className={styles.artist}>{release.artist}</div>
             <div className={styles.label}>{release.label}</div>
             <div className={styles.type}>

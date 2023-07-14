@@ -69,7 +69,7 @@ export default function CodeGenerator({ release }) {
             </button>
           )}
           <a
-            href={`${release.yum_url}`}
+            href={`${release.yum_url}?code=${code.code}`}
             style={{ fontSize: 20, fontWeight: 600 }}
           >
             Redeem
