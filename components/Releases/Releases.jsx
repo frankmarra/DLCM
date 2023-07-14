@@ -6,26 +6,7 @@ import styles from "./Releases.module.css"
 import cn from "classnames"
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Link from "next/link"
-
-const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
-const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
-
-const filterOptions = [
-  {
-    label: "Oldest First",
-    value: "oldest",
-    method: sortByCreatedAt,
-    direction: "asc",
-  },
-  {
-    label: "Newest First",
-    value: "newest",
-    method: sortByCreatedAt,
-    direction: "desc",
-  },
-  { label: "A to Z", value: "a-z", method: sortByTitle, direction: "asc" },
-  { label: "Z to A", value: "z-a", method: sortByTitle, direction: "desc" },
-]
+import ReleaseSort from "../ReleaseSort/ReleaseSort"
 
 export default function Releases({ profileData }) {
   const supabase = useSupabaseClient()
@@ -33,24 +14,12 @@ export default function Releases({ profileData }) {
   const [releases, setReleases] = useState([])
   const [allowNew, setAllowNew] = useState(true)
   const [addedNewRelease, setAddedNewRelease] = useState(false)
+  const [sortedReleases, setSortedReleases] = useState(releases ?? [])
 
   useEffect(() => {
     getReleases()
     setAddedNewRelease(false)
   }, [supabase, profileData.id, addedNewRelease])
-
-  const handleSort = (value) => {
-    const selected = filterOptions.find((option) => option.value === value)
-    let sortedItems
-
-    sortedItems = [...releases].sort(selected.method)
-
-    if (selected.direction === "desc") {
-      sortedItems.reverse()
-    }
-
-    setReleases(sortedItems)
-  }
 
   async function getReleases() {
     try {
@@ -79,23 +48,10 @@ export default function Releases({ profileData }) {
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
         {profileData.is_subscribed || profileData.dlcm_friend ? (
-          <div className={styles.filter}>
-            <label className="label" htmlFor="order">
-              Order
-            </label>
-
-            <select
-              className="input select"
-              id="order"
-              onChange={(e) => handleSort(e.target.value)}
-            >
-              {filterOptions.map(({ label, value }) => (
-                <option value={value} key={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <ReleaseSort
+            releases={releases}
+            setSortedReleases={setSortedReleases}
+          />
         ) : null}
         {profileData.is_subscribed || profileData.dlcm_friend ? (
           <CreateRelease
@@ -126,20 +82,35 @@ export default function Releases({ profileData }) {
       <ul className="grid" role="list">
         {releases.length ? (
           <>
-            {releases.map((release, index) =>
-              profileData.is_subscribed ||
-              profileData.dlcm_friend ||
-              index <= 1 ? (
-                <ReleaseCard
-                  key={release.id}
-                  release={release}
-                  user={user}
-                  getReleases={getReleases}
-                  profileData={profileData}
-                  profileSlug={user.user_metadata.slug}
-                />
-              ) : null
-            )}
+            {sortedReleases.length
+              ? sortedReleases.map((release, index) =>
+                  profileData.is_subscribed ||
+                  profileData.dlcm_friend ||
+                  index <= 1 ? (
+                    <ReleaseCard
+                      key={release.id}
+                      release={release}
+                      user={user}
+                      getReleases={getReleases}
+                      profileData={profileData}
+                      profileSlug={user.user_metadata.slug}
+                    />
+                  ) : null
+                )
+              : releases.map((release, index) =>
+                  profileData.is_subscribed ||
+                  profileData.dlcm_friend ||
+                  index <= 1 ? (
+                    <ReleaseCard
+                      key={release.id}
+                      release={release}
+                      user={user}
+                      getReleases={getReleases}
+                      profileData={profileData}
+                      profileSlug={user.user_metadata.slug}
+                    />
+                  ) : null
+                )}
             <li
               className={cn(styles.actionCard, "container")}
               data-variant="empty"
