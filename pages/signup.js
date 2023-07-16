@@ -181,9 +181,10 @@ const Signup = () => {
             )}
             <br />
             <p>
-              Thank you for signing up! Please sign in to access your dashboard.
+              Thank you for signing up! Please verify your email address to
+              finish the signup process. Make sure to check your spam if you do
+              not see the email in your inbox.
             </p>
-            <Link href="/">Sign In</Link>
           </div>
         ) : (
           <div>
