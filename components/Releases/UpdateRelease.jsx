@@ -26,7 +26,7 @@ const releaseTypes = [
 export default function UpdateRelease({
   release,
   setShowReleaseUpdateView,
-  getReleases,
+  getProfile,
   profileData,
 }) {
   const supabase = useSupabaseClient()
@@ -154,7 +154,7 @@ export default function UpdateRelease({
       alert("Error updating the data!")
       console.log(error)
     } finally {
-      getReleases()
+      getProfile()
       setShowReleaseUpdateView(false)
       alert("Release updated!")
       resetForm()

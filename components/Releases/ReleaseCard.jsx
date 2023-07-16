@@ -13,7 +13,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react"
 export default function ReleaseCard({
   release,
   user,
-  getReleases,
+  getProfile,
   profileData,
   profileSlug,
 }) {
@@ -25,7 +25,7 @@ export default function ReleaseCard({
 
   useEffect(() => {
     if (onCodeAdded) {
-      getReleases()
+      getProfile()
       setOnCodeAdded(false)
     }
   }, [onCodeAdded])
@@ -74,7 +74,7 @@ export default function ReleaseCard({
             <UpdateRelease
               setShowReleaseUpdateView={setShowReleaseUpdateView}
               release={release}
-              getReleases={getReleases}
+              getReleases={getProfile}
               profileData={profileData}
             />
             <AddCodes
