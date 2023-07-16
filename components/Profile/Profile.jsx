@@ -6,6 +6,7 @@ import { useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
+import Pagination from "../Pagination/Pagination"
 
 export default function ProfileLayout({
   avatar,
@@ -27,6 +28,12 @@ export default function ProfileLayout({
   )
   const [showError, setShowError] = useState(false)
   const [sortedReleases, setSortedReleases] = useState(releases)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [releasesPerPage, setReleasesPerPage] = useState(10)
+  const pages = Math.ceil(releases.length / releasesPerPage)
+  const lastRelease = currentPage * releasesPerPage
+  const firstRelease = lastRelease - releasesPerPage
+  const currentReleases = sortedReleases.slice(firstRelease, lastRelease)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -125,8 +132,9 @@ export default function ProfileLayout({
                 setSortedReleases={setSortedReleases}
               />
             ) : null}
+
             <ul className="grid" role="list">
-              {sortedReleases.map((release, index) =>
+              {currentReleases.map((release, index) =>
                 release.is_active ? (
                   <li key={index}>
                     <Link
@@ -147,6 +155,13 @@ export default function ProfileLayout({
                 ) : null
               )}
             </ul>
+            <div className={styles.pagination}>
+              <Pagination
+                pages={pages}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </div>
           </>
         )}
       </>

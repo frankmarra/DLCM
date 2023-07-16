@@ -50,6 +50,11 @@
   margin-inline-start: 1em;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
 @media screen and (max-width: 480px) {
   .profile {
     flex-direction: column;

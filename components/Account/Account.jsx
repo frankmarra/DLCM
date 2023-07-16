@@ -25,8 +25,10 @@ export default function Account({ session }) {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`*`)
+        .select("*, releases(*, codes(*))")
         .eq("id", user.id)
+        .eq("releases.codes.redeemed", false)
+        .order("created_at", { foreignTable: "releases", ascending: true })
         .single()
 
       if (error && status !== 406) {
@@ -122,7 +124,7 @@ export default function Account({ session }) {
         </div>
       </article>
 
-      <Releases profileData={profileData} />
+      <Releases profileData={profileData} getProfile={getProfile} />
     </>
   )
 }

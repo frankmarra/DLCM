@@ -28,3 +28,8 @@
 .filter select {
   margin-inline-start: 1em;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}

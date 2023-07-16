@@ -7,52 +7,63 @@ import cn from "classnames"
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Link from "next/link"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
+import Pagination from "../Pagination/Pagination"
 
-export default function Releases({ profileData }) {
+export default function Releases({ profileData, getProfile }) {
   const supabase = useSupabaseClient()
   const user = useUser()
-  const [releases, setReleases] = useState([])
+  const [releases, setReleases] = useState(profileData.releases)
   const [allowNew, setAllowNew] = useState(true)
   const [addedNewRelease, setAddedNewRelease] = useState(false)
-  const [sortedReleases, setSortedReleases] = useState(releases ?? [])
+  const [sortedReleases, setSortedReleases] = useState(profileData.releases)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [releasesPerPage, setReleasesPerPage] = useState(10)
+  const pages = Math.ceil(releases?.length / releasesPerPage)
+  const lastRelease = currentPage * releasesPerPage
+  const firstRelease = lastRelease - releasesPerPage
+  const currentReleases = sortedReleases.slice(firstRelease, lastRelease)
 
   useEffect(() => {
-    getReleases()
-    setAddedNewRelease(false)
+    if (addedNewRelease == true) {
+      getProfile()
+      setAddedNewRelease(false)
+    }
   }, [supabase, profileData.id, addedNewRelease])
 
-  async function getReleases() {
-    try {
-      let { data, error } = await supabase
-        .from("releases")
-        .select("*, codes (*)")
-        .eq("user_id", profileData.id)
-        .eq("codes.redeemed", "false")
-        .order("created_at", { ascending: true })
+  // async function getReleases() {
+  //   try {
+  //     let { data, error } = await supabase
+  //       .from("releases")
+  //       .select("*, codes (*)")
+  //       .eq("user_id", profileData.id)
+  //       .eq("codes.redeemed", "false")
+  //       .order("created_at", { ascending: true })
 
-      if (error) {
-        throw error
-      }
+  //     if (error) {
+  //       throw error
+  //     }
 
-      if (data) {
-        setReleases(data)
-      }
-    } catch (error) {
-      alert("Error loading user releases!")
-      console.log(error)
-    }
-  }
+  //     if (data) {
+  //       setReleases(data)
+  //     }
+  //   } catch (error) {
+  //     alert("Error loading user releases!")
+  //     console.log(error)
+  //   }
+  // }
 
   return (
     <article className="stack">
       <header className="article-heading inline-wrap">
         <h2>Releases</h2>
+
         {profileData.is_subscribed || profileData.dlcm_friend ? (
           <ReleaseSort
             releases={releases}
             setSortedReleases={setSortedReleases}
           />
         ) : null}
+
         {profileData.is_subscribed || profileData.dlcm_friend ? (
           <CreateRelease
             setAddedNewRelease={setAddedNewRelease}
@@ -82,35 +93,49 @@ export default function Releases({ profileData }) {
       <ul className="grid" role="list">
         {releases.length ? (
           <>
-            {sortedReleases.length
-              ? sortedReleases.map((release, index) =>
-                  profileData.is_subscribed ||
-                  profileData.dlcm_friend ||
-                  index <= 1 ? (
-                    <ReleaseCard
-                      key={release.id}
-                      release={release}
-                      user={user}
-                      getReleases={getReleases}
-                      profileData={profileData}
-                      profileSlug={user.user_metadata.slug}
-                    />
-                  ) : null
-                )
+            {currentReleases.map((release, index) => (
+              <li key={index}>
+                <ReleaseCard
+                  key={release.id}
+                  release={release}
+                  user={user}
+                  getProfile={getProfile}
+                  profileData={profileData}
+                  profileSlug={user.user_metadata.slug}
+                />
+              </li>
+            ))}
+            {/* 
+          {sortedReleases.length
+            ? sortedReleases.map((release, index) =>
+            profileData.is_subscribed ||
+            profileData.dlcm_friend ||
+            index <= 1 ? (
+              <ReleaseCard
+              key={release.id}
+              release={release}
+              user={user}
+              getReleases={getReleases}
+              profileData={profileData}
+              profileSlug={user.user_metadata.slug}
+              />
+              ) : null
+              )
               : releases.map((release, index) =>
-                  profileData.is_subscribed ||
-                  profileData.dlcm_friend ||
-                  index <= 1 ? (
-                    <ReleaseCard
-                      key={release.id}
-                      release={release}
-                      user={user}
-                      getReleases={getReleases}
-                      profileData={profileData}
-                      profileSlug={user.user_metadata.slug}
-                    />
-                  ) : null
+              profileData.is_subscribed ||
+              profileData.dlcm_friend ||
+              index <= 1 ? (
+                <ReleaseCard
+                key={release.id}
+                release={release}
+                user={user}
+                getReleases={getReleases}
+                profileData={profileData}
+                profileSlug={user.user_metadata.slug}
+                />
+                ) : null
                 )}
+              */}
             <li
               className={cn(styles.actionCard, "container")}
               data-variant="empty"
@@ -144,6 +169,13 @@ export default function Releases({ profileData }) {
           </div>
         )}
       </ul>
+      <div className={styles.pagination}>
+        <Pagination
+          pages={pages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
     </article>
   )
 }
