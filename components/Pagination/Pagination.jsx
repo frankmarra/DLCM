@@ -23,7 +23,7 @@ export default function Pagination({ pages, currentPage, setCurrentPage }) {
         {pageNumbers.map((number) => (
           <li
             key={number}
-            className={cn(`${currentPage == number ? "primary" : ""}`)}
+            className={cn(`${currentPage == number ? styles.active : ""}`)}
           >
             <a
               onClick={() => setCurrentPage(number)}
@@ -52,22 +52,22 @@ export default function Pagination({ pages, currentPage, setCurrentPage }) {
       </li>
       {currentPage <= 3 ? (
         <>
-          <li>
+          <li className={currentPage == 1 ? styles.active : ""}>
             <a onClick={() => setCurrentPage(1)} href="#">
               1
             </a>
           </li>
-          <li>
+          <li className={currentPage == 2 ? styles.active : ""}>
             <a onClick={() => setCurrentPage(2)} href="#">
               2
             </a>
           </li>
-          <li>
+          <li className={currentPage == 3 ? styles.active : ""}>
             <a onClick={() => setCurrentPage(3)} href="#">
               3
             </a>
           </li>
-          <li>
+          <li className={currentPage == 4 ? styles.active : ""}>
             <a onClick={() => setCurrentPage(4)} href="#">
               4
             </a>
@@ -78,7 +78,7 @@ export default function Pagination({ pages, currentPage, setCurrentPage }) {
           </li>
         </>
       ) : null}
-      {currentPage >= 4 && currentPage <= pages - 4 ? (
+      {currentPage >= 4 && currentPage <= pages - 3 ? (
         <>
           <li>
             <a onClick={() => setCurrentPage(1)} href="#">
@@ -91,7 +91,7 @@ export default function Pagination({ pages, currentPage, setCurrentPage }) {
               {currentPage - 1}
             </a>
           </li>
-          <li>{currentPage}</li>
+          <li className={styles.active}>{currentPage}</li>
           <li>
             <a onClick={nextPage} href="#">
               {currentPage + 1}
@@ -105,28 +105,29 @@ export default function Pagination({ pages, currentPage, setCurrentPage }) {
           </li>
         </>
       ) : null}
-      {currentPage >= pages - 3 ? (
+      {currentPage >= pages - 2 ? (
         <>
           <li>
             <a onClick={() => setCurrentPage(1)}>1</a>
           </li>
           <li>...</li>
-          <li>
-            <a onClick={() => setCurrentPage(pages - 4)} href="#">
-              {pages - 4}
-            </a>
-          </li>
-          <li>
+
+          <li className={currentPage == pages - 3 ? styles.active : ""}>
             <a onClick={() => setCurrentPage(pages - 3)} href="#">
               {pages - 3}
             </a>
           </li>
-          <li>
+          <li className={currentPage == pages - 2 ? styles.active : ""}>
             <a onClick={() => setCurrentPage(pages - 2)} href="#">
               {pages - 2}
             </a>
           </li>
-          <li>
+          <li className={currentPage == pages - 1 ? styles.active : ""}>
+            <a onClick={() => setCurrentPage(pages - 1)} href="#">
+              {pages - 1}
+            </a>
+          </li>
+          <li className={currentPage == pages ? styles.active : ""}>
             <a onClick={() => setCurrentPage(pages)} href="#">
               {pages}
             </a>
