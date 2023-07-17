@@ -8,6 +8,7 @@ export async function getServerSideProps({ params }) {
     .select("*, releases(*, codes(*))")
     .eq("slug", params.slug[0])
     .eq("releases.codes.redeemed", false)
+    .eq("releases.is_active", true)
     .order("created_at", { foreignTable: "releases", ascending: true })
     .single()
 
