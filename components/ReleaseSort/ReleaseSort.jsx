@@ -6,6 +6,8 @@ export default function ReleaseSort({ filteredReleases, setSortedReleases }) {
   const [sortBy, setSortBy] = useState("oldest")
   const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
   const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
+  const sortByArtist = (a, b) =>
+    a.artist.toLowerCase() > b.artist.toLowerCase() ? 1 : -1
 
   const sortOptions = [
     {
@@ -20,8 +22,30 @@ export default function ReleaseSort({ filteredReleases, setSortedReleases }) {
       method: sortByCreatedAt,
       direction: "desc",
     },
-    { label: "A to Z", value: "a-z", method: sortByTitle, direction: "asc" },
-    { label: "Z to A", value: "z-a", method: sortByTitle, direction: "desc" },
+    {
+      label: "A to Z (release)",
+      value: "a-z (release)",
+      method: sortByTitle,
+      direction: "asc",
+    },
+    {
+      label: "Z to A (release)",
+      value: "z-a (release)",
+      method: sortByTitle,
+      direction: "desc",
+    },
+    {
+      label: "A to Z (artist)",
+      value: "a-z (artist)",
+      method: sortByArtist,
+      direction: "asc",
+    },
+    {
+      label: "Z to A (artist)",
+      value: "z-a (artist)",
+      method: sortByArtist,
+      direction: "desc",
+    },
   ]
 
   useEffect(() => {
@@ -29,7 +53,7 @@ export default function ReleaseSort({ filteredReleases, setSortedReleases }) {
   }, [sortBy, filteredReleases])
 
   const handleSort = () => {
-    const selected = sortOptions.find((option) => option.value === sortBy)
+    const selected = sortOptions.find((option) => option.value == sortBy)
     let sortedItems
 
     sortedItems = [...filteredReleases].sort(selected.method)

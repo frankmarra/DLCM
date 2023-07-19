@@ -145,17 +145,19 @@ export default function ProfileLayout({
         ) : (
           <>
             {isSubscribed || isDlcmFriend ? (
-              <>
-                <ReleaseFilter
-                  releases={releases}
-                  setFilteredReleases={setFilteredReleases}
-                  artistList={artistList}
-                />
+              <div className={styles.sort}>
+                {artistList.length > 1 ? (
+                  <ReleaseFilter
+                    releases={releases}
+                    setFilteredReleases={setFilteredReleases}
+                    artistList={artistList}
+                  />
+                ) : null}
                 <ReleaseSort
                   filteredReleases={filteredReleases}
                   setSortedReleases={setSortedReleases}
                 />
-              </>
+              </div>
             ) : null}
 
             <ul className="grid" role="list">

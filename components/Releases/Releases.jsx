@@ -7,6 +7,7 @@ import cn from "classnames"
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Link from "next/link"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
+import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import Pagination from "../Pagination/Pagination"
 
 export default function Releases({ profileData, getProfile }) {
@@ -15,7 +16,9 @@ export default function Releases({ profileData, getProfile }) {
   const [releases, setReleases] = useState(profileData.releases)
   const [allowNew, setAllowNew] = useState(true)
   const [addedNewRelease, setAddedNewRelease] = useState(false)
-  const [sortedReleases, setSortedReleases] = useState(profileData.releases)
+  const [filteredReleases, setFilteredReleases] = useState(releases)
+  const [sortedReleases, setSortedReleases] = useState(filteredReleases)
+  const [artistList, setArtistList] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [releasesPerPage, setReleasesPerPage] = useState(10)
   const pages = Math.ceil(releases?.length / releasesPerPage)
@@ -30,27 +33,20 @@ export default function Releases({ profileData, getProfile }) {
     }
   }, [supabase, profileData.id, addedNewRelease])
 
-  // async function getReleases() {
-  //   try {
-  //     let { data, error } = await supabase
-  //       .from("releases")
-  //       .select("*, codes (*)")
-  //       .eq("user_id", profileData.id)
-  //       .eq("codes.redeemed", "false")
-  //       .order("created_at", { ascending: true })
+  useEffect(() => {
+    let artists = []
+    releases.forEach((release) => {
+      if (!artists.some(({ value }) => value === release.artist)) {
+        artists.push({ value: release.artist, label: release.artist })
+      }
+    })
 
-  //     if (error) {
-  //       throw error
-  //     }
-
-  //     if (data) {
-  //       setReleases(data)
-  //     }
-  //   } catch (error) {
-  //     alert("Error loading user releases!")
-  //     console.log(error)
-  //   }
-  // }
+    setArtistList(
+      artists.sort((a, b) =>
+        a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
+      )
+    )
+  }, [releases])
 
   return (
     <article className="stack">
@@ -58,10 +54,19 @@ export default function Releases({ profileData, getProfile }) {
         <h2>Releases</h2>
 
         {profileData.is_subscribed || profileData.dlcm_friend ? (
-          <ReleaseSort
-            releases={releases}
-            setSortedReleases={setSortedReleases}
-          />
+          <>
+            {artistList.length > 1 ? (
+              <ReleaseFilter
+                releases={releases}
+                setFilteredReleases={setFilteredReleases}
+                artistList={artistList}
+              />
+            ) : null}
+            <ReleaseSort
+              filteredReleases={filteredReleases}
+              setSortedReleases={setSortedReleases}
+            />
+          </>
         ) : null}
 
         {profileData.is_subscribed || profileData.dlcm_friend ? (
@@ -105,37 +110,7 @@ export default function Releases({ profileData, getProfile }) {
                 />
               </li>
             ))}
-            {/* 
-          {sortedReleases.length
-            ? sortedReleases.map((release, index) =>
-            profileData.is_subscribed ||
-            profileData.dlcm_friend ||
-            index <= 1 ? (
-              <ReleaseCard
-              key={release.id}
-              release={release}
-              user={user}
-              getReleases={getReleases}
-              profileData={profileData}
-              profileSlug={user.user_metadata.slug}
-              />
-              ) : null
-              )
-              : releases.map((release, index) =>
-              profileData.is_subscribed ||
-              profileData.dlcm_friend ||
-              index <= 1 ? (
-                <ReleaseCard
-                key={release.id}
-                release={release}
-                user={user}
-                getReleases={getReleases}
-                profileData={profileData}
-                profileSlug={user.user_metadata.slug}
-                />
-                ) : null
-                )}
-              */}
+
             <li
               className={cn(styles.actionCard, "container")}
               data-variant="empty"

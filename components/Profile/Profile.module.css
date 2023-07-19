@@ -55,6 +55,10 @@
   justify-content: center;
 }
 
+.sort {
+  display: flex;
+  justify-content: space-between;
+}
 @media screen and (max-width: 480px) {
   .profile {
     flex-direction: column;
