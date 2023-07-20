@@ -25,7 +25,7 @@ export default function Account({ session }) {
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select("*, releases(*, codes(*))")
+        .select("*, releases(*, codes(count))")
         .eq("id", user.id)
         .eq("releases.codes.redeemed", false)
         .order("created_at", { foreignTable: "releases", ascending: true })

@@ -5,22 +5,24 @@ import cn from "classnames"
 
 export default function CodeGenerator({ release, profileYumLink }) {
   const supabase = useSupabaseClient()
+  const [loading, setLoading] = useState(true)
   const [activeCodes, setActiveCodes] = useState([])
   const [code, setCode] = useState()
   const [copiedToClipboard, setCopiedToClipboard] = useState(false)
 
   useEffect(() => {
     getActiveCodes()
+    setLoading(false)
   }, [])
 
-  function getActiveCodes() {
-    let codeCheck = []
-    release.codes.forEach((code) => {
-      if (code.redeemed == false) {
-        codeCheck.push(code)
-      }
-    })
-    setActiveCodes(codeCheck)
+  async function getActiveCodes() {
+    let { data: codes, error } = await supabase
+      .from("codes")
+      .select("*")
+      .eq("release_id", release.id)
+      .eq("redeemed", false)
+
+    setActiveCodes(codes)
   }
 
   async function getRandomCode() {

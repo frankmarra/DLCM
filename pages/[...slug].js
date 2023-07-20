@@ -5,7 +5,7 @@ import ReleaseLayout from "@/components/Releases/ReleaseLayout"
 export async function getServerSideProps({ params }) {
   let { data: profile, error } = await supabase
     .from("profiles")
-    .select("*, releases(*, codes(*))")
+    .select("*, releases(*, codes(count))")
     .eq("slug", params.slug[0])
     .eq("releases.codes.redeemed", false)
     .eq("releases.is_active", true)

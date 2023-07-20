@@ -59,11 +59,11 @@ export default function ReleaseCard({
           <div
             className={cn(
               styles.codes,
-              release.codes.length <= 0 && styles.empty
+              release.codes[0].count <= 0 && styles.empty
             )}
           >
             <IconDownload aria-label="Available download codes" />
-            {release.codes.length}{" "}
+            {release.codes[0].count}{" "}
             <small style={{ fontWeight: "normal" }}>left</small>
           </div>
         </div>
