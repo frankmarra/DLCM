@@ -74,7 +74,7 @@ export default function ReleaseCard({
             <UpdateRelease
               setShowReleaseUpdateView={setShowReleaseUpdateView}
               release={release}
-              getReleases={getProfile}
+              getProfile={getProfile}
               profileData={profileData}
             />
             <AddCodes
