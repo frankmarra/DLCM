@@ -2,11 +2,12 @@ import ReleaseCard from "@/components/Releases/ReleaseCard"
 import styles from "./Profile.module.css"
 import cn from "classnames"
 import SocialSites from "../SocialSites/SocialSites"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
 import Pagination from "../Pagination/Pagination"
+import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 
 export default function ProfileLayout({
   avatar,
@@ -27,13 +28,30 @@ export default function ProfileLayout({
     isPasswordProtected ? false : true
   )
   const [showError, setShowError] = useState(false)
-  const [sortedReleases, setSortedReleases] = useState(releases)
+  const [filteredReleases, setFilteredReleases] = useState(releases)
+  const [sortedReleases, setSortedReleases] = useState(filteredReleases)
   const [currentPage, setCurrentPage] = useState(1)
   const [releasesPerPage, setReleasesPerPage] = useState(10)
-  const pages = Math.ceil(releases.length / releasesPerPage)
+  const pages = Math.ceil(sortedReleases.length / releasesPerPage)
   const lastRelease = currentPage * releasesPerPage
   const firstRelease = lastRelease - releasesPerPage
   const currentReleases = sortedReleases.slice(firstRelease, lastRelease)
+  const [artistList, setArtistList] = useState([])
+
+  useEffect(() => {
+    let artists = []
+    releases.forEach((release) => {
+      if (!artists.some(({ value }) => value === release.artist)) {
+        artists.push({ value: release.artist, label: release.artist })
+      }
+    })
+
+    setArtistList(
+      artists.sort((a, b) =>
+        a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
+      )
+    )
+  }, [releases])
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -127,10 +145,19 @@ export default function ProfileLayout({
         ) : (
           <>
             {isSubscribed || isDlcmFriend ? (
-              <ReleaseSort
-                releases={releases}
-                setSortedReleases={setSortedReleases}
-              />
+              <div className={styles.sort}>
+                {artistList.length > 1 ? (
+                  <ReleaseFilter
+                    releases={releases}
+                    setFilteredReleases={setFilteredReleases}
+                    artistList={artistList}
+                  />
+                ) : null}
+                <ReleaseSort
+                  filteredReleases={filteredReleases}
+                  setSortedReleases={setSortedReleases}
+                />
+              </div>
             ) : null}
 
             <ul className="grid" role="list">
