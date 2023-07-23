@@ -1,11 +1,10 @@
 import { Html, Head, Main, NextScript } from "next/document"
-import { clashDisplay, archivo } from "@/utils/fonts"
 import { setInitialTheme } from "@/utils/theme"
 import cn from "classnames"
 
 export default function Document() {
   return (
-    <Html lang="en" className={cn(clashDisplay.variable, archivo.variable)}>
+    <Html lang="en">
       <Head>
         <meta property="og:image" content="/DLCM_OG_IMAGE.png" />
         <link

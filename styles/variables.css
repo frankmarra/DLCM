@@ -70,8 +70,6 @@
 
 :where(html) {
   @mixin light-theme;
-  --font-heading: var(--font-clash-display), var(--font-sans);
-  --font-main: var(--font-archivo), var(--font-sans);
 
   /* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1400,18,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
   --font-size--1: clamp(0.8rem, calc(0.84rem + -0.06vw), 0.83rem);
