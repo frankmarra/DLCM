@@ -1,11 +1,15 @@
-import { useSession } from "@supabase/auth-helpers-react"
+import { useSessionContext } from "@supabase/auth-helpers-react"
 import Account from "@/components/Account/Account"
 import Login from "@/components/Login/Login"
 
 const Home = () => {
-  const session = useSession()
+  const { isLoading, session, error } = useSessionContext()
 
-  return !session ? <Login /> : <Account session={session} />
+  if (isLoading) {
+    return
+  }
+
+  return session ? <Account session={session} /> : <Login />
 }
 
 export default Home
