@@ -33,7 +33,11 @@ export default function Header() {
 
   return (
     <header className={cn(styles.header, "cluster")}>
-      <Link href="/" aria-label={user ? "Go to dashboard" : "Go to homepage"}>
+      <Link
+        className={styles.logo}
+        href="/"
+        aria-label={user ? "Go to dashboard" : "Go to homepage"}
+      >
         <BrandLogo />
       </Link>
       <button

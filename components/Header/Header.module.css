@@ -7,6 +7,10 @@
   border-block-end: var(--border);
 }
 
+.logo {
+  text-decoration: none;
+}
+
 .nav {
   display: flex;
   gap: var(--size-3);
