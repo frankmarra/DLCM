@@ -50,8 +50,8 @@ export default function Releases({ profileData, getProfile }) {
 
   return (
     <article className="stack">
-      <header className="article-heading inline-wrap">
-        <h2>Releases</h2>
+      <header className="article-heading cluster">
+        <h2 className="text-2">Releases</h2>
 
         {profileData.is_subscribed || profileData.dlcm_friend ? (
           <>

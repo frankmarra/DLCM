@@ -132,7 +132,7 @@ export default function AddCodes({
           ) : null}
         </div>
 
-        <footer className="button-actions inline-wrap">
+        <footer className="button-actions cluster">
           <button
             className="button"
             data-variant="primary"

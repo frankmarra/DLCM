@@ -36,6 +36,7 @@
   justify-content: center;
   gap: var(--size-1);
   text-align: center;
+  text-decoration: none;
   position: relative;
   cursor: pointer;
   border-width: 1px;
@@ -68,8 +69,8 @@
 
 .button[data-size="small"] {
   padding: var(--size-1) var(--size-2);
-  font-size: var(--font-size-0);
-  font-weight: var(--font-weight-7);
+  font-size: var(--font-size--1);
+  font-weight: 500;
   letter-spacing: -0.0125em;
 }
 

@@ -66,24 +66,28 @@ export default function Account({ session }) {
         />
       </Head>
       <article className={cn(styles.profile)}>
-        <div className={cn(styles.userInfo)}>
+        <div className={cn(styles.userInfo, "cluster")}>
           <Avatar url={profileData.avatar_url} size={100} />
-          <div className={styles.details}>
-            <div style={{ marginInlineEnd: "1em" }} className="badge">
-              {profileData.type.charAt(0).toUpperCase() +
-                profileData.type.slice(1)}
-            </div>
-            <div className="badge">
-              {profileData.is_subscribed || profileData.dlcm_friend
-                ? "Pro user"
-                : "Free user"}
+          <div className={cn(styles.details, "stack")}>
+            <h1 className="text-3">{profileData.username}</h1>
+            <div className="cluster">
+              <div className="badge">
+                {profileData.type.charAt(0).toUpperCase() +
+                  profileData.type.slice(1)}
+              </div>
+              <div className="badge">
+                {profileData.is_subscribed || profileData.dlcm_friend
+                  ? "Pro user"
+                  : "Free user"}
+              </div>
             </div>
 
-            <h1>{profileData.username}</h1>
-            <div>
-              <strong>Location: </strong>
-              {profileData.location}
-            </div>
+            {profileData.location ? (
+              <div>
+                <strong>Location: </strong>
+                {profileData.location}
+              </div>
+            ) : null}
             <div className={styles.url}>
               <strong>Profile page: </strong>
               <a href={`/${profileData.slug}`}>{profileData.slug}</a>

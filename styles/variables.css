@@ -9,12 +9,12 @@
   --brand-2-text: var(--gray-9);
 
   --text-1: var(--gray-8);
-  --text-2: var(--gray-7);
+  --text-2: var(--gray-6);
   --text-inverse-1: var(--gray-1);
   --text-inverse-2: var(--gray-2);
   --text-hover-1: var(--gray-12);
   --link: var(--blue-8);
-  --link-hover: var(--blue-7);
+  --link-hover: var(--blue-6);
 
   --surface-1: var(--gray-0);
   --surface-2: var(--gray-1);
@@ -46,10 +46,12 @@
   --brand-2-text: var(--stone-1);
 
   --text-1: var(--gray-2);
-  --text-2: var(--gray-3);
+  --text-2: var(--gray-4);
   --text-inverse-1: var(--gray-7);
   --text-inverse-2: var(--gray-8);
   --text-hover-1: var(--gray-3);
+  --link: var(--blue-6);
+  --link-hover: var(--blue-4);
 
   --surface-1: var(--gray-11);
   --surface-2: var(--gray-10);
@@ -68,6 +70,17 @@
 
 :where(html) {
   @mixin light-theme;
+  --font-heading: var(--font-clash-display), var(--font-sans);
+  --font-main: var(--font-archivo), var(--font-sans);
+
+  /* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1400,18,1.414,5,1,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+  --font-size--1: clamp(0.8rem, calc(0.84rem + -0.06vw), 0.83rem);
+  --font-size-0: clamp(1rem, calc(0.96rem + 0.19vw), 1.13rem);
+  --font-size-1: clamp(1.2rem, calc(1.08rem + 0.58vw), 1.59rem);
+  --font-size-2: clamp(1.44rem, calc(1.2rem + 1.2vw), 2.25rem);
+  --font-size-3: clamp(1.73rem, calc(1.3rem + 2.15vw), 3.18rem);
+  --font-size-4: clamp(2.07rem, calc(1.36rem + 3.59vw), 4.5rem);
+  --font-size-5: clamp(2.49rem, calc(1.34rem + 5.74vw), 6.36rem);
 }
 
 [data-theme="dark"] {

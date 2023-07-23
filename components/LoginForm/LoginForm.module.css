@@ -1,0 +1,23 @@
+.password {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.password label {
+  grid-column: 1;
+}
+
+.password input {
+  grid-column: 1 / -1;
+}
+
+.forgotPassword {
+  grid-row: 1;
+  grid-column: 2;
+  font-size: var(--font-size--1);
+}
+
+.forgotPassword a {
+  text-decoration: none;
+}

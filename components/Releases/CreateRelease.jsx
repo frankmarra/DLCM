@@ -175,7 +175,7 @@ export default function CreateRelease({
 
       <DialogContent>
         <header>
-          <h2>Create new release</h2>
+          <h2 className="text-3">Create new release</h2>
         </header>
 
         <div className="stack block-overflow">
@@ -412,7 +412,7 @@ export default function CreateRelease({
           ) : null}
         </div>
 
-        <footer className="button-actions inline-wrap">
+        <footer className="button-actions cluster">
           <button
             className="button"
             data-variant="primary"

@@ -1,0 +1,30 @@
+.hero {
+  --stack-space: var(--size-7);
+  display: grid;
+  place-items: center;
+  place-content: center;
+  padding-inline: var(--size-6);
+  margin: auto;
+  text-align: center;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-5);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--font-size-3);
+  line-height: 1.1;
+  max-inline-size: 22ch;
+}
+
+.actions {
+  --cluster-align: center;
+  --cluster-justify: center;
+}

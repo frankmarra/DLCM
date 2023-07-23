@@ -25,10 +25,21 @@
   margin-inline: auto;
 }
 
-.inline-wrap {
+.cluster {
   display: flex;
   flex-wrap: wrap;
   flex-basis: 100%;
-  gap: var(--inline-wrap-gap, var(--size-4));
-  align-items: flex-start;
+  gap: var(--cluster-gap, var(--size-4));
+  align-items: var(--cluster-align, initial);
+  justify-content: var(--cluster-justify, initial);
+}
+
+.flex-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--flex-grid-gap, var(--size-2));
+}
+
+.flex-grid > * {
+  flex: 1 1 var(--flex-grid-min, 10rem);
 }

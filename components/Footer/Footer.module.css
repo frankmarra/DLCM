@@ -1,0 +1,23 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--size-3);
+  padding: var(--size-6) var(--size-4);
+  text-align: center;
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-2) clamp(var(--size-3), 4vw, var(--size-6));
+  align-items: center;
+  justify-content: center;
+}
+
+.copyright {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+  align-items: center;
+}

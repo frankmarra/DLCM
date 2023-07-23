@@ -1,11 +1,11 @@
 .badge {
-  font-size: var(--font-size-0);
-  font-weight: var(--font-weight-7);
+  font-size: var(--font-size--1);
+  font-weight: var(--font-weight-6);
   letter-spacing: -0.025em;
   color: var(--brand-2-text);
   background-color: var(--brand-2);
   display: inline-block;
-  padding: 2px var(--size-3);
+  padding: 2px var(--size-2);
   border-radius: var(--radius-1);
 }
 
@@ -32,7 +32,7 @@
 }
 
 .article-heading {
-  --inline-wrap-gap: var(--size-2);
+  --cluster-gap: var(--size-2);
   justify-content: space-between;
   align-items: baseline;
 }

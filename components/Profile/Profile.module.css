@@ -4,36 +4,20 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 }
 
-.profile {
-  display: flex;
-  
-  gap: 25px;
-
-}
-/* .release {
-  text-decoration: none;
-  color: var(--text-1);
-} */
 .release :hover {
   color: var(--link-hover);
   border-color: var(--brand-1-hover);
 }
+
 .info {
-  display: flex;
-  flex-direction: column; 
+  --stack-space: var(--size-2);
 }
 
-.name {
-  font-size: clamp(.75rem, 2vw, var(--size-4));
-}
-
-.location {
-  font-size: clamp(.75rem, 2vw, var(--size-3));
-}
 .blurb {
-  font-size: clamp(.75rem, 2vw, var(--size-4));
-  
+  font-size: 0.8em;
+  max-inline-size: 60ch;
 }
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -59,6 +43,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 @media screen and (max-width: 480px) {
   .profile {
     flex-direction: column;
@@ -67,6 +52,4 @@
     height: 100px;
     width: 100px;
   }
-
- 
 }

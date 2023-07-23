@@ -49,7 +49,7 @@ export default function ReleaseCard({
         )}
         <div className={styles.details}>
           <div>
-            <h3 className={styles.title}>{release.title}</h3>
+            <h3 className={cn(styles.title, "text-2")}>{release.title}</h3>
             <div className={styles.artist}>{release.artist}</div>
             <div className={styles.label}>{release.label}</div>
             <div className={styles.type}>
@@ -70,7 +70,7 @@ export default function ReleaseCard({
       </div>
       {user ? (
         user.id === release.user_id ? (
-          <div className={cn(styles.actions, "inline-wrap")}>
+          <div className={cn(styles.actions, "cluster")}>
             <UpdateRelease
               setShowReleaseUpdateView={setShowReleaseUpdateView}
               release={release}

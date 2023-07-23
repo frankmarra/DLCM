@@ -6,6 +6,7 @@
 
 * {
   margin: 0;
+  scroll-margin-top: 2rem;
 }
 
 html,
@@ -48,6 +49,11 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
+}
+
+ul,
+ol {
+  padding-inline-start: 1em;
 }
 
 ul[role="list"],

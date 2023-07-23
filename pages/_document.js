@@ -1,20 +1,11 @@
 import { Html, Head, Main, NextScript } from "next/document"
+import { clashDisplay, archivo } from "@/utils/fonts"
+import { setInitialTheme } from "@/utils/theme"
+import cn from "classnames"
 
 export default function Document() {
-  const setInitialTheme = `
-    function getUserPreference() {
-      if (window.localStorage.getItem('theme')) {
-        return window.localStorage.getItem('theme')
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light'
-    }
-    document.documentElement.dataset.theme = getUserPreference();
-  `
-
   return (
-    <Html lang="en">
+    <Html lang="en" className={cn(clashDisplay.variable, archivo.variable)}>
       <Head>
         <meta property="og:image" content="/DLCM_OG_IMAGE.png" />
         <link

@@ -81,7 +81,7 @@ export default function ProfileLayout({
 
       <>
         <div className={styles.wrapper}>
-          <div className={cn(styles.profile, "container")}>
+          <div className="cluster">
             {avatar ? (
               <img
                 src={artwork}
@@ -98,17 +98,15 @@ export default function ProfileLayout({
                 height={200}
               />
             )}
-            <div className={cn(styles.info, "stack", "block-overflow")}>
-              <div>
-                <div className={cn(styles.name)}>
-                  <h1>{name}</h1>
-                </div>
-                <div className={cn(styles.location)}>
-                  <h2>{location}</h2>
-                </div>
-                <div className={cn(styles.blurb)}>
-                  <p>{aboutBlurb}</p>
-                </div>
+            <div className={cn(styles.info, "stack")}>
+              <div className={cn(styles.name)}>
+                <h1 className="text-3">{name}</h1>
+              </div>
+              <div className={cn(styles.location)}>
+                <h2 className="text-2">{location}</h2>
+              </div>
+              <div className={cn(styles.blurb)}>
+                <p>{aboutBlurb}</p>
               </div>
               <SocialSites
                 sites={sites}

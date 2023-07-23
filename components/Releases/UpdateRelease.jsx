@@ -225,7 +225,7 @@ export default function UpdateRelease({
 
       <DialogContent>
         <header>
-          <h2>Update release</h2>
+          <h2 className="text-3">Update release</h2>
         </header>
 
         <div className="stack block-overflow">
@@ -433,7 +433,7 @@ export default function UpdateRelease({
           ) : null}
         </div>
 
-        <footer className="button-actions inline-wrap">
+        <footer className="button-actions cluster">
           <div className="update-buttons">
             <button
               className="button"

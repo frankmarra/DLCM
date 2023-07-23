@@ -1,13 +1,30 @@
 import Link from "next/link"
 
-export default function Faq() {
+export default function About() {
   return (
     <section
-      className="container stack inline-max center-stage"
-      style={{ "--max-inline-size": "800px" }}
+      className="stack inline-max center-stage"
+      style={{ "--max-inline-size": "65ch" }}
     >
-      <h1>DLCM FAQs</h1>
-      <h3>How Do I Get Started?</h3>
+      <h1>About</h1>
+      <ul>
+        <li>
+          <a href="#get-started">How do I get started?</a>
+        </li>
+        <li>
+          <a href="#free-account">What do I get with a free account?</a>
+        </li>
+        <li>
+          <a href="#subscribe">What do I get with a pro account?</a>
+        </li>
+        <li>
+          <a href="#unsubscribe">What happens if I cancel my pro account?</a>
+        </li>
+      </ul>
+
+      <h2 id="get-started" style={{ "--stack-space": "var(--size-8)" }}>
+        How do I get started?
+      </h2>
       <p>
         Getting started is easy. First, go to our{" "}
         <Link href="/signup">signup</Link> page and create a new account. Enter
@@ -39,7 +56,10 @@ export default function Faq() {
       <p>
         Then click the signup button, and that&apos;s it! Welcome to the club.
       </p>
-      <h3>What Do I Get With A Free Account?</h3>
+
+      <h2 id="free-account" style={{ "--stack-space": "var(--size-8)" }}>
+        What do I get with a free account?
+      </h2>
       <p>
         A free account sets you up with a public page and the ability to upload
         two releases. A release can be anything from a single to an LP. You are
@@ -47,7 +67,10 @@ export default function Faq() {
         releases, as well as upload the artwork for each. (Artwork must be less
         than 1MB)
       </p>
-      <h3>What Do I Get With A Pro Account?</h3>
+
+      <h2 id="subscribe" style={{ "--stack-space": "var(--size-8)" }}>
+        What do I get with a pro account?
+      </h2>
       <p>
         A pro account gives you access to a few features in addition to the free
         stuff. First, you aren&apos;t limited to just two releases, you can have
@@ -59,21 +82,22 @@ export default function Faq() {
         setting active/inactive, you are also able to password-protect these
         pages.
       </p>
-
       <p>
         Another feature included with a pro account is the ability to change
         your public profile address or slug. However, changing this will make
         the previous address show a page not found error. Make sure you tell all
         of your fans before making this change.
       </p>
-
       <p>
         The last feature of the pro account is the ability to upload bandcamp
         .csv files for code upload instead of copying and pasting. Please be
         advised that this only works with .csv files provided by bandcamp, and
         other .csv files will result in an error.
       </p>
-      <h3>What Happens if I Cancel My Pro Account?</h3>
+
+      <h2 id="unsubscribe" style={{ "--stack-space": "var(--size-8)" }}>
+        What happens if I cancel my pro account?
+      </h2>
       <p>
         We would be very sad, but if you decide that the pro account is not for
         you, you will keep the service until the end of your billing cycle.
