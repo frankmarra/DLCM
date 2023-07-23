@@ -1,9 +1,9 @@
+import "@/styles/globals.css"
 import { clashDisplay, archivo } from "@/utils/fonts"
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import { SessionContextProvider } from "@supabase/auth-helpers-react"
 import { useState } from "react"
 import Layout from "@/components/Layout/Layout"
-import "@/styles/globals.css"
 
 function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient())
