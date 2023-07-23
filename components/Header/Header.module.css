@@ -28,7 +28,7 @@
   color: var(--link-hover);
 }
 
-.navToggle {
+.navToggle.navToggle {
   display: none;
 }
 
@@ -51,8 +51,8 @@
     grid-template-columns: 1fr auto;
   }
 
-  .navToggle {
-    display: revert;
+  .navToggle.navToggle {
+    display: block;
   }
 
   .themeToggle {
