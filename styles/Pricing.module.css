@@ -3,7 +3,8 @@
 }
 
 .plans {
-  --flex-grid-min: 10rem;
+  --flex-grid-min: 15rem;
+  margin-block-start: var(--size-8);
 }
 
 .plan.free {
@@ -26,7 +27,8 @@
   display: inline-flex;
   margin-inline: auto;
   font-size: var(--font-size-3);
-  font-weight: var(--font-weight-7);
+  font-weight: var(--font-weight-6);
+  letter-spacing: -0.025em;
 }
 
 .priceTag {

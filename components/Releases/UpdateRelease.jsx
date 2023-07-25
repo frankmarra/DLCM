@@ -453,7 +453,7 @@ export default function UpdateRelease({
           <button
             className="button"
             data-variant="secondary"
-            style={{ "background-color": "red" }}
+            aria-label="Delete this release"
             onClick={deleteRelease}
           >
             <FontAwesomeIcon icon={faTrashCan} />

@@ -45,12 +45,12 @@ export default function RequestPasswordReset() {
         </div>
       ) : (
         <article
-          className="container stack inline-max center-stage"
+          className="stack inline-max center-stage"
           style={{ "--max-inline-size": "400px" }}
         >
           <h2>Reset Password</h2>
 
-          <form className="stack" onSubmit={handleSubmit}>
+          <form className="container stack" onSubmit={handleSubmit}>
             <label className="label" htmlFor="email">
               Email
             </label>

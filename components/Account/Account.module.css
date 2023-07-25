@@ -4,6 +4,7 @@
 }
 
 .profile {
+  --stack-space: var(--size-2);
   padding: var(--size-3);
   background-color: var(--surface-2);
   border-radius: var(--radius-2);
@@ -18,11 +19,17 @@
 }
 
 .update {
-  display: flex;
-  flex-direction: column;
+  --cluster-gap: var(--size-2);
+  --cluster-justify: flex-end;
 }
 
-.userInfo {
+.userName {
+  font-family: var(--font-main);
+  font-weight: var(--font-weight-6);
+}
+
+.detail {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  column-gap: var(--size-1);
 }

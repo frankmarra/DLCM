@@ -65,66 +65,75 @@ export default function Account({ session }) {
           key="description"
         />
       </Head>
+      <div className={cn(styles.update, "cluster")}>
+        <UpdateProfile
+          getProfile={getProfile}
+          profileData={profileData}
+          setShowUpdateView={setShowUpdateView}
+        />
+
+        {!profileData.dlcm_friend ? (
+          profileData.is_subscribed ? (
+            <Link
+              className="button"
+              data-variant="primary"
+              data-size="small"
+              style={{ display: "block", textDecoration: "none" }}
+              href="/api/stripe-customer-portal"
+            >
+              Manage subscription
+            </Link>
+          ) : (
+            <Link
+              className="button"
+              data-variant="primary"
+              data-size="small"
+              style={{ display: "block", textDecoration: "none" }}
+              href="/api/subscribe-to-dlcm"
+            >
+              Subscribe
+            </Link>
+          )
+        ) : null}
+      </div>
       <article className={cn(styles.profile)}>
-        <div className={cn(styles.userInfo, "cluster")}>
-          <Avatar url={profileData.avatar_url} size={100} />
+        <div className="with-sidebar">
+          <Avatar url={profileData.avatar_url} size={150} />
           <div className={cn(styles.details, "stack")}>
-            <h1 className="text-3">{profileData.username}</h1>
-            <div className="cluster">
-              <div className="badge">
+            <h1 className={cn(styles.userName, "text-3")}>
+              {profileData.username}
+            </h1>
+            <ul className="cluster" role="list">
+              <li className="badge">
                 {profileData.type.charAt(0).toUpperCase() +
                   profileData.type.slice(1)}
-              </div>
-              <div className="badge">
+              </li>
+              <li className="badge">
                 {profileData.is_subscribed || profileData.dlcm_friend
                   ? "Pro user"
                   : "Free user"}
-              </div>
-            </div>
+              </li>
+            </ul>
 
-            {profileData.location ? (
-              <div>
-                <strong>Location: </strong>
-                {profileData.location}
+            <dl>
+              {profileData.location ? (
+                <div className={styles.detail}>
+                  <dt>
+                    <strong>Location:</strong>
+                  </dt>
+                  <dd>{profileData.location}</dd>
+                </div>
+              ) : null}
+              <div className={styles.detail}>
+                <dt className={styles.url}>
+                  <strong>Profile page: </strong>
+                </dt>
+                <dd>
+                  <a href={`/${profileData.slug}`}>{profileData.slug}</a>
+                </dd>
               </div>
-            ) : null}
-            <div className={styles.url}>
-              <strong>Profile page: </strong>
-              <a href={`/${profileData.slug}`}>{profileData.slug}</a>
-            </div>
+            </dl>
           </div>
-        </div>
-
-        <div className={cn(styles.update, "stack")}>
-          <UpdateProfile
-            getProfile={getProfile}
-            profileData={profileData}
-            setShowUpdateView={setShowUpdateView}
-          />
-
-          {!profileData.dlcm_friend ? (
-            profileData.is_subscribed ? (
-              <Link
-                className="button"
-                data-variant="primary"
-                data-size="small"
-                style={{ display: "block", textDecoration: "none" }}
-                href="/api/stripe-customer-portal"
-              >
-                Manage subscription
-              </Link>
-            ) : (
-              <Link
-                className="button"
-                data-variant="primary"
-                data-size="small"
-                style={{ display: "block", textDecoration: "none" }}
-                href="/api/subscribe-to-dlcm"
-              >
-                Subscribe
-              </Link>
-            )
-          ) : null}
         </div>
       </article>
 

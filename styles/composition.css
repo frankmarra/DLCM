@@ -43,3 +43,19 @@
 .flex-grid > * {
   flex: 1 1 var(--flex-grid-min, 10rem);
 }
+
+.with-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sidebar-gap, var(--size-4));
+}
+
+.with-sidebar > :first-child {
+  flex-grow: 1;
+}
+
+.with-sidebar > :last-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: 60%;
+}

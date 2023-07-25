@@ -79,9 +79,7 @@ export default function Releases({ profileData, getProfile }) {
               </button>
             }
           />
-        ) : releases.length >= 2 ? (
-          <Link href="/api/subscribe-to-dlcm">Subscribe</Link>
-        ) : (
+        ) : releases.length < 2 ? (
           <CreateRelease
             setAddedNewRelease={setAddedNewRelease}
             profileData={profileData}
@@ -92,7 +90,7 @@ export default function Releases({ profileData, getProfile }) {
               </button>
             }
           />
-        )}
+        ) : null}
       </header>
 
       <ul className="grid" role="list">

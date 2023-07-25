@@ -8,9 +8,9 @@ import cn from "classnames"
 import styles from "./Header.module.css"
 
 const nav = [
+  { id: "dashboard", label: "Dashboard", url: "/", isAuth: true },
   { id: "about", label: "About", url: "/about", isAuth: false },
   { id: "pricing", label: "Pricing", url: "/pricing", isAuth: false },
-  { id: "dashboard", label: "Dashboard", url: "/", isAuth: true },
 ]
 
 export default function Header() {

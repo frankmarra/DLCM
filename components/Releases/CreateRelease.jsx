@@ -132,7 +132,7 @@ export default function CreateRelease({
         label: label,
         artwork_url: artworkUrl,
         artwork_path: newImagePath,
-        yum_url: yumUrl,
+        yum_url: prependProtocol(yumUrl),
         type: type,
         sites: sites,
         is_active: isActive,
@@ -289,9 +289,9 @@ export default function CreateRelease({
               </option>
             ))}
           </select>
-          <h3>You must include https:// in your links</h3>
+          <p>You must include https:// in your links</p>
           <label className="label" htmlFor="yumUrl">
-            Redemption{`(yum)`} Link
+            Redemption (yum) Link
           </label>
           <input
             className="input"
@@ -302,7 +302,7 @@ export default function CreateRelease({
           />
           <small>
             This is the link your customers will visit to redeem their code. It
-            is usually &quot;your-name.bandcamp/yum&quot;
+            is usually <code>your-name.bandcamp/yum</code>
           </small>
 
           <label className="label" htmlFor="bandcamp">
