@@ -1,29 +1,29 @@
 .wrapper {
-  display: flex;
-  justify-content: center;
+  text-align: center;
 }
 
-.release {
-  display: flex;
-  gap: 25px;
+.artwork {
+  display: inline-block;
+  border-radius: var(--radius-1);
 }
 
 .info {
-display: flex;
-flex-direction: column;
-
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-  font-size: clamp(.75rem, 2vw, var(--size-4));
+  font-size: var(--font-size-3);
 }
 
 .artist {
-  font-size: clamp(.75rem, 2vw, var(--size-3));
+  font-size: var(--font-size-1);
 }
+
 .label {
-  font-size: clamp(.75rem, 2vw, var(--size-3));
+  font-size: var(--font-size-1);
 }
+
 .codes {
   margin-block: 40px;
   display: flex;
@@ -40,5 +40,4 @@ flex-direction: column;
     height: 100px;
     width: 100px;
   }
- 
 }

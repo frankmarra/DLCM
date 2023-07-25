@@ -42,80 +42,62 @@ export default function ReleaseLayout({
           key="description"
         />
       </Head>
-      <div className={styles.wrapper}>
-        <div
-          className="stack "
-          style={{
-            "--max-inline-size": "var(--input-screen-inline-max-size)",
-          }}
-        >
-          <div className={cn(styles.release, "container")}>
-            {release.artwork_url ? (
-              <img
-                src={artwork}
-                alt={release.title}
-                height={250}
-                width={250}
-                onError={() => setArtwork("/DLCM_Default_Image.png")}
-              />
-            ) : (
-              <img
-                src="/DLCM_Default_Image.png"
-                alt={release.title}
-                height={250}
-                width={250}
-              />
-            )}
-            <div className={cn(styles.info, "stack")}>
-              <div>
-                <div className={styles.title}>
-                  <h1>{release.title}</h1>
-                </div>
-                <div className={styles.artist}>
-                  <h2>{release.artist}</h2>
-                </div>
-                <div className={styles.label}>
-                  <h3>{release.label}</h3>
-                </div>
-                <p>{release.type}</p>
-              </div>
-              <SocialSites
-                sites={release.sites}
-                isSubscribed={isSubscribed}
-                isDlcmFriend={isDlcmFriend}
-              />
-            </div>
-          </div>
-          {!authorized ? (
-            <form
-              className="container inline-max stack"
-              style={{ "--max-inline-size": "400px" }}
-              onSubmit={handleSubmit}
-            >
-              <label htmlFor="password">Enter Password</label>
-
-              <input
-                className="input"
-                id="password"
-                type="password"
-                value={password || ""}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button type="submit">Submit</button>
-              {showError ? (
-                <p style={{ color: "red" }}>Incorrect Password. Try Again.</p>
-              ) : null}
-            </form>
-          ) : (
-            <div className={styles.codes}>
-              <CodeGenerator
-                release={release}
-                profileYumLink={profileYumLink}
-              />
-            </div>
-          )}
+      <div className={cn(styles.wrapper, "stack inline-max")}>
+        {release.artwork_url ? (
+          <img
+            className={styles.artwork}
+            src={artwork}
+            alt={release.title}
+            height={250}
+            width={250}
+            onError={() => setArtwork("/DLCM_Default_Image.png")}
+          />
+        ) : (
+          <img
+            className={styles.artwork}
+            src="/DLCM_Default_Image.png"
+            alt={release.title}
+            height={250}
+            width={250}
+          />
+        )}
+        <div>
+          <h1 className={styles.title}>{release.title}</h1>
+          <p className={styles.artist}>{release.artist}</p>
+          <p className={styles.label}>{release.label}</p>
+          <p>{release.type}</p>
         </div>
+        <SocialSites
+          sites={release.sites}
+          isSubscribed={isSubscribed}
+          isDlcmFriend={isDlcmFriend}
+        />
       </div>
+      {!authorized ? (
+        <form
+          className="container inline-max stack"
+          style={{ "--max-inline-size": "400px" }}
+          onSubmit={handleSubmit}
+        >
+          <label htmlFor="password">Enter Password</label>
+
+          <input
+            className="input"
+            id="password"
+            type="password"
+            value={password || ""}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Submit</button>
+          {showError ? (
+            <p style={{ color: "red" }}>Incorrect Password. Try Again.</p>
+          ) : null}
+        </form>
+      ) : (
+        <div className={styles.codes}>
+          <CodeGenerator release={release} profileYumLink={profileYumLink} />
+        </div>
+      )}
     </>
   )
 }

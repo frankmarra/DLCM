@@ -44,13 +44,11 @@ export default function CodeGenerator({ release, profileYumLink }) {
     }
   }
 
-  return activeCodes.length > 0 ? (
+  return activeCodes.length === 0 ? (
     <div className={cn(styles.codes, "stack")}>
       {code ? (
         <>
-          <p style={{ fontSize: 25, fontWeight: 600, letterSpacing: ".1em" }}>
-            {code.code}
-          </p>
+          <p>{code.code}</p>
           {copiedToClipboard ? (
             <button
               className="button"
@@ -71,19 +69,9 @@ export default function CodeGenerator({ release, profileYumLink }) {
             </button>
           )}
           {release.yum_url ? (
-            <a
-              href={`${release.yum_url}?code=${code.code}`}
-              style={{ fontSize: 20, fontWeight: 600 }}
-            >
-              Redeem
-            </a>
+            <a href={`${release.yum_url}?code=${code.code}`}>Redeem</a>
           ) : (
-            <a
-              href={`${profileYumLink}?code=${code.code}`}
-              style={{ fontSize: 20, fontWeight: 600 }}
-            >
-              Redeem
-            </a>
+            <a href={`${profileYumLink}?code=${code.code}`}>Redeem</a>
           )}
         </>
       ) : (
