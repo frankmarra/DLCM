@@ -80,42 +80,37 @@ export default function ProfileLayout({
       </Head>
 
       <>
-        <div className={styles.wrapper}>
-          <div className="cluster">
-            {avatar ? (
-              <img
-                src={artwork}
-                alt={name}
-                width={200}
-                height={200}
-                onError={() => setArtwork("/DLCM_Default_Image.png")}
-              />
-            ) : (
-              <img
-                src="/DLCM_Default_Image.png"
-                alt={name}
-                width={200}
-                height={200}
-              />
-            )}
-            <div className={cn(styles.info, "stack")}>
-              <div className={cn(styles.name)}>
-                <h1 className="text-3">{name}</h1>
-              </div>
-              <div className={cn(styles.location)}>
-                <h2 className="text-2">{location}</h2>
-              </div>
-              <div className={cn(styles.blurb)}>
-                <p>{aboutBlurb}</p>
-              </div>
-              <SocialSites
-                sites={sites}
-                isSubscribed={isSubscribed}
-                isDlcmFriend={isDlcmFriend}
-              />
-            </div>
+        <div className={cn(styles.wrapper, "stack inline-max")}>
+          {avatar ? (
+            <img
+              className={styles.avatar}
+              src={artwork}
+              alt={name}
+              width={200}
+              height={200}
+              onError={() => setArtwork("/DLCM_Default_Image.png")}
+            />
+          ) : (
+            <img
+              className={styles.avatar}
+              src="/DLCM_Default_Image.png"
+              alt={name}
+              width={200}
+              height={200}
+            />
+          )}
+          <div className={cn(styles.info, "stack")}>
+            <h1 className={cn(styles.name, "text-3")}>{name}</h1>
+            <p className={cn(styles.location, "text-2")}>{location}</p>
+            <p className={cn(styles.blurb)}>{aboutBlurb}</p>
+            <SocialSites
+              sites={sites}
+              isSubscribed={isSubscribed}
+              isDlcmFriend={isDlcmFriend}
+            />
           </div>
         </div>
+
         {!authorized ? (
           <div className={styles.wrapper}>
             <form
@@ -181,11 +176,13 @@ export default function ProfileLayout({
               )}
             </ul>
             <div className={styles.pagination}>
-              <Pagination
-                pages={pages}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
+              {pages > 1 ? (
+                <Pagination
+                  pages={pages}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              ) : null}
             </div>
           </>
         )}

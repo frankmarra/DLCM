@@ -1,3 +1,14 @@
+.wrapper {
+  --max-inline-size: 60ch;
+  text-align: center;
+  margin-block-end: var(--size-8);
+}
+
+.avatar {
+  margin-inline: auto;
+  border-radius: var(--radius-1);
+}
+
 .cards {
   display: grid;
   gap: 1rem;
@@ -14,8 +25,13 @@
 }
 
 .blurb {
+  margin-block-start: var(--size-6);
   font-size: 0.8em;
-  max-inline-size: 60ch;
+}
+
+.location {
+  font-size: var(--font-size-0);
+  font-family: var(--font-main);
 }
 
 .wrapper {

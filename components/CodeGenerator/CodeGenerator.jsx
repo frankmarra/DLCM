@@ -44,7 +44,7 @@ export default function CodeGenerator({ release, profileYumLink }) {
     }
   }
 
-  return activeCodes.length === 0 ? (
+  return activeCodes.length > 0 ? (
     <div className={cn(styles.codes, "stack")}>
       {code ? (
         <>
@@ -79,7 +79,6 @@ export default function CodeGenerator({ release, profileYumLink }) {
           type="button"
           className="button"
           data-variant="primary"
-          style={{ fontSize: "24px" }}
           onClick={() => getRandomCode()}
         >
           Generate Code
@@ -87,6 +86,6 @@ export default function CodeGenerator({ release, profileYumLink }) {
       )}
     </div>
   ) : (
-    <p>No Codes for this release</p>
+    <p className={styles.nocodes}>No codes for this release</p>
   )
 }
