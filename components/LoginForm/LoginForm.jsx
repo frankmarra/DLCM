@@ -1,14 +1,22 @@
 import { useState } from "react"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
 import Link from "next/link"
 import styles from "./LoginForm.module.css"
 import cn from "classnames"
 import Head from "next/head"
+import { useRouter } from "next/router"
 
 export default function LoginForm() {
   const supabase = useSupabaseClient()
+  const user = useUser()
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
+  if (user) {
+    router.push("/")
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -22,6 +30,8 @@ export default function LoginForm() {
       setEmail("")
       setPassword("")
       alert(error.message)
+    } else {
+      router.push("/")
     }
   }
 
