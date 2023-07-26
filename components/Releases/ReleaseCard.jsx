@@ -49,7 +49,15 @@ export default function ReleaseCard({
         )}
         <div className={styles.details}>
           <div>
-            <h3 className={cn(styles.title, "text-2")}>{release.title}</h3>
+            <h3 className={cn(styles.title, "text-2")}>
+              {profileData ? (
+                <Link href={`/${profileData.slug}/${release.release_slug}`}>
+                  {release.title}
+                </Link>
+              ) : (
+                release.title
+              )}
+            </h3>
             <div className={styles.artist}>{release.artist}</div>
             <div className={styles.label}>{release.label}</div>
             <div className={styles.type}>

@@ -32,7 +32,7 @@ export default function ProfileLayout({
   const [sortedReleases, setSortedReleases] = useState(filteredReleases)
   const [currentPage, setCurrentPage] = useState(1)
   const [releasesPerPage, setReleasesPerPage] = useState(10)
-  const pages = Math.ceil(sortedReleases.length / releasesPerPage)
+  const pageCount = Math.ceil(sortedReleases.length / releasesPerPage)
   const lastRelease = currentPage * releasesPerPage
   const firstRelease = lastRelease - releasesPerPage
   const currentReleases = sortedReleases.slice(firstRelease, lastRelease)
@@ -176,9 +176,9 @@ export default function ProfileLayout({
               )}
             </ul>
             <div className={styles.pagination}>
-              {pages > 1 ? (
+              {pageCount > 1 ? (
                 <Pagination
-                  pages={pages}
+                  pageCount={pageCount}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                 />

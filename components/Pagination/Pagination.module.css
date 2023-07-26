@@ -7,20 +7,25 @@
 
 }
 
-.pages li {
+/* .pages li {
+  --border: var(--border-size-1) solid var(--surface-3);
+  padding: var(--size-2);
+  border-radius: var(--radius-conditional-2);
+  border: var(--border);
+} */
+
+
+.pages li a{
+  text-decoration: none;
+  color:var(--text-1);
   --border: var(--border-size-1) solid var(--surface-3);
   padding: var(--size-2);
   border-radius: var(--radius-conditional-2);
   border: var(--border);
 }
 
-.pages li:hover {
+.pages li a:hover {
   background-color: var(--brand-1);
-}
-
-.pages li a{
-  text-decoration: none;
-  color:var(--text-1);
 }
 
 .active {

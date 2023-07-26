@@ -21,7 +21,7 @@ export default function Releases({ profileData, getProfile }) {
   const [artistList, setArtistList] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [releasesPerPage, setReleasesPerPage] = useState(10)
-  const pages = Math.ceil(releases?.length / releasesPerPage)
+  const pageCount = Math.ceil(releases?.length / releasesPerPage)
   const lastRelease = currentPage * releasesPerPage
   const firstRelease = lastRelease - releasesPerPage
   const currentReleases = sortedReleases.slice(firstRelease, lastRelease)
@@ -143,11 +143,13 @@ export default function Releases({ profileData, getProfile }) {
         )}
       </ul>
       <div className={styles.pagination}>
-        <Pagination
-          pages={pages}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        {pageCount > 1 ? (
+          <Pagination
+            pageCount={pageCount}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        ) : null}
       </div>
     </article>
   )
