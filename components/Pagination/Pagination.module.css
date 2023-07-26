@@ -2,18 +2,9 @@
 
   position: relative;
   display: flex;
-  /* flex-wrap: wrap; */
   align-items: flex-start; 
 
 }
-
-/* .pages li {
-  --border: var(--border-size-1) solid var(--surface-3);
-  padding: var(--size-2);
-  border-radius: var(--radius-conditional-2);
-  border: var(--border);
-} */
-
 
 .pages li a{
   text-decoration: none;
