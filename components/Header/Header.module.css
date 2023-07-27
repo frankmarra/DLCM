@@ -13,7 +13,7 @@
 
 .nav {
   display: flex;
-  gap: var(--size-3);
+  gap: var(--size-4);
 }
 
 .list {

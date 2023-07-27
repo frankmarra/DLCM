@@ -7,17 +7,26 @@ import BrandLogo from "../BrandLogo/BrandLogo"
 import cn from "classnames"
 import styles from "./Header.module.css"
 
-const nav = [
-  { id: "dashboard", label: "Dashboard", url: "/", isAuth: true },
-  { id: "about", label: "About", url: "/about", isAuth: false },
-  { id: "pricing", label: "Pricing", url: "/pricing", isAuth: false },
-]
-
 export default function Header() {
   const [isNavOpen, setNavOpen] = useState(false)
   const supabase = useSupabaseClient()
   const user = useUser()
   const router = useRouter()
+
+  const nav = [
+    { id: "about", label: "About", url: "/about", isAuth: false },
+    { id: "pricing", label: "Pricing", url: "/pricing", isAuth: false },
+  ]
+
+  const userNav = [
+    { id: "dashboard", label: "Dashboard", url: "/" },
+    {
+      id: "subscribe",
+      label: "Subscribe",
+      url: "/api/subscribe-to-dlcm",
+      hasProAccount: user?.is_subscribed || user?.dlcm_friend,
+    },
+  ]
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -49,30 +58,41 @@ export default function Header() {
       </button>
       <nav className={cn(styles.nav, isNavOpen ? styles.isOpen : "")}>
         <ul className={cn(styles.list, "cluster")} role="list">
-          {nav.map(({ id, label, url, isAuth }) => {
-            if (!user && isAuth) {
-              return
-            }
+          {user ? (
+            <>
+              {userNav.map(({ id, label, url, hasProAccount }) => {
+                if (hasProAccount) {
+                  return
+                }
 
-            return (
-              <li key={id}>
-                <Link className={styles.link} href={url}>
-                  {label}
-                </Link>
-              </li>
-            )
-          })}
-          <li>
-            {user ? (
+                return (
+                  <li key={id}>
+                    <Link className={styles.link} href={url}>
+                      {label}
+                    </Link>
+                  </li>
+                )
+              })}
               <button className={styles.link} onClick={handleLogout}>
                 Log out
               </button>
-            ) : (
+            </>
+          ) : (
+            <>
+              {nav.map(({ id, label, url }) => {
+                return (
+                  <li key={id}>
+                    <Link className={styles.link} href={url}>
+                      {label}
+                    </Link>
+                  </li>
+                )
+              })}
               <Link className={styles.link} href="/login">
                 Log in
               </Link>
-            )}
-          </li>
+            </>
+          )}
         </ul>
         <div className={styles.themeToggle}>
           <ThemeToggle />
