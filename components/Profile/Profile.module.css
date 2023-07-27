@@ -15,8 +15,12 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 }
 
-.release :hover {
-  color: var(--link-hover);
+.release {
+  text-decoration: none;
+  color: var(--text-1);
+}
+
+.release:hover {
   border-color: var(--brand-1-hover);
 }
 

@@ -57,7 +57,7 @@ export default function Account({ session }) {
         <title>{profileData.username} | DLCM dashboard</title>
         <meta
           property="og:title"
-          content={`${profileData.username}'s DLCM dashboard`}
+          content={`${profileData.username} | DLCM dashboard`}
           key="title"
         />
         <meta

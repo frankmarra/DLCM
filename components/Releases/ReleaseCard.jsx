@@ -51,7 +51,10 @@ export default function ReleaseCard({
           <div>
             <h3 className={cn(styles.title, "text-2")}>
               {profileData ? (
-                <Link href={`/${profileData.slug}/${release.release_slug}`}>
+                <Link
+                  className="link"
+                  href={`/${profileData.slug}/${release.release_slug}`}
+                >
                   {release.title}
                 </Link>
               ) : (

@@ -5,6 +5,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  background-color: var(--surface-2);
   border-radius: var(--radius-conditional-2);
   border: var(--border);
   box-shadow: var(--shadow-2);

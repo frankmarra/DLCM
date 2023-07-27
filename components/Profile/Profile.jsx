@@ -160,10 +160,6 @@ export default function ProfileLayout({
                     <Link
                       className={styles.release}
                       href={`/${profileSlug}/${release.release_slug}`}
-                      style={{
-                        textDecoration: "none",
-                        color: "var(--text-1)",
-                      }}
                     >
                       <ReleaseCard
                         key={release.id}
