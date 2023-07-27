@@ -47,7 +47,7 @@ export default function Account({ session }) {
     }
   }
 
-  if (!loading) {
+  if (loading) {
     return <Loader style={{ margin: "auto" }} />
   }
 
