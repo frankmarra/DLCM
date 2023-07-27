@@ -27,7 +27,7 @@ export default function About() {
       </h2>
       <p>
         Getting started is easy. First, go to our{" "}
-        <Link href="/signup">signup</Link> page and create a new account. Enter
+        <Link href="/signup">signup page</Link> and create a new account. Enter
         your email and choose a password. This is how you will log in to DLCM in
         the future.
       </p>

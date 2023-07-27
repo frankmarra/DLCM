@@ -25,6 +25,13 @@
   margin-inline: auto;
 }
 
+.intrinsic-center {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  text-align: center;
+}
+
 .cluster {
   display: flex;
   flex-wrap: wrap;

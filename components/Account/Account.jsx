@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import Avatar from "@/components/Avatar/Avatar"
 import Releases from "@/components/Releases/Releases"
-import UpdateProfile from "../UpdateProfile/UpdateProfile"
+import UpdateProfile from "@/components/UpdateProfile/UpdateProfile"
+import Loader from "@/components/Loader/Loader"
 import styles from "./Account.module.css"
 import cn from "classnames"
 import Link from "next/link"
@@ -46,8 +47,8 @@ export default function Account({ session }) {
     }
   }
 
-  if (loading) {
-    return <p>Loading...</p>
+  if (!loading) {
+    return <Loader style={{ margin: "auto" }} />
   }
 
   return (

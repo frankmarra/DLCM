@@ -101,6 +101,10 @@
   border-radius: var(--radius-1);
 }
 
+.codes small {
+  font-weight: var(--font-weight-4);
+}
+
 .codes.empty {
   color: var(--text-warning);
   background-color: var(--surface-warning-1);

@@ -1,8 +1,8 @@
 import styles from "./BrandLogo.module.css"
 
-const BrandLogo = () => {
+const BrandLogo = (props) => {
   return (
-    <figure className={styles.logo}>
+    <figure className={styles.logo} {...props}>
       <span>D</span>
       <span>L</span>
       <span>C</span>
