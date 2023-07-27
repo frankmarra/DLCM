@@ -11,6 +11,7 @@ import {
 } from "@/components/Dialog/Dialog"
 import PopoverTip from "../PopoverTip/PopoverTip"
 import Link from "next/link"
+import { prependProtocol } from "@/utils/utils"
 
 export default function UpdateProfile({
   getProfile,

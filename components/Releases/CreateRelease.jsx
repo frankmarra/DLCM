@@ -11,6 +11,7 @@ import {
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Avatar from "../Avatar/Avatar"
 import PopoverTip from "../PopoverTip/PopoverTip"
+import { prependProtocol } from "@/utils/utils"
 
 const releaseTypes = [
   { id: 1, text: "LP" },
