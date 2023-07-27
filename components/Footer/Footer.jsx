@@ -3,10 +3,11 @@ import ThemeToggle from "@/components/ThemeToggle/ThemeToggle.jsx"
 import styles from "./Footer.module.css"
 
 const nav = [
-  { id: "contact", label: "Contact Us", url: "mailto:dlcm.app@gmail.com" },
+  { id: "about", label: "About", url: "/about" },
+  { id: "pricing", label: "Pricing", url: "/pricing" },
   { id: "privacy", label: "Privacy Policy", url: "/privacy" },
   { id: "terms", label: "Terms and Conditions", url: "/terms" },
-  { id: "signup", label: "Sign up", url: "/signup" },
+  { id: "contact", label: "Contact Us", url: "mailto:dlcm.app@gmail.com" },
   {
     id: "coffee",
     label: "Buy us a coffee",
