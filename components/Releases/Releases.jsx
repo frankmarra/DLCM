@@ -31,7 +31,7 @@ export default function Releases({ profileData, getProfile }) {
       getProfile()
       setAddedNewRelease(false)
     }
-  }, [supabase, profileData.id, addedNewRelease])
+  }, [profileData.id, addedNewRelease])
 
   useEffect(() => {
     let artists = []

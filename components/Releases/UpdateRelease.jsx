@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import PopoverTip from "../PopoverTip/PopoverTip"
 import slugify from "slugify"
+import { prependProtocol } from "@/utils/utils"
 
 const releaseTypes = [
   { id: 1, text: "LP" },
@@ -124,7 +125,7 @@ export default function UpdateRelease({
         release_slug: sluggedName,
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
-        yum_url: yumUrl,
+        yum_url: prependProtocol(yumUrl),
         type: type,
         sites: sites,
         is_active: isActive,

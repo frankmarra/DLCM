@@ -115,17 +115,7 @@ export default function CreateRelease({
     }
   }
 
-  async function createNewRelease({
-    title,
-    artist,
-    label,
-    artworkUrl,
-    yumUrl,
-    type,
-    sites,
-    isActive,
-    isPasswordProtected,
-  }) {
+  async function createNewRelease() {
     try {
       let newRelease = {
         title: title,
@@ -417,19 +407,7 @@ export default function CreateRelease({
           <button
             className="button"
             data-variant="primary"
-            onClick={() =>
-              createNewRelease({
-                title,
-                artist,
-                label,
-                type,
-                artworkUrl,
-                yumUrl,
-                sites,
-                isActive,
-                isPasswordProtected,
-              })
-            }
+            onClick={() => createNewRelease()}
             disabled={!title || type == releaseTypes[5].text || noGO}
           >
             Create
