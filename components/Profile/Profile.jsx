@@ -88,12 +88,12 @@ export default function ProfileLayout({
               alt={name}
               width={200}
               height={200}
-              onError={() => setArtwork("/DLCM_Default_Image.png")}
+              onError={() => setArtwork("/default-image.png")}
             />
           ) : (
             <img
               className={styles.avatar}
-              src="/DLCM_Default_Image.png"
+              src="/default-image.png"
               alt={name}
               width={200}
               height={200}

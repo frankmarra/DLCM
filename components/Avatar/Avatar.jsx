@@ -17,12 +17,12 @@ export default function Avatar({ url, size }) {
           alt=""
           height={size}
           width={size}
-          onError={() => setArtwork("/DLCM_Default_Image.png")}
+          onError={() => setArtwork("/default-image.png")}
         />
       ) : (
         <img
           className={styles.image}
-          src="/DLCM_Default_Image.png"
+          src="/default-image.png"
           alt=""
           height={size}
           width={size}

@@ -50,12 +50,12 @@ export default function ReleaseLayout({
             alt={release.title}
             height={250}
             width={250}
-            onError={() => setArtwork("/DLCM_Default_Image.png")}
+            onError={() => setArtwork("/default-image.png")}
           />
         ) : (
           <img
             className={styles.artwork}
-            src="/DLCM_Default_Image.png"
+            src="/default-image.png"
             alt={release.title}
             height={250}
             width={250}

@@ -36,11 +36,11 @@ export default function ReleaseCard({
         {artwork ? (
           <img
             className={styles.image}
-            src={artwork != "     " ? artwork : "/DLCM_Default_Image.png"}
+            src={artwork != "     " ? artwork : "/default-image.png"}
             alt={release.title}
             height={250}
             width={250}
-            onError={() => setArtwork("/DLCM_Default_Image.png")}
+            onError={() => setArtwork("/default-image.png")}
           />
         ) : (
           <div className={styles.image}>
