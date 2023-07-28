@@ -36,8 +36,8 @@ export default function Header() {
   const closeNav = () => setNavOpen(false)
 
   useEffect(() => {
-    router.events.on("routeChangeStart", closeNav)
-    return () => router.events.off("routeChangeStart", closeNav)
+    router.events.on("routeChangeComplete", closeNav)
+    return () => router.events.off("routeChangeComplete", closeNav)
   }, [router.events])
 
   return (

@@ -1,5 +1,4 @@
 import Link from "next/link"
-import ThemeToggle from "@/components/ThemeToggle/ThemeToggle.jsx"
 import styles from "./Footer.module.css"
 
 const nav = [
