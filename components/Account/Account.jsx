@@ -79,7 +79,6 @@ export default function Account({ session }) {
               className="button"
               data-variant="primary"
               data-size="small"
-              style={{ display: "block", textDecoration: "none" }}
               href="/api/stripe-customer-portal"
             >
               Manage subscription
@@ -89,7 +88,6 @@ export default function Account({ session }) {
               className="button"
               data-variant="primary"
               data-size="small"
-              style={{ display: "block", textDecoration: "none" }}
               href="/api/subscribe-to-dlcm"
             >
               Subscribe

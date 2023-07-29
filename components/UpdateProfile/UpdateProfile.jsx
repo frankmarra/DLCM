@@ -138,7 +138,11 @@ export default function UpdateProfile({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="button" data-size="small">
+      <DialogTrigger
+        className="button"
+        data-variant="secondary"
+        data-size="small"
+      >
         Update profile
       </DialogTrigger>
 

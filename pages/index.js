@@ -1,7 +1,6 @@
 import { useSessionContext } from "@supabase/auth-helpers-react"
 import Account from "@/components/Account/Account"
 import styles from "@/styles/Home.module.css"
-import BrandLogo from "@/components/BrandLogo/BrandLogo"
 import Link from "next/link"
 import cn from "classnames"
 
