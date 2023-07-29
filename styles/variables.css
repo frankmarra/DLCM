@@ -21,10 +21,13 @@
   --surface-3: var(--gray-4);
   --surface-4: var(--gray-5);
 
+  --surface-disabled-1: var(--surface-3);
+  --surface-disabled-2: var(--surface-4);
   --surface-success-1: var(--green-1);
   --surface-success-2: var(--green-2);
   --surface-warning-1: var(--red-2);
   --surface-warning-2: var(--red-3);
+  --text-disabled: var(--text-2);
   --text-success: var(--green-9);
   --text-warning: var(--red-9);
 
@@ -41,27 +44,28 @@
   --brand-1: var(--blue-9);
   --brand-1-hover: var(--blue-8);
   --brand-1-text: var(--blue-1);
-  --brand-2: var(--stone-10);
-  --brand-2-hover: var(--stone-9);
+  --brand-2: var(--stone-9);
+  --brand-2-hover: var(--stone-8);
   --brand-2-text: var(--stone-1);
 
-  --text-1: var(--gray-2);
-  --text-2: var(--gray-4);
+  --text-1: var(--gray-4);
+  --text-2: var(--gray-6);
   --text-inverse-1: var(--gray-7);
   --text-inverse-2: var(--gray-8);
   --text-hover-1: var(--gray-3);
   --link: var(--blue-6);
   --link-hover: var(--blue-4);
 
-  --surface-1: var(--gray-11);
-  --surface-2: var(--gray-10);
-  --surface-3: var(--gray-9);
-  --surface-4: var(--gray-8);
+  --surface-1: var(--gray-10);
+  --surface-2: var(--gray-9);
+  --surface-3: var(--gray-8);
+  --surface-4: var(--gray-7);
 
   --surface-success-1: var(--green-10);
   --surface-success-2: var(--green-8);
   --surface-warning-1: var(--red-10);
   --surface-warning-2: var(--red-8);
+  --text-disabled: var(--gray-7);
   --text-success: var(--green-1);
   --text-warning: var(--red-1);
 

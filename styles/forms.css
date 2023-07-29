@@ -64,7 +64,7 @@ textarea {
   block-size: var(--button-icon-size, 1.25em);
 }
 
-.button:not(:disabled) {
+.button {
   color: var(--button-text-color, inherit);
   background-color: var(--button-bg-color, transparent);
   border-color: var(--button-border-color, currentcolor);
@@ -85,41 +85,47 @@ textarea {
   letter-spacing: -0.0125em;
 }
 
-.button[data-variant="primary"] {
+.button:not(:disabled)[data-variant="primary"] {
   --button-bg-color: var(--brand-1);
   --button-border-color: var(--brand-1);
   --button-text-color: var(--brand-1-text);
 }
 
-.button[data-variant="primary"]:hover {
+.button:not(:disabled)[data-variant="primary"]:hover {
   --button-bg-color: var(--brand-1-hover);
   --button-border-color: var(--brand-1-hover);
 }
 
-.button[data-variant="secondary"] {
+.button:not(:disabled)[data-variant="secondary"] {
   --button-bg-color: var(--brand-2);
   --button-border-color: var(--button-bg-color);
   --button-text-color: var(--brand-2-text);
 }
 
-.button[data-variant="secondary"]:hover {
+.button:not(:disabled)[data-variant="secondary"]:hover {
   --button-bg-color: var(--brand-2-hover);
   --button-border-color: var(--button-bg-color);
 }
 
-.button[data-variant="dashed"] {
+.button:not(:disabled)[data-variant="dashed"] {
   border-style: dashed;
 }
 
-.button[data-variant="text"] {
+.button:not(:disabled)[data-variant="text"] {
   --button-bg-color: transparent;
   --button-border-color: transparent;
   --button-text-color: var(--link);
   box-shadow: unset;
 }
 
-.button[data-variant="text"]:hover {
+.button:not(:disabled)[data-variant="text"]:hover {
   --button-text-color: var(--link-hover);
+}
+
+.button:disabled {
+  --button-bg-color: var(--surface-disabled-1);
+  --button-border-color: var(--surface-disabled-1);
+  --button-text-color: var(--text-disabled);
 }
 
 .button-actions {

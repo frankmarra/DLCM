@@ -1,6 +1,6 @@
 .badge {
   font-size: var(--font-size--1);
-  font-weight: var(--font-weight-6);
+  font-weight: var(--font-weight-5);
   letter-spacing: -0.025em;
   color: var(--brand-2-text);
   background-color: var(--brand-2);
