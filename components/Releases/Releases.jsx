@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import ReleaseCard from "./ReleaseCard"
 import CreateRelease from "./CreateRelease"
@@ -11,6 +11,8 @@ import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import Pagination from "../Pagination/Pagination"
 
 export default function Releases({ profileData, getProfile }) {
+  const releasesPerPage = 10
+  const filtersRef = useRef(null)
   const supabase = useSupabaseClient()
   const user = useUser()
   const [releases, setReleases] = useState(profileData.releases)
@@ -19,12 +21,16 @@ export default function Releases({ profileData, getProfile }) {
   const [filteredReleases, setFilteredReleases] = useState(releases)
   const [sortedReleases, setSortedReleases] = useState(filteredReleases)
   const [artistList, setArtistList] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [releasesPerPage, setReleasesPerPage] = useState(10)
   const pageCount = Math.ceil(releases?.length / releasesPerPage)
-  const lastRelease = currentPage * releasesPerPage
-  const firstRelease = lastRelease - releasesPerPage
-  const currentReleases = sortedReleases.slice(firstRelease, lastRelease)
+  const [releasesOffset, setReleasesOffset] = useState(0)
+  const endOffset = releasesOffset + releasesPerPage
+  const currentReleases = sortedReleases.slice(releasesOffset, endOffset)
+
+  const handlePaginationClick = (e) => {
+    const newOffset = (e.selected * releasesPerPage) % releases.length
+    setReleasesOffset(newOffset)
+    filtersRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   useEffect(() => {
     if (addedNewRelease == true) {
@@ -54,7 +60,7 @@ export default function Releases({ profileData, getProfile }) {
         <h2 className="text-2">Releases</h2>
 
         {profileData.is_subscribed || profileData.dlcm_friend ? (
-          <>
+          <div ref={filtersRef} className={styles.sort}>
             {artistList.length > 1 ? (
               <ReleaseFilter
                 releases={releases}
@@ -66,7 +72,7 @@ export default function Releases({ profileData, getProfile }) {
               filteredReleases={filteredReleases}
               setSortedReleases={setSortedReleases}
             />
-          </>
+          </div>
         ) : null}
 
         {profileData.is_subscribed || profileData.dlcm_friend ? (
@@ -143,13 +149,10 @@ export default function Releases({ profileData, getProfile }) {
         )}
       </ul>
       <div className={styles.pagination}>
-        {pageCount > 1 ? (
-          <Pagination
-            pageCount={pageCount}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        ) : null}
+        <Pagination
+          pageCount={pageCount}
+          onPageChange={handlePaginationClick}
+        />
       </div>
     </article>
   )

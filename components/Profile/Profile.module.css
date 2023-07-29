@@ -55,6 +55,7 @@
 }
 
 .pagination {
+  --stack-space: var(--size-6);
   display: flex;
   justify-content: center;
 }

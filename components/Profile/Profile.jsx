@@ -2,7 +2,7 @@ import ReleaseCard from "@/components/Releases/ReleaseCard"
 import styles from "./Profile.module.css"
 import cn from "classnames"
 import SocialSites from "../SocialSites/SocialSites"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
@@ -22,6 +22,8 @@ export default function ProfileLayout({
   isSubscribed,
   isDlcmFriend,
 }) {
+  const releasesPerPage = 10
+  const filtersRef = useRef(null)
   const [artwork, setArtwork] = useState(avatar)
   const [password, setPassword] = useState()
   const [authorized, setAuthorized] = useState(
@@ -30,13 +32,31 @@ export default function ProfileLayout({
   const [showError, setShowError] = useState(false)
   const [filteredReleases, setFilteredReleases] = useState(releases)
   const [sortedReleases, setSortedReleases] = useState(filteredReleases)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [releasesPerPage, setReleasesPerPage] = useState(10)
   const pageCount = Math.ceil(sortedReleases.length / releasesPerPage)
-  const lastRelease = currentPage * releasesPerPage
-  const firstRelease = lastRelease - releasesPerPage
-  const currentReleases = sortedReleases.slice(firstRelease, lastRelease)
   const [artistList, setArtistList] = useState([])
+  const [releasesOffset, setReleasesOffset] = useState(0)
+  const endOffset = releasesOffset + releasesPerPage
+  const currentReleases = sortedReleases.slice(releasesOffset, endOffset)
+
+  const handlePaginationClick = (e) => {
+    const newOffset = (e.selected * releasesPerPage) % releases.length
+    setReleasesOffset(newOffset)
+    filtersRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault()
+    if (pagePassword == password) {
+      setAuthorized(true)
+    } else {
+      setPassword("")
+      setShowError(true)
+    }
+  }
+
+  useEffect(() => {
+    setReleasesOffset(0)
+  }, [sortedReleases])
 
   useEffect(() => {
     let artists = []
@@ -52,16 +72,6 @@ export default function ProfileLayout({
       )
     )
   }, [releases])
-
-  function handleSubmit(e) {
-    e.preventDefault()
-    if (pagePassword == password) {
-      setAuthorized(true)
-    } else {
-      setPassword("")
-      setShowError(true)
-    }
-  }
 
   return (
     <>
@@ -79,110 +89,107 @@ export default function ProfileLayout({
         />
       </Head>
 
-      <>
-        <div className={cn(styles.wrapper, "stack inline-max")}>
-          {avatar ? (
-            <img
-              className={styles.avatar}
-              src={artwork}
-              alt={name}
-              width={200}
-              height={200}
-              onError={() => setArtwork("/default-image.png")}
-            />
-          ) : (
-            <img
-              className={styles.avatar}
-              src="/default-image.png"
-              alt={name}
-              width={200}
-              height={200}
-            />
-          )}
-          <div className={cn(styles.info, "stack")}>
-            <h1 className={cn(styles.name, "text-3")}>{name}</h1>
-            <p className={cn(styles.location, "text-2")}>{location}</p>
-            <p className={cn(styles.blurb)}>{aboutBlurb}</p>
-            <SocialSites
-              sites={sites}
-              isSubscribed={isSubscribed}
-              isDlcmFriend={isDlcmFriend}
-            />
-          </div>
-        </div>
-
-        {!authorized ? (
-          <div className={styles.wrapper}>
-            <form
-              className="container inline-max center-stage stack"
-              style={{
-                "--max-inline-size": "400px",
-              }}
-              onSubmit={handleSubmit}
-            >
-              <label htmlFor="password">Enter page password</label>
-
-              <input
-                className="input"
-                id="password"
-                type="password"
-                value={password || ""}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button type="submit">Submit</button>
-              {showError ? (
-                <p style={{ color: "red" }}>Incorrect password. Try Again.</p>
-              ) : null}
-            </form>
-          </div>
+      <div className={cn(styles.wrapper, "stack inline-max")}>
+        {avatar ? (
+          <img
+            className={styles.avatar}
+            src={artwork}
+            alt={name}
+            width={200}
+            height={200}
+            onError={() => setArtwork("/default-image.png")}
+          />
         ) : (
-          <>
-            {isSubscribed || isDlcmFriend ? (
-              <div className={styles.sort}>
-                {artistList.length > 1 ? (
-                  <ReleaseFilter
-                    releases={releases}
-                    setFilteredReleases={setFilteredReleases}
-                    artistList={artistList}
-                  />
-                ) : null}
-                <ReleaseSort
-                  filteredReleases={filteredReleases}
-                  setSortedReleases={setSortedReleases}
-                />
-              </div>
-            ) : null}
+          <img
+            className={styles.avatar}
+            src="/default-image.png"
+            alt={name}
+            width={200}
+            height={200}
+          />
+        )}
+        <div className={cn(styles.info, "stack")}>
+          <h1 className={cn(styles.name, "text-3")}>{name}</h1>
+          <p className={cn(styles.location, "text-2")}>{location}</p>
+          <p className={cn(styles.blurb)}>{aboutBlurb}</p>
+          <SocialSites
+            sites={sites}
+            isSubscribed={isSubscribed}
+            isDlcmFriend={isDlcmFriend}
+          />
+        </div>
+      </div>
 
-            <ul className="grid" role="list">
-              {currentReleases.map((release, index) =>
-                release.is_active ? (
-                  <li key={index}>
-                    <Link
-                      className={styles.release}
-                      href={`/${profileSlug}/${release.release_slug}`}
-                    >
-                      <ReleaseCard
-                        key={release.id}
-                        release={release}
-                        profileSlug={profileSlug}
-                      />
-                    </Link>
-                  </li>
-                ) : null
-              )}
-            </ul>
-            <div className={styles.pagination}>
-              {pageCount > 1 ? (
-                <Pagination
-                  pageCount={pageCount}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
+      {!authorized ? (
+        <div className={styles.wrapper}>
+          <form
+            className="container inline-max stack"
+            style={{
+              "--max-inline-size": "45ch",
+            }}
+            onSubmit={handlePasswordSubmit}
+          >
+            <label htmlFor="password">Enter page password</label>
+
+            <input
+              className="input"
+              id="password"
+              type="password"
+              value={password || ""}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className="button" data-variant="primary" type="submit">
+              Submit
+            </button>
+            {showError ? (
+              <p style={{ color: "red" }}>Incorrect password. Try Again.</p>
+            ) : null}
+          </form>
+        </div>
+      ) : (
+        <>
+          {isSubscribed || isDlcmFriend ? (
+            <div ref={filtersRef} className={styles.sort}>
+              {artistList.length > 1 ? (
+                <ReleaseFilter
+                  releases={releases}
+                  setFilteredReleases={setFilteredReleases}
+                  artistList={artistList}
                 />
               ) : null}
+              <ReleaseSort
+                filteredReleases={filteredReleases}
+                setSortedReleases={setSortedReleases}
+              />
             </div>
-          </>
-        )}
-      </>
+          ) : null}
+
+          <ul className="grid" role="list">
+            {currentReleases.map((release, index) =>
+              release.is_active ? (
+                <li key={index}>
+                  <Link
+                    className={styles.release}
+                    href={`/${profileSlug}/${release.release_slug}`}
+                  >
+                    <ReleaseCard
+                      key={release.id}
+                      release={release}
+                      profileSlug={profileSlug}
+                    />
+                  </Link>
+                </li>
+              ) : null
+            )}
+          </ul>
+          <div className={styles.pagination}>
+            <Pagination
+              pageCount={pageCount}
+              onPageChange={handlePaginationClick}
+            />
+          </div>
+        </>
+      )}
     </>
   )
 }

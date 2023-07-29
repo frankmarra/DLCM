@@ -30,6 +30,7 @@
 }
 
 .pagination {
+  --stack-space: var(--size-8);
   display: flex;
   justify-content: center;
 }

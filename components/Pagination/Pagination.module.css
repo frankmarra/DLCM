@@ -1,32 +1,26 @@
-.pages {
-
-  position: relative;
-  display: flex;
-  align-items: flex-start; 
-
+.component {
+  --cluster-justify: center;
+  --cluster-gap: var(--size-1);
+  list-style: none;
+  padding-inline-start: unset;
 }
 
-.pages li a{
-  text-decoration: none;
-  color:var(--text-1);
-  --border: var(--border-size-1) solid var(--surface-3);
-  padding: var(--size-2);
-  border-radius: var(--radius-conditional-2);
-  border: var(--border);
+.component a {
+  display: inline-block;
+  text-align: center;
+  padding: var(--size-1) var(--size-2);
+  min-inline-size: 4ch;
+  border: 1px solid transparent;
+  border-radius: var(--radius-1);
 }
 
-.pages li a:hover {
-  background-color: var(--brand-1);
+.component a:hover {
+  cursor: pointer;
+  color: var(--link-hover);
 }
 
-.active {
-  background-color: var(--brand-1);
-  color: #f2f2f2;
+.component :global(.selected) a {
+  color: var(--text-1);
+  background-color: var(--surface-2);
+  border-color: var(--surface-3);
 }
-
-@media screen and (max-width: 480px) {
-  .pages {
-    font-size: 12px;
-    margin-block-start: 3vh;
-  } 
-  }
