@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import styles from "./ReleaseFilter.module.css"
 
 export default function ReleaseFilter({ releases, onChange }) {
   const [artistList, setArtistList] = useState([])
@@ -38,14 +37,13 @@ export default function ReleaseFilter({ releases, onChange }) {
   }
 
   return (
-    <div className={styles.filter}>
+    <div>
       <label className="label" htmlFor="filter">
         Filter by artist
       </label>
       <select
-        className="input select"
-        style={{ inlineSize: "auto" }}
         id="filter"
+        className="input select"
         onChange={(e) => handleFilter(e.target.value)}
       >
         <option value="all" key="all">

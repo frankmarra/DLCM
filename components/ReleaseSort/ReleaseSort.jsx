@@ -1,6 +1,4 @@
-import styles from "./ReleaseSort.module.css"
 import { useState, useEffect } from "react"
-import React from "react"
 
 export default function ReleaseSort({ releases, onChange }) {
   const [sortBy, setSortBy] = useState("newest")
@@ -48,10 +46,6 @@ export default function ReleaseSort({ releases, onChange }) {
     },
   ]
 
-  useEffect(() => {
-    handleSort()
-  }, [sortBy, releases])
-
   const handleSort = () => {
     const selected = sortOptions.find((option) => option.value == sortBy)
     let sortedItems
@@ -65,15 +59,18 @@ export default function ReleaseSort({ releases, onChange }) {
     onChange(sortedItems)
   }
 
+  useEffect(() => {
+    handleSort()
+  }, [sortBy, releases])
+
   return (
-    <div className={styles.filter}>
-      <label className="label" htmlFor="order">
+    <div>
+      <label className="label" htmlFor="sort">
         Sort
       </label>
       <select
+        id="sort"
         className="input select"
-        style={{ inlineSize: "auto" }}
-        id="order"
         onChange={(e) => setSortBy(e.target.value)}
       >
         {sortOptions.map(({ label, value }) => (
