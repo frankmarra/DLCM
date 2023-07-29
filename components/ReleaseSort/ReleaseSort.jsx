@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import React from "react"
 
 export default function ReleaseSort({ filteredReleases, setSortedReleases }) {
-  const [sortBy, setSortBy] = useState("oldest")
+  const [sortBy, setSortBy] = useState("newest")
   const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
   const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
   const sortByArtist = (a, b) =>
@@ -11,16 +11,16 @@ export default function ReleaseSort({ filteredReleases, setSortedReleases }) {
 
   const sortOptions = [
     {
-      label: "Oldest First",
-      value: "oldest",
-      method: sortByCreatedAt,
-      direction: "asc",
-    },
-    {
       label: "Newest First",
       value: "newest",
       method: sortByCreatedAt,
       direction: "desc",
+    },
+    {
+      label: "Oldest First",
+      value: "oldest",
+      method: sortByCreatedAt,
+      direction: "asc",
     },
     {
       label: "A to Z (release)",
@@ -68,7 +68,7 @@ export default function ReleaseSort({ filteredReleases, setSortedReleases }) {
   return (
     <div className={styles.filter}>
       <label className="label" htmlFor="order">
-        Order
+        Sort
       </label>
       <select
         className="input select"

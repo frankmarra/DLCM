@@ -8,6 +8,7 @@
 .artwork {
   display: inline-block;
   border-radius: var(--radius-1);
+  object-fit: cover;
 }
 
 .info {

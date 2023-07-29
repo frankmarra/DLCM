@@ -15,12 +15,12 @@ import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 
 const releaseTypes = [
+  { id: 0, text: "Choose release type", isDisabled: true, isSelected: true },
   { id: 1, text: "LP" },
   { id: 2, text: "EP" },
   { id: 3, text: "Single" },
   { id: 4, text: "Compilation" },
   { id: 5, text: "Soundtrack" },
-  { id: 6, text: "Choose release type", isDisabled: true },
 ]
 
 export default function CreateRelease({
@@ -49,7 +49,7 @@ export default function CreateRelease({
   const [yumUrl, setYumUrl] = useState(profileData.yum_url)
   const [pagePassword, setPagePassword] = useState()
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
-  const [type, setType] = useState(releaseTypes[5].text)
+  const [type, setType] = useState()
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(true)
   const [sites, setSites] = useState({
@@ -68,7 +68,7 @@ export default function CreateRelease({
     setArtworkUrl()
     setPagePassword()
     setIsPasswordProtected(false)
-    setType(releaseTypes[5].text)
+    setType()
     setNewImagePath()
     setIsActive(true)
     setNamesTaken({
@@ -279,6 +279,7 @@ export default function CreateRelease({
                 key={releaseType.id}
                 value={releaseType.value}
                 disabled={releaseType.isDisabled}
+                selected={releaseType.isSelected}
               >
                 {releaseType.text}
               </option>
