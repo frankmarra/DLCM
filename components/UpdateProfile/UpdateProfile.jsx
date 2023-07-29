@@ -12,6 +12,7 @@ import {
 import PopoverTip from "../PopoverTip/PopoverTip"
 import Link from "next/link"
 import { prependProtocol } from "@/utils/utils"
+import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 
 export default function UpdateProfile({
   getProfile,
@@ -200,8 +201,11 @@ export default function UpdateProfile({
             </>
           ) : null}
           <small className="hint">
-            Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
-            {`${sluggedName}`}
+            Public address:{" "}
+            <code>
+              {process.env.NEXT_PUBLIC_DLCM_URL}
+              {`${sluggedName}`}
+            </code>
           </small>{" "}
           <br />
           <small className="hint" style={{ color: `${namesTaken.color}` }}>
@@ -317,35 +321,17 @@ export default function UpdateProfile({
                   setSites({ ...sites, [e.target.id]: e.target.value })
                 }
               />
-              <div style={{ display: "flex" }}>
-                <label className="label" htmlFor="isPasswordProtected">
-                  Password protect profile page?
-                </label>
-
-                <input
-                  className="input"
-                  style={{ inlineSize: "50%", width: "20%" }}
-                  id="isPasswordProtected"
-                  type="checkbox"
-                  checked={isPasswordProtected}
-                  onChange={() => setIsPasswordProtected(!isPasswordProtected)}
-                />
-              </div>
-
-              {isPasswordProtected ? (
-                <>
-                  <label className="label" htmlFor="pagePassword">
-                    Page password
-                  </label>
-                  <input
-                    className="input"
-                    id="pagePassword"
-                    type="password"
-                    value={pagePassword || ""}
-                    onChange={(e) => setPagePassword(e.target.value)}
-                  />
-                </>
-              ) : null}
+              <InputPasswordProtect
+                id="isPasswordProtected"
+                isProtected={isPasswordProtected}
+                pagePassword={pagePassword}
+                setIsProtected={() =>
+                  setIsPasswordProtected(!isPasswordProtected)
+                }
+                setPagePassword={(e) => setPagePassword(e.target.value)}
+              >
+                Password protect your profile page
+              </InputPasswordProtect>
             </>
           ) : null}
         </div>

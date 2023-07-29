@@ -28,6 +28,15 @@ a:not([class]):hover {
   gap: var(--size-3);
 }
 
+code:not(:empty) {
+  font-size: 0.9em;
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-5);
+  background-color: var(--surface-2);
+  border-radius: var(--radius-1);
+  padding: 0.1rem 0.3rem 0.2rem;
+}
+
 :where(h1, h2, h3, .text-1, .text-2, .text-3) {
   font-family: var(--font-heading);
   font-weight: 500;

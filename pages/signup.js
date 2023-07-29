@@ -317,9 +317,12 @@ const Signup = () => {
                       onBlur={checkName}
                     />
                   </div>
-                  <small>
-                    Public label URL will be: {process.env.NEXT_PUBLIC_DLCM_URL}
-                    {`${sluggedName}`}
+                  <small className="hint">
+                    Public label URL will be:{" "}
+                    <code>
+                      {process.env.NEXT_PUBLIC_DLCM_URL}
+                      {`${sluggedName}`}
+                    </code>
                   </small>
                   <br />
                   <small style={{ color: `${namesTaken.color}` }}>
