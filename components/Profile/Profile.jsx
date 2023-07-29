@@ -8,6 +8,7 @@ import Link from "next/link"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
 import Pagination from "../Pagination/Pagination"
 import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
+import Image from "next/image"
 
 export default function ProfileLayout({
   avatar,
@@ -90,24 +91,13 @@ export default function ProfileLayout({
       </Head>
 
       <div className={cn(styles.wrapper, "stack inline-max")}>
-        {avatar ? (
-          <img
-            className={styles.avatar}
-            src={artwork}
-            alt={name}
-            width={200}
-            height={200}
-            onError={() => setArtwork("/default-image.png")}
-          />
-        ) : (
-          <img
-            className={styles.avatar}
-            src="/default-image.png"
-            alt={name}
-            width={200}
-            height={200}
-          />
-        )}
+        <Image
+          className={styles.avatar}
+          src={artwork || "/default-image.png"}
+          alt={name}
+          width={200}
+          height={200}
+        />
         <div className={cn(styles.info, "stack")}>
           <h1 className={cn(styles.name, "text-3")}>{name}</h1>
           <p className={cn(styles.location, "text-2")}>{location}</p>

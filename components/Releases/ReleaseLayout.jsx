@@ -4,6 +4,7 @@ import SocialSites from "../SocialSites/SocialSites"
 import styles from "./ReleaseLayout.module.css"
 import cn from "classnames"
 import Head from "next/head"
+import Image from "next/image"
 
 export default function ReleaseLayout({
   release,
@@ -43,24 +44,13 @@ export default function ReleaseLayout({
         />
       </Head>
       <div className={cn(styles.wrapper, "stack inline-max")}>
-        {release.artwork_url ? (
-          <img
-            className={styles.artwork}
-            src={artwork}
-            alt={release.title}
-            height={250}
-            width={250}
-            onError={() => setArtwork("/default-image.png")}
-          />
-        ) : (
-          <img
-            className={styles.artwork}
-            src="/default-image.png"
-            alt={release.title}
-            height={250}
-            width={250}
-          />
-        )}
+        <Image
+          className={styles.artwork}
+          src={artwork || "/default-image-release.png"}
+          alt={release.title}
+          height={250}
+          width={250}
+        />
         <div>
           <h1 className={styles.title}>{release.title}</h1>
           <p className={styles.artist}>{release.artist}</p>

@@ -6,9 +6,9 @@ import Link from "next/link"
 import IconDownload from "@/icons/download.svg"
 import IconRecord from "@/icons/vinyl-record.svg"
 import IconMusicNotes from "@/icons/music-notes.svg"
-import IconEdit from "@/icons/edit.svg"
 import UpdateRelease from "./UpdateRelease"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import Image from "next/image"
 
 export default function ReleaseCard({
   release,
@@ -33,20 +33,14 @@ export default function ReleaseCard({
   return (
     <div className={styles.component}>
       <div className={styles.content}>
-        {artwork ? (
-          <img
-            className={styles.image}
-            src={artwork != "     " ? artwork : "/default-image.png"}
-            alt={release.title}
-            height={250}
-            width={250}
-            onError={() => setArtwork("/default-image.png")}
-          />
-        ) : (
-          <div className={styles.image}>
-            <IconMusicNotes aria-hidden="true" />
-          </div>
-        )}
+        <Image
+          className={styles.image}
+          src={artwork || "/default-image-release.png"}
+          alt={release.title}
+          height={250}
+          width={250}
+          quality={60}
+        />
         <div className={styles.details}>
           <div>
             <h3 className={cn(styles.title, "text-2")}>
