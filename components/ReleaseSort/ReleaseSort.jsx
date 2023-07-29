@@ -2,7 +2,7 @@ import styles from "./ReleaseSort.module.css"
 import { useState, useEffect } from "react"
 import React from "react"
 
-export default function ReleaseSort({ filteredReleases, setSortedReleases }) {
+export default function ReleaseSort({ releases, onChange }) {
   const [sortBy, setSortBy] = useState("newest")
   const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
   const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
@@ -50,19 +50,19 @@ export default function ReleaseSort({ filteredReleases, setSortedReleases }) {
 
   useEffect(() => {
     handleSort()
-  }, [sortBy, filteredReleases])
+  }, [sortBy, releases])
 
   const handleSort = () => {
     const selected = sortOptions.find((option) => option.value == sortBy)
     let sortedItems
 
-    sortedItems = [...filteredReleases].sort(selected.method)
+    sortedItems = [...releases].sort(selected.method)
 
     if (selected.direction === "desc") {
       sortedItems.reverse()
     }
 
-    setSortedReleases(sortedItems)
+    onChange(sortedItems)
   }
 
   return (

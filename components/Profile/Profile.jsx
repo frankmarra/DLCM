@@ -9,6 +9,7 @@ import ReleaseSort from "../ReleaseSort/ReleaseSort"
 import Pagination from "../Pagination/Pagination"
 import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import Image from "next/image"
+import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 
 export default function ProfileLayout({
   avatar,
@@ -31,13 +32,12 @@ export default function ProfileLayout({
     isPasswordProtected ? false : true
   )
   const [showError, setShowError] = useState(false)
-  const [filteredReleases, setFilteredReleases] = useState(releases)
-  const [sortedReleases, setSortedReleases] = useState(filteredReleases)
-  const pageCount = Math.ceil(sortedReleases.length / releasesPerPage)
+  const [refinedReleases, setRefinedReleases] = useState(releases)
+  const pageCount = Math.ceil(refinedReleases.length / releasesPerPage)
   const [artistList, setArtistList] = useState([])
   const [releasesOffset, setReleasesOffset] = useState(0)
   const endOffset = releasesOffset + releasesPerPage
-  const currentReleases = sortedReleases.slice(releasesOffset, endOffset)
+  const currentReleases = refinedReleases.slice(releasesOffset, endOffset)
 
   const handlePaginationClick = (e) => {
     const newOffset = (e.selected * releasesPerPage) % releases.length
@@ -57,22 +57,7 @@ export default function ProfileLayout({
 
   useEffect(() => {
     setReleasesOffset(0)
-  }, [sortedReleases])
-
-  useEffect(() => {
-    let artists = []
-    releases.forEach((release) => {
-      if (!artists.some(({ value }) => value === release.artist)) {
-        artists.push({ value: release.artist, label: release.artist })
-      }
-    })
-
-    setArtistList(
-      artists.sort((a, b) =>
-        a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
-      )
-    )
-  }, [releases])
+  }, [refinedReleases])
 
   return (
     <>
@@ -138,21 +123,11 @@ export default function ProfileLayout({
         </div>
       ) : (
         <>
-          {isSubscribed || isDlcmFriend ? (
-            <div ref={filtersRef} className={styles.sort}>
-              {artistList.length > 1 ? (
-                <ReleaseFilter
-                  releases={releases}
-                  setFilteredReleases={setFilteredReleases}
-                  artistList={artistList}
-                />
-              ) : null}
-              <ReleaseSort
-                filteredReleases={filteredReleases}
-                setSortedReleases={setSortedReleases}
-              />
-            </div>
-          ) : null}
+          <ReleaseRefinement
+            releases={releases}
+            isVisible={isSubscribed || isDlcmFriend}
+            onRefinement={setRefinedReleases}
+          />
 
           <ul className="grid" role="list">
             {currentReleases.map((release, index) =>

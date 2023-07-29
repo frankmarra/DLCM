@@ -1,13 +1,27 @@
+import { useEffect, useState } from "react"
 import styles from "./ReleaseFilter.module.css"
 
-export default function ReleaseFilter({
-  releases,
-  setFilteredReleases,
-  artistList,
-}) {
+export default function ReleaseFilter({ releases, onChange }) {
+  const [artistList, setArtistList] = useState([])
+
+  useEffect(() => {
+    let artists = []
+    releases.forEach((release) => {
+      if (!artists.some(({ value }) => value === release.artist)) {
+        artists.push({ value: release.artist, label: release.artist })
+      }
+    })
+
+    const sortedArtists = artists.sort((a, b) =>
+      a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
+    )
+
+    setArtistList(sortedArtists)
+  }, [releases])
+
   const handleFilter = (value) => {
     if (value == "all") {
-      setFilteredReleases(releases)
+      onChange(releases)
     } else {
       let selectedArtistReleases = []
       releases.forEach((release) => {
@@ -15,8 +29,12 @@ export default function ReleaseFilter({
           selectedArtistReleases.push(release)
         }
       })
-      setFilteredReleases(selectedArtistReleases)
+      onChange(selectedArtistReleases)
     }
+  }
+
+  if (artistList.length <= 1) {
+    return
   }
 
   return (

@@ -5,8 +5,7 @@
 
 .actionCard {
   display: grid;
-  place-content: center;
-  place-items: center;
+  padding: unset;
   transition: border-color 200ms ease-out;
 }
 
@@ -14,6 +13,7 @@
   --button-icon-size: 2em;
   gap: var(--size-1);
   flex-direction: column;
+  transition: color 200ms ease-out;
 }
 
 .actionCard:has(button:hover) {
