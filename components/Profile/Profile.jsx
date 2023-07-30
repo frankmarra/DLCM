@@ -5,9 +5,7 @@ import SocialSites from "../SocialSites/SocialSites"
 import { useState, useEffect, useRef } from "react"
 import Head from "next/head"
 import Link from "next/link"
-import ReleaseSort from "../ReleaseSort/ReleaseSort"
 import Pagination from "../Pagination/Pagination"
-import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import Image from "next/image"
 import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 
@@ -34,7 +32,6 @@ export default function ProfileLayout({
   const [showError, setShowError] = useState(false)
   const [refinedReleases, setRefinedReleases] = useState(releases)
   const pageCount = Math.ceil(refinedReleases.length / releasesPerPage)
-  const [artistList, setArtistList] = useState([])
   const [releasesOffset, setReleasesOffset] = useState(0)
   const endOffset = releasesOffset + releasesPerPage
   const currentReleases = refinedReleases.slice(releasesOffset, endOffset)

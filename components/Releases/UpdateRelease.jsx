@@ -15,15 +15,7 @@ import PopoverTip from "../PopoverTip/PopoverTip"
 import slugify from "slugify"
 import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
-
-const releaseTypes = [
-  { id: 1, text: "LP" },
-  { id: 2, text: "EP" },
-  { id: 3, text: "Single" },
-  { id: 4, text: "Compilation" },
-  { id: 5, text: "Soundtrack" },
-  { id: 6, text: "Choose release type", isDisabled: true },
-]
+import InputReleaseType from "../InputReleaseType/InputReleaseType"
 
 export default function UpdateRelease({
   release,
@@ -301,26 +293,9 @@ export default function UpdateRelease({
           <small style={{ color: `${namesTaken.color}` }}>
             {namesTaken.message}
           </small>
-          <label className="label" htmlFor="type">
-            Type
-          </label>
-          <select
-            className="input select"
-            onChange={(e) => setType(e.target.value)}
-            id="type"
-            value={type}
-            required
-          >
-            {releaseTypes.map((releaseType) => (
-              <option
-                key={releaseType.id}
-                value={releaseType.value}
-                disabled={releaseType.isDisabled}
-              >
-                {releaseType.text}
-              </option>
-            ))}
-          </select>
+
+          <InputReleaseType type={type} setType={setType} />
+
           <label className="label" htmlFor="yumUrl">
             Redemption Link
           </label>

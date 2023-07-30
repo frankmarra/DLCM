@@ -6,21 +6,16 @@ import styles from "./Releases.module.css"
 import cn from "classnames"
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Link from "next/link"
-import ReleaseSort from "../ReleaseSort/ReleaseSort"
-import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import Pagination from "../Pagination/Pagination"
 import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 
 export default function Releases({ profileData, getProfile }) {
   const releasesPerPage = 9
   const filtersRef = useRef(null)
-  const supabase = useSupabaseClient()
   const user = useUser()
   const [releases, setReleases] = useState(profileData.releases)
-  const [allowNew, setAllowNew] = useState(true)
   const [addedNewRelease, setAddedNewRelease] = useState(false)
   const [refinedReleases, setRefinedReleases] = useState(releases)
-  const [artistList, setArtistList] = useState([])
   const pageCount = Math.ceil(refinedReleases?.length / releasesPerPage)
   const [releasesOffset, setReleasesOffset] = useState(0)
   const endOffset = releasesOffset + releasesPerPage
