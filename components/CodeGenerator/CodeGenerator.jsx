@@ -19,7 +19,11 @@ export default function CodeGenerator({ release, profileYumLink }) {
     try {
       setLoading(true)
 
-      let { data: codes, error } = await supabase
+      let {
+        data: codes,
+        error,
+        status,
+      } = await supabase
         .from("codes")
         .select("*")
         .eq("release_id", release.id)
