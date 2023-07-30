@@ -2,12 +2,10 @@ import ReleaseCard from "@/components/Releases/ReleaseCard"
 import styles from "./Profile.module.css"
 import cn from "classnames"
 import SocialSites from "../SocialSites/SocialSites"
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef, useCallback } from "react"
 import Head from "next/head"
 import Link from "next/link"
-import ReleaseSort from "../ReleaseSort/ReleaseSort"
 import Pagination from "../Pagination/Pagination"
-import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import Image from "next/image"
 import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 
@@ -26,38 +24,43 @@ export default function ProfileLayout({
 }) {
   const releasesPerPage = 10
   const filtersRef = useRef(null)
-  const [artwork, setArtwork] = useState(avatar)
   const [password, setPassword] = useState()
-  const [authorized, setAuthorized] = useState(
-    isPasswordProtected ? false : true
-  )
+  const [pageChange, setPageChange] = useState(0)
+  const [authorized, setAuthorized] = useState(!isPasswordProtected)
   const [showError, setShowError] = useState(false)
   const [refinedReleases, setRefinedReleases] = useState(releases)
   const pageCount = Math.ceil(refinedReleases.length / releasesPerPage)
-  const [artistList, setArtistList] = useState([])
   const [releasesOffset, setReleasesOffset] = useState(0)
   const endOffset = releasesOffset + releasesPerPage
   const currentReleases = refinedReleases.slice(releasesOffset, endOffset)
 
-  const handlePaginationClick = (e) => {
-    const newOffset = (e.selected * releasesPerPage) % releases.length
-    setReleasesOffset(newOffset)
-    filtersRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+  const handlePageChange = useCallback(
+    (e) => {
+      const newOffset = (e.selected * releasesPerPage) % releases.length
+      setReleasesOffset(newOffset)
+      setPageChange(e.selected)
+      filtersRef.current?.scrollIntoView({ behavior: "smooth" })
+    },
+    [releases.length]
+  )
+
+  const handleFilterRefinement = useCallback(
+    (releases) => {
+      setRefinedReleases(releases)
+      handlePageChange({ selected: 0 })
+    },
+    [handlePageChange]
+  )
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault()
-    if (pagePassword == password) {
+    if (pagePassword === password) {
       setAuthorized(true)
     } else {
       setPassword("")
       setShowError(true)
     }
   }
-
-  useEffect(() => {
-    setReleasesOffset(0)
-  }, [refinedReleases])
 
   return (
     <>
@@ -78,7 +81,7 @@ export default function ProfileLayout({
       <div className={cn(styles.wrapper, "stack inline-max")}>
         <Image
           className={styles.avatar}
-          src={artwork || "/default-image.png"}
+          src={avatar || "/default-image.png"}
           alt={name}
           width={200}
           height={200}
@@ -116,17 +119,16 @@ export default function ProfileLayout({
             <button className="button" data-variant="primary" type="submit">
               Submit
             </button>
-            {showError ? (
-              <p style={{ color: "red" }}>Incorrect password. Try Again.</p>
-            ) : null}
+            {showError ? <p>Incorrect password. Try Again.</p> : null}
           </form>
         </div>
       ) : (
         <>
           <ReleaseRefinement
+            ref={filtersRef}
             releases={releases}
             isVisible={isSubscribed || isDlcmFriend}
-            onRefinement={setRefinedReleases}
+            onRefinement={handleFilterRefinement}
           />
 
           <ul className="grid" role="list">
@@ -150,7 +152,8 @@ export default function ProfileLayout({
           <div className={styles.pagination}>
             <Pagination
               pageCount={pageCount}
-              onPageChange={handlePaginationClick}
+              onPageChange={handlePageChange}
+              forcePage={pageChange}
             />
           </div>
         </>

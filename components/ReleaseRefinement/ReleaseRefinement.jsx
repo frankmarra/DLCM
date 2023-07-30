@@ -1,19 +1,14 @@
-import { useRef, useState, useEffect } from "react"
+import { useState, useEffect, forwardRef } from "react"
 import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
 
-export default function ReleaseRefinement({
-  isVisible,
-  onRefinement,
-  releases,
-}) {
-  const filtersRef = useRef(null)
+function ReleaseRefinement({ isVisible, onRefinement, releases }, ref) {
   const [filtered, setFiltered] = useState(releases)
   const [sorted, setSorted] = useState(filtered)
 
   useEffect(() => {
     onRefinement(sorted)
-  }, [filtered, sorted])
+  }, [filtered, sorted, onRefinement])
 
   if (!isVisible) {
     return
@@ -21,7 +16,7 @@ export default function ReleaseRefinement({
 
   return (
     <div
-      ref={filtersRef}
+      ref={ref}
       className="cluster"
       style={{ "--cluster-gap": "var(--size-3)" }}
     >
@@ -30,3 +25,5 @@ export default function ReleaseRefinement({
     </div>
   )
 }
+
+export default forwardRef(ReleaseRefinement)
