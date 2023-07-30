@@ -16,12 +16,12 @@ export default function Pagination({
     <ReactPaginate
       className={cn(styles.component, "cluster")}
       breakLabel="..."
-      nextLabel="next >"
+      nextLabel="next »"
       onClick={onClick}
       onPageChange={onPageChange}
       pageCount={pageCount}
       forcePage={forcePage}
-      previousLabel="< previous"
+      previousLabel="« prev"
       renderOnZeroPageCount={null}
     />
   )
