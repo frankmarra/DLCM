@@ -256,7 +256,7 @@ export default function CreateRelease({
           />
           <p>Upload an image or paste an external link</p>*/}
 
-          <InputReleaseType type={type} setType={setType} />
+          <InputReleaseType type={type} onChange={setType} />
           <p>You must include https:// in your links</p>
           <label className="label" htmlFor="yumUrl">
             Redemption (yum) Link
