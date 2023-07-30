@@ -7,8 +7,12 @@ function ReleaseRefinement({ isVisible, onRefinement, releases }, ref) {
   const [sorted, setSorted] = useState(filtered)
 
   useEffect(() => {
+    setSorted(filtered)
+  }, [filtered])
+
+  useEffect(() => {
     onRefinement(sorted)
-  }, [filtered, sorted, onRefinement])
+  }, [sorted, onRefinement])
 
   if (!isVisible) {
     return

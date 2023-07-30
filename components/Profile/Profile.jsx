@@ -40,11 +40,11 @@ export default function ProfileLayout({
 
   const handlePageChange = useCallback(
     (e) => {
-      const newOffset = (e.selected * releasesPerPage) % refinedReleases.length
+      const newOffset = (e.selected * releasesPerPage) % releases.length
       setReleasesOffset(newOffset)
       setPageChange(e.selected)
     },
-    [refinedReleases.length]
+    [releases.length]
   )
 
   const handleFilterRefinement = useCallback(
