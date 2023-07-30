@@ -135,6 +135,7 @@ textarea {
   --button-bg-color: var(--surface-disabled-1);
   --button-border-color: var(--surface-disabled-1);
   --button-text-color: var(--text-disabled);
+  cursor: not-allowed;
 }
 
 .button-actions {

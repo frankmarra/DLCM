@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
-import IconUpload from "@/icons/upload.svg"
-import cn from "classnames"
 import { v4 as uuidv4 } from "uuid"
+import IconUpload from "@/icons/upload.svg"
+import styles from "./AddImage.module.css"
+import cn from "classnames"
 
 export default function AddImage({
   uid,
@@ -61,7 +62,7 @@ export default function AddImage({
     <>
       <label
         tabIndex={1}
-        className={cn("button")}
+        className={cn(styles.upload, "button")}
         data-variant="dashed"
         htmlFor="single"
       >
@@ -83,6 +84,14 @@ export default function AddImage({
         onChange={uploadImage}
         disabled={uploading}
       />
+      <small className="hint">
+        File size must be less than 1MB. File too large? Consider using an
+        application like{" "}
+        <a href="https://squoosh.app/" target="_blank">
+          Squoosh
+        </a>{" "}
+        to optimize it.
+      </small>
     </>
   )
 }

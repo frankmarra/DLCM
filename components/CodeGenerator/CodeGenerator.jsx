@@ -71,7 +71,7 @@ export default function CodeGenerator({ release, profileYumLink }) {
     <div className={cn(styles.codes, "stack")}>
       {code ? (
         <>
-          <p>{code.code}</p>
+          <p className={styles.value}>{code.code}</p>
           {copiedToClipboard ? (
             <button
               className="button"
@@ -109,6 +109,6 @@ export default function CodeGenerator({ release, profileYumLink }) {
       )}
     </div>
   ) : (
-    <p className={styles.nocodes}>No codes for this release</p>
+    <p className={styles.nocodes}>No codes available</p>
   )
 }

@@ -154,8 +154,6 @@ export default function UpdateProfile({
 
         <div className="stack block-overflow">
           <Avatar url={avatarUrl} size={250} />
-          <small className="hint">Must be 1MB or less</small>
-          <br />
           <AddImage
             uid={profileData.id}
             setPublicUrl={(url) => setAvatarUrl(url)}

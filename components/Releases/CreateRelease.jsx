@@ -162,10 +162,8 @@ export default function CreateRelease({
         </header>
 
         <div className="stack block-overflow">
-          <label className="label">Artwork </label>
+          <label className="label">Artwork</label>
           <Avatar url={artworkUrl} size={250} />
-          <small>{"Must be 1MB or less"}</small>
-          <br />
           <AddImage
             uid={user.id}
             setPublicUrl={(url) => {
@@ -173,6 +171,7 @@ export default function CreateRelease({
             }}
             setNewImagePath={setNewImagePath}
           />
+
           <label className="label" htmlFor="title">
             Title
           </label>
@@ -257,7 +256,6 @@ export default function CreateRelease({
           <p>Upload an image or paste an external link</p>*/}
 
           <InputReleaseType type={type} onChange={setType} />
-          <p>You must include https:// in your links</p>
           <label className="label" htmlFor="yumUrl">
             Redemption (yum) Link
           </label>
@@ -268,9 +266,9 @@ export default function CreateRelease({
             value={yumUrl}
             onChange={(e) => setYumUrl(e.target.value)}
           />
-          <small>
+          <small class="hint">
             This is the link your customers will visit to redeem their code. It
-            is usually <code>your-name.bandcamp/yum</code>
+            is usually <code>your-name.bandcamp/yum</code>.
           </small>
 
           <label className="label" htmlFor="bandcamp">
