@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import styles from "./CodeGenerator.module.css"
 import cn from "classnames"
+import Loader from "../Loader/Loader"
 
 export default function CodeGenerator({ release, profileYumLink }) {
   const supabase = useSupabaseClient()
@@ -12,17 +13,35 @@ export default function CodeGenerator({ release, profileYumLink }) {
 
   useEffect(() => {
     getActiveCodes()
-    setLoading(false)
   }, [])
 
   async function getActiveCodes() {
-    let { data: codes, error } = await supabase
-      .from("codes")
-      .select("*")
-      .eq("release_id", release.id)
-      .eq("redeemed", false)
+    try {
+      setLoading(true)
 
-    setActiveCodes(codes)
+      let {
+        data: codes,
+        error,
+        status,
+      } = await supabase
+        .from("codes")
+        .select("*")
+        .eq("release_id", release.id)
+        .eq("redeemed", false)
+
+      if (error && status !== 406) {
+        throw error
+      }
+
+      if (codes) {
+        setActiveCodes(codes)
+      }
+    } catch (error) {
+      alert("Error loading release codes!")
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   async function getRandomCode() {
@@ -42,6 +61,10 @@ export default function CodeGenerator({ release, profileYumLink }) {
       setCopiedToClipboard(true)
       return document.execCommand("copy", true, code)
     }
+  }
+
+  if (loading) {
+    return <Loader style={{ margin: "auto" }} />
   }
 
   return activeCodes.length > 0 ? (

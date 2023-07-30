@@ -16,6 +16,9 @@ export default function Pricing() {
             <ul role="list">
               <li>Two Releases</li>
               <li>Unlimited Codes</li>
+              <li>Copy and Paste Code Upload</li>
+              <li>Public Profile Page</li>
+              <li>Dedicated Release Pages</li>
             </ul>
           </div>
         </section>

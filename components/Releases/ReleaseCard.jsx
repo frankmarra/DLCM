@@ -57,7 +57,7 @@ export default function ReleaseCard({
             </h3>
             <div className={styles.artist}>{release.artist}</div>
             <div className={styles.label}>{release.label}</div>
-            {release.type ? (
+            {release.type && release.type != "Choose release type" ? (
               <div className={styles.type}>
                 <IconRecord aria-hidden="true" /> {release.type}
               </div>

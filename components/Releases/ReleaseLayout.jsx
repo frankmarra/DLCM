@@ -55,7 +55,7 @@ export default function ReleaseLayout({
           <h1 className={styles.title}>{release.title}</h1>
           <p className={styles.artist}>{release.artist}</p>
           <p className={styles.label}>{release.label}</p>
-          <p>{release.type}</p>
+          <p>{release.type == "Choose release type" ? null : release.type}</p>
         </div>
         <SocialSites
           sites={release.sites}

@@ -20,12 +20,12 @@ export default function Header() {
 
   const userNav = [
     { id: "dashboard", label: "Dashboard", url: "/" },
-    {
-      id: "subscribe",
-      label: "Subscribe",
-      url: "/api/subscribe-to-dlcm",
-      hasProAccount: user?.is_subscribed || user?.dlcm_friend,
-    },
+    // {
+    //   id: "subscribe",
+    //   label: "Subscribe",
+    //   url: "/api/subscribe-to-dlcm",
+    //   hasProAccount: user?.is_subscribed || user?.dlcm_friend,
+    // },
   ]
 
   async function handleLogout() {
