@@ -13,11 +13,8 @@ export default function ReleaseLayout({
   profileYumLink,
 }) {
   const [password, setPassword] = useState()
-  const [authorized, setAuthorized] = useState(
-    release.is_password_protected ? false : true
-  )
+  const [authorized, setAuthorized] = useState(!release.is_password_protected)
   const [showError, setShowError] = useState(false)
-  const [artwork, setArtwork] = useState(release.artwork_url)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -46,7 +43,7 @@ export default function ReleaseLayout({
       <div className={cn(styles.wrapper, "stack inline-max")}>
         <Image
           className={styles.artwork}
-          src={artwork || "/default-image-release.png"}
+          src={release.artwork_url || "/default-image-release.png"}
           alt={release.title}
           height={250}
           width={250}

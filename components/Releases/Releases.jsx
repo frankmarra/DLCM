@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useState, useEffect, useRef, useCallback } from "react"
+import { useUser } from "@supabase/auth-helpers-react"
 import ReleaseCard from "./ReleaseCard"
 import CreateRelease from "./CreateRelease"
 import styles from "./Releases.module.css"
@@ -13,26 +13,42 @@ export default function Releases({ profileData, getProfile }) {
   const releasesPerPage = 9
   const filtersRef = useRef(null)
   const user = useUser()
-  const [releases, setReleases] = useState(profileData.releases)
   const [addedNewRelease, setAddedNewRelease] = useState(false)
-  const [refinedReleases, setRefinedReleases] = useState(releases)
-  const pageCount = Math.ceil(refinedReleases?.length / releasesPerPage)
+  const [releases, setReleases] = useState(profileData.releases)
+  const [pageChange, setPageChange] = useState(0)
+  const pageCount = Math.ceil(releases?.length / releasesPerPage)
   const [releasesOffset, setReleasesOffset] = useState(0)
   const endOffset = releasesOffset + releasesPerPage
-  const currentReleases = refinedReleases.slice(releasesOffset, endOffset)
+  const currentReleases = releases.slice(releasesOffset, endOffset)
 
-  const handlePaginationClick = (e) => {
-    const newOffset = (e.selected * releasesPerPage) % releases.length
-    setReleasesOffset(newOffset)
+  const handlePageClick = () => {
     filtersRef.current?.scrollIntoView({ behavior: "smooth" })
   }
+
+  const handlePageChange = useCallback(
+    (e) => {
+      const newOffset = (e.selected * releasesPerPage) % releases.length
+      setReleasesOffset(newOffset)
+      setPageChange(e.selected)
+      filtersRef.current?.scrollIntoView({ behavior: "smooth" })
+    },
+    [releases.length]
+  )
+
+  const handleFilterRefinement = useCallback(
+    (releases) => {
+      setReleases(releases)
+      handlePageChange({ selected: 0 })
+    },
+    [handlePageChange]
+  )
 
   useEffect(() => {
     if (addedNewRelease == true) {
       getProfile()
       setAddedNewRelease(false)
     }
-  }, [profileData.id, addedNewRelease])
+  }, [profileData.id, addedNewRelease, getProfile])
 
   return (
     <article className="stack">
@@ -42,7 +58,7 @@ export default function Releases({ profileData, getProfile }) {
         <ReleaseRefinement
           isVisible={profileData.is_subscribed || profileData.dlcm_friend}
           releases={releases}
-          onRefinement={setRefinedReleases}
+          onRefinement={handleFilterRefinement}
         />
       </header>
 
@@ -93,8 +109,10 @@ export default function Releases({ profileData, getProfile }) {
       </ul>
       <div className={styles.pagination}>
         <Pagination
+          forcePage={pageChange}
+          onClick={handlePageClick}
+          onPageChange={handlePageChange}
           pageCount={pageCount}
-          onPageChange={handlePaginationClick}
         />
       </div>
     </article>

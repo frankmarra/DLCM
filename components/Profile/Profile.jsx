@@ -26,7 +26,7 @@ export default function ProfileLayout({
   const filtersRef = useRef(null)
   const [password, setPassword] = useState()
   const [pageChange, setPageChange] = useState(0)
-  const [authorized, setAuthorized] = useState(!isPasswordProtected)
+  const [authorized, setAuthorized] = useState(isPasswordProtected)
   const [showError, setShowError] = useState(false)
   const [refinedReleases, setRefinedReleases] = useState(releases)
   const pageCount = Math.ceil(refinedReleases.length / releasesPerPage)
@@ -34,14 +34,17 @@ export default function ProfileLayout({
   const endOffset = releasesOffset + releasesPerPage
   const currentReleases = refinedReleases.slice(releasesOffset, endOffset)
 
+  const handlePageClick = () => {
+    filtersRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
   const handlePageChange = useCallback(
     (e) => {
-      const newOffset = (e.selected * releasesPerPage) % releases.length
+      const newOffset = (e.selected * releasesPerPage) % refinedReleases.length
       setReleasesOffset(newOffset)
       setPageChange(e.selected)
-      filtersRef.current?.scrollIntoView({ behavior: "smooth" })
     },
-    [releases.length]
+    [refinedReleases.length]
   )
 
   const handleFilterRefinement = useCallback(
@@ -151,9 +154,10 @@ export default function ProfileLayout({
           </ul>
           <div className={styles.pagination}>
             <Pagination
-              pageCount={pageCount}
-              onPageChange={handlePageChange}
               forcePage={pageChange}
+              onClick={handlePageClick}
+              onPageChange={handlePageChange}
+              pageCount={pageCount}
             />
           </div>
         </>
