@@ -26,7 +26,7 @@ export default function ProfileLayout({
   const filtersRef = useRef(null)
   const [password, setPassword] = useState()
   const [pageChange, setPageChange] = useState(0)
-  const [authorized, setAuthorized] = useState(isPasswordProtected)
+  const [authorized, setAuthorized] = useState(!isPasswordProtected)
   const [showError, setShowError] = useState(false)
   const [refinedReleases, setRefinedReleases] = useState(releases)
   const pageCount = Math.ceil(refinedReleases.length / releasesPerPage)
@@ -49,6 +49,7 @@ export default function ProfileLayout({
 
   const handleFilterRefinement = useCallback(
     (releases) => {
+      console.log(releases[0].title)
       setRefinedReleases(releases)
       handlePageChange({ selected: 0 })
     },
