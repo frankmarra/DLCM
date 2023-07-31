@@ -12,7 +12,7 @@ export async function getServerSideProps({ params }) {
     .eq("slug", slug)
     .eq("releases.codes.redeemed", false)
     .eq("releases.is_active", true)
-    .order("created_at", { foreignTable: "releases", ascending: true })
+    .order("created_at", { foreignTable: "releases", ascending: false })
     .single()
 
   if (profile === null) {
