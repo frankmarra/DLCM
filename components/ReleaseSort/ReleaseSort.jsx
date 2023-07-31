@@ -57,6 +57,7 @@ export default function ReleaseSort({ releases, onChange }) {
 
     onChange(sortedItems)
   }
+
   useEffect(() => {
     setSortBy("newest")
   }, [releases])

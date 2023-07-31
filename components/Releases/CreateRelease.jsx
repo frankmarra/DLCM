@@ -364,7 +364,7 @@ export default function CreateRelease({
             className="button"
             data-variant="primary"
             onClick={() => createNewRelease()}
-            disabled={!title || type == "Choose release type" || noGO}
+            disabled={!title || !type || noGO}
           >
             Create
           </button>

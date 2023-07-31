@@ -29,7 +29,7 @@ export default function Account({ session }) {
         .select("*, releases(*, codes(count))")
         .eq("id", user.id)
         .eq("releases.codes.redeemed", false)
-        .order("created_at", { foreignTable: "releases", ascending: true })
+        .order("created_at", { foreignTable: "releases", ascending: false })
         .single()
 
       if (error && status !== 406) {
