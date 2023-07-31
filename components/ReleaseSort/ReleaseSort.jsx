@@ -45,26 +45,24 @@ const sortOptions = [
 ]
 
 export default function ReleaseSort({ releases, onChange }) {
-  const [sortBy, setSortBy] = useState("newest")
+  const [selected, setSelected] = useState("newest")
 
-  const handleSort = () => {
-    const selected = sortOptions.find((option) => option.value === sortBy)
+  const handleChange = (e) => {
+    const value = e.target.value
+    const selected = sortOptions.find((option) => option.value === value)
     let sortedItems = [...releases].sort(selected.method)
 
     if (selected.direction === "desc") {
       sortedItems.reverse()
     }
 
+    setSelected(value)
     onChange(sortedItems)
   }
 
   useEffect(() => {
-    setSortBy("newest")
+    setSelected("newest")
   }, [releases])
-
-  useEffect(() => {
-    handleSort()
-  }, [sortBy])
 
   return (
     <div>
@@ -74,7 +72,8 @@ export default function ReleaseSort({ releases, onChange }) {
       <select
         id="sort"
         className="input select"
-        onChange={(e) => setSortBy(e.target.value)}
+        value={selected}
+        onChange={handleChange}
       >
         {sortOptions.map(({ label, value }) => (
           <option value={value} key={value}>
