@@ -1,8 +1,0 @@
-.filter {
-  display: flex;
-  align-items: center;
-}
-
-.filter select {
-  margin-inline-start: 1em;
-}

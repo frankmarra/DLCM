@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 import PopoverTip from "@/components/PopoverTip/PopoverTip"
 import Head from "next/head"
 import cn from "classnames"
-import styles from "../components/Login/Login.module.css"
+import styles from "@/components/LoginForm/LoginForm.module.css"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -161,8 +161,8 @@ const Signup = () => {
       </Head>
 
       <article
-        className="container stack inline-max center-stage"
-        style={{ "--max-inline-size": "400px" }}
+        className="stack inline-max center-stage"
+        style={{ "--max-inline-size": "45ch" }}
       >
         {userCreated ? (
           <div className="user-created">
@@ -187,9 +187,10 @@ const Signup = () => {
             </p>
           </div>
         ) : (
-          <div>
-            <h1>Create User</h1>
-            <form className="stack" onSubmit={handleSubmit}>
+          <div className="stack">
+            <h1 className="text-4">Create account</h1>
+            <p>Fill in the following details to get started.</p>
+            <form className="stack container" onSubmit={handleSubmit}>
               <div className="input-wrapper">
                 <label htmlFor="email">Email</label>
                 <input
@@ -220,7 +221,9 @@ const Signup = () => {
                   onBlur={newUser.passwordCheck ? checkPassword : null}
                   required
                 />
-                <small>Password must be at least six characters long</small>
+                <small>
+                  Password must be at least <strong>6</strong> characters long.
+                </small>
               </div>
               <div className="input-wrapper">
                 <label htmlFor="passwordCheck">Re-enter password</label>
@@ -246,7 +249,7 @@ const Signup = () => {
               <div className="input-wrapper">
                 <label htmlFor="type">Account type</label>
                 <select
-                  className="input"
+                  className="select input"
                   onChange={handleChange}
                   id="type"
                   value={newUser.type}
@@ -314,9 +317,12 @@ const Signup = () => {
                       onBlur={checkName}
                     />
                   </div>
-                  <small>
-                    Public label URL will be: {process.env.NEXT_PUBLIC_DLCM_URL}
-                    {`${sluggedName}`}
+                  <small className="hint">
+                    Public label URL will be:{" "}
+                    <code>
+                      {process.env.NEXT_PUBLIC_DLCM_URL}
+                      {`${sluggedName}`}
+                    </code>
                   </small>
                   <br />
                   <small style={{ color: `${namesTaken.color}` }}>
@@ -377,7 +383,7 @@ const Signup = () => {
                 </>
               )}
 
-              <div className="button-actions inline-wrap">
+              <div className="button-actions cluster">
                 <button
                   type="submit"
                   className="button"
@@ -400,42 +406,6 @@ const Signup = () => {
           </div>
         )}
       </article>
-      <section className={cn(styles.subscription, "stack")}>
-        <h2>Subscribe to DLCM</h2>
-        <div className={styles.plans}>
-          <section className={cn(styles.free, "container", "stack")}>
-            <h2>Free Plan</h2>
-            <div className={styles.perks}>
-              <ul role="list">
-                <li>Two Releases</li>
-                <li>Unlimited Codes</li>
-              </ul>
-            </div>
-          </section>
-
-          <section className={cn(styles.pro, "container", "stack")}>
-            <h2>Pro Plan</h2>
-            <div className={styles.cost}>
-              <p>$5/mth</p>
-              <p>or</p>
-              <p>
-                $50/yr <small>{`(Save $10)`}</small>
-              </p>
-            </div>
-            <div className={styles.perks}>
-              <ul role="list">
-                <li>Unlimited Releases</li>
-                <li>Custom URLs</li>
-                <li>Release Level URLs</li>
-                <li>Password Protected Pages</li>
-                <li>Turn Releases On/Off</li>
-                <li>Bandcamp CSV Code Upload</li>
-                <li>Social/Streaming Links</li>
-              </ul>
-            </div>
-          </section>
-        </div>
-      </section>
     </>
   )
 }

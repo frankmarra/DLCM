@@ -7,6 +7,7 @@ import {
   faSoundcloud,
   faItunesNote,
 } from "@fortawesome/free-brands-svg-icons"
+import cn from "classnames"
 
 export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
   let showSites = false
@@ -23,9 +24,9 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
 
   return showSites ? (
     <>
-      <div className={styles.sites}>
-        <p>Listen</p>
-        <ul>
+      <div className={cn(styles.sites, "cluster")}>
+        <p className={styles.label}>Listen</p>
+        <ul className={cn(styles.list, "cluster")} role="list">
           {isSubscribed || isDlcmFriend ? (
             <>
               {sites.bandcamp ? (

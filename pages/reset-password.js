@@ -71,12 +71,12 @@ export default function ResetPassword() {
         </div>
       ) : (
         <div
-          className="container stack inline-max center-stage"
-          style={{ "--max-inline-size": "400px" }}
+          className="stack inline-max center-stage"
+          style={{ "--max-inline-size": "45ch" }}
         >
-          <h1>Update Password</h1>
+          <h1 className="text-3">Update Password</h1>
 
-          <form className="stack" onSubmit={handleSubmit}>
+          <form className="container stack" onSubmit={handleSubmit}>
             <div>
               <label className="label" htmlFor="password">
                 New Password
@@ -89,7 +89,9 @@ export default function ResetPassword() {
                 value={newPassword}
                 required
               />
-              <small>Password must be at least six characters long</small>
+              <small>
+                Password must be at least <strong>6</strong> characters long
+              </small>
             </div>
             <div>
               <label className="label" htmlFor="passwordcheck">

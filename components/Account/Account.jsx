@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import Avatar from "@/components/Avatar/Avatar"
 import Releases from "@/components/Releases/Releases"
-import UpdateProfile from "../UpdateProfile/UpdateProfile"
+import UpdateProfile from "@/components/UpdateProfile/UpdateProfile"
+import Loader from "@/components/Loader/Loader"
 import styles from "./Account.module.css"
 import cn from "classnames"
 import Link from "next/link"
@@ -28,7 +29,7 @@ export default function Account({ session }) {
         .select("*, releases(*, codes(count))")
         .eq("id", user.id)
         .eq("releases.codes.redeemed", false)
-        .order("created_at", { foreignTable: "releases", ascending: true })
+        .order("created_at", { foreignTable: "releases", ascending: false })
         .single()
 
       if (error && status !== 406) {
@@ -47,16 +48,16 @@ export default function Account({ session }) {
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loader style={{ margin: "auto" }} />
   }
 
   return (
     <>
       <Head>
-        <title>{profileData.username}&apos;s DLCM dashboard</title>
+        <title>{profileData.username} | DLCM dashboard</title>
         <meta
           property="og:title"
-          content={`${profileData.username}'s DLCM dashboard`}
+          content={`${profileData.username} | DLCM dashboard`}
           key="title"
         />
         <meta
@@ -65,62 +66,73 @@ export default function Account({ session }) {
           key="description"
         />
       </Head>
+      <div className={cn(styles.update, "cluster")}>
+        <UpdateProfile
+          getProfile={getProfile}
+          profileData={profileData}
+          setShowUpdateView={setShowUpdateView}
+        />
+
+        {!profileData.dlcm_friend ? (
+          profileData.is_subscribed ? (
+            <Link
+              className="button"
+              data-variant="primary"
+              data-size="small"
+              href="/api/stripe-customer-portal"
+            >
+              Manage subscription
+            </Link>
+          ) : (
+            <Link
+              className="button"
+              data-variant="primary"
+              data-size="small"
+              href="/api/subscribe-to-dlcm"
+            >
+              Subscribe
+            </Link>
+          )
+        ) : null}
+      </div>
       <article className={cn(styles.profile)}>
-        <div className={cn(styles.userInfo)}>
-          <Avatar url={profileData.avatar_url} size={100} />
-          <div className={styles.details}>
-            <div style={{ marginInlineEnd: "1em" }} className="badge">
-              {profileData.type.charAt(0).toUpperCase() +
-                profileData.type.slice(1)}
-            </div>
-            <div className="badge">
-              {profileData.is_subscribed || profileData.dlcm_friend
-                ? "Pro user"
-                : "Free user"}
-            </div>
+        <div className="with-sidebar">
+          <Avatar url={profileData.avatar_url} size={150} />
+          <div className={cn(styles.details, "stack")}>
+            <h1 className={cn(styles.userName, "text-3")}>
+              {profileData.username}
+            </h1>
+            <ul className="cluster" role="list">
+              <li className="badge">
+                {profileData.type.charAt(0).toUpperCase() +
+                  profileData.type.slice(1)}
+              </li>
+              <li className="badge">
+                {profileData.is_subscribed || profileData.dlcm_friend
+                  ? "Pro user"
+                  : "Free user"}
+              </li>
+            </ul>
 
-            <h1>{profileData.username}</h1>
-            <div>
-              <strong>Location: </strong>
-              {profileData.location}
-            </div>
-            <div className={styles.url}>
-              <strong>Profile page: </strong>
-              <a href={`/${profileData.slug}`}>{profileData.slug}</a>
-            </div>
+            <dl>
+              {profileData.location ? (
+                <div className={styles.detail}>
+                  <dt>
+                    <strong>Location:</strong>
+                  </dt>
+                  <dd>{profileData.location}</dd>
+                </div>
+              ) : null}
+              <div className={styles.detail}>
+                <dt className={styles.url}>
+                  <strong>Profile page: </strong>
+                </dt>
+                <dd>
+                  <a href={`/${profileData.slug}`}>{profileData.slug}</a>
+                </dd>
+              </div>
+            </dl>
           </div>
-        </div>
-
-        <div className={cn(styles.update, "stack")}>
-          <UpdateProfile
-            getProfile={getProfile}
-            profileData={profileData}
-            setShowUpdateView={setShowUpdateView}
-          />
-
-          {!profileData.dlcm_friend ? (
-            profileData.is_subscribed ? (
-              <Link
-                className="button"
-                data-variant="primary"
-                data-size="small"
-                style={{ display: "block", textDecoration: "none" }}
-                href="/api/stripe-customer-portal"
-              >
-                Manage subscription
-              </Link>
-            ) : (
-              <Link
-                className="button"
-                data-variant="primary"
-                data-size="small"
-                style={{ display: "block", textDecoration: "none" }}
-                href="/api/subscribe-to-dlcm"
-              >
-                Subscribe
-              </Link>
-            )
-          ) : null}
         </div>
       </article>
 

@@ -5,10 +5,9 @@ import styles from "./ReleaseCard.module.css"
 import Link from "next/link"
 import IconDownload from "@/icons/download.svg"
 import IconRecord from "@/icons/vinyl-record.svg"
-import IconMusicNotes from "@/icons/music-notes.svg"
-import IconEdit from "@/icons/edit.svg"
 import UpdateRelease from "./UpdateRelease"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import Image from "next/image"
 
 export default function ReleaseCard({
   release,
@@ -33,28 +32,35 @@ export default function ReleaseCard({
   return (
     <div className={styles.component}>
       <div className={styles.content}>
-        {artwork ? (
-          <img
-            className={styles.image}
-            src={artwork != "     " ? artwork : "/DLCM_Default_Image.png"}
-            alt={release.title}
-            height={250}
-            width={250}
-            onError={() => setArtwork("/DLCM_Default_Image.png")}
-          />
-        ) : (
-          <div className={styles.image}>
-            <IconMusicNotes aria-hidden="true" />
-          </div>
-        )}
+        <Image
+          className={styles.image}
+          src={artwork || "/default-image-release.png"}
+          alt={release.title}
+          height={250}
+          width={250}
+          quality={60}
+        />
         <div className={styles.details}>
           <div>
-            <h3 className={styles.title}>{release.title}</h3>
+            <h3 className={cn(styles.title, "text-2")}>
+              {profileData ? (
+                <Link
+                  className="link"
+                  href={`/${profileData.slug}/${release.release_slug}`}
+                >
+                  {release.title}
+                </Link>
+              ) : (
+                release.title
+              )}
+            </h3>
             <div className={styles.artist}>{release.artist}</div>
             <div className={styles.label}>{release.label}</div>
-            <div className={styles.type}>
-              <IconRecord aria-hidden="true" /> {release.type}
-            </div>
+            {release.type && release.type != "Choose release type" ? (
+              <div className={styles.type}>
+                <IconRecord aria-hidden="true" /> {release.type}
+              </div>
+            ) : null}
           </div>
           <div
             className={cn(
@@ -70,7 +76,7 @@ export default function ReleaseCard({
       </div>
       {user ? (
         user.id === release.user_id ? (
-          <div className={cn(styles.actions, "inline-wrap")}>
+          <div className={cn(styles.actions, "cluster")}>
             <UpdateRelease
               setShowReleaseUpdateView={setShowReleaseUpdateView}
               release={release}

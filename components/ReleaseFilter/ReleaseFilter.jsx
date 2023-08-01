@@ -1,41 +1,38 @@
-import styles from "./ReleaseFilter.module.css"
+const sortByName = (a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1)
 
-export default function ReleaseFilter({
-  releases,
-  setFilteredReleases,
-  artistList,
-}) {
+export default function ReleaseFilter({ releases, onChange }) {
+  const artists = [
+    ...new Map(releases.map(({ artist }) => [artist, artist])).values(),
+  ].sort(sortByName)
+
   const handleFilter = (value) => {
     if (value == "all") {
-      setFilteredReleases(releases)
+      onChange(releases)
     } else {
-      let selectedArtistReleases = []
-      releases.forEach((release) => {
-        if (release.artist == value) {
-          selectedArtistReleases.push(release)
-        }
-      })
-      setFilteredReleases(selectedArtistReleases)
+      onChange(releases.filter(({ artist }) => artist === value))
     }
   }
 
+  if (artists.length <= 1) {
+    return
+  }
+
   return (
-    <div className={styles.filter}>
+    <div>
       <label className="label" htmlFor="filter">
         Filter by artist
       </label>
       <select
-        className="input select"
-        style={{ inlineSize: "auto" }}
         id="filter"
+        className="input select"
         onChange={(e) => handleFilter(e.target.value)}
       >
         <option value="all" key="all">
           All Artists
         </option>
-        {artistList.map(({ label, value }) => (
-          <option value={value} key={value}>
-            {label}
+        {artists.map((artist) => (
+          <option value={artist} key={artist}>
+            {artist}
           </option>
         ))}
       </select>

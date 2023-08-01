@@ -1,5 +1,5 @@
 import slugify from "slugify"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import AddImage from "@/components/AddImage/AddImage"
 import {
@@ -8,18 +8,11 @@ import {
   DialogContent,
   DialogClose,
 } from "@/components/Dialog/Dialog"
-import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Avatar from "../Avatar/Avatar"
 import PopoverTip from "../PopoverTip/PopoverTip"
-
-const releaseTypes = [
-  { id: 1, text: "LP" },
-  { id: 2, text: "EP" },
-  { id: 3, text: "Single" },
-  { id: 4, text: "Compilation" },
-  { id: 5, text: "Soundtrack" },
-  { id: 6, text: "Choose release type", isDisabled: true },
-]
+import { prependProtocol } from "@/utils/utils"
+import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
+import InputReleaseType from "../InputReleaseType/InputReleaseType"
 
 export default function CreateRelease({
   trigger,
@@ -47,7 +40,7 @@ export default function CreateRelease({
   const [yumUrl, setYumUrl] = useState(profileData.yum_url)
   const [pagePassword, setPagePassword] = useState()
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
-  const [type, setType] = useState(releaseTypes[5].text)
+  const [type, setType] = useState()
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(true)
   const [sites, setSites] = useState({
@@ -66,7 +59,7 @@ export default function CreateRelease({
     setArtworkUrl()
     setPagePassword()
     setIsPasswordProtected(false)
-    setType(releaseTypes[5].text)
+    setType()
     setNewImagePath()
     setIsActive(true)
     setNamesTaken({
@@ -114,17 +107,7 @@ export default function CreateRelease({
     }
   }
 
-  async function createNewRelease({
-    title,
-    artist,
-    label,
-    artworkUrl,
-    yumUrl,
-    type,
-    sites,
-    isActive,
-    isPasswordProtected,
-  }) {
+  async function createNewRelease() {
     try {
       let newRelease = {
         title: title,
@@ -132,7 +115,7 @@ export default function CreateRelease({
         label: label,
         artwork_url: artworkUrl,
         artwork_path: newImagePath,
-        yum_url: yumUrl,
+        yum_url: prependProtocol(yumUrl),
         type: type,
         sites: sites,
         is_active: isActive,
@@ -175,14 +158,12 @@ export default function CreateRelease({
 
       <DialogContent>
         <header>
-          <h2>Create new release</h2>
+          <h2 className="text-3">Create new release</h2>
         </header>
 
         <div className="stack block-overflow">
-          <label className="label">Artwork </label>
+          <label className="label">Artwork</label>
           <Avatar url={artworkUrl} size={250} />
-          <small>{"Must be 1MB or less"}</small>
-          <br />
           <AddImage
             uid={user.id}
             setPublicUrl={(url) => {
@@ -190,6 +171,7 @@ export default function CreateRelease({
             }}
             setNewImagePath={setNewImagePath}
           />
+
           <label className="label" htmlFor="title">
             Title
           </label>
@@ -226,10 +208,13 @@ export default function CreateRelease({
               onBlur={checkName}
             />
           </div>
-          <small>
-            Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
-            {profileData.slug}
-            {`/${sluggedName}`}
+          <small className="hint">
+            Public address:{" "}
+            <code>
+              {process.env.NEXT_PUBLIC_DLCM_URL}
+              {profileData.slug}
+              {`/${sluggedName}`}
+            </code>
           </small>
           <br />
           <small style={{ color: `${namesTaken.color}` }}>
@@ -269,29 +254,10 @@ export default function CreateRelease({
             onChange={(e) => setArtworkUrl(e.target.value)}
           />
           <p>Upload an image or paste an external link</p>*/}
-          <label className="label" htmlFor="type">
-            Type
-          </label>
-          <select
-            className="input select"
-            onChange={(e) => setType(e.target.value)}
-            id="type"
-            value={type}
-            required
-          >
-            {releaseTypes.map((releaseType) => (
-              <option
-                key={releaseType.id}
-                value={releaseType.value}
-                disabled={releaseType.isDisabled}
-              >
-                {releaseType.text}
-              </option>
-            ))}
-          </select>
-          <h3>You must include https:// in your links</h3>
+
+          <InputReleaseType type={type} onChange={setType} />
           <label className="label" htmlFor="yumUrl">
-            Redemption{`(yum)`} Link
+            Redemption (yum) Link
           </label>
           <input
             className="input"
@@ -300,9 +266,9 @@ export default function CreateRelease({
             value={yumUrl}
             onChange={(e) => setYumUrl(e.target.value)}
           />
-          <small>
+          <small class="hint">
             This is the link your customers will visit to redeem their code. It
-            is usually &quot;your-name.bandcamp/yum&quot;
+            is usually <code>your-name.bandcamp/yum</code>.
           </small>
 
           <label className="label" htmlFor="bandcamp">
@@ -368,68 +334,37 @@ export default function CreateRelease({
                   setSites({ ...sites, [e.target.id]: e.target.value })
                 }
               />
-              <div style={{ display: "flex" }}>
-                <label className="label" htmlFor="isActive">
-                  Show Release?
-                </label>
+              <label className="label checkbox" htmlFor="isActive">
                 <input
                   className="input"
-                  style={{ inlineSize: "50%", width: "20%" }}
                   id="isActive"
                   type="checkbox"
                   checked={isActive}
                   onChange={() => setIsActive(!isActive)}
                 />
-              </div>
-              <div style={{ display: "flex" }}>
-                <label className="label" htmlFor="passwordProtect">
-                  Password protect page?
-                </label>
-                <input
-                  className="input"
-                  style={{ inlineSize: "50%", width: "20%" }}
-                  id="passwordProtect"
-                  type="checkbox"
-                  checked={isPasswordProtected}
-                  onChange={() => setIsPasswordProtected(!isPasswordProtected)}
-                />{" "}
-              </div>
-              {isPasswordProtected ? (
-                <>
-                  <label className="label" htmlFor="pagePassword">
-                    Page password
-                  </label>
-                  <input
-                    className="input"
-                    id="pagePassword"
-                    type="password"
-                    value={pagePassword || ""}
-                    onChange={(e) => setPagePassword(e.target.value)}
-                  />
-                </>
-              ) : null}
+                Show Release
+              </label>
+              <InputPasswordProtect
+                id="isPasswordProtected"
+                isProtected={isPasswordProtected}
+                pagePassword={pagePassword}
+                setIsProtected={() =>
+                  setIsPasswordProtected(!isPasswordProtected)
+                }
+                setPagePassword={(e) => setPagePassword(e.target.value)}
+              >
+                Password protect this page
+              </InputPasswordProtect>
             </>
           ) : null}
         </div>
 
-        <footer className="button-actions inline-wrap">
+        <footer className="button-actions cluster">
           <button
             className="button"
             data-variant="primary"
-            onClick={() =>
-              createNewRelease({
-                title,
-                artist,
-                label,
-                type,
-                artworkUrl,
-                yumUrl,
-                sites,
-                isActive,
-                isPasswordProtected,
-              })
-            }
-            disabled={!title || type == releaseTypes[5].text || noGO}
+            onClick={() => createNewRelease()}
+            disabled={!title || !type || noGO}
           >
             Create
           </button>

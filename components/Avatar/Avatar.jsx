@@ -1,5 +1,6 @@
 import styles from "./Avatar.module.css"
 import cn from "classnames"
+import Image from "next/image"
 import { useState, useEffect } from "react"
 
 export default function Avatar({ url, size }) {
@@ -11,18 +12,18 @@ export default function Avatar({ url, size }) {
   return (
     <div className={cn(styles.component, "stack")} style={{ maxWidth: size }}>
       {artwork ? (
-        <img
+        <Image
           className={styles.image}
           src={artwork}
           alt=""
           height={size}
           width={size}
-          onError={() => setArtwork("/DLCM_Default_Image.png")}
+          onError={() => setArtwork("/default-image.png")}
         />
       ) : (
-        <img
+        <Image
           className={styles.image}
-          src="/DLCM_Default_Image.png"
+          src="/default-image.png"
           alt=""
           height={size}
           width={size}

@@ -89,7 +89,7 @@ export default function AddCodes({
 
       <DialogContent>
         <header>
-          <h3>Add codes</h3>
+          <h2 className="text-3">Add codes</h2>
         </header>
 
         <div className="stack block-overflow">
@@ -132,7 +132,7 @@ export default function AddCodes({
           ) : null}
         </div>
 
-        <footer className="button-actions inline-wrap">
+        <footer className="button-actions cluster">
           <button
             className="button"
             data-variant="primary"

@@ -1,101 +1,91 @@
-import { useState, useEffect } from "react"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useState, useEffect, useRef, useCallback } from "react"
+import { useUser } from "@supabase/auth-helpers-react"
 import ReleaseCard from "./ReleaseCard"
 import CreateRelease from "./CreateRelease"
 import styles from "./Releases.module.css"
 import cn from "classnames"
 import IconMusicNotesPlus from "@/icons/music-notes-plus.svg"
 import Link from "next/link"
-import ReleaseSort from "../ReleaseSort/ReleaseSort"
-import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import Pagination from "../Pagination/Pagination"
+import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 
 export default function Releases({ profileData, getProfile }) {
-  const supabase = useSupabaseClient()
+  const releasesPerPage = 9
+  const filtersRef = useRef(null)
   const user = useUser()
-  const [releases, setReleases] = useState(profileData.releases)
-  const [allowNew, setAllowNew] = useState(true)
   const [addedNewRelease, setAddedNewRelease] = useState(false)
-  const [filteredReleases, setFilteredReleases] = useState(releases)
-  const [sortedReleases, setSortedReleases] = useState(filteredReleases)
-  const [artistList, setArtistList] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [releasesPerPage, setReleasesPerPage] = useState(10)
-  const pages = Math.ceil(releases?.length / releasesPerPage)
-  const lastRelease = currentPage * releasesPerPage
-  const firstRelease = lastRelease - releasesPerPage
-  const currentReleases = sortedReleases.slice(firstRelease, lastRelease)
+  const [releases, setReleases] = useState(profileData.releases)
+  const [pageChange, setPageChange] = useState(0)
+  const pageCount = Math.ceil(releases?.length / releasesPerPage)
+  const [releasesOffset, setReleasesOffset] = useState(0)
+  const endOffset = releasesOffset + releasesPerPage
+  const currentReleases = releases.slice(releasesOffset, endOffset)
+
+  const handlePageClick = () => {
+    filtersRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const handlePageChange = useCallback(
+    (e) => {
+      const newOffset = (e.selected * releasesPerPage) % releases.length
+      setReleasesOffset(newOffset)
+      setPageChange(e.selected)
+      filtersRef.current?.scrollIntoView({ behavior: "smooth" })
+    },
+    [releases.length]
+  )
+
+  const handleFilterRefinement = useCallback(
+    (releases) => {
+      setReleases(releases)
+      handlePageChange({ selected: 0 })
+    },
+    [handlePageChange]
+  )
 
   useEffect(() => {
     if (addedNewRelease == true) {
       getProfile()
       setAddedNewRelease(false)
     }
-  }, [supabase, profileData.id, addedNewRelease])
-
-  useEffect(() => {
-    let artists = []
-    releases.forEach((release) => {
-      if (!artists.some(({ value }) => value === release.artist)) {
-        artists.push({ value: release.artist, label: release.artist })
-      }
-    })
-
-    setArtistList(
-      artists.sort((a, b) =>
-        a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
-      )
-    )
-  }, [releases])
+  }, [profileData.id, addedNewRelease, getProfile])
 
   return (
     <article className="stack">
-      <header className="article-heading inline-wrap">
-        <h2>Releases</h2>
+      <header className="article-heading cluster">
+        <h2 className="visually-hidden">Releases</h2>
 
-        {profileData.is_subscribed || profileData.dlcm_friend ? (
-          <>
-            {artistList.length > 1 ? (
-              <ReleaseFilter
-                releases={releases}
-                setFilteredReleases={setFilteredReleases}
-                artistList={artistList}
-              />
-            ) : null}
-            <ReleaseSort
-              filteredReleases={filteredReleases}
-              setSortedReleases={setSortedReleases}
-            />
-          </>
-        ) : null}
-
-        {profileData.is_subscribed || profileData.dlcm_friend ? (
-          <CreateRelease
-            setAddedNewRelease={setAddedNewRelease}
-            profileData={profileData}
-            trigger={
-              <button className="button" data-variant="primary">
-                <IconMusicNotesPlus aria-hidden="true" /> Create new release
-              </button>
-            }
-          />
-        ) : releases.length >= 2 ? (
-          <Link href="/api/subscribe-to-dlcm">Subscribe</Link>
-        ) : (
-          <CreateRelease
-            setAddedNewRelease={setAddedNewRelease}
-            profileData={profileData}
-            trigger={
-              <button className="button" data-variant="primary">
-                <IconMusicNotesPlus aria-hidden="true" />
-                Create new release
-              </button>
-            }
-          />
-        )}
+        <ReleaseRefinement
+          isVisible={profileData.is_subscribed || profileData.dlcm_friend}
+          releases={releases}
+          onRefinement={handleFilterRefinement}
+        />
       </header>
 
       <ul className="grid" role="list">
+        <li className={cn(styles.actionCard, "container")} data-variant="empty">
+          {profileData.is_subscribed ||
+          profileData.dlcm_friend ||
+          releases.length <= 1 ? (
+            <CreateRelease
+              setAddedNewRelease={setAddedNewRelease}
+              profileData={profileData}
+              trigger={
+                <button
+                  className={cn(styles.actionCardButton, "button")}
+                  data-variant="text"
+                >
+                  <IconMusicNotesPlus aria-hidden="true" />
+                  Create a new release
+                </button>
+              }
+            />
+          ) : (
+            <Link href="/api/subscribe-to-dlcm">
+              Subscribe to add more releases
+            </Link>
+          )}
+        </li>
         {releases.length ? (
           <>
             {currentReleases.map((release, index) => (
@@ -110,33 +100,6 @@ export default function Releases({ profileData, getProfile }) {
                 />
               </li>
             ))}
-
-            <li
-              className={cn(styles.actionCard, "container")}
-              data-variant="empty"
-            >
-              {profileData.is_subscribed ||
-              profileData.dlcm_friend ||
-              releases.length <= 1 ? (
-                <CreateRelease
-                  setAddedNewRelease={setAddedNewRelease}
-                  profileData={profileData}
-                  trigger={
-                    <button
-                      className={cn(styles.actionCardButton, "button")}
-                      data-variant="text"
-                    >
-                      <IconMusicNotesPlus aria-hidden="true" />
-                      Create a new release
-                    </button>
-                  }
-                />
-              ) : (
-                <Link href="/api/subscribe-to-dlcm">
-                  Subscribe to add more releases
-                </Link>
-              )}
-            </li>
           </>
         ) : (
           <div className={cn(styles.empty, "container")} data-variant="empty">
@@ -146,9 +109,10 @@ export default function Releases({ profileData, getProfile }) {
       </ul>
       <div className={styles.pagination}>
         <Pagination
-          pages={pages}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
+          forcePage={pageChange}
+          onClick={handlePageClick}
+          onPageChange={handlePageChange}
+          pageCount={pageCount}
         />
       </div>
     </article>

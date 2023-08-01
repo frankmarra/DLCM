@@ -11,6 +11,8 @@ import {
 } from "@/components/Dialog/Dialog"
 import PopoverTip from "../PopoverTip/PopoverTip"
 import Link from "next/link"
+import { prependProtocol } from "@/utils/utils"
+import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 
 export default function UpdateProfile({
   getProfile,
@@ -91,7 +93,7 @@ export default function UpdateProfile({
         sites: sites,
         page_password: pagePassword,
         is_password_protected: isPasswordProtected,
-        yum_url: yumUrl,
+        yum_url: prependProtocol(yumUrl),
         about_blurb: aboutBlurb,
         updated_at: new Date().toISOString(),
       }
@@ -139,7 +141,7 @@ export default function UpdateProfile({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         className="button"
-        data-variant="primary"
+        data-variant="secondary"
         data-size="small"
       >
         Update profile
@@ -147,13 +149,11 @@ export default function UpdateProfile({
 
       <DialogContent>
         <header>
-          <h2>Update profile</h2>
+          <h2 className="text-3">Update profile</h2>
         </header>
 
         <div className="stack block-overflow">
           <Avatar url={avatarUrl} size={250} />
-          <small>{"Must be 1MB or less"}</small>
-          <br />
           <AddImage
             uid={profileData.id}
             setPublicUrl={(url) => setAvatarUrl(url)}
@@ -180,9 +180,7 @@ export default function UpdateProfile({
                 {profileData.type.charAt(0).toUpperCase() +
                   profileData.type.slice(1)}{" "}
                 slug
-                <PopoverTip
-                  message={`If you change this, your previous slug will not redirect your fans to this page. Make sure you want to do this.`}
-                />
+                <PopoverTip message="If you change this, your previous slug will no longer work. Make sure you want to do this." />
               </label>
 
               <input
@@ -200,12 +198,15 @@ export default function UpdateProfile({
               />
             </>
           ) : null}
-          <small>
-            Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
-            {`${sluggedName}`}
+          <small className="hint">
+            Public address:{" "}
+            <code>
+              {process.env.NEXT_PUBLIC_DLCM_URL}
+              {`${sluggedName}`}
+            </code>
           </small>{" "}
           <br />
-          <small style={{ color: `${namesTaken.color}` }}>
+          <small className="hint" style={{ color: `${namesTaken.color}` }}>
             {namesTaken.message}
           </small>
           <Link
@@ -239,7 +240,6 @@ export default function UpdateProfile({
             onChange={(e) => setAboutBlurb(e.target.value)}
             placeholder="Enter a brief about section for your fans (optional)"
           ></textarea>
-          <h3>You must include https:// in your links</h3>
           <label className="label" htmlFor="yumUrl">
             Redemption{`(yum)`} Link
           </label>
@@ -250,9 +250,9 @@ export default function UpdateProfile({
             value={yumUrl || ""}
             onChange={(e) => setYumUrl(e.target.value)}
           />
-          <small>
+          <small className="hint">
             This is the link your customers will visit to redeem their code. It
-            is usually &quot;your-name.bandcamp/yum&quot;
+            is usually <code>your-name.bandcamp/yum</code>
           </small>
           <label className="label" htmlFor="bandcamp">
             Bandcamp Link
@@ -319,39 +319,21 @@ export default function UpdateProfile({
                   setSites({ ...sites, [e.target.id]: e.target.value })
                 }
               />
-              <div style={{ display: "flex" }}>
-                <label className="label" htmlFor="isPasswordProtected">
-                  Password protect profile page?
-                </label>
-
-                <input
-                  className="input"
-                  style={{ inlineSize: "50%", width: "20%" }}
-                  id="isPasswordProtected"
-                  type="checkbox"
-                  checked={isPasswordProtected}
-                  onChange={() => setIsPasswordProtected(!isPasswordProtected)}
-                />
-              </div>
-
-              {isPasswordProtected ? (
-                <>
-                  <label className="label" htmlFor="pagePassword">
-                    Page password
-                  </label>
-                  <input
-                    className="input"
-                    id="pagePassword"
-                    type="password"
-                    value={pagePassword || ""}
-                    onChange={(e) => setPagePassword(e.target.value)}
-                  />
-                </>
-              ) : null}
+              <InputPasswordProtect
+                id="isPasswordProtected"
+                isProtected={isPasswordProtected}
+                pagePassword={pagePassword}
+                setIsProtected={() =>
+                  setIsPasswordProtected(!isPasswordProtected)
+                }
+                setPagePassword={(e) => setPagePassword(e.target.value)}
+              >
+                Password protect your profile page
+              </InputPasswordProtect>
             </>
           ) : null}
         </div>
-        <footer className="button-actions inline-wrap">
+        <footer className="button-actions cluster">
           <button
             className="button"
             data-variant="primary"
@@ -368,5 +350,3 @@ export default function UpdateProfile({
     </Dialog>
   )
 }
-
-// <DialogClose className="button">Cancel</DialogClose>

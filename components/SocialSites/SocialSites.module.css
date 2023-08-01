@@ -1,17 +1,23 @@
-.sites ul {
-  list-style: none;
-  
-  display: flex;
-  /* width: 50%; */
-  
-}
-
-.sites ul li {
-  margin-inline-end: 1rem;
-}
-
 .sites {
-  
-  display: flex;
+  --cluster-gap: var(--size-2);
+  --cluster-justify: center;
+  --stack-space: var(--size-6);
 }
 
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--size-1);
+}
+
+.label::before,
+.label::after {
+  content: "";
+  width: var(--size-4);
+  height: 1px;
+  background-color: var(--surface-4);
+}
+
+.list {
+  --cluster-gap: var(--size-3);
+}

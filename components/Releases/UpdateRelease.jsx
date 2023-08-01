@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import AddImage from "../AddImage/AddImage"
 import {
@@ -13,15 +13,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import PopoverTip from "../PopoverTip/PopoverTip"
 import slugify from "slugify"
-
-const releaseTypes = [
-  { id: 1, text: "LP" },
-  { id: 2, text: "EP" },
-  { id: 3, text: "Single" },
-  { id: 4, text: "Compilation" },
-  { id: 5, text: "Soundtrack" },
-  { id: 6, text: "Choose release type", isDisabled: true },
-]
+import { prependProtocol } from "@/utils/utils"
+import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
+import InputReleaseType from "../InputReleaseType/InputReleaseType"
 
 export default function UpdateRelease({
   release,
@@ -124,7 +118,7 @@ export default function UpdateRelease({
         release_slug: sluggedName,
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
-        yum_url: yumUrl,
+        yum_url: prependProtocol(yumUrl),
         type: type,
         sites: sites,
         is_active: isActive,
@@ -225,7 +219,7 @@ export default function UpdateRelease({
 
       <DialogContent>
         <header>
-          <h2>Update release</h2>
+          <h2 className="text-3">Update release</h2>
         </header>
 
         <div className="stack block-overflow">
@@ -287,35 +281,21 @@ export default function UpdateRelease({
               onBlur={checkName}
             />
           </div>
-          <small>
-            Public address: {process.env.NEXT_PUBLIC_DLCM_URL}
-            {profileData.slug}
-            {`/${sluggedName}`}
+          <small className="hint">
+            Public address:{" "}
+            <code>
+              {process.env.NEXT_PUBLIC_DLCM_URL}
+              {profileData.slug}
+              {`/${sluggedName}`}
+            </code>
           </small>
           <br />
           <small style={{ color: `${namesTaken.color}` }}>
             {namesTaken.message}
           </small>
-          <label className="label" htmlFor="type">
-            Type
-          </label>
-          <select
-            className="input select"
-            onChange={(e) => setType(e.target.value)}
-            id="type"
-            value={type}
-            required
-          >
-            {releaseTypes.map((releaseType) => (
-              <option
-                key={releaseType.id}
-                value={releaseType.value}
-                disabled={releaseType.isDisabled}
-              >
-                {releaseType.text}
-              </option>
-            ))}
-          </select>
+
+          <InputReleaseType type={type} setType={setType} />
+
           <label className="label" htmlFor="yumUrl">
             Redemption Link
           </label>
@@ -389,51 +369,31 @@ export default function UpdateRelease({
                   setSites({ ...sites, [e.target.id]: e.target.value })
                 }
               />
-              <div style={{ display: "flex" }}>
-                <label className="label" htmlFor="isActive">
-                  Show Release?
-                </label>
+              <label className="label checkbox" htmlFor="isActive">
                 <input
-                  className="input"
-                  style={{ inlineSize: "50%", width: "20%" }}
                   id="isActive"
                   type="checkbox"
                   checked={isActive}
                   onChange={() => setIsActive(!isActive)}
                 />
-              </div>
-              <div style={{ display: "flex" }}>
-                <label className="label" htmlFor="passwordProtect">
-                  Password protect release?
-                </label>
-                <input
-                  className="input"
-                  style={{ inlineSize: "50%", width: "20%" }}
-                  id="passwordProtect"
-                  type="checkbox"
-                  checked={isPasswordProtected}
-                  onChange={() => setIsPasswordProtected(!isPasswordProtected)}
-                />{" "}
-              </div>
-              {isPasswordProtected ? (
-                <>
-                  <label className="label" htmlFor="pagePassword">
-                    Page password
-                  </label>
-                  <input
-                    className="input"
-                    id="pagePassword"
-                    type="password"
-                    value={pagePassword || ""}
-                    onChange={(e) => setPagePassword(e.target.value)}
-                  />
-                </>
-              ) : null}
+                Show Release
+              </label>
+              <InputPasswordProtect
+                id="isPasswordProtected"
+                isProtected={isPasswordProtected}
+                pagePassword={pagePassword}
+                setIsProtected={() =>
+                  setIsPasswordProtected(!isPasswordProtected)
+                }
+                setPagePassword={(e) => setPagePassword(e.target.value)}
+              >
+                Password protect this release
+              </InputPasswordProtect>
             </>
           ) : null}
         </div>
 
-        <footer className="button-actions inline-wrap">
+        <footer className="button-actions cluster">
           <div className="update-buttons">
             <button
               className="button"
@@ -453,7 +413,7 @@ export default function UpdateRelease({
           <button
             className="button"
             data-variant="secondary"
-            style={{ "background-color": "red" }}
+            aria-label="Delete this release"
             onClick={deleteRelease}
           >
             <FontAwesomeIcon icon={faTrashCan} />

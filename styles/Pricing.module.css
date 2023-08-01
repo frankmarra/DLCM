@@ -1,0 +1,77 @@
+.title {
+  text-align: center;
+}
+
+.plans {
+  --flex-grid-min: 15rem;
+  margin-block-start: var(--size-8);
+}
+
+.plan.free {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: unset;
+  margin-block: var(--size-3);
+}
+
+.plan.pro {
+  border-color: var(--surface-4);
+}
+
+.cost {
+  --flex-grid-min: 5rem;
+}
+
+.cost span {
+  position: relative;
+  display: inline-flex;
+  margin-inline: auto;
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-6);
+  letter-spacing: -0.025em;
+}
+
+.priceTag {
+  position: relative;
+  display: grid;
+  align-items: start;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+  background-color: var(--surface-1);
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius-2);
+  padding: var(--size-4) var(--size-3);
+}
+
+.priceTag sup {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  font-weight: normal;
+  font-size: 0.5em;
+}
+
+.priceTag small {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--surface-success-1);
+  color: var(--text-success);
+  padding: 2px var(--size-2);
+  border: 1px solid var(--surface-success-2);
+  border-radius: var(--radius-round);
+  white-space: nowrap;
+}
+
+.ctaSection {
+  margin-block: var(--size-8);
+  text-align: center;
+  margin-inline: auto;
+}
+
+.actions {
+  --cluster-align: center;
+  --cluster-justify: center;
+}

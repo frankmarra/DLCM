@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import styles from "./CodeGenerator.module.css"
 import cn from "classnames"
+import Loader from "../Loader/Loader"
 
 export default function CodeGenerator({ release, profileYumLink }) {
   const supabase = useSupabaseClient()
@@ -12,17 +13,35 @@ export default function CodeGenerator({ release, profileYumLink }) {
 
   useEffect(() => {
     getActiveCodes()
-    setLoading(false)
   }, [])
 
   async function getActiveCodes() {
-    let { data: codes, error } = await supabase
-      .from("codes")
-      .select("*")
-      .eq("release_id", release.id)
-      .eq("redeemed", false)
+    try {
+      setLoading(true)
 
-    setActiveCodes(codes)
+      let {
+        data: codes,
+        error,
+        status,
+      } = await supabase
+        .from("codes")
+        .select("*")
+        .eq("release_id", release.id)
+        .eq("redeemed", false)
+
+      if (error && status !== 406) {
+        throw error
+      }
+
+      if (codes) {
+        setActiveCodes(codes)
+      }
+    } catch (error) {
+      alert("Error loading release codes!")
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   async function getRandomCode() {
@@ -44,13 +63,15 @@ export default function CodeGenerator({ release, profileYumLink }) {
     }
   }
 
+  if (loading) {
+    return <Loader style={{ margin: "auto" }} />
+  }
+
   return activeCodes.length > 0 ? (
     <div className={cn(styles.codes, "stack")}>
       {code ? (
         <>
-          <p style={{ fontSize: 25, fontWeight: 600, letterSpacing: ".1em" }}>
-            {code.code}
-          </p>
+          <p className={styles.value}>{code.code}</p>
           {copiedToClipboard ? (
             <button
               className="button"
@@ -71,19 +92,9 @@ export default function CodeGenerator({ release, profileYumLink }) {
             </button>
           )}
           {release.yum_url ? (
-            <a
-              href={`${release.yum_url}?code=${code.code}`}
-              style={{ fontSize: 20, fontWeight: 600 }}
-            >
-              Redeem
-            </a>
+            <a href={`${release.yum_url}?code=${code.code}`}>Redeem</a>
           ) : (
-            <a
-              href={`${profileYumLink}?code=${code.code}`}
-              style={{ fontSize: 20, fontWeight: 600 }}
-            >
-              Redeem
-            </a>
+            <a href={`${profileYumLink}?code=${code.code}`}>Redeem</a>
           )}
         </>
       ) : (
@@ -91,7 +102,6 @@ export default function CodeGenerator({ release, profileYumLink }) {
           type="button"
           className="button"
           data-variant="primary"
-          style={{ fontSize: "24px" }}
           onClick={() => getRandomCode()}
         >
           Generate Code
@@ -99,6 +109,6 @@ export default function CodeGenerator({ release, profileYumLink }) {
       )}
     </div>
   ) : (
-    <p>No Codes for this release</p>
+    <p className={styles.nocodes}>No codes available</p>
   )
 }

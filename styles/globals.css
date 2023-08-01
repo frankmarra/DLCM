@@ -9,16 +9,16 @@
 body {
   color: var(--text-1);
   background-color: var(--surface-1);
-  font-family: var(--font-sans);
-  font-size: var(--step-0);
-  line-height: 1.4;
+  font-family: var(--font-main);
+  font-size: var(--font-size-0);
+  line-height: 1.5;
 }
 
-a, a:visited {
+a:not([class]) {
   color: var(--link);
 }
 
-a:hover {
+a:not([class]):hover {
   color: var(--link-hover);
 }
 
@@ -28,3 +28,41 @@ a:hover {
   gap: var(--size-3);
 }
 
+code:not(:empty) {
+  font-size: 0.9em;
+  font-family: var(--font-mono);
+  font-weight: var(--font-weight-5);
+  background-color: var(--surface-2);
+  border-radius: var(--radius-1);
+  padding: 0.1rem 0.3rem 0.2rem;
+}
+
+:where(h1, h2, h3, .text-1, .text-2, .text-3) {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+h1,
+.text-5 {
+  font-size: var(--font-size-4);
+}
+
+h2,
+.text-4 {
+  font-size: var(--font-size-3);
+}
+
+h3,
+.text-3 {
+  font-size: var(--font-size-2);
+}
+
+h4,
+.text-2 {
+  font-size: var(--font-size-1);
+}
+
+.text-1 {
+  font-size: var(--font-size-0);
+}
