@@ -7,9 +7,15 @@ export default function About() {
       style={{ "--max-inline-size": "65ch" }}
     >
       <h1>About</h1>
+      <p>
+        DLCM is your solution for managing Bandcamp (and any other) download
+        codes. No more sending out random lists of codes - your listeners can
+        generate their own unique code and know that it will work! No more
+        checking to see who took what.
+      </p>
       <ul>
         <li>
-          <a href="#get-started">How do I get started?</a>
+          <a href="#get-started">How do I get started managing my codes?</a>
         </li>
         <li>
           <a href="#free-account">What do I get with a free account?</a>
@@ -23,7 +29,7 @@ export default function About() {
       </ul>
 
       <h2 id="get-started" style={{ "--stack-space": "var(--size-8)" }}>
-        How do I get started?
+        How do I get started managing my codes?
       </h2>
       <p>
         Getting started is easy. First, go to our{" "}

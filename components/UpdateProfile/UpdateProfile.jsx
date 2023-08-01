@@ -38,15 +38,21 @@ export default function UpdateProfile({
     color: "transparent",
     message: "",
   })
-  const [sites, setSites] = useState({
-    apple: profileData.sites.apple ? profileData.sites.apple : null,
-    bandcamp: profileData.sites.bandcamp ? profileData.sites.bandcamp : null,
-    spotify: profileData.sites.spotify ? profileData.sites.spotify : null,
-    soundcloud: profileData.sites.soundcloud
-      ? profileData.sites.soundcloud
-      : null,
-    youtube: profileData.sites.youtube ? profileData.sites.youtube : null,
-  })
+  const [bandcampUrl, setBandcampUrl] = useState(
+    profileData.sites.bandcamp ?? null
+  )
+  const [appleMusicUrl, setAppleMusicUrl] = useState(
+    profileData.sites.apple ?? null
+  )
+  const [spotifyUrl, setSpotifyUrl] = useState(
+    profileData.sites.spotify ?? null
+  )
+  const [soundcloudUrl, setSoundcloudUrl] = useState(
+    profileData.sites.soundcloud ?? null
+  )
+  const [youtubeUrl, setYoutubeUrl] = useState(
+    profileData.sites.youtube ?? null
+  )
 
   const checkName = async (e) => {
     e.preventDefault()
@@ -90,7 +96,13 @@ export default function UpdateProfile({
         avatar_url: avatarUrl,
         avatar_path: newImagePath ? newImagePath : imagePath,
         slug: sluggedName,
-        sites: sites,
+        sites: {
+          bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
+          apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
+          spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
+          soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
+          youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
+        },
         page_password: pagePassword,
         is_password_protected: isPasswordProtected,
         yum_url: prependProtocol(yumUrl),
@@ -261,10 +273,8 @@ export default function UpdateProfile({
             className="input"
             id="bandcamp"
             type="text"
-            value={sites.bandcamp}
-            onChange={(e) =>
-              setSites({ ...sites, [e.target.id]: e.target.value })
-            }
+            value={bandcampUrl}
+            onChange={(e) => setBandcampUrl(e.target.value)}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
@@ -275,10 +285,8 @@ export default function UpdateProfile({
                 className="input"
                 id="apple"
                 type="text"
-                value={sites.apple}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
+                value={appleMusicUrl}
+                onChange={(e) => setAppleMusicUrl(e.target.value)}
               />
 
               <label className="label" htmlFor="spotify">
@@ -288,10 +296,8 @@ export default function UpdateProfile({
                 className="input"
                 id="spotify"
                 type="text"
-                value={sites.spotify}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
+                value={spotifyUrl}
+                onChange={(e) => setSpotifyUrl(e.target.value)}
               />
 
               <label className="label" htmlFor="soundcloud">
@@ -301,10 +307,8 @@ export default function UpdateProfile({
                 className="input"
                 id="soundcloud"
                 type="text"
-                value={sites.soundcloud}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
+                value={soundcloudUrl}
+                onChange={(e) => setSoundcloudUrl(e.target.value)}
               />
 
               <label className="label" htmlFor="youtube">
@@ -314,10 +318,8 @@ export default function UpdateProfile({
                 className="input"
                 id="youtube"
                 type="text"
-                value={sites.youtube}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
+                value={youtubeUrl}
+                onChange={(e) => setYoutubeUrl(e.target.value)}
               />
               <InputPasswordProtect
                 id="isPasswordProtected"
