@@ -31,6 +31,11 @@ export default function Document() {
         <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
         <Main />
         <NextScript />
+        <script
+          async
+          defer
+          src="https://scripts.withcabin.com/hello.js"
+        ></script>
       </body>
     </Html>
   )
