@@ -5,6 +5,7 @@ import styles from "./ReleaseLayout.module.css"
 import cn from "classnames"
 import Head from "next/head"
 import Image from "next/image"
+import HandlePagePassword from "../HandlePagePassword/HandlePagePassword"
 
 export default function ReleaseLayout({
   release,
@@ -12,19 +13,8 @@ export default function ReleaseLayout({
   isDlcmFriend,
   profileYumLink,
 }) {
-  const [password, setPassword] = useState()
   const [authorized, setAuthorized] = useState(!release.is_password_protected)
-  const [showError, setShowError] = useState(false)
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    if (release.page_password == password) {
-      setAuthorized(true)
-    } else {
-      setPassword("")
-      setShowError(true)
-    }
-  }
   return (
     <>
       <Head>
@@ -61,25 +51,10 @@ export default function ReleaseLayout({
         />
       </div>
       {!authorized ? (
-        <form
-          className="container inline-max stack"
-          style={{ "--max-inline-size": "400px" }}
-          onSubmit={handleSubmit}
-        >
-          <label htmlFor="password">Enter Password</label>
-
-          <input
-            className="input"
-            id="password"
-            type="password"
-            value={password || ""}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Submit</button>
-          {showError ? (
-            <p style={{ color: "red" }}>Incorrect Password. Try Again.</p>
-          ) : null}
-        </form>
+        <HandlePagePassword
+          setAuthorized={setAuthorized}
+          pagePassword={release.page_password}
+        />
       ) : (
         <div className={styles.codes}>
           <CodeGenerator release={release} profileYumLink={profileYumLink} />
