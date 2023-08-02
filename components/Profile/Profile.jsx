@@ -8,6 +8,7 @@ import Link from "next/link"
 import Pagination from "../Pagination/Pagination"
 import Image from "next/image"
 import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
+import HandlePagePassword from "../HandlePagePassword/HandlePagePassword"
 
 export default function ProfileLayout({
   avatar,
@@ -24,10 +25,8 @@ export default function ProfileLayout({
 }) {
   const releasesPerPage = 10
   const filtersRef = useRef(null)
-  const [password, setPassword] = useState()
   const [pageChange, setPageChange] = useState(0)
   const [authorized, setAuthorized] = useState(!isPasswordProtected)
-  const [showError, setShowError] = useState(false)
   const [refinedReleases, setRefinedReleases] = useState(releases)
   const pageCount = Math.ceil(refinedReleases.length / releasesPerPage)
   const [releasesOffset, setReleasesOffset] = useState(0)
@@ -49,22 +48,12 @@ export default function ProfileLayout({
 
   const handleFilterRefinement = useCallback(
     (releases) => {
-      console.log(releases[0].title)
+      // console.log(releases[0].title)
       setRefinedReleases(releases)
       handlePageChange({ selected: 0 })
     },
     [handlePageChange]
   )
-
-  const handlePasswordSubmit = (e) => {
-    e.preventDefault()
-    if (pagePassword === password) {
-      setAuthorized(true)
-    } else {
-      setPassword("")
-      setShowError(true)
-    }
-  }
 
   return (
     <>
@@ -103,29 +92,10 @@ export default function ProfileLayout({
       </div>
 
       {!authorized ? (
-        <div className={styles.wrapper}>
-          <form
-            className="container inline-max stack"
-            style={{
-              "--max-inline-size": "45ch",
-            }}
-            onSubmit={handlePasswordSubmit}
-          >
-            <label htmlFor="password">Enter page password</label>
-
-            <input
-              className="input"
-              id="password"
-              type="password"
-              value={password || ""}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button className="button" data-variant="primary" type="submit">
-              Submit
-            </button>
-            {showError ? <p>Incorrect password. Try Again.</p> : null}
-          </form>
-        </div>
+        <HandlePagePassword
+          setAuthorized={setAuthorized}
+          pagePassword={pagePassword}
+        />
       ) : (
         <>
           <ReleaseRefinement
