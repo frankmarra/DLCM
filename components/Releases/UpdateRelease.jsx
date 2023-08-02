@@ -47,13 +47,15 @@ export default function UpdateRelease({
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
   const [type, setType] = useState(release.type)
-  const [sites, setSites] = useState({
-    apple: release.sites.apple ? release.sites.apple : null,
-    bandcamp: release.sites.bandcamp ? release.sites.bandcamp : null,
-    spotify: release.sites.spotify ? release.sites.spotify : null,
-    soundcloud: release.sites.soundcloud ? release.sites.soundcloud : null,
-    youtube: release.sites.youtube ? release.sites.youtube : null,
-  })
+  const [bandcampUrl, setBandcampUrl] = useState(release.sites.bandcamp ?? null)
+  const [appleMusicUrl, setAppleMusicUrl] = useState(
+    release.sites.apple ?? null
+  )
+  const [spotifyUrl, setSpotifyUrl] = useState(release.sites.spotify ?? null)
+  const [soundcloudUrl, setSoundcloudUrl] = useState(
+    release.sites.soundcloud ?? null
+  )
+  const [youtubeUrl, setYoutubeUrl] = useState(release.sites.youtube ?? null)
 
   const resetForm = () => {
     setTitle(release.title)
@@ -70,13 +72,11 @@ export default function UpdateRelease({
       color: "transparent",
       message: "",
     })
-    setSites({
-      apple: release.sites.apple ? release.sites.apple : null,
-      spotify: release.sites.spotify ? release.sites.spotify : null,
-      bandcamp: release.sites.bandcamp ? release.sites.bandcamp : null,
-      soundcloud: release.sites.soundcloud ? release.sites.soundcloud : null,
-      youtube: release.sites.youtube ? release.sites.youtube : null,
-    })
+    setBandcampUrl(release.sites.bandcamp ?? null)
+    setAppleMusicUrl(release.sites.apple ?? null)
+    setSpotifyUrl(release.sites.spotify ?? null)
+    setSoundcloudUrl(release.sites.soundcloud ?? null)
+    setYoutubeUrl(release.sites.youtube ?? null)
   }
 
   const checkName = async (e) => {
@@ -120,7 +120,13 @@ export default function UpdateRelease({
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: prependProtocol(yumUrl),
         type: type,
-        sites: sites,
+        sites: {
+          bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
+          apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
+          spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
+          soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
+          youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
+        },
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -313,10 +319,8 @@ export default function UpdateRelease({
             className="input"
             id="bandcamp"
             type="text"
-            value={sites.bandcamp}
-            onChange={(e) =>
-              setSites({ ...sites, [e.target.id]: e.target.value })
-            }
+            value={bandcampUrl}
+            onChange={(e) => setBandcampUrl(e.target.value)}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
@@ -327,10 +331,8 @@ export default function UpdateRelease({
                 className="input"
                 id="apple"
                 type="text"
-                value={sites.apple}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
+                value={appleMusicUrl}
+                onChange={(e) => setAppleMusicUrl(e.target.value)}
               />
 
               <label className="label" htmlFor="spotify">
@@ -340,10 +342,8 @@ export default function UpdateRelease({
                 className="input"
                 id="spotify"
                 type="text"
-                value={sites.spotify}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
+                value={spotifyUrl}
+                onChange={(e) => setSpotifyUrl(e.target.value)}
               />
               <label className="label" htmlFor="soundcloud">
                 Soundcloud Link
@@ -352,10 +352,8 @@ export default function UpdateRelease({
                 className="input"
                 id="soundcloud"
                 type="text"
-                value={sites.soundcloud}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
+                value={soundcloudUrl}
+                onChange={(e) => setSoundcloudUrl(e.target.value)}
               />
               <label className="label" htmlFor="youtube">
                 YouTube Link
@@ -364,10 +362,8 @@ export default function UpdateRelease({
                 className="input"
                 id="youtube"
                 type="text"
-                value={sites.youtube}
-                onChange={(e) =>
-                  setSites({ ...sites, [e.target.id]: e.target.value })
-                }
+                value={youtubeUrl}
+                onChange={(e) => setYoutubeUrl(e.target.value)}
               />
               <label className="label checkbox" htmlFor="isActive">
                 <input
