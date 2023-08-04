@@ -72,13 +72,25 @@ export default function ProfileLayout({
       </Head>
 
       <div className={cn(styles.wrapper, "stack inline-max")}>
-        <Image
-          className={styles.avatar}
-          src={avatar || "/default-image.png"}
-          alt={name}
-          width={200}
-          height={200}
-        />
+        {sites.personal ? (
+          <Link href={sites.personal}>
+            <Image
+              className={styles.avatar}
+              src={avatar || "/default-image.png"}
+              alt={name}
+              width={200}
+              height={200}
+            />
+          </Link>
+        ) : (
+          <Image
+            className={styles.avatar}
+            src={avatar || "/default-image.png"}
+            alt={name}
+            width={200}
+            height={200}
+          />
+        )}
         <div className={cn(styles.info, "stack")}>
           <h1 className={cn(styles.name, "text-3")}>{name}</h1>
           <p className={cn(styles.location, "text-2")}>{location}</p>

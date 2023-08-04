@@ -6,7 +6,9 @@ export default function InputSocialSites({
   setSites,
   isSubscribed,
   isDlcmFriend,
+  showPersonal,
 }) {
+  const [personalUrl, setPersonalUrl] = useState(sites?.personal ?? null)
   const [bandcampUrl, setBandcampUrl] = useState(sites?.bandcamp ?? null)
   const [appleMusicUrl, setAppleMusicUrl] = useState(sites?.apple ?? null)
   const [spotifyUrl, setSpotifyUrl] = useState(sites?.spotify ?? null)
@@ -15,15 +17,37 @@ export default function InputSocialSites({
 
   useEffect(() => {
     setSites({
+      personal: personalUrl ? prependProtocol(personalUrl) : null,
       bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
       apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
       spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
       soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
       youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
     })
-  }, [bandcampUrl, appleMusicUrl, spotifyUrl, soundcloudUrl, youtubeUrl])
+  }, [
+    bandcampUrl,
+    appleMusicUrl,
+    spotifyUrl,
+    soundcloudUrl,
+    youtubeUrl,
+    personalUrl,
+  ])
   return (
     <>
+      {showPersonal ? (
+        <>
+          <label className="label" htmlFor="personal">
+            Website
+          </label>
+          <input
+            className="input"
+            id="personal"
+            type="url"
+            value={personalUrl}
+            onChange={(e) => setPersonalUrl(e.target.value)}
+          />
+        </>
+      ) : null}
       <label className="label" htmlFor="bandcamp">
         Bandcamp Link
       </label>

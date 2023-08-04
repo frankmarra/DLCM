@@ -252,6 +252,7 @@ export default function UpdateProfile({
             setSites={setSites}
             isSubscribed={profileData.is_subscribed}
             isDlcmFriend={profileData.dlcm_friend}
+            showPersonal={true}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <InputPasswordProtect
