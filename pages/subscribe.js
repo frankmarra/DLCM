@@ -1,21 +1,17 @@
 import { useUser } from "@supabase/auth-helpers-react"
 import Link from "next/link"
 import Head from "next/head"
+import SEO from "@/components/SEO/SEO"
 
 export default function Subscribe() {
   const user = useUser()
 
   return (
     <>
-      <Head>
-        <title>{"Subscribe to DLCM"}</title>
-        <meta property="og:title" content="Subscribe to DLCM" key="title" />
-        <meta
-          property="og:description"
-          content="Subscribe to DLCM.app"
-          key="description"
-        />
-      </Head>
+      <SEO
+        title="Subscribe"
+        description="Subscribe to DLCM, the definitive solution for download code management"
+      ></SEO>
       <article
         className="container stack inline-max center-stage"
         style={{ "--max-inline-size": "400px" }}

@@ -6,7 +6,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta property="og:image" content="/og-image.png" />
         <link rel="icon" type="image/x-icon" href="favicon/favicon.ico" />
         <link
           rel="icon"
