@@ -5,11 +5,6 @@ import styles from "./Layout.module.css"
 import Head from "next/head"
 import SEO from "../SEO/SEO"
 
-const metadata = {
-  title: "DLCM",
-  description: "The definitive solution for download code management.",
-}
-
 export default function Layout({ children }) {
   return (
     <>
