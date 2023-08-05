@@ -3,7 +3,7 @@ import Head from "next/head"
 const metadata = {
   title: "DLCM",
   description: "The definitive solution for download code management.",
-  ogImage: "/og-image.png",
+  ogImage: `${process.env.NEXT_PUBLIC_DLCM_URL}/og-image.png`,
 }
 
 export default function SEO({ title, description }) {
