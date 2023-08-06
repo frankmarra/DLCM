@@ -33,6 +33,16 @@ export default function ProfileLayout({
   const endOffset = releasesOffset + releasesPerPage
   const currentReleases = refinedReleases.slice(releasesOffset, endOffset)
 
+  const profilePic = (
+    <Image
+      className={styles.avatar}
+      src={avatar || "/default-image.png"}
+      alt={name}
+      width={200}
+      height={200}
+    />
+  )
+
   const handlePageClick = () => {
     filtersRef.current?.scrollIntoView({ behavior: "smooth" })
   }
@@ -72,13 +82,11 @@ export default function ProfileLayout({
       </Head>
 
       <div className={cn(styles.wrapper, "stack inline-max")}>
-        <Image
-          className={styles.avatar}
-          src={avatar || "/default-image.png"}
-          alt={name}
-          width={200}
-          height={200}
-        />
+        {sites.personal ? (
+          <Link href={sites.personal}>{profilePic}</Link>
+        ) : (
+          profilePic
+        )}
         <div className={cn(styles.info, "stack")}>
           <h1 className={cn(styles.name, "text-3")}>{name}</h1>
           <p className={cn(styles.location, "text-2")}>{location}</p>

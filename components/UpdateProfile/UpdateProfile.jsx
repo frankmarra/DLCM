@@ -13,6 +13,7 @@ import PopoverTip from "../PopoverTip/PopoverTip"
 import Link from "next/link"
 import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
+import InputSocialSites from "../InputSocialSites/InputSocialSites"
 
 export default function UpdateProfile({
   getProfile,
@@ -38,21 +39,7 @@ export default function UpdateProfile({
     color: "transparent",
     message: "",
   })
-  const [bandcampUrl, setBandcampUrl] = useState(
-    profileData.sites.bandcamp ?? null
-  )
-  const [appleMusicUrl, setAppleMusicUrl] = useState(
-    profileData.sites.apple ?? null
-  )
-  const [spotifyUrl, setSpotifyUrl] = useState(
-    profileData.sites.spotify ?? null
-  )
-  const [soundcloudUrl, setSoundcloudUrl] = useState(
-    profileData.sites.soundcloud ?? null
-  )
-  const [youtubeUrl, setYoutubeUrl] = useState(
-    profileData.sites.youtube ?? null
-  )
+  const [sites, setSites] = useState(profileData.sites ?? null)
 
   const checkName = async (e) => {
     e.preventDefault()
@@ -96,13 +83,7 @@ export default function UpdateProfile({
         avatar_url: avatarUrl,
         avatar_path: newImagePath ? newImagePath : imagePath,
         slug: sluggedName,
-        sites: {
-          bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
-          apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
-          spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
-          soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
-          youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
-        },
+        sites: sites,
         page_password: pagePassword,
         is_password_protected: isPasswordProtected,
         yum_url: prependProtocol(yumUrl),
@@ -266,73 +247,28 @@ export default function UpdateProfile({
             This is the link your customers will visit to redeem their code. It
             is usually <code>your-name.bandcamp/yum</code>
           </small>
-          <label className="label" htmlFor="bandcamp">
-            Bandcamp Link
-          </label>
-          <input
-            className="input"
-            id="bandcamp"
-            type="text"
-            value={bandcampUrl}
-            onChange={(e) => setBandcampUrl(e.target.value)}
+          <InputSocialSites
+            sites={sites}
+            setSites={setSites}
+            hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
+            labelArtist={
+              profileData.type.charAt(0).toUpperCase() +
+              profileData.type.slice(1)
+            }
+            showPersonal={true}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
-            <>
-              <label className="label" htmlFor="apple">
-                Apple Music Link
-              </label>
-              <input
-                className="input"
-                id="apple"
-                type="text"
-                value={appleMusicUrl}
-                onChange={(e) => setAppleMusicUrl(e.target.value)}
-              />
-
-              <label className="label" htmlFor="spotify">
-                Spotify Link
-              </label>
-              <input
-                className="input"
-                id="spotify"
-                type="text"
-                value={spotifyUrl}
-                onChange={(e) => setSpotifyUrl(e.target.value)}
-              />
-
-              <label className="label" htmlFor="soundcloud">
-                Soundcloud Link
-              </label>
-              <input
-                className="input"
-                id="soundcloud"
-                type="text"
-                value={soundcloudUrl}
-                onChange={(e) => setSoundcloudUrl(e.target.value)}
-              />
-
-              <label className="label" htmlFor="youtube">
-                YouTube Link
-              </label>
-              <input
-                className="input"
-                id="youtube"
-                type="text"
-                value={youtubeUrl}
-                onChange={(e) => setYoutubeUrl(e.target.value)}
-              />
-              <InputPasswordProtect
-                id="isPasswordProtected"
-                isProtected={isPasswordProtected}
-                pagePassword={pagePassword}
-                setIsProtected={() =>
-                  setIsPasswordProtected(!isPasswordProtected)
-                }
-                setPagePassword={(e) => setPagePassword(e.target.value)}
-              >
-                Password protect your profile page
-              </InputPasswordProtect>
-            </>
+            <InputPasswordProtect
+              id="isPasswordProtected"
+              isProtected={isPasswordProtected}
+              pagePassword={pagePassword}
+              setIsProtected={() =>
+                setIsPasswordProtected(!isPasswordProtected)
+              }
+              setPagePassword={(e) => setPagePassword(e.target.value)}
+            >
+              Password protect your profile page
+            </InputPasswordProtect>
           ) : null}
         </div>
         <footer className="button-actions cluster">
