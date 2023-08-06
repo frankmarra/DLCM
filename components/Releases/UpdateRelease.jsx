@@ -284,7 +284,7 @@ export default function UpdateRelease({
             {namesTaken.message}
           </small>
 
-          <InputReleaseType type={type} setType={setType} />
+          <InputReleaseType type={type} onChange={setType} />
 
           <label className="label" htmlFor="yumUrl">
             Redemption Link
@@ -300,8 +300,7 @@ export default function UpdateRelease({
           <InputSocialSites
             sites={sites}
             setSites={setSites}
-            isSubscribed={profileData.is_subscribed}
-            isDlcmFriend={profileData.dlcm_friend}
+            hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>

@@ -265,8 +265,7 @@ export default function CreateRelease({
           <InputSocialSites
             sites={sites}
             setSites={setSites}
-            isSubscribed={profileData.is_subscribed}
-            isDlcmFriend={profileData.dlcm_friend}
+            hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />
 
           {profileData.is_subscribed || profileData.dlcm_friend ? (

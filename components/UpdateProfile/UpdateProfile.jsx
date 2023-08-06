@@ -250,8 +250,11 @@ export default function UpdateProfile({
           <InputSocialSites
             sites={sites}
             setSites={setSites}
-            isSubscribed={profileData.is_subscribed}
-            isDlcmFriend={profileData.dlcm_friend}
+            hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
+            labelArtist={
+              profileData.type.charAt(0).toUpperCase() +
+              profileData.type.slice(1)
+            }
             showPersonal={true}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (

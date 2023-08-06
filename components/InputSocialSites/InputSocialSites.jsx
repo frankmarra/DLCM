@@ -4,9 +4,9 @@ import { useEffect, useState } from "react"
 export default function InputSocialSites({
   sites,
   setSites,
-  isSubscribed,
-  isDlcmFriend,
+  hasProAccount,
   showPersonal,
+  labelArtist,
 }) {
   const [personalUrl, setPersonalUrl] = useState(sites?.personal ?? null)
   const [bandcampUrl, setBandcampUrl] = useState(sites?.bandcamp ?? null)
@@ -37,7 +37,10 @@ export default function InputSocialSites({
       {showPersonal ? (
         <>
           <label className="label" htmlFor="personal">
-            Website
+            {labelArtist} site{" "}
+            <span>
+              <small>(This makes your logo a link)</small>
+            </span>
           </label>
           <input
             className="input"
@@ -59,7 +62,7 @@ export default function InputSocialSites({
         required
         onChange={(e) => setBandcampUrl(e.target.value)}
       />
-      {isSubscribed || isDlcmFriend ? (
+      {hasProAccount ? (
         <>
           <label className="label" htmlFor="apple">
             Apple Music Link
