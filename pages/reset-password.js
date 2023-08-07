@@ -67,7 +67,7 @@ export default function ResetPassword() {
         >
           <h1>Password Updated</h1>
           <p>Please log in to access your dashboard.</p>
-          <Link href="/">Log In</Link>
+          <Link href="/login">Log In</Link>
         </div>
       ) : (
         <div
