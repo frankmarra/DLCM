@@ -52,7 +52,6 @@ export default function ProfileLayout({
       const newOffset = (e.selected * releasesPerPage) % releases.length
       setReleasesOffset(newOffset)
       setPageChange(e.selected)
-      filtersRef.current?.scrollIntoView({ behavior: "smooth" })
     },
     [releases.length]
   )
