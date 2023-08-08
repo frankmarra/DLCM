@@ -46,6 +46,7 @@ export default function CreateRelease({
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(true)
   const [sites, setSites] = useState()
+  const [releaseDate, setReleaseDate] = useState()
 
   const resetForm = () => {
     setTitle()
@@ -63,6 +64,7 @@ export default function CreateRelease({
       message: "",
     })
     setSites()
+    setReleaseDate()
   }
 
   const checkName = async (e) => {
@@ -111,6 +113,7 @@ export default function CreateRelease({
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         release_slug: sluggedName,
+        release_date: releaseDate,
         user_id: user.id,
       }
       const { data, error } = await supabase
@@ -246,6 +249,17 @@ export default function CreateRelease({
           <p>Upload an image or paste an external link</p>*/}
 
           <InputReleaseType type={type} onChange={setType} />
+
+          <label htmlFor="releaseDate" className="label">
+            Release Date:
+            <input
+              className="input"
+              id="releaseDate"
+              type="date"
+              value={releaseDate}
+              onChange={(e) => setReleaseDate(e.target.value)}
+            />
+          </label>
 
           <label className="label" htmlFor="yumUrl">
             Redemption (yum) Link

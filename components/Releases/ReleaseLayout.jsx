@@ -14,6 +14,7 @@ export default function ReleaseLayout({
   profileYumLink,
 }) {
   const [authorized, setAuthorized] = useState(!release.is_password_protected)
+  const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
 
   return (
     <>
@@ -42,7 +43,12 @@ export default function ReleaseLayout({
           <h1 className={styles.title}>{release.title}</h1>
           <p className={styles.artist}>{release.artist}</p>
           <p className={styles.label}>{release.label}</p>
-          <p>{release.type == "Choose release type" ? null : release.type}</p>
+          <p>
+            {release.type == "Choose release type" ? null : release.type}{" "}
+            {release.release_date
+              ? ` released: ${releaseDate.toLocaleDateString()}`
+              : null}
+          </p>
         </div>
         <SocialSites
           sites={release.sites}

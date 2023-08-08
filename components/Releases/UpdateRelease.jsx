@@ -50,6 +50,7 @@ export default function UpdateRelease({
   const [isActive, setIsActive] = useState(release.is_active)
   const [type, setType] = useState(release.type)
   const [sites, setSites] = useState(release.sites)
+  const [releaseDate, setReleaseDate] = useState(release.release_date)
 
   const resetForm = () => {
     setTitle(release.title)
@@ -67,6 +68,7 @@ export default function UpdateRelease({
       message: "",
     })
     setSites(release.sites ?? null)
+    setReleaseDate(release.release_date)
   }
 
   const checkName = async (e) => {
@@ -111,6 +113,7 @@ export default function UpdateRelease({
         yum_url: prependProtocol(yumUrl),
         type: type,
         sites: sites,
+        release_date: releaseDate,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -285,6 +288,17 @@ export default function UpdateRelease({
           </small>
 
           <InputReleaseType type={type} onChange={setType} />
+
+          <label htmlFor="releaseDate" className="label">
+            Release Date:
+            <input
+              className="input"
+              id="releaseDate"
+              type="date"
+              value={releaseDate}
+              onChange={(e) => setReleaseDate(e.target.value)}
+            />
+          </label>
 
           <label className="label" htmlFor="yumUrl">
             Redemption Link

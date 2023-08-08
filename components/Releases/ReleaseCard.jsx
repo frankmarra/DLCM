@@ -19,6 +19,7 @@ export default function ReleaseCard({
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
   const [artwork, setArtwork] = useState(release.artwork_url)
+  const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
 
   const supabase = useSupabaseClient()
 
@@ -59,6 +60,9 @@ export default function ReleaseCard({
             {release.type && release.type != "Choose release type" ? (
               <div className={styles.type}>
                 <IconRecord aria-hidden="true" /> {release.type}
+                {release.release_date
+                  ? ` released: ${releaseDate.toLocaleDateString()}`
+                  : null}
               </div>
             ) : null}
           </div>
