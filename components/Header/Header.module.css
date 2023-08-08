@@ -3,12 +3,23 @@
   --cluster-justify: space-between;
   --border: var(--border-size-1) solid var(--surface-3);
   gap: var(--size-2);
-  padding: var(--size-2) var(--size-4);
+  padding: var(--size-3);
   border-block-end: var(--border);
 }
 
 .logo {
-  text-decoration: none;
+  --_padding: var(--size-2);
+  --_size: calc(2.125rem + var(--_padding) * 2);
+  width: var(--_size);
+  height: var(--_size);
+  padding: var(--_padding);
+  margin: calc(var(--_padding) * -1);
+  color: var(--text-1);
+}
+
+.logo svg {
+  width: 100%;
+  height: 100%;
 }
 
 .nav {
