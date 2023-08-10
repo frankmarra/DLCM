@@ -2,8 +2,6 @@ import { useState } from "react"
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
 import Link from "next/link"
 import styles from "./LoginForm.module.css"
-import cn from "classnames"
-import Head from "next/head"
 import { useRouter } from "next/router"
 
 export default function LoginForm() {
@@ -36,65 +34,54 @@ export default function LoginForm() {
   }
 
   return (
-    <>
-      <Head>
-        <title>{"Log in to DLCM"}</title>
-        <meta property="og:title" content="Log in to DLCM" key="title" />
-        <meta
-          property="og:description"
-          content="Log in to your DLCM account"
-          key="description"
+    <article
+      className="stack inline-max center-stage"
+      style={{ "--max-inline-size": "45ch" }}
+    >
+      <h1>Log in</h1>
+      <form className="container stack" onSubmit={handleSubmit}>
+        <label className="label" htmlFor="email">
+          Email
+        </label>
+        <input
+          onChange={(e) => setEmail(e.target.value)}
+          className="input"
+          id="email"
+          type="email"
+          value={email}
+          required
         />
-      </Head>
-      <article
-        className="stack inline-max center-stage"
-        style={{ "--max-inline-size": "45ch" }}
-      >
-        <h1>Log in</h1>
-        <form className="container stack" onSubmit={handleSubmit}>
-          <label className="label" htmlFor="email">
-            Email
+
+        <div className={styles.password}>
+          <label className="label" htmlFor="password">
+            Password
           </label>
           <input
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             className="input"
-            id="email"
-            type="email"
-            value={email}
+            id="password"
+            type="password"
+            value={password}
             required
           />
+          <p className={styles.forgotPassword}>
+            <Link href="/request-password-reset">Forgot password?</Link>
+          </p>
+        </div>
 
-          <div className={styles.password}>
-            <label className="label" htmlFor="password">
-              Password
-            </label>
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              className="input"
-              id="password"
-              type="password"
-              value={password}
-              required
-            />
-            <p className={styles.forgotPassword}>
-              <Link href="/request-password-reset">Forgot password?</Link>
-            </p>
-          </div>
+        <button
+          className="button"
+          data-variant="primary"
+          type="submit"
+          disabled={!email || !password}
+        >
+          Log In
+        </button>
+      </form>
 
-          <button
-            className="button"
-            data-variant="primary"
-            type="submit"
-            disabled={!email || !password}
-          >
-            Log In
-          </button>
-        </form>
-
-        <p>
-          Not a member yet? <Link href="/signup">Sign up!</Link>
-        </p>
-      </article>
-    </>
+      <p>
+        Not a member yet? <Link href="/signup">Sign up!</Link>
+      </p>
+    </article>
   )
 }

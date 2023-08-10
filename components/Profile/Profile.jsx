@@ -9,6 +9,7 @@ import Pagination from "../Pagination/Pagination"
 import Image from "next/image"
 import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 import HandlePagePassword from "../HandlePagePassword/HandlePagePassword"
+import SEO from "../SEO/SEO"
 
 export default function ProfileLayout({
   avatar,
@@ -67,20 +68,10 @@ export default function ProfileLayout({
 
   return (
     <>
-      <Head>
-        <title>{`${name}'s public profile`}</title>
-        <meta
-          property="og:title"
-          content={`${name}'s public profile`}
-          key="title"
-        />
-        <meta
-          property="og:description"
-          content={`See all of ${name}'s available releases`}
-          key="description"
-        />
-      </Head>
-
+      <SEO
+        title={name}
+        description={`Discover download codes for music releases by ${name}`}
+      ></SEO>
       <div className={cn(styles.wrapper, "stack inline-max")}>
         {sites.personal ? (
           <Link href={sites.personal}>{profilePic}</Link>

@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import Head from "next/head"
+import SEO from "@/components/SEO/SEO"
 
 export default function PrivacyPolicy() {
   useEffect(() => {
@@ -10,15 +11,7 @@ export default function PrivacyPolicy() {
   }, [])
   return (
     <>
-      <Head>
-        <title>{"Sign up to DLCM"}</title>
-        <meta property="og:title" content="Sign up to DLCM" key="title" />
-        <meta
-          property="og:description"
-          content="Sign up to start using DLCM"
-          key="description"
-        />
-      </Head>
+      <SEO title="Privacy Policy"></SEO>
       <div
         name="termly-embed"
         data-id="a462fd7d-322c-495e-bf39-340ef098101b"

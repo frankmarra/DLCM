@@ -8,6 +8,7 @@ import styles from "./Account.module.css"
 import cn from "classnames"
 import Link from "next/link"
 import Head from "next/head"
+import SEO from "../SEO/SEO"
 
 export default function Account({ session }) {
   const supabase = useSupabaseClient()
@@ -53,19 +54,7 @@ export default function Account({ session }) {
 
   return (
     <>
-      <Head>
-        <title>{profileData.username} | DLCM dashboard</title>
-        <meta
-          property="og:title"
-          content={`${profileData.username} | DLCM dashboard`}
-          key="title"
-        />
-        <meta
-          property="og:description"
-          content="This is the home dashboard for DLCM. Users have full access of their account from here."
-          key="description"
-        />
-      </Head>
+      <SEO title={profileData.username}></SEO>
       <div className={cn(styles.update, "cluster")}>
         <UpdateProfile
           getProfile={getProfile}

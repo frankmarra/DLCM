@@ -1,12 +1,10 @@
 import { supabase } from "@/utils/supabase"
-import { useState, useEffect } from "react"
-import Link from "next/link"
+import { useState } from "react"
 import slugify from "slugify"
 import { useRouter } from "next/router"
 import PopoverTip from "@/components/PopoverTip/PopoverTip"
 import Head from "next/head"
-import cn from "classnames"
-import styles from "@/components/LoginForm/LoginForm.module.css"
+import SEO from "@/components/SEO/SEO"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -150,16 +148,10 @@ const Signup = () => {
 
   return (
     <>
-      <Head>
-        <title>{"Sign up to DLCM"}</title>
-        <meta property="og:title" content="Sign up to DLCM" key="title" />
-        <meta
-          property="og:description"
-          content="Sign up to start using DLCM"
-          key="description"
-        />
-      </Head>
-
+      <SEO
+        title="Create account"
+        description="Create a new account and get started with DLCM, the definitive solution for download code management."
+      ></SEO>
       <article
         className="stack inline-max center-stage"
         style={{ "--max-inline-size": "45ch" }}
