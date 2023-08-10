@@ -12,7 +12,7 @@ function ReleaseRefinement({ isVisible, onRefinement, releases }, ref) {
 
   useEffect(() => {
     onRefinement(sorted)
-  }, [sorted, onRefinement])
+  }, [sorted])
 
   if (!isVisible) {
     return

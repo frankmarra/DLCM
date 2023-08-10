@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
 const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
+const sortByReleaseDate = (a, b) => (a.release_date > b.release_date ? 1 : -1)
 const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
 const sortByArtist = (a, b) =>
   a.artist.toLowerCase() > b.artist.toLowerCase() ? 1 : -1
@@ -16,6 +17,18 @@ const sortOptions = [
     label: "Oldest First",
     value: "oldest",
     method: sortByCreatedAt,
+    direction: "asc",
+  },
+  {
+    label: "Release Date (newest)",
+    value: "release date (newest)",
+    method: sortByReleaseDate,
+    direction: "desc",
+  },
+  {
+    label: "Release Date (oldest)",
+    value: "release date (oldest)",
+    method: sortByReleaseDate,
     direction: "asc",
   },
   {

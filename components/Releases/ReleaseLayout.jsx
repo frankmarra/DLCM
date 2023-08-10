@@ -46,7 +46,7 @@ export default function ReleaseLayout({
           <p>
             {release.type == "Choose release type" ? null : release.type}{" "}
             {release.release_date
-              ? ` released: ${releaseDate.toLocaleDateString()}`
+              ? ` released - ${releaseDate.getFullYear()}`
               : null}
           </p>
         </div>
