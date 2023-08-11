@@ -6,6 +6,7 @@ import cn from "classnames"
 import Head from "next/head"
 import Image from "next/image"
 import HandlePagePassword from "../HandlePagePassword/HandlePagePassword"
+import SEO from "../SEO/SEO"
 
 export default function ReleaseLayout({
   release,
@@ -18,19 +19,10 @@ export default function ReleaseLayout({
 
   return (
     <>
-      <Head>
-        <title>{release.title}</title>
-        <meta
-          property="og:title"
-          content={`${release.title}'s code page`}
-          key="title"
-        />
-        <meta
-          property="og:description"
-          content={`Grab a code for ${release.title} if there is one available.`}
-          key="description"
-        />
-      </Head>
+      <SEO
+        title={release.title}
+        description={`Download code page for ${release.title}`}
+      ></SEO>
       <div className={cn(styles.wrapper, "stack inline-max")}>
         <Image
           className={styles.artwork}
