@@ -61,7 +61,7 @@ export default function ReleaseCard({
               <div className={styles.type}>
                 <IconRecord aria-hidden="true" /> {release.type}
                 {release.release_date
-                  ? ` released - ${releaseDate.getFullYear()}`
+                  ? ` - ${releaseDate.getFullYear()}`
                   : null}
               </div>
             ) : null}

@@ -37,9 +37,7 @@ export default function ReleaseLayout({
           <p className={styles.label}>{release.label}</p>
           <p>
             {release.type == "Choose release type" ? null : release.type}{" "}
-            {release.release_date
-              ? ` released - ${releaseDate.getFullYear()}`
-              : null}
+            {release.release_date ? `  — ${releaseDate.getFullYear()}` : null}
           </p>
         </div>
         <SocialSites
