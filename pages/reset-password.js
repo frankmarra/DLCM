@@ -3,6 +3,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import Head from "next/head"
+import SEO from "@/components/SEO/SEO"
 
 export default function ResetPassword() {
   const supabase = useSupabaseClient()
@@ -51,15 +52,7 @@ export default function ResetPassword() {
 
   return (
     <>
-      <Head>
-        <title>{"Update your password"}</title>
-        <meta property="og:title" content="Update your password" key="title" />
-        <meta
-          property="og:description"
-          content="Update your DLCM user password"
-          key="description"
-        />
-      </Head>
+      <SEO title="Reset password"></SEO>
       {passwordUpdated ? (
         <div
           className=" container stack inline-max center-stage password-updated"
@@ -67,7 +60,7 @@ export default function ResetPassword() {
         >
           <h1>Password Updated</h1>
           <p>Please log in to access your dashboard.</p>
-          <Link href="/">Log In</Link>
+          <Link href="/login">Log In</Link>
         </div>
       ) : (
         <div

@@ -1,6 +1,7 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react"
 import { useState } from "react"
 import Head from "next/head"
+import SEO from "@/components/SEO/SEO"
 
 export default function RequestPasswordReset() {
   const supabase = useSupabaseClient()
@@ -22,19 +23,10 @@ export default function RequestPasswordReset() {
   }
   return (
     <>
-      <Head>
-        <title>{"Password reset"}</title>
-        <meta
-          property="og:title"
-          content="Request a password reset"
-          key="title"
-        />
-        <meta
-          property="og:description"
-          content="Request a password reset for your DLCM account"
-          key="description"
-        />
-      </Head>
+      <SEO
+        title="Reset password"
+        description="Request a password reset for your DLCM account"
+      ></SEO>
       {emailSent ? (
         <div className="password-updated">
           <h1>Reset Password Email Sent</h1>

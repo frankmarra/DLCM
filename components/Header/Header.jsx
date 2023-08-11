@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import { useRouter } from "next/router"
 import ThemeToggle from "@/components/ThemeToggle/ThemeToggle.jsx"
-import BrandLogo from "../BrandLogo/BrandLogo"
+import Logo from "@/icons/dlcm-logo.svg"
 import cn from "classnames"
 import styles from "./Header.module.css"
 
@@ -47,7 +47,7 @@ export default function Header() {
         href="/"
         aria-label={user ? "Go to dashboard" : "Go to homepage"}
       >
-        <BrandLogo />
+        <Logo />
       </Link>
       <button
         className={cn(styles.navToggle, "button")}

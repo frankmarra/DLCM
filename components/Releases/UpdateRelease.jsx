@@ -16,6 +16,8 @@ import slugify from "slugify"
 import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 import InputReleaseType from "../InputReleaseType/InputReleaseType"
+import InputSocialSites from "../InputSocialSites/InputSocialSites"
+import InputIsActive from "../InputIsActive/InputIsActive"
 
 export default function UpdateRelease({
   release,
@@ -47,15 +49,7 @@ export default function UpdateRelease({
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
   const [type, setType] = useState(release.type)
-  const [bandcampUrl, setBandcampUrl] = useState(release.sites.bandcamp ?? null)
-  const [appleMusicUrl, setAppleMusicUrl] = useState(
-    release.sites.apple ?? null
-  )
-  const [spotifyUrl, setSpotifyUrl] = useState(release.sites.spotify ?? null)
-  const [soundcloudUrl, setSoundcloudUrl] = useState(
-    release.sites.soundcloud ?? null
-  )
-  const [youtubeUrl, setYoutubeUrl] = useState(release.sites.youtube ?? null)
+  const [sites, setSites] = useState(release.sites)
 
   const resetForm = () => {
     setTitle(release.title)
@@ -72,11 +66,7 @@ export default function UpdateRelease({
       color: "transparent",
       message: "",
     })
-    setBandcampUrl(release.sites.bandcamp ?? null)
-    setAppleMusicUrl(release.sites.apple ?? null)
-    setSpotifyUrl(release.sites.spotify ?? null)
-    setSoundcloudUrl(release.sites.soundcloud ?? null)
-    setYoutubeUrl(release.sites.youtube ?? null)
+    setSites(release.sites ?? null)
   }
 
   const checkName = async (e) => {
@@ -120,13 +110,7 @@ export default function UpdateRelease({
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: prependProtocol(yumUrl),
         type: type,
-        sites: {
-          bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
-          apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
-          spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
-          soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
-          youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
-        },
+        sites: sites,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -300,7 +284,7 @@ export default function UpdateRelease({
             {namesTaken.message}
           </small>
 
-          <InputReleaseType type={type} setType={setType} />
+          <InputReleaseType type={type} onChange={setType} />
 
           <label className="label" htmlFor="yumUrl">
             Redemption Link
@@ -312,68 +296,17 @@ export default function UpdateRelease({
             value={yumUrl}
             onChange={(e) => setYumUrl(e.target.value)}
           />
-          <label className="label" htmlFor="bandcamp">
-            Bandcamp Link
-          </label>
-          <input
-            className="input"
-            id="bandcamp"
-            type="text"
-            value={bandcampUrl}
-            onChange={(e) => setBandcampUrl(e.target.value)}
+
+          <InputSocialSites
+            sites={sites}
+            setSites={setSites}
+            hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              <label className="label" htmlFor="apple">
-                Apple Music Link
-              </label>
-              <input
-                className="input"
-                id="apple"
-                type="text"
-                value={appleMusicUrl}
-                onChange={(e) => setAppleMusicUrl(e.target.value)}
-              />
-
-              <label className="label" htmlFor="spotify">
-                Spotify Link
-              </label>
-              <input
-                className="input"
-                id="spotify"
-                type="text"
-                value={spotifyUrl}
-                onChange={(e) => setSpotifyUrl(e.target.value)}
-              />
-              <label className="label" htmlFor="soundcloud">
-                Soundcloud Link
-              </label>
-              <input
-                className="input"
-                id="soundcloud"
-                type="text"
-                value={soundcloudUrl}
-                onChange={(e) => setSoundcloudUrl(e.target.value)}
-              />
-              <label className="label" htmlFor="youtube">
-                YouTube Link
-              </label>
-              <input
-                className="input"
-                id="youtube"
-                type="text"
-                value={youtubeUrl}
-                onChange={(e) => setYoutubeUrl(e.target.value)}
-              />
-              <label className="label checkbox" htmlFor="isActive">
-                <input
-                  id="isActive"
-                  type="checkbox"
-                  checked={isActive}
-                  onChange={() => setIsActive(!isActive)}
-                />
+              <InputIsActive isActive={isActive} setIsActive={setIsActive}>
                 Show Release
-              </label>
+              </InputIsActive>
               <InputPasswordProtect
                 id="isPasswordProtected"
                 isProtected={isPasswordProtected}

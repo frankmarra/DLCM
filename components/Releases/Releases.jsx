@@ -15,11 +15,12 @@ export default function Releases({ profileData, getProfile }) {
   const user = useUser()
   const [addedNewRelease, setAddedNewRelease] = useState(false)
   const [releases, setReleases] = useState(profileData.releases)
+  const [refinedReleases, setRefinedReleases] = useState(profileData.releases)
   const [pageChange, setPageChange] = useState(0)
   const pageCount = Math.ceil(releases?.length / releasesPerPage)
   const [releasesOffset, setReleasesOffset] = useState(0)
   const endOffset = releasesOffset + releasesPerPage
-  const currentReleases = releases.slice(releasesOffset, endOffset)
+  const currentReleases = refinedReleases.slice(releasesOffset, endOffset)
 
   const handlePageClick = () => {
     filtersRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -30,14 +31,13 @@ export default function Releases({ profileData, getProfile }) {
       const newOffset = (e.selected * releasesPerPage) % releases.length
       setReleasesOffset(newOffset)
       setPageChange(e.selected)
-      filtersRef.current?.scrollIntoView({ behavior: "smooth" })
     },
     [releases.length]
   )
 
   const handleFilterRefinement = useCallback(
     (releases) => {
-      setReleases(releases)
+      setRefinedReleases(releases)
       handlePageChange({ selected: 0 })
     },
     [handlePageChange]
@@ -59,6 +59,7 @@ export default function Releases({ profileData, getProfile }) {
           isVisible={profileData.is_subscribed || profileData.dlcm_friend}
           releases={releases}
           onRefinement={handleFilterRefinement}
+          ref={filtersRef}
         />
       </header>
 
