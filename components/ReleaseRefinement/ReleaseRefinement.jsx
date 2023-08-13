@@ -2,7 +2,10 @@ import { useState, useEffect, forwardRef } from "react"
 import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
 
-function ReleaseRefinement({ isVisible, onRefinement, releases }, ref) {
+function ReleaseRefinement(
+  { isVisible, onRefinement, releases, isDashboard },
+  ref
+) {
   const [filtered, setFiltered] = useState(releases)
   const [sorted, setSorted] = useState(filtered)
 
@@ -12,7 +15,7 @@ function ReleaseRefinement({ isVisible, onRefinement, releases }, ref) {
 
   useEffect(() => {
     onRefinement(sorted)
-  }, [sorted, onRefinement])
+  }, [sorted])
 
   if (!isVisible) {
     return
@@ -25,7 +28,11 @@ function ReleaseRefinement({ isVisible, onRefinement, releases }, ref) {
       style={{ "--cluster-gap": "var(--size-3)" }}
     >
       <ReleaseFilter releases={releases} onChange={setFiltered} />
-      <ReleaseSort releases={filtered} onChange={setSorted} />
+      <ReleaseSort
+        releases={filtered}
+        onChange={setSorted}
+        isDashboard={isDashboard}
+      />
     </div>
   )
 }

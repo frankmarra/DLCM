@@ -7,7 +7,8 @@ const releaseTypes = [
   { id: 5, text: "Compilation" },
   { id: 6, text: "Soundtrack" },
   { id: 7, text: "Mixtape" },
-  { id: 8, text: "Demo" },
+  { id: 8, text: "Remix" },
+  { id: 9, text: "Demo" },
 ]
 
 export default function InputReleaseType({ type, onChange }) {

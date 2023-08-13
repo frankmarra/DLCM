@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react"
 
 const sortByCreatedAt = (a, b) => (a.created_at > b.created_at ? 1 : -1)
+const sortByReleaseDate = (a, b) => (a.release_date > b.release_date ? 1 : -1)
 const sortByTitle = (a, b) => (a.title > b.title ? 1 : -1)
 const sortByArtist = (a, b) =>
   a.artist.toLowerCase() > b.artist.toLowerCase() ? 1 : -1
 
-const sortOptions = [
+const sortProfileOptions = [
   {
-    label: "Newest First",
-    value: "newest",
-    method: sortByCreatedAt,
+    label: "Release Date (newest)",
+    value: "release date (newest)",
+    method: sortByReleaseDate,
     direction: "desc",
   },
   {
-    label: "Oldest First",
-    value: "oldest",
-    method: sortByCreatedAt,
+    label: "Release Date (oldest)",
+    value: "release date (oldest)",
+    method: sortByReleaseDate,
     direction: "asc",
   },
   {
@@ -44,12 +45,32 @@ const sortOptions = [
   },
 ]
 
-export default function ReleaseSort({ releases, onChange }) {
-  const [selected, setSelected] = useState("newest")
+const sortDashboardOptions = [
+  {
+    label: "Newest First",
+    value: "newest",
+    method: sortByCreatedAt,
+    direction: "desc",
+  },
+  {
+    label: "Oldest First",
+    value: "oldest",
+    method: sortByCreatedAt,
+    direction: "asc",
+  },
+  ...sortProfileOptions,
+]
+
+export default function ReleaseSort({ releases, onChange, isDashboard }) {
+  const [selected, setSelected] = useState(
+    isDashboard ? "newest" : "release date (newest)"
+  )
+
+  const options = isDashboard ? sortDashboardOptions : sortProfileOptions
 
   const handleChange = (e) => {
     const value = e.target.value
-    const selected = sortOptions.find((option) => option.value === value)
+    const selected = options.find((option) => option.value === value)
     let sortedItems = [...releases].sort(selected.method)
 
     if (selected.direction === "desc") {
@@ -61,7 +82,7 @@ export default function ReleaseSort({ releases, onChange }) {
   }
 
   useEffect(() => {
-    setSelected("newest")
+    setSelected(isDashboard ? "newest" : "release date (newest)")
   }, [releases])
 
   return (
@@ -75,7 +96,7 @@ export default function ReleaseSort({ releases, onChange }) {
         value={selected}
         onChange={handleChange}
       >
-        {sortOptions.map(({ label, value }) => (
+        {options.map(({ label, value }) => (
           <option value={value} key={value}>
             {label}
           </option>

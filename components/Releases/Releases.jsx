@@ -60,6 +60,7 @@ export default function Releases({ profileData, getProfile }) {
           releases={releases}
           onRefinement={handleFilterRefinement}
           ref={filtersRef}
+          isDashboard={true}
         />
       </header>
 

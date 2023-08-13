@@ -16,6 +16,7 @@ export default function Header() {
   const nav = [
     { id: "about", label: "About", url: "/about", isAuth: false },
     { id: "pricing", label: "Pricing", url: "/pricing", isAuth: false },
+    { id: "sign up", label: "Sign up", url: "/signup", isAuth: false },
   ]
 
   const userNav = [
