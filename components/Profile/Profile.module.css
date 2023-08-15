@@ -16,7 +16,12 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 }
 
+.cards li {
+  display: grid;
+}
+
 .release {
+  display: grid;
   text-decoration: none;
   color: var(--text-1);
 }

@@ -43,7 +43,7 @@ export default function ReleaseCard({
         />
         <div className={styles.details}>
           <div>
-            <h3 className={cn(styles.title, "text-2")}>
+            <h3 className={cn(styles.title, "line-clamp")}>
               {profileData ? (
                 <Link
                   className="link"
@@ -55,8 +55,12 @@ export default function ReleaseCard({
                 release.title
               )}
             </h3>
-            <div className={styles.artist}>{release.artist}</div>
-            <div className={styles.label}>{release.label}</div>
+            <div className={cn(styles.artist, "line-clamp")}>
+              {release.artist}
+            </div>
+            <div className={cn(styles.label, "line-clamp")}>
+              {release.label}
+            </div>
             {release.type && release.type != "Choose release type" ? (
               <div className={styles.type}>
                 <IconRecord aria-hidden="true" /> {release.type}
