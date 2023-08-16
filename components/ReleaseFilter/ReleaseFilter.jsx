@@ -24,7 +24,8 @@ export default function ReleaseFilter({ releases, onChange }) {
       </label>
       <select
         id="filter"
-        className="input select"
+        className="input select truncate"
+        style={{ maxInlineSize: "300px" }}
         onChange={(e) => handleFilter(e.target.value)}
       >
         <option value="all" key="all">

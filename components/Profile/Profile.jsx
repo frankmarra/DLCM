@@ -104,7 +104,7 @@ export default function ProfileLayout({
             onRefinement={handleFilterRefinement}
           />
 
-          <ul className="grid" role="list">
+          <ul className={cn(styles.cards, "grid")} role="list">
             {currentReleases.map((release, index) =>
               release.is_active ? (
                 <li key={index}>
