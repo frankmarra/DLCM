@@ -5,7 +5,7 @@ import styles from "./ReleaseLayout.module.css"
 import cn from "classnames"
 import Head from "next/head"
 import Image from "next/image"
-import HandlePagePassword from "../HandlePagePassword/HandlePagePassword"
+import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
 
 export default function ReleaseLayout({
@@ -40,22 +40,23 @@ export default function ReleaseLayout({
             {release.release_date ? `  — ${releaseDate.getFullYear()}` : null}
           </p>
         </div>
+        {!authorized ? (
+          <InputPagePassword
+            setAuthorized={setAuthorized}
+            pagePassword={release.page_password}
+            label="Enter password to generate code"
+          />
+        ) : (
+          <div className={styles.codes}>
+            <CodeGenerator release={release} profileYumLink={profileYumLink} />
+          </div>
+        )}
         <SocialSites
           sites={release.sites}
           isSubscribed={isSubscribed}
           isDlcmFriend={isDlcmFriend}
         />
       </div>
-      {!authorized ? (
-        <HandlePagePassword
-          setAuthorized={setAuthorized}
-          pagePassword={release.page_password}
-        />
-      ) : (
-        <div className={styles.codes}>
-          <CodeGenerator release={release} profileYumLink={profileYumLink} />
-        </div>
-      )}
     </>
   )
 }
