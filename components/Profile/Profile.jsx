@@ -8,7 +8,7 @@ import Link from "next/link"
 import Pagination from "../Pagination/Pagination"
 import Image from "next/image"
 import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
-import HandlePagePassword from "../HandlePagePassword/HandlePagePassword"
+import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
 
 export default function ProfileLayout({
@@ -91,7 +91,7 @@ export default function ProfileLayout({
       </div>
 
       {!authorized ? (
-        <HandlePagePassword
+        <InputPagePassword
           setAuthorized={setAuthorized}
           pagePassword={pagePassword}
         />

@@ -1,6 +1,10 @@
 import { useState } from "react"
 
-export default function HandlePagePassword({ setAuthorized, pagePassword }) {
+export default function InputPagePassword({
+  setAuthorized,
+  pagePassword,
+  label,
+}) {
   const [password, setPassword] = useState()
   const [showError, setShowError] = useState(false)
 
@@ -23,7 +27,7 @@ export default function HandlePagePassword({ setAuthorized, pagePassword }) {
         }}
         onSubmit={handlePasswordSubmit}
       >
-        <label htmlFor="password">Enter page password</label>
+        <label htmlFor="password">{label || "Enter password"}</label>
 
         <input
           className="input"
