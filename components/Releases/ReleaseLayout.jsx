@@ -56,6 +56,10 @@ export default function ReleaseLayout({
           isSubscribed={isSubscribed}
           isDlcmFriend={isDlcmFriend}
         />
+        <section
+          className={styles.about}
+          dangerouslySetInnerHTML={{ __html: release.about }}
+        />
       </div>
     </>
   )

@@ -18,6 +18,7 @@ import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 import InputReleaseType from "../InputReleaseType/InputReleaseType"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputIsActive from "../InputIsActive/InputIsActive"
+import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 
 export default function UpdateRelease({
   release,
@@ -51,6 +52,7 @@ export default function UpdateRelease({
   const [type, setType] = useState(release.type)
   const [sites, setSites] = useState(release.sites)
   const [releaseDate, setReleaseDate] = useState(release.release_date)
+  const [about, setAbout] = useState(release.about)
 
   const resetForm = () => {
     setTitle(release.title)
@@ -69,6 +71,7 @@ export default function UpdateRelease({
     })
     setSites(release.sites ?? null)
     setReleaseDate(release.release_date)
+    setAbout(release.about)
   }
 
   const checkName = async (e) => {
@@ -114,6 +117,7 @@ export default function UpdateRelease({
         type: type,
         sites: sites,
         release_date: releaseDate,
+        about: about,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -321,6 +325,7 @@ export default function UpdateRelease({
               <InputIsActive isActive={isActive} setIsActive={setIsActive}>
                 Show Release
               </InputIsActive>
+              <InputReleaseAbout about={about} setAbout={setAbout} />
               <InputPasswordProtect
                 id="isPasswordProtected"
                 isProtected={isPasswordProtected}
