@@ -11,7 +11,6 @@ const modules = {
   toolbar: [
     ["bold", "italic", "underline", "strike", "blockquote"],
     ["link"],
-    [{ align: [] }],
     ["clean"],
   ],
   clipboard: {
