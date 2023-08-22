@@ -15,6 +15,7 @@ import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 import InputReleaseType from "../InputReleaseType/InputReleaseType"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputIsActive from "../InputIsActive/InputIsActive"
+import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 
 export default function CreateRelease({
   trigger,
@@ -47,6 +48,7 @@ export default function CreateRelease({
   const [isActive, setIsActive] = useState(true)
   const [sites, setSites] = useState()
   const [releaseDate, setReleaseDate] = useState()
+  const [about, setAbout] = useState()
 
   const resetForm = () => {
     setTitle()
@@ -65,6 +67,7 @@ export default function CreateRelease({
     })
     setSites()
     setReleaseDate()
+    setAbout()
   }
 
   const checkName = async (e) => {
@@ -114,6 +117,7 @@ export default function CreateRelease({
         is_password_protected: isPasswordProtected,
         release_slug: sluggedName,
         release_date: releaseDate,
+        about: about,
         user_id: user.id,
       }
       const { data, error } = await supabase
@@ -287,6 +291,7 @@ export default function CreateRelease({
               <InputIsActive isActive={isActive} setIsActive={setIsActive}>
                 Show Release
               </InputIsActive>
+              <InputReleaseAbout about={about} setAbout={setAbout} />
               <InputPasswordProtect
                 id="isPasswordProtected"
                 isProtected={isPasswordProtected}

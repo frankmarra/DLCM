@@ -16,6 +16,10 @@
   flex-direction: column;
 }
 
+.about {
+  text-align: left;
+}
+
 .title {
   font-size: var(--font-size-3);
   margin-block-end: var(--size-2);
