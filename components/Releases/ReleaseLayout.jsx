@@ -7,6 +7,7 @@ import Head from "next/head"
 import Image from "next/image"
 import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
+import { sanitize } from "dompurify"
 
 export default function ReleaseLayout({
   release,
@@ -58,7 +59,7 @@ export default function ReleaseLayout({
         />
         <section
           className={styles.about}
-          dangerouslySetInnerHTML={{ __html: release.about }}
+          dangerouslySetInnerHTML={{ __html: sanitize(release.about) }}
         />
       </div>
     </>
