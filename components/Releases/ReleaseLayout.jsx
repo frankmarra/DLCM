@@ -7,7 +7,7 @@ import Head from "next/head"
 import Image from "next/image"
 import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
-import { sanitize } from "dompurify"
+import { sanitize } from "isomorphic-dompurify"
 
 export default function ReleaseLayout({
   release,
@@ -17,6 +17,8 @@ export default function ReleaseLayout({
 }) {
   const [authorized, setAuthorized] = useState(!release.is_password_protected)
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
+
+  const sanitizedAbout = sanitize(release.about)
 
   return (
     <>
@@ -59,7 +61,7 @@ export default function ReleaseLayout({
         />
         <section
           className={styles.about}
-          dangerouslySetInnerHTML={{ __html: sanitize(release.about) }}
+          dangerouslySetInnerHTML={{ __html: sanitizedAbout }}
         />
       </div>
     </>
