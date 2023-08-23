@@ -26,8 +26,8 @@ export default function ReleaseLayout({
   return (
     <>
       <SEO
-        title={release.title}
-        description={`Download code page for ${release.title}`}
+        title={`${release.title} by ${release.artist}`}
+        description={`Get a download code for ${release.title}`}
       ></SEO>
       <div className={cn(styles.wrapper, "stack inline-max")}>
         <Image
@@ -74,10 +74,12 @@ export default function ReleaseLayout({
           isSubscribed={isSubscribed}
           isDlcmFriend={isDlcmFriend}
         />
-        <section
-          className={styles.about}
-          dangerouslySetInnerHTML={{ __html: sanitizedAbout }}
-        />
+        {sanitizedAbout ? (
+          <section
+            className={styles.about}
+            dangerouslySetInnerHTML={{ __html: sanitizedAbout }}
+          />
+        ) : null}
       </div>
     </>
   )
