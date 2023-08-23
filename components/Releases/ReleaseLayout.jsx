@@ -5,6 +5,7 @@ import styles from "./ReleaseLayout.module.css"
 import cn from "classnames"
 import Head from "next/head"
 import Image from "next/image"
+import Link from "next/link"
 import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
 import { sanitize } from "isomorphic-dompurify"
@@ -14,6 +15,8 @@ export default function ReleaseLayout({
   isSubscribed,
   isDlcmFriend,
   profileYumLink,
+  userType,
+  userSlug,
 }) {
   const [authorized, setAuthorized] = useState(!release.is_password_protected)
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
@@ -36,8 +39,20 @@ export default function ReleaseLayout({
         />
         <div>
           <h1 className={styles.title}>{release.title}</h1>
-          <p className={styles.artist}>{release.artist}</p>
-          <p className={styles.label}>{release.label}</p>
+          {userType == "artist" ? (
+            <Link href={`/${userSlug}`} className={styles.artist}>
+              {release.artist}
+            </Link>
+          ) : (
+            <p className={styles.artist}>{release.artist}</p>
+          )}
+          {userType == "label" ? (
+            <Link href={`/${userSlug}`} className={styles.label}>
+              {release.label}
+            </Link>
+          ) : (
+            <p className={styles.label}>{release.label}</p>
+          )}
           <p>
             {release.type == "Choose release type" ? null : release.type}{" "}
             {release.release_date ? `  — ${releaseDate.getFullYear()}` : null}
