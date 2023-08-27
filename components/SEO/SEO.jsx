@@ -20,6 +20,13 @@ export default function SEO({ title, description }) {
         key="description"
       />
       <meta property="og:image" content={metadata.ogImage} key="ogImage" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={pageTitle} />
+      <meta
+        name="twitter:description"
+        content={description || metadata.description}
+      />
+      <meta name="twitter:image" content={metadata.ogImage} />
     </Head>
   )
 }

@@ -49,10 +49,10 @@ export default function Pricing() {
             <div className={styles.perks}>
               <ul role="list">
                 <li>Unlimited Releases</li>
-                <li>Custom URLs</li>
-                <li>Release Level URLs</li>
                 <li>Password Protected Pages</li>
-                <li>Turn Releases On/Off</li>
+                <li>Custom URLs for Profile and Releases</li>
+                <li>Add Copy to Release Pages</li>
+                <li>Make Releases Active/Inactive</li>
                 <li>Bandcamp CSV Code Upload</li>
                 <li>Social/Streaming Links</li>
               </ul>

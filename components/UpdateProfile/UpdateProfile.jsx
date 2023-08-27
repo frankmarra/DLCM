@@ -245,7 +245,7 @@ export default function UpdateProfile({
           />
           <small className="hint">
             This is the link your customers will visit to redeem their code. It
-            is usually <code>your-name.bandcamp/yum</code>
+            is usually <code>your-name.bandcamp.com/yum</code>
           </small>
           <InputSocialSites
             sites={sites}
