@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Avatar from "@/components/Avatar/Avatar"
 import Releases from "@/components/Releases/Releases"
 import UpdateProfile from "@/components/UpdateProfile/UpdateProfile"
@@ -11,7 +12,7 @@ import Head from "next/head"
 import SEO from "../SEO/SEO"
 
 export default function Account({ session }) {
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const [loading, setLoading] = useState(true)
   const [showUpdateView, setShowUpdateView] = useState(false)
   const [profileData, setProfileData] = useState(null)

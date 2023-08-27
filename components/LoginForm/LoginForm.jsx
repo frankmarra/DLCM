@@ -1,11 +1,12 @@
 import { useState } from "react"
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react"
+import { useUser } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Link from "next/link"
 import styles from "./LoginForm.module.css"
 import { useRouter } from "next/router"
 
 export default function LoginForm() {
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const user = useUser()
   const router = useRouter()
   const [loading, setLoading] = useState(true)

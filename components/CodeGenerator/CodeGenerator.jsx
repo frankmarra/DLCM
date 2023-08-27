@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import styles from "./CodeGenerator.module.css"
 import cn from "classnames"
 import Loader from "../Loader/Loader"
 
 export default function CodeGenerator({ release, profileYumLink }) {
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const [loading, setLoading] = useState(true)
   const [activeCodes, setActiveCodes] = useState([])
   const [code, setCode] = useState()

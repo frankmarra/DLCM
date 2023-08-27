@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Avatar from "../Avatar/Avatar"
 import AddImage from "../AddImage/AddImage"
 import slugify from "slugify"
@@ -20,7 +20,7 @@ export default function UpdateProfile({
   profileData,
   setShowUpdateView,
 }) {
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const [open, setOpen] = useState(false)
   const [username, setUsername] = useState(profileData.username)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)

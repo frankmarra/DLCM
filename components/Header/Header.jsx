@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useUser } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useRouter } from "next/router"
 import ThemeToggle from "@/components/ThemeToggle/ThemeToggle.jsx"
 import Logo from "@/icons/dlcm-logo.svg"
@@ -9,7 +10,7 @@ import styles from "./Header.module.css"
 
 export default function Header() {
   const [isNavOpen, setNavOpen] = useState(false)
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const user = useUser()
   const router = useRouter()
 
