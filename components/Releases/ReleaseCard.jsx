@@ -6,7 +6,7 @@ import Link from "next/link"
 import IconDownload from "@/icons/download.svg"
 import IconRecord from "@/icons/vinyl-record.svg"
 import UpdateRelease from "./UpdateRelease"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
 
 export default function ReleaseCard({
@@ -21,7 +21,7 @@ export default function ReleaseCard({
   const [artwork, setArtwork] = useState(release.artwork_url)
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
 
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
 
   useEffect(() => {
     if (onCodeAdded) {

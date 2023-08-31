@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useUser } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import AddImage from "../AddImage/AddImage"
 import {
   Dialog,
@@ -26,7 +27,7 @@ export default function UpdateRelease({
   getProfile,
   profileData,
 }) {
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const user = useUser()
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState(release.title)

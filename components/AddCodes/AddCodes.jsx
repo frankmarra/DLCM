@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import {
   Dialog,
   DialogTrigger,
@@ -14,7 +15,7 @@ export default function AddCodes({
   setOnCodeAdded,
   profileData,
 }) {
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const [codes, setCodes] = useState()
   const [open, setOpen] = useState(false)
   const [displayCodes, toggleDisplayCodes] = useState(false)

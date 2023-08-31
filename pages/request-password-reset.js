@@ -1,10 +1,10 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useState } from "react"
 import Head from "next/head"
 import SEO from "@/components/SEO/SEO"
 
 export default function RequestPasswordReset() {
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const [email, setEmail] = useState("")
   const [emailSent, setEmailSent] = useState(false)
 

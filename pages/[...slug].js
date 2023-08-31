@@ -1,8 +1,8 @@
-import { supabase } from "@/utils/supabase"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import ProfileLayout from "@/components/Profile/Profile"
-import ReleaseLayout from "@/components/Releases/ReleaseLayout"
 
 export async function getServerSideProps({ params }) {
+  let supabase = createClientComponentClient()
   let { slug } = params
   let { data: profile, error } = await supabase
     .from("profiles")

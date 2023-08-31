@@ -1,6 +1,7 @@
 import slugify from "slugify"
 import { useState, useEffect, useRef } from "react"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useUser } from "@supabase/auth-helpers-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import AddImage from "@/components/AddImage/AddImage"
 import {
   Dialog,
@@ -23,7 +24,7 @@ export default function CreateRelease({
   profileData,
 }) {
   const user = useUser()
-  const supabase = useSupabaseClient()
+  const supabase = createClientComponentClient()
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState()
   const [sluggedName, setSluggedName] = useState("")
