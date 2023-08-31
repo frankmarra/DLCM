@@ -1,4 +1,4 @@
-import { useUser } from "@supabase/auth-helpers-react"
+import { useUser, useSessionContext } from "@supabase/auth-helpers-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useState } from "react"
 import Link from "next/link"
@@ -7,6 +7,7 @@ import Head from "next/head"
 import SEO from "@/components/SEO/SEO"
 
 export default function ResetPassword() {
+  const { isLoading, session, error } = useSessionContext()
   const supabase = createClientComponentClient()
   const [newPassword, setNewPassword] = useState("")
   const [newPasswordCheck, setNewPasswordCheck] = useState("")
@@ -18,6 +19,10 @@ export default function ResetPassword() {
   const [passwordGood, setPasswordGood] = useState(false)
   const user = useUser()
   const router = useRouter()
+
+  if (isLoading) {
+    return
+  }
 
   const checkPassword = () => {
     if (newPassword.length > 0) {
