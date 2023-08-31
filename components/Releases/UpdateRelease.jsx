@@ -193,12 +193,13 @@ export default function UpdateRelease({
         if (codeError) throw error
         if (releaseError) throw error
         alert("Release deleted.")
+        setOpen(false)
+        resetForm()
       } catch (error) {
         alert("Error deleting data!")
         console.log(error)
       } finally {
-        getReleases()
-        setOpen(false)
+        getProfile()
       }
     } else {
       alert("Incorrect input")
