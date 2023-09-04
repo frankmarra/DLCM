@@ -8,14 +8,12 @@ import IconRecord from "@/icons/vinyl-record.svg"
 import UpdateRelease from "./UpdateRelease"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
-import InputIsActive from "../InputIsActive/InputIsActive"
 
 export default function ReleaseCard({
   release,
   user,
   getProfile,
   profileData,
-  profileSlug,
 }) {
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
@@ -125,9 +123,10 @@ export default function ReleaseCard({
 
             {profileData.is_subscribed || profileData.dlcm_friend ? (
               <label
-                className="label checkbox"
+                className={cn(styles.activeToggle, "label checkbox")}
                 htmlFor={`${release.id}isActive`}
               >
+                <span>Active</span>
                 <input
                   className="input"
                   id={`${release.id}isActive`}
@@ -135,7 +134,6 @@ export default function ReleaseCard({
                   checked={isActive}
                   onChange={() => showRelease(!isActive)}
                 />
-                Active
               </label>
             ) : null}
           </div>
