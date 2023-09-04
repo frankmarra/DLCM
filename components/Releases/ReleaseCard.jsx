@@ -52,7 +52,12 @@ export default function ReleaseCard({
   }
 
   return (
-    <div className={styles.component}>
+    <div
+      className={cn(
+        styles.component,
+        isActive ? styles.active : styles.inactive
+      )}
+    >
       <div className={styles.content}>
         <Image
           className={styles.image}
@@ -105,13 +110,7 @@ export default function ReleaseCard({
       </div>
       {user ? (
         user.id === release.user_id ? (
-          <div
-            className={cn(
-              isActive ? styles.active : styles.inactive,
-              styles.actions,
-              "cluster"
-            )}
-          >
+          <div className={cn(styles.actions, "cluster")}>
             <UpdateRelease
               setShowReleaseUpdateView={setShowReleaseUpdateView}
               release={release}
@@ -126,7 +125,10 @@ export default function ReleaseCard({
             />
 
             {profileData.is_subscribed || profileData.dlcm_friend ? (
-              <label className="label checkbox" htmlFor="isActive">
+              <label
+                className={cn(styles.activeLabel, "label checkbox")}
+                htmlFor="isActive"
+              >
                 <input
                   className="input"
                   id="isActive"

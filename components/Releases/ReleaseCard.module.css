@@ -5,9 +5,12 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  background-color: var(--surface-2);
   border-radius: var(--radius-conditional-2);
   border: var(--border);
+}
+
+.component:not(.inactive) {
+  background-color: var(--surface-2);
   box-shadow: var(--shadow-2);
 }
 
@@ -128,11 +131,19 @@
   border-block-start: var(--border);
 }
 
-.active {
-  background-color: #237032;
+.activeLabel {
+  margin-inline-start: auto;
 }
 
-.inactive {
-  background-color: #B02524;
+.component.inactive {
+  --border: var(--border-size-1) dashed var(--surface-3);
 }
 
+.component.inactive .image {
+  filter: grayscale(1);
+}
+
+.component.inactive .codes {
+  color: var(--gray-6);
+  background-color: var(--surface-2);
+}
