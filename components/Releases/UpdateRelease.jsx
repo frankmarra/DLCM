@@ -261,7 +261,7 @@ export default function UpdateRelease({
             }
             onBlur={firstSlugCheck ? null : checkName}
           />
-
+          <small>*required</small>
           <div className="input-wrapper">
             <label htmlFor="slug">Release slug</label>
             <PopoverTip
@@ -292,6 +292,7 @@ export default function UpdateRelease({
           <small style={{ color: `${namesTaken.color}` }}>
             {namesTaken.message}
           </small>
+          <small>*required</small>
 
           <InputReleaseType type={type} onChange={setType} />
 

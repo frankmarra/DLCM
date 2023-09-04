@@ -35,6 +35,7 @@ export default function InputReleaseType({ type, onChange }) {
           </option>
         ))}
       </select>
+      <small>*required</small>
     </>
   )
 }
