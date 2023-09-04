@@ -8,6 +8,7 @@ import IconRecord from "@/icons/vinyl-record.svg"
 import UpdateRelease from "./UpdateRelease"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
+import InputIsActive from "../InputIsActive/InputIsActive"
 
 export default function ReleaseCard({
   release,
@@ -20,6 +21,7 @@ export default function ReleaseCard({
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
   const [artwork, setArtwork] = useState(release.artwork_url)
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
+  const [isActive, setIsActive] = useState(release.is_active)
 
   const supabase = createClientComponentClient()
 
@@ -29,6 +31,25 @@ export default function ReleaseCard({
       setOnCodeAdded(false)
     }
   }, [onCodeAdded])
+
+  const showRelease = async (activeStatus) => {
+    try {
+      let update = {
+        is_active: activeStatus,
+      }
+      let { error } = await supabase
+        .from("releases")
+        .update(update)
+        .eq("id", release.id)
+
+      if (error) throw error
+    } catch (error) {
+      alert(`Error making release ${activeStatus ? "active" : "inactive"} !`)
+      console.log(error)
+    } finally {
+      setIsActive(activeStatus)
+    }
+  }
 
   return (
     <div className={styles.component}>
@@ -97,6 +118,18 @@ export default function ReleaseCard({
               setOnCodeAdded={setOnCodeAdded}
               profileData={profileData}
             />
+            {profileData.is_subscribed || profileData.dlcm_friend ? (
+              <label className="label checkbox" htmlFor="isActive">
+                <input
+                  className="input"
+                  id="isActive"
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={() => showRelease(!isActive)}
+                />
+                Show Release
+              </label>
+            ) : null}
           </div>
         ) : null
       ) : null}
