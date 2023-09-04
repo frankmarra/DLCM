@@ -6,6 +6,7 @@ import cn from "classnames"
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
+import Script from "next/script"
 import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
 import { sanitize } from "isomorphic-dompurify"
@@ -60,8 +61,10 @@ export default function ReleaseLayout({
           </p>
         </div>
         {sanitizedEmbed ? (
-          <section
-            className={styles.embed}
+          <Script
+            id="bandcampEmbed"
+            strategy="afterInteractive"
+            // className={styles.embed}
             dangerouslySetInnerHTML={{ __html: sanitizedEmbed }}
           />
         ) : null}
