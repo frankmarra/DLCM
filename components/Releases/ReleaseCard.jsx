@@ -34,6 +34,7 @@ export default function ReleaseCard({
 
   const showRelease = async (activeStatus) => {
     try {
+      setIsActive(activeStatus)
       let update = {
         is_active: activeStatus,
       }
@@ -46,8 +47,6 @@ export default function ReleaseCard({
     } catch (error) {
       alert(`Error making release ${activeStatus ? "active" : "inactive"} !`)
       console.log(error)
-    } finally {
-      setIsActive(activeStatus)
     }
   }
 
@@ -126,10 +125,13 @@ export default function ReleaseCard({
             />
 
             {profileData.is_subscribed || profileData.dlcm_friend ? (
-              <label className="label checkbox" htmlFor="isActive">
+              <label
+                className="label checkbox"
+                htmlFor={`${release.id}isActive`}
+              >
                 <input
                   className="input"
-                  id="isActive"
+                  id={`${release.id}isActive`}
                   type="checkbox"
                   checked={isActive}
                   onChange={() => showRelease(!isActive)}
