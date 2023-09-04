@@ -74,7 +74,7 @@ export default function ReleaseLayout({
           isSubscribed={isSubscribed}
           isDlcmFriend={isDlcmFriend}
         />
-        {sanitizedAbout ? (
+        {sanitizedAbout && authorized ? (
           <section
             className={styles.about}
             dangerouslySetInnerHTML={{ __html: sanitizedAbout }}

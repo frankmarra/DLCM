@@ -14,12 +14,12 @@ export default function ReleaseCard({
   user,
   getProfile,
   profileData,
-  profileSlug,
 }) {
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
   const [artwork, setArtwork] = useState(release.artwork_url)
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
+  const [isActive, setIsActive] = useState(release.is_active)
 
   const supabase = createClientComponentClient()
 
@@ -30,8 +30,31 @@ export default function ReleaseCard({
     }
   }, [onCodeAdded])
 
+  const showRelease = async (activeStatus) => {
+    try {
+      setIsActive(activeStatus)
+      let update = {
+        is_active: activeStatus,
+      }
+      let { error } = await supabase
+        .from("releases")
+        .update(update)
+        .eq("id", release.id)
+
+      if (error) throw error
+    } catch (error) {
+      alert(`Error making release ${activeStatus ? "active" : "inactive"} !`)
+      console.log(error)
+    }
+  }
+
   return (
-    <div className={styles.component}>
+    <div
+      className={cn(
+        styles.component,
+        isActive ? styles.active : styles.inactive
+      )}
+    >
       <div className={styles.content}>
         <Image
           className={styles.image}
@@ -97,6 +120,22 @@ export default function ReleaseCard({
               setOnCodeAdded={setOnCodeAdded}
               profileData={profileData}
             />
+
+            {profileData.is_subscribed || profileData.dlcm_friend ? (
+              <label
+                className={cn(styles.activeToggle, "label checkbox")}
+                htmlFor={`${release.id}isActive`}
+              >
+                <span>Active</span>
+                <input
+                  className="input"
+                  id={`${release.id}isActive`}
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={() => showRelease(!isActive)}
+                />
+              </label>
+            ) : null}
           </div>
         ) : null
       ) : null}

@@ -5,9 +5,12 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  background-color: var(--surface-2);
   border-radius: var(--radius-conditional-2);
   border: var(--border);
+}
+
+.component:not(.inactive) {
+  background-color: var(--surface-2);
   box-shadow: var(--shadow-2);
 }
 
@@ -126,4 +129,43 @@
   --cluster-gap: var(--size-2);
   padding: var(--cluster-gap);
   border-block-start: var(--border);
+}
+
+.activeLabel {
+  margin-inline-start: auto;
+}
+
+.activeToggle {
+  margin-inline-start: auto;
+}
+
+.activeToggle span {
+  align-self: center;
+  font-size: var(--font-size--1);
+  font-weight: 500;
+  letter-spacing: -0.0125em;
+}
+
+.component.inactive {
+  --border: var(--border-size-1) dashed var(--surface-3);
+
+  .content {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--surface-2) 10px,
+      var(--surface-2) 14px,
+      transparent 14px,
+      transparent 18px
+    );
+    opacity: 0.75;
+  }
+
+  .image {
+    filter: grayscale(1);
+  }
+
+  .codes {
+    color: var(--gray-6);
+    background-color: transparent;
+  }
 }
