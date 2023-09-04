@@ -22,6 +22,7 @@ export default function ReleaseLayout({
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
 
   const sanitizedAbout = sanitize(release.about)
+  const sanitizedEmbed = sanitize(release.player_embed)
 
   return (
     <>
@@ -58,6 +59,13 @@ export default function ReleaseLayout({
             {release.release_date ? `  — ${releaseDate.getFullYear()}` : null}
           </p>
         </div>
+        {sanitizedEmbed ? (
+          <section
+            className={styles.embed}
+            dangerouslySetInnerHTML={{ __html: sanitizedEmbed }}
+          />
+        ) : null}
+
         {!authorized ? (
           <InputPagePassword
             setAuthorized={setAuthorized}
