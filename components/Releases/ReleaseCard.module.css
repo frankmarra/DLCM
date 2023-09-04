@@ -128,4 +128,8 @@
   border-block-start: var(--border);
 }
 
+.buttonBar {
+  display: flex;
+  flex-direction: row;
+}
 

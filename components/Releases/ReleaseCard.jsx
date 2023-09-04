@@ -118,18 +118,20 @@ export default function ReleaseCard({
               setOnCodeAdded={setOnCodeAdded}
               profileData={profileData}
             />
-            {profileData.is_subscribed || profileData.dlcm_friend ? (
-              <label className="label checkbox" htmlFor="isActive">
-                <input
-                  className="input"
-                  id="isActive"
-                  type="checkbox"
-                  checked={isActive}
-                  onChange={() => showRelease(!isActive)}
-                />
-                Show Release
-              </label>
-            ) : null}
+            <div className={styles.active}>
+              {profileData.is_subscribed || profileData.dlcm_friend ? (
+                <label className="label checkbox" htmlFor="isActive">
+                  <input
+                    className="input"
+                    id="isActive"
+                    type="checkbox"
+                    checked={isActive}
+                    onChange={() => showRelease(!isActive)}
+                  />
+                  Active
+                </label>
+              ) : null}
+            </div>
           </div>
         ) : null
       ) : null}
