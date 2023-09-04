@@ -105,7 +105,13 @@ export default function ReleaseCard({
       </div>
       {user ? (
         user.id === release.user_id ? (
-          <div className={cn(styles.actions, "cluster")}>
+          <div
+            className={cn(
+              isActive ? styles.active : styles.inactive,
+              styles.actions,
+              "cluster"
+            )}
+          >
             <UpdateRelease
               setShowReleaseUpdateView={setShowReleaseUpdateView}
               release={release}
@@ -118,20 +124,19 @@ export default function ReleaseCard({
               setOnCodeAdded={setOnCodeAdded}
               profileData={profileData}
             />
-            <div className={styles.active}>
-              {profileData.is_subscribed || profileData.dlcm_friend ? (
-                <label className="label checkbox" htmlFor="isActive">
-                  <input
-                    className="input"
-                    id="isActive"
-                    type="checkbox"
-                    checked={isActive}
-                    onChange={() => showRelease(!isActive)}
-                  />
-                  Active
-                </label>
-              ) : null}
-            </div>
+
+            {profileData.is_subscribed || profileData.dlcm_friend ? (
+              <label className="label checkbox" htmlFor="isActive">
+                <input
+                  className="input"
+                  id="isActive"
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={() => showRelease(!isActive)}
+                />
+                Active
+              </label>
+            ) : null}
           </div>
         ) : null
       ) : null}

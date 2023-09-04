@@ -128,8 +128,11 @@
   border-block-start: var(--border);
 }
 
-.buttonBar {
-  display: flex;
-  flex-direction: row;
+.active {
+  background-color: #237032;
+}
+
+.inactive {
+  background-color: #B02524;
 }
 
