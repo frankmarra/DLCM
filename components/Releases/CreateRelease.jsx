@@ -112,7 +112,7 @@ export default function CreateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath,
         yum_url: prependProtocol(yumUrl),
-        type: type,
+        type: type ? type : null,
         sites: sites,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
@@ -169,9 +169,9 @@ export default function CreateRelease({
             }}
             setNewImagePath={setNewImagePath}
           />
-
+          <p>* Denotes Required</p>
           <label className="label" htmlFor="title">
-            Title
+            Title*
           </label>
           <input
             className="input"
@@ -187,9 +187,9 @@ export default function CreateRelease({
             }
             onBlur={firstSlugCheck ? null : checkName}
           />
-          <small>*required</small>
+
           <div className="input-wrapper">
-            <label htmlFor="slug">Release slug</label>
+            <label htmlFor="slug">Release slug*</label>
             <PopoverTip
               message={`This is where you will send your fans. Release slugs are unique to you, so no two can be named the same. If you do have multiple releases with the same name, add an identifier such as the release year to the slug.`}
             />
@@ -218,9 +218,9 @@ export default function CreateRelease({
           <small style={{ color: `${namesTaken.color}` }}>
             {namesTaken.message}
           </small>
-          <small>*required</small>
+
           <label className="label" htmlFor="artist">
-            Artist
+            Artist*
           </label>
           <input
             className="input"
@@ -228,6 +228,7 @@ export default function CreateRelease({
             type="text"
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
+            required
           />
 
           <label className="label" htmlFor="label">
@@ -313,7 +314,7 @@ export default function CreateRelease({
             className="button"
             data-variant="primary"
             onClick={() => createNewRelease()}
-            disabled={!title || !type || noGO}
+            disabled={!title || noGO || !artist}
           >
             Create
           </button>
