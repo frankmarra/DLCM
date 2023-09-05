@@ -169,6 +169,7 @@ export default function CreateRelease({
             }}
             setNewImagePath={setNewImagePath}
           />
+          <br />
           <p>* Denotes Required</p>
           <label className="label" htmlFor="title">
             Title*
