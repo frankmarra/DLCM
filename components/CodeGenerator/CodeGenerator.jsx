@@ -104,7 +104,7 @@ export default function CodeGenerator({ release, profileYumLink }) {
           data-variant="primary"
           onClick={() => getRandomCode()}
         >
-          Generate Code
+          Generate Bandcamp Code
         </button>
       )}
     </div>

@@ -62,7 +62,7 @@ export default function ReleaseLayout({
           <InputPagePassword
             setAuthorized={setAuthorized}
             pagePassword={release.page_password}
-            label="Enter password to generate code"
+            label="Enter password to generate Bandcamp code"
           />
         ) : (
           <div className={styles.codes}>
