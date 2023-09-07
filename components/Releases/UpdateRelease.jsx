@@ -115,7 +115,7 @@ export default function UpdateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: prependProtocol(yumUrl),
-        type: type,
+        type: type ? type : null,
         sites: sites,
         release_date: releaseDate,
         about: about,
@@ -234,6 +234,7 @@ export default function UpdateRelease({
             imagePath={imagePath}
           />
           <br />
+          <p>* Denotes Required</p>
           {/*<label className="label" htmlFor="artworkUrl">
             Artwork Url
           </label>
@@ -245,7 +246,7 @@ export default function UpdateRelease({
             onChange={(e) => setArtworkUrl(e.target.value)}
           />*/}
           <label className="label" htmlFor="title">
-            Title
+            Title*
           </label>
           <input
             className="input"
@@ -263,7 +264,7 @@ export default function UpdateRelease({
           />
 
           <div className="input-wrapper">
-            <label htmlFor="slug">Release slug</label>
+            <label htmlFor="slug">Release slug*</label>
             <PopoverTip
               message={`This is where you will send your fans. Release slugs are unique to you, so no two can be named the same. If you do have multiple releases with the same name, add an identifier such as the release year to the slug. WARNING: If changed, the previous url for this release will no longer be available to visit. `}
             />

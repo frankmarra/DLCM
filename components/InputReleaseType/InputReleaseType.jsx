@@ -22,7 +22,6 @@ export default function InputReleaseType({ type, onChange }) {
         onChange={(e) => onChange(e.target.value)}
         id="type"
         value={type}
-        required
       >
         {releaseTypes.map((type) => (
           <option
