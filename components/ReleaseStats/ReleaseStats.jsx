@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import {
   Dialog,
@@ -10,24 +10,40 @@ import {
 import Chart from "chart.js/auto"
 import { Bar } from "react-chartjs-2"
 
+const months = [
+  { id: 0, text: "January" },
+  { id: 1, text: "February" },
+  { id: 2, text: "March" },
+  { id: 3, text: "April" },
+  { id: 4, text: "May" },
+  { id: 5, text: "June" },
+  { id: 6, text: "July" },
+  { id: 7, text: "August" },
+  { id: 8, text: "September" },
+  { id: 9, text: "October" },
+  { id: 10, text: "November" },
+  { id: 11, text: "December" },
+]
+
 export default function ReleaseStats({ release }) {
   const [open, setOpen] = useState(false)
-  const [codes, setCodes] = useState()
+  const [redeemedCodes, setRedeemedCodes] = useState()
   const supabase = createClientComponentClient()
 
-  // useEffect(() => {
-  //   getCodes()
-  // }, [])
-
   async function getCodes() {
-    let { data, error } = await supabase
-      .from("codes")
-      .select("*")
-      .eq("release_id", release.id)
-      .eq("redeemed", true)
+    try {
+      let { data, error } = await supabase
+        .from("codes")
+        .select("*")
+        .eq("release_id", release.id)
+        .eq("redeemed", true)
 
-    if (data) {
-      setCodes(data)
+      if (data) {
+        setRedeemedCodes(data)
+      }
+      if (error) throw error
+    } catch (error) {
+      throw error
     }
   }
 
@@ -41,8 +57,6 @@ export default function ReleaseStats({ release }) {
   //   }
   //   console.log(count)
   // })
-
-  const labels = ["July", "August", "September"]
 
   // const chartData = {
   //   labels: labels,
@@ -68,25 +82,24 @@ export default function ReleaseStats({ release }) {
       </DialogTrigger>
 
       <DialogContent>
-        <DialogPortal>
-          <header>
-            <h2 className="text-3">Release Statistics</h2>
-          </header>
-          <>
-            <div className="stack block-overflow">
-              <h3 className="text-3">{release.title} Codes</h3>
-            </div>
-            {
-              //<Bar datasetIdKey="barchart" data={chartData} />
-            }
-            <button onClick={getCodes}>All</button>
-          </>
-          <footer className="button-actions cluster">
-            <DialogClose className="button" onClick={() => setOpen(false)}>
-              Close
-            </DialogClose>
-          </footer>
-        </DialogPortal>
+        <header>
+          <h2 className="text-3">Release Statistics</h2>
+        </header>
+
+        <div className="stack">
+          <h3 className="text-3">{release.title} Codes</h3>
+          <p>Total codes redeemed: {redeemedCodes?.length}</p>
+          {
+            //<Bar datasetIdKey="barchart" data={chartData} />
+          }
+          <button onClick={getCodes}>All</button>
+        </div>
+
+        <footer className="button-actions cluster">
+          <DialogClose className="button" onClick={() => setOpen(false)}>
+            Close
+          </DialogClose>
+        </footer>
       </DialogContent>
     </Dialog>
   )
