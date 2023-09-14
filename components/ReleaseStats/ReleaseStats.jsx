@@ -6,37 +6,62 @@ import {
   DialogContent,
   DialogPortal,
   DialogClose,
-} from "@radix-ui/react-dialog"
+} from "@/components/Dialog/Dialog"
 import Chart from "chart.js/auto"
 import { Bar } from "react-chartjs-2"
 
 const months = [
-  { id: 0, text: "January" },
-  { id: 1, text: "February" },
-  { id: 2, text: "March" },
-  { id: 3, text: "April" },
-  { id: 4, text: "May" },
-  { id: 5, text: "June" },
-  { id: 6, text: "July" },
-  { id: 7, text: "August" },
-  { id: 8, text: "September" },
-  { id: 9, text: "October" },
-  { id: 10, text: "November" },
-  { id: 11, text: "December" },
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ]
+
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+]
+
+let today = new Date()
+
+let pastWeek = new Date()
+pastWeek.setDate(pastWeek.getDate() - 6)
+
+let pastTwoWeeks = new Date()
+pastTwoWeeks.setDate(pastTwoWeeks.getDate() - 13)
+
+let pastMonth = new Date()
+pastMonth.setDate(pastMonth.getDate() - 29)
 
 export default function ReleaseStats({ release }) {
   const [open, setOpen] = useState(false)
   const [redeemedCodes, setRedeemedCodes] = useState()
+  const [labels, setLabels] = useState()
+  const [chartData, setChartData] = useState()
   const supabase = createClientComponentClient()
 
-  async function getCodes() {
+  async function getCodes(startDate, endDate) {
     try {
       let { data, error } = await supabase
         .from("codes")
-        .select("*")
+        .select("redeemed_at")
         .eq("release_id", release.id)
         .eq("redeemed", true)
+        .gte("redeemed_at", startDate)
+        .lte("redeemed_at", endDate)
 
       if (data) {
         setRedeemedCodes(data)
@@ -47,6 +72,12 @@ export default function ReleaseStats({ release }) {
     }
   }
 
+  // function chartCreator(length, filterType) {
+  //   let dataArray = new Array(length)
+  //   if(filterType == 'week') {
+
+  //   }
+  // }
   // const julyDownloads = codes.map((code) => {
   //   console.log(code)
   //   let count = 0
@@ -58,7 +89,7 @@ export default function ReleaseStats({ release }) {
   //   console.log(count)
   // })
 
-  // const chartData = {
+  // const chart = {
   //   labels: labels,
   //   datasets: [
   //     {
@@ -90,9 +121,45 @@ export default function ReleaseStats({ release }) {
           <h3 className="text-3">{release.title} Codes</h3>
           <p>Total codes redeemed: {redeemedCodes?.length}</p>
           {
-            //<Bar datasetIdKey="barchart" data={chartData} />
+            //<Bar datasetIdKey="barchart" data={chart} />
           }
-          <button onClick={getCodes}>All</button>
+          <div className="cluster">
+            <button
+              onClick={() => getCodes("2023-01-22", today.toLocaleDateString())}
+            >
+              All
+            </button>
+            <button
+              onClick={() =>
+                getCodes(
+                  pastWeek.toLocaleDateString(),
+                  today.toLocaleDateString()
+                )
+              }
+            >
+              7 Days
+            </button>
+            <button
+              onClick={() =>
+                getCodes(
+                  pastTwoWeeks.toLocaleDateString(),
+                  today.toLocaleDateString()
+                )
+              }
+            >
+              14 Days
+            </button>
+            <button
+              onClick={() =>
+                getCodes(
+                  pastMonth.toLocaleDateString(),
+                  today.toLocaleDateString()
+                )
+              }
+            >
+              30 Days
+            </button>
+          </div>
         </div>
 
         <footer className="button-actions cluster">
