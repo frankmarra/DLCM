@@ -37,6 +37,12 @@ const days = [
 
 let today = new Date()
 
+let yesterday = new Date()
+yesterday.setDate(yesterday.getDate() - 1)
+
+let tomorrow = new Date()
+tomorrow.setDate(tomorrow.getDate() + 1)
+
 let pastWeek = new Date()
 pastWeek.setDate(pastWeek.getDate() - 6)
 
@@ -57,7 +63,7 @@ export default function ReleaseStats({ release }) {
     try {
       let { data, error } = await supabase
         .from("codes")
-        .select("redeemed_at")
+        .select("redeemed_at", { count: "exact" })
         .eq("release_id", release.id)
         .eq("redeemed", true)
         .gte("redeemed_at", startDate)
@@ -125,15 +131,37 @@ export default function ReleaseStats({ release }) {
           }
           <div className="cluster">
             <button
-              onClick={() => getCodes("2023-01-22", today.toLocaleDateString())}
+              onClick={() =>
+                getCodes("2023-01-22", tomorrow.toLocaleDateString())
+              }
             >
               All
             </button>
             <button
               onClick={() =>
                 getCodes(
-                  pastWeek.toLocaleDateString(),
+                  today.toLocaleDateString(),
+                  tomorrow.toLocaleDateString()
+                )
+              }
+            >
+              Today
+            </button>
+            <button
+              onClick={() =>
+                getCodes(
+                  yesterday.toLocaleDateString(),
                   today.toLocaleDateString()
+                )
+              }
+            >
+              Yesterday
+            </button>
+            <button
+              onClick={() =>
+                getCodes(
+                  pastWeek.toLocaleDateString(),
+                  tomorrow.toLocaleDateString()
                 )
               }
             >
@@ -143,7 +171,7 @@ export default function ReleaseStats({ release }) {
               onClick={() =>
                 getCodes(
                   pastTwoWeeks.toLocaleDateString(),
-                  today.toLocaleDateString()
+                  tomorrow.toLocaleDateString()
                 )
               }
             >
@@ -153,7 +181,7 @@ export default function ReleaseStats({ release }) {
               onClick={() =>
                 getCodes(
                   pastMonth.toLocaleDateString(),
-                  today.toLocaleDateString()
+                  tomorrow.toLocaleDateString()
                 )
               }
             >
