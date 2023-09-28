@@ -7,33 +7,6 @@ import {
   DialogPortal,
   DialogClose,
 } from "@/components/Dialog/Dialog"
-import Chart from "chart.js/auto"
-import { Bar } from "react-chartjs-2"
-
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-]
-
-const days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-]
 
 let today = new Date()
 
@@ -61,49 +34,25 @@ export default function ReleaseStats({ release }) {
 
   async function getCodes(startDate, endDate) {
     try {
-      let { data, error } = await supabase
+      let { count, error } = await supabase
         .from("codes")
-        .select("redeemed_at", { count: "exact" })
+        .select("redeemed_at", { count: "exact", head: true })
         .eq("release_id", release.id)
         .eq("redeemed", true)
         .gte("redeemed_at", startDate)
         .lte("redeemed_at", endDate)
 
-      if (data) {
-        setRedeemedCodes(data)
+      if (count) {
+        setRedeemedCodes(count)
+      } else if (count === 0) {
+        setRedeemedCodes(0)
       }
+
       if (error) throw error
     } catch (error) {
       throw error
     }
   }
-
-  // function chartCreator(length, filterType) {
-  //   let dataArray = new Array(length)
-  //   if(filterType == 'week') {
-
-  //   }
-  // }
-  // const julyDownloads = codes.map((code) => {
-  //   console.log(code)
-  //   let count = 0
-  //   let download = new Date(code.redeemed_at)
-  //   console.log(download.getMonth())
-  //   if (download.getMonth() == 8) {
-  //     count++
-  //   }
-  //   console.log(count)
-  // })
-
-  // const chart = {
-  //   labels: labels,
-  //   datasets: [
-  //     {
-  //       label: "Downloads",
-  //       data: [0, 0, 0],
-  //     },
-  //   ],
-  // }
 
   function closeModal() {
     setOpen(false)
@@ -125,19 +74,11 @@ export default function ReleaseStats({ release }) {
 
         <div className="stack">
           <h3 className="text-3">{release.title} Codes</h3>
-          <p>Total codes redeemed: {redeemedCodes?.length}</p>
-          {
-            //<Bar datasetIdKey="barchart" data={chart} />
-          }
-          <div className="cluster">
+          <p>Total codes redeemed: {redeemedCodes}</p>
+          <div className="flex-grid">
             <button
-              onClick={() =>
-                getCodes("2023-01-22", tomorrow.toLocaleDateString())
-              }
-            >
-              All
-            </button>
-            <button
+              className="button"
+              data-variant="primary"
               onClick={() =>
                 getCodes(
                   today.toLocaleDateString(),
@@ -147,7 +88,10 @@ export default function ReleaseStats({ release }) {
             >
               Today
             </button>
+
             <button
+              className="button"
+              data-variant="primary"
               onClick={() =>
                 getCodes(
                   yesterday.toLocaleDateString(),
@@ -157,7 +101,10 @@ export default function ReleaseStats({ release }) {
             >
               Yesterday
             </button>
+
             <button
+              className="button"
+              data-variant="primary"
               onClick={() =>
                 getCodes(
                   pastWeek.toLocaleDateString(),
@@ -168,6 +115,8 @@ export default function ReleaseStats({ release }) {
               7 Days
             </button>
             <button
+              className="button"
+              data-variant="primary"
               onClick={() =>
                 getCodes(
                   pastTwoWeeks.toLocaleDateString(),
@@ -178,6 +127,8 @@ export default function ReleaseStats({ release }) {
               14 Days
             </button>
             <button
+              className="button"
+              data-variant="primary"
               onClick={() =>
                 getCodes(
                   pastMonth.toLocaleDateString(),
@@ -187,13 +138,24 @@ export default function ReleaseStats({ release }) {
             >
               30 Days
             </button>
+            <button
+              className="button"
+              data-variant="primary"
+              onClick={() =>
+                getCodes("2023-01-22", tomorrow.toLocaleDateString())
+              }
+            >
+              All
+            </button>
           </div>
         </div>
 
-        <footer className="button-actions cluster">
-          <DialogClose className="button" onClick={() => setOpen(false)}>
-            Close
-          </DialogClose>
+        <footer className="intrinsic-center">
+          <div>
+            <DialogClose className="button" onClick={() => setOpen(false)}>
+              Close
+            </DialogClose>
+          </div>
         </footer>
       </DialogContent>
     </Dialog>
