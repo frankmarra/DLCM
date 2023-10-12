@@ -10,20 +10,22 @@ import {
 
 let today = new Date()
 
-let yesterday = new Date()
+let yesterday = new Date(today)
 yesterday.setDate(yesterday.getDate() - 1)
 
-let tomorrow = new Date()
+let tomorrow = new Date(today)
 tomorrow.setDate(tomorrow.getDate() + 1)
 
-let pastWeek = new Date()
+let pastWeek = new Date(today)
 pastWeek.setDate(pastWeek.getDate() - 6)
 
-let pastTwoWeeks = new Date()
+let pastTwoWeeks = new Date(today)
 pastTwoWeeks.setDate(pastTwoWeeks.getDate() - 13)
 
-let pastMonth = new Date()
-pastMonth.setDate(pastMonth.getDate() - 29)
+let past30Days = new Date(today)
+past30Days.setDate(past30Days.getDate() - 29)
+
+let allDates = new Date("2023-01-22")
 
 export default function ReleaseStats({ release }) {
   const [open, setOpen] = useState(false)
@@ -54,6 +56,39 @@ export default function ReleaseStats({ release }) {
     }
   }
 
+  const statsTime = [
+    {
+      label: "Today",
+      start: today,
+      end: tomorrow,
+    },
+    {
+      label: "Yesterday",
+      start: yesterday,
+      end: today,
+    },
+    {
+      label: "7 Days",
+      start: pastWeek,
+      end: tomorrow,
+    },
+    {
+      label: "14 Days",
+      start: pastTwoWeeks,
+      end: tomorrow,
+    },
+    {
+      label: "30 Days",
+      start: past30Days,
+      end: tomorrow,
+    },
+    {
+      label: "All",
+      start: allDates,
+      end: tomorrow,
+    },
+  ]
+
   function closeModal() {
     setOpen(false)
   }
@@ -76,77 +111,21 @@ export default function ReleaseStats({ release }) {
           <h3 className="text-3">{release.title} Codes</h3>
           <p>Total codes redeemed: {redeemedCodes}</p>
           <div className="flex-grid">
-            <button
-              className="button"
-              data-variant="primary"
-              onClick={() =>
-                getCodes(
-                  today.toLocaleDateString(),
-                  tomorrow.toLocaleDateString()
-                )
-              }
-            >
-              Today
-            </button>
-
-            <button
-              className="button"
-              data-variant="primary"
-              onClick={() =>
-                getCodes(
-                  yesterday.toLocaleDateString(),
-                  today.toLocaleDateString()
-                )
-              }
-            >
-              Yesterday
-            </button>
-
-            <button
-              className="button"
-              data-variant="primary"
-              onClick={() =>
-                getCodes(
-                  pastWeek.toLocaleDateString(),
-                  tomorrow.toLocaleDateString()
-                )
-              }
-            >
-              7 Days
-            </button>
-            <button
-              className="button"
-              data-variant="primary"
-              onClick={() =>
-                getCodes(
-                  pastTwoWeeks.toLocaleDateString(),
-                  tomorrow.toLocaleDateString()
-                )
-              }
-            >
-              14 Days
-            </button>
-            <button
-              className="button"
-              data-variant="primary"
-              onClick={() =>
-                getCodes(
-                  pastMonth.toLocaleDateString(),
-                  tomorrow.toLocaleDateString()
-                )
-              }
-            >
-              30 Days
-            </button>
-            <button
-              className="button"
-              data-variant="primary"
-              onClick={() =>
-                getCodes("2023-01-22", tomorrow.toLocaleDateString())
-              }
-            >
-              All
-            </button>
+            {statsTime.map((time, index) => (
+              <button
+                key={index}
+                className="button"
+                data-variant="primary"
+                onClick={() =>
+                  getCodes(
+                    time.start.toLocaleDateString(),
+                    time.end.toLocaleDateString()
+                  )
+                }
+              >
+                {time.label}
+              </button>
+            ))}
           </div>
         </div>
 
