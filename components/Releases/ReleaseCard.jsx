@@ -6,6 +6,7 @@ import Link from "next/link"
 import IconDownload from "@/icons/download.svg"
 import IconRecord from "@/icons/vinyl-record.svg"
 import UpdateRelease from "./UpdateRelease"
+import ReleaseStats from "../ReleaseStats/ReleaseStats"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
 
@@ -122,19 +123,22 @@ export default function ReleaseCard({
             />
 
             {profileData.is_subscribed || profileData.dlcm_friend ? (
-              <label
-                className={cn(styles.activeToggle, "label checkbox")}
-                htmlFor={`${release.id}isActive`}
-              >
-                <span>Active</span>
-                <input
-                  className="input"
-                  id={`${release.id}isActive`}
-                  type="checkbox"
-                  checked={isActive}
-                  onChange={() => showRelease(!isActive)}
-                />
-              </label>
+              <>
+                <ReleaseStats release={release} />
+                <label
+                  className={cn(styles.activeToggle, "label checkbox")}
+                  htmlFor={`${release.id}isActive`}
+                >
+                  <span>Active</span>
+                  <input
+                    className="input"
+                    id={`${release.id}isActive`}
+                    type="checkbox"
+                    checked={isActive}
+                    onChange={() => showRelease(!isActive)}
+                  />
+                </label>
+              </>
             ) : null}
           </div>
         ) : null
