@@ -8,33 +8,23 @@ import {
   DialogClose,
 } from "@/components/Dialog/Dialog"
 
-let today = new Date()
-
-let yesterday = new Date(today)
-yesterday.setDate(yesterday.getDate() - 1)
-
-let tomorrow = new Date(today)
-tomorrow.setDate(tomorrow.getDate() + 1)
-
-let pastWeek = new Date(today)
-pastWeek.setDate(pastWeek.getDate() - 6)
-
-let pastTwoWeeks = new Date(today)
-pastTwoWeeks.setDate(pastTwoWeeks.getDate() - 13)
-
-let past30Days = new Date(today)
-past30Days.setDate(past30Days.getDate() - 29)
+let now = new Date()
+now = now.toLocaleDateString()
 
 let allDates = new Date("2023-01-22")
+allDates = allDates.toLocaleDateString()
 
 export default function ReleaseStats({ release }) {
   const [open, setOpen] = useState(false)
-  const [redeemedCodes, setRedeemedCodes] = useState()
+  const [redeemedCodes, setRedeemedCodes] = useState({
+    count: 0,
+    period: "none selected",
+  })
   const [labels, setLabels] = useState()
   const [chartData, setChartData] = useState()
   const supabase = createClientComponentClient()
 
-  async function getCodes(startDate, endDate) {
+  async function getCodes(startDate, endDate, period) {
     try {
       let { count, error } = await supabase
         .from("codes")
@@ -45,9 +35,9 @@ export default function ReleaseStats({ release }) {
         .lte("redeemed_at", endDate)
 
       if (count) {
-        setRedeemedCodes(count)
+        setRedeemedCodes({ count: count, period: period })
       } else if (count === 0) {
-        setRedeemedCodes(0)
+        setRedeemedCodes({ count: 0, period: period })
       }
 
       if (error) throw error
@@ -56,36 +46,43 @@ export default function ReleaseStats({ release }) {
     }
   }
 
-  const statsTime = [
+  function getPastDate(days) {
+    let date = new Date(now)
+    date.setDate(date.getDate() - days)
+
+    return date.toLocaleDateString()
+  }
+
+  const statsFrom = [
     {
       label: "Today",
-      start: today,
-      end: tomorrow,
+      start: now,
+      end: now,
     },
     {
       label: "Yesterday",
-      start: yesterday,
-      end: today,
+      start: getPastDate(1),
+      end: getPastDate(1),
     },
     {
       label: "7 Days",
-      start: pastWeek,
-      end: tomorrow,
+      start: getPastDate(7),
+      end: now,
     },
     {
       label: "14 Days",
-      start: pastTwoWeeks,
-      end: tomorrow,
+      start: getPastDate(14),
+      end: now,
     },
     {
       label: "30 Days",
-      start: past30Days,
-      end: tomorrow,
+      start: getPastDate(30),
+      end: now,
     },
     {
       label: "All",
       start: allDates,
-      end: tomorrow,
+      end: now,
     },
   ]
 
@@ -109,19 +106,15 @@ export default function ReleaseStats({ release }) {
 
         <div className="stack">
           <h3 className="text-3">{release.title} Codes</h3>
-          <p>Total codes redeemed: {redeemedCodes}</p>
+          <p>Codes redeemed for selected period: {redeemedCodes.period}</p>
+          <h4 className="text-4 intrinsic-center">{redeemedCodes.count}</h4>
           <div className="flex-grid">
-            {statsTime.map((time, index) => (
+            {statsFrom.map((time) => (
               <button
-                key={index}
+                key={time.label}
                 className="button"
                 data-variant="primary"
-                onClick={() =>
-                  getCodes(
-                    time.start.toLocaleDateString(),
-                    time.end.toLocaleDateString()
-                  )
-                }
+                onClick={() => getCodes(time.start, time.end, time.label)}
               >
                 {time.label}
               </button>
