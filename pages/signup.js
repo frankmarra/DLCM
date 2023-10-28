@@ -1,10 +1,11 @@
 import { supabase } from "@/utils/supabase"
-import { useState } from "react"
+import { useReducer, useState } from "react"
 import slugify from "slugify"
 import { useRouter } from "next/router"
 import PopoverTip from "@/components/PopoverTip/PopoverTip"
 import Head from "next/head"
 import SEO from "@/components/SEO/SEO"
+import InputReducer from "@/components/InputReducer/InputReducer"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -13,16 +14,22 @@ const accountTypes = [
 ]
 
 const Signup = () => {
-  const [newUser, setNewUser] = useState({
+  const [formValue, dispatch] = useReducer(InputReducer, {
     email: "",
     password: "",
     passwordCheck: "",
     type: accountTypes[0].value,
     name: "",
     location: "",
+    submitting: false,
+    success: false,
+    error: null,
   })
-  const [userCreated, setUserCreated] = useState(false)
-  const [createdUser, setCreatedUser] = useState()
+
+  const { name, email, password, passwordCheck, type, location } = formValue
+
+  // const [userCreated, setUserCreated] = useState(false)
+  // const [createdUser, setCreatedUser] = useState()
   const [namesTaken, setNamesTaken] = useState({
     color: "transparent",
     message: "",
@@ -38,17 +45,17 @@ const Signup = () => {
   const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const router = useRouter()
 
-  const handleChange = (e) => {
-    setNewUser({ ...newUser, [e.target.id]: e.target.value })
-  }
+  // const handleChange = (e) => {
+  //   setFormValue({ ...formValue, [e.target.id]: e.target.value })
+  // }
 
   const checkEmail = async (e) => {
     e.preventDefault()
-    if (newUser.email.length > 0) {
+    if (formValue.email.length > 0) {
       let { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("email", newUser.email)
+        .eq("email", formValue.email)
 
       if (data.length > 0) {
         setEmailsTaken(true)
@@ -61,11 +68,11 @@ const Signup = () => {
   }
 
   const checkPassword = () => {
-    if (newUser.password.length > 0) {
-      if (newUser.password === newUser.passwordCheck) {
+    if (formValue.password.length > 0) {
+      if (formValue.password === formValue.passwordCheck) {
         setPasswordMessage({ color: "green", message: "Passwords match!" })
         setPasswordGood(true)
-      } else if (newUser.password != newUser.passwordCheck) {
+      } else if (formValue.password != formValue.passwordCheck) {
         setPasswordMessage({ color: "red", message: "Passwords don't match!" })
         setPasswordGood(false)
       }
@@ -106,43 +113,41 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    let { data, error } = await supabase.auth.signUp({
-      email: newUser.email,
-      password: newUser.password,
-      options: {
-        data: {
-          type: newUser.type,
-          username: newUser.name,
-          location: newUser.location,
-          slug: sluggedName,
-        },
-      },
-    })
 
-    if (data && !error) {
-      const response = await fetch("/api/create-customer", {
-        method: "POST",
-        body: JSON.stringify({ email: data.user.email, uid: data.user.id }),
-        headers: {
-          "Content-Type": "application/json",
+    dispatch({ type: "submit" })
+    try {
+      //Create dlcm user
+      let { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            type: type,
+            username: name,
+            location: location,
+            slug: sluggedName,
+          },
         },
       })
-      setCreatedUser(data.user)
-    }
-
-    if (error) {
-      setNewUser({
-        email: "",
-        password: "",
-        passwordCheck: "",
-        type: accountTypes[0].value,
-        name: "",
-        location: "",
-      })
-      setPasswordGood(false)
-      alert(error.message)
-    } else {
-      setUserCreated(true)
+      //Create Stripe customer
+      if (data && !error) {
+        const response = await fetch("/api/create-customer", {
+          method: "POST",
+          body: JSON.stringify({ email: data.user.email, uid: data.user.id }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+      }
+      if (error) {
+        dispatch({ type: "error", error: error.message })
+        setPasswordGood(false)
+        alert(error.message)
+      } else {
+        dispatch({ type: "success" })
+      }
+    } catch (error) {
+      dispatch({ type: "error", error: error.message })
     }
   }
 
@@ -156,21 +161,16 @@ const Signup = () => {
         className="stack inline-max center-stage"
         style={{ "--max-inline-size": "45ch" }}
       >
-        {userCreated ? (
+        {formValue.success ? (
           <div className="user-created">
             <h1>New User Created</h1>
             <br />
-            {createdUser.user_metadata.type == "artist" ? (
-              <p>
-                An artist account has been made for{" "}
-                {`${createdUser.user_metadata.username}`}
-              </p>
-            ) : (
-              <p>
-                A label account has been made for{" "}
-                {`${createdUser.user_metadata.username}`}
-              </p>
-            )}
+
+            <p>
+              {`A(n) ${type} account has been made for
+                ${name}`}
+            </p>
+
             <br />
             <p>
               Thank you for signing up! Please verify your email address to
@@ -187,10 +187,16 @@ const Signup = () => {
                 <label htmlFor="email">Email</label>
                 <input
                   className="input"
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "input",
+                      name: "email",
+                      value: e.target.value,
+                    })
+                  }
                   id="email"
                   type="email"
-                  value={newUser.email}
+                  value={email}
                   onFocus={() => setEmailsTaken(null)}
                   onBlur={checkEmail}
                   required
@@ -206,11 +212,17 @@ const Signup = () => {
                 <label htmlFor="password">Password</label>
                 <input
                   className="input"
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "input",
+                      name: "password",
+                      value: e.target.value,
+                    })
+                  }
                   id="password"
                   type="password"
-                  value={newUser.password}
-                  onBlur={newUser.passwordCheck ? checkPassword : null}
+                  value={password}
+                  onBlur={passwordCheck ? checkPassword : null}
                   required
                 />
                 <small>
@@ -221,14 +233,20 @@ const Signup = () => {
                 <label htmlFor="passwordCheck">Re-enter password</label>
                 <input
                   className="input"
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "input",
+                      name: "passwordCheck",
+                      value: e.target.value,
+                    })
+                  }
                   id="passwordCheck"
                   type="password"
-                  value={newUser.passwordCheck}
+                  value={passwordCheck}
                   onFocus={() =>
                     setPasswordMessage({ color: "transparent", message: "" })
                   }
-                  disabled={newUser.password.length < 6}
+                  disabled={password.length < 6}
                   onBlur={checkPassword}
                   required
                 />
@@ -242,9 +260,15 @@ const Signup = () => {
                 <label htmlFor="type">Account type</label>
                 <select
                   className="select input"
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "input",
+                      name: "type",
+                      value: e.target.value,
+                    })
+                  }
                   id="type"
-                  value={newUser.type}
+                  value={type}
                   required
                 >
                   {accountTypes.map((accountType) => (
@@ -259,17 +283,22 @@ const Signup = () => {
                 </select>
               </div>
 
-              {newUser.type === accountTypes[0].value ? null : newUser.type ===
-                "label" ? (
+              {type === accountTypes[0].value ? null : type === "label" ? (
                 <>
                   <div className="input-wrapper">
                     <label htmlFor="name">Label name</label>
                     <input
                       className="input"
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "input",
+                          name: "name",
+                          value: e.target.value,
+                        })
+                      }
                       id="name"
                       type="text"
-                      value={newUser.name}
+                      value={name}
                       onInput={
                         firstSlugCheck
                           ? null
@@ -327,10 +356,16 @@ const Signup = () => {
                     <label htmlFor="name">Artist name</label>
                     <input
                       className="input"
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "input",
+                          name: "name",
+                          value: e.target.value,
+                        })
+                      }
                       id="name"
                       type="text"
-                      value={newUser.name}
+                      value={name}
                       onInput={
                         firstSlugCheck
                           ? null
