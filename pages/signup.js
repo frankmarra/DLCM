@@ -6,6 +6,7 @@ import PopoverTip from "@/components/PopoverTip/PopoverTip"
 import Head from "next/head"
 import SEO from "@/components/SEO/SEO"
 import InputReducer from "@/components/InputReducer/InputReducer"
+import Loader from "@/components/Loader/Loader"
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -149,6 +150,10 @@ const Signup = () => {
     } catch (error) {
       dispatch({ type: "error", error: error.message })
     }
+  }
+
+  if (formValue.submitting) {
+    return <Loader style={{ margin: "auto" }} />
   }
 
   return (
