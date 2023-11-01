@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useReducer } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Avatar from "../Avatar/Avatar"
 import AddImage from "../AddImage/AddImage"
@@ -14,6 +14,7 @@ import Link from "next/link"
 import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
+import InputReducer from "../InputReducer/InputReducer"
 
 export default function UpdateProfile({
   getProfile,
@@ -22,24 +23,37 @@ export default function UpdateProfile({
 }) {
   const supabase = createClientComponentClient()
   const [open, setOpen] = useState(false)
-  const [username, setUsername] = useState(profileData.username)
+  const [formValue, dispatch] = useReducer(InputReducer, {
+    username: profileData.username,
+    sluggedName: profileData.slug,
+    aboutBlurb: profileData.about_blurb,
+    location: profileData.location,
+    yumUrl: profileData.yum_url,
+    submitting: false,
+    success: false,
+    error: null,
+  })
+
+  // const [username, setUsername] = useState(profileData.username)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
-  const [aboutBlurb, setAboutBlurb] = useState(profileData.about_blurb)
-  const [location, setLocation] = useState(profileData.location)
+  // const [aboutBlurb, setAboutBlurb] = useState(profileData.about_blurb)
+  // const [location, setLocation] = useState(profileData.location)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     profileData.is_password_protected
   )
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
-  const [sluggedName, setSluggedName] = useState(profileData.slug)
+  // const [sluggedName, setSluggedName] = useState(profileData.slug)
   const [noGo, setNoGo] = useState(false)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
-  const [yumUrl, setYumUrl] = useState(profileData.yum_url)
+  // const [yumUrl, setYumUrl] = useState(profileData.yum_url)
   const [namesTaken, setNamesTaken] = useState({
     color: "transparent",
     message: "",
   })
   const [sites, setSites] = useState(profileData.sites ?? null)
+
+  const { username, aboutBlurb, location, yumUrl, sluggedName } = formValue
 
   const checkName = async (e) => {
     e.preventDefault()
@@ -48,7 +62,11 @@ export default function UpdateProfile({
       setNoGo(true)
     }
     if (sluggedName.length > 0) {
-      setSluggedName(slugify(sluggedName))
+      dispatch({
+        type: "input",
+        name: "sluggedName",
+        value: slugify(sluggedName),
+      })
       if (sluggedName == profileData.slug) {
         setNamesTaken({ color: "green", message: "This is your current URL" })
         setNoGo(false)
@@ -75,6 +93,7 @@ export default function UpdateProfile({
   }
 
   async function updateUserProfile() {
+    dispatch({ type: "submit" })
     try {
       const updates = {
         username: username,
@@ -106,10 +125,16 @@ export default function UpdateProfile({
         .from("profiles")
         .update(updates)
         .eq("id", profileData.id)
-      if (error) throw error
-      alert("Profile updated!")
+      if (error) {
+        dispatch({ type: "error", error: error.message })
+        alert(error.message)
+      } else {
+        alert("Profile updated!")
+        dispatch({ type: "success" })
+      }
     } catch (error) {
       alert("Error updating the data!")
+      dispatch({ type: "error", error: error.message })
       console.log(error)
     }
     getProfile()
@@ -164,7 +189,13 @@ export default function UpdateProfile({
             id="username"
             type="text"
             value={username || ""}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: "input",
+                name: "username",
+                value: e.target.value,
+              })
+            }
             required
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
@@ -185,7 +216,13 @@ export default function UpdateProfile({
                     ? slugify(sluggedName, { lower: true, trim: false })
                     : sluggedName
                 }
-                onChange={(e) => setSluggedName(e.target.value)}
+                onChange={(e) =>
+                  dispatch({
+                    type: "input",
+                    name: "sluggedName",
+                    value: e.target.value,
+                  })
+                }
                 onBlur={checkName}
                 required
               />
@@ -202,6 +239,7 @@ export default function UpdateProfile({
           <small className="hint" style={{ color: `${namesTaken.color}` }}>
             {namesTaken.message}
           </small>
+          <br />
           <Link
             className="button"
             data-variant="primary"
@@ -218,7 +256,13 @@ export default function UpdateProfile({
             id="location"
             type="text"
             value={location || ""}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: "input",
+                name: "location",
+                value: e.target.value,
+              })
+            }
           />
           <label className="label" htmlFor="aboutBlurb">
             About blurb
@@ -230,7 +274,13 @@ export default function UpdateProfile({
             rows="5"
             cols="30"
             value={aboutBlurb}
-            onChange={(e) => setAboutBlurb(e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: "input",
+                name: "aboutBlurb",
+                value: e.target.value,
+              })
+            }
             placeholder="Enter a brief about section for your fans (optional)"
           ></textarea>
           <label className="label" htmlFor="yumUrl">
@@ -241,7 +291,13 @@ export default function UpdateProfile({
             id="yumUrl"
             type="text"
             value={yumUrl || ""}
-            onChange={(e) => setYumUrl(e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: "input",
+                name: "yumUrl",
+                value: e.target.value,
+              })
+            }
           />
           <small className="hint">
             This is the link your customers will visit to redeem their code. It
