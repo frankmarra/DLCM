@@ -62,11 +62,6 @@ export default function UpdateProfile({
       setNoGo(true)
     }
     if (sluggedName.length > 0) {
-      dispatch({
-        type: "input",
-        name: "sluggedName",
-        value: slugify(sluggedName),
-      })
       if (sluggedName == profileData.slug) {
         setNamesTaken({ color: "green", message: "This is your current URL" })
         setNoGo(false)
@@ -213,14 +208,17 @@ export default function UpdateProfile({
                 type="text"
                 value={
                   sluggedName
-                    ? slugify(sluggedName, { lower: true, trim: false })
-                    : sluggedName
+                  // ? slugify(sluggedName, { lower: true, trim: false })
+                  // : sluggedName
                 }
                 onChange={(e) =>
                   dispatch({
                     type: "input",
                     name: "sluggedName",
-                    value: e.target.value,
+                    value: slugify(e.target.value, {
+                      lower: true,
+                      trim: false,
+                    }),
                   })
                 }
                 onBlur={checkName}

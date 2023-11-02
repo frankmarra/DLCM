@@ -17,6 +17,7 @@ const accountTypes = [
 const Signup = () => {
   const [formValue, dispatch] = useReducer(InputReducer, {
     email: "",
+    sluggedName: "",
     password: "",
     passwordCheck: "",
     type: accountTypes[0].value,
@@ -27,7 +28,8 @@ const Signup = () => {
     error: null,
   })
 
-  const { name, email, password, passwordCheck, type, location } = formValue
+  const { name, sluggedName, email, password, passwordCheck, type, location } =
+    formValue
 
   // const [userCreated, setUserCreated] = useState(false)
   // const [createdUser, setCreatedUser] = useState()
@@ -41,7 +43,7 @@ const Signup = () => {
     message: "",
   })
   const [passwordGood, setPasswordGood] = useState(false)
-  const [sluggedName, setSluggedName] = useState("")
+  // const [sluggedName, setSluggedName] = useState("")
   const [noGo, setNoGO] = useState(true)
   const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const router = useRouter()
@@ -91,7 +93,7 @@ const Signup = () => {
       setNoGO(true)
     }
     if (sluggedName.length > 0) {
-      setSluggedName(slugify(sluggedName))
+      // setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase
         .from("profiles")
         .select("*")
@@ -308,9 +310,14 @@ const Signup = () => {
                         firstSlugCheck
                           ? null
                           : (e) =>
-                              setSluggedName(
-                                slugify(e.target.value, { lower: true })
-                              )
+                              dispatch({
+                                type: "input",
+                                name: "sluggedName",
+                                value: slugify(e.target.value, {
+                                  lower: true,
+                                  trim: false,
+                                }),
+                              })
                       }
                       onBlur={firstSlugCheck ? null : checkName}
                       required
