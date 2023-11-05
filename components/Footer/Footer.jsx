@@ -26,6 +26,25 @@ export default function Footer() {
           </li>
         ))}
       </ul>
+      <div className={styles.advertisement}>
+        <a
+          href="https://link.perfectcircuit.com/t/v1/4-467423-320526-9759"
+          rel="sponsored"
+        >
+          <img
+            src="//link.perfectcircuit.com/b/v1/4-467423-320526-9759"
+            border="0"
+            width="468"
+            height="60"
+            title="Gear 468x60"
+            alt="Gear 468x60"
+          />
+        </a>
+        <small>
+          Help support dlcm.app by clicking through the below link to shop at
+          Perfect Circuit!
+        </small>
+      </div>
       <div className={styles.copyright}>
         <p>&copy; {`${new Date().getFullYear()}`} DLCM</p>
       </div>
