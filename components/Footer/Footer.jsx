@@ -41,7 +41,7 @@ export default function Footer() {
           />
         </a>
         <small>
-          Help support dlcm.app by clicking through the below link to shop at
+          Help support dlcm.app by clicking through the above link to shop at
           Perfect Circuit!
         </small>
       </div>
