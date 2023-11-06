@@ -27,6 +27,10 @@ export default function Footer() {
         ))}
       </ul>
       <div className={styles.advertisement}>
+        <small>
+          Looking for gear? Help support DLCM by clicking through the below link
+          to shop at Perfect Circuit!
+        </small>
         <a
           href="https://link.perfectcircuit.com/t/v1/4-467423-320526-9759"
           rel="sponsored"
@@ -40,10 +44,6 @@ export default function Footer() {
             alt="Gear 468x60"
           />
         </a>
-        <small>
-          Looking for gear? Help support dlcm.app by clicking through the above
-          link to shop at Perfect Circuit!
-        </small>
       </div>
       <div className={styles.copyright}>
         <p>&copy; {`${new Date().getFullYear()}`} DLCM</p>
