@@ -15,15 +15,14 @@ import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputReducer from "../InputReducer/InputReducer"
+import Loader from "@/components/Loader/Loader"
 
 export default function UpdateProfile({
   getProfile,
   profileData,
   setShowUpdateView,
 }) {
-  const supabase = createClientComponentClient()
-  const [open, setOpen] = useState(false)
-  const [formValue, dispatch] = useReducer(InputReducer, {
+  const initialFormValue = {
     username: profileData.username,
     sluggedName: profileData.slug,
     aboutBlurb: profileData.about_blurb,
@@ -32,7 +31,10 @@ export default function UpdateProfile({
     submitting: false,
     success: false,
     error: null,
-  })
+  }
+  const supabase = createClientComponentClient()
+  const [open, setOpen] = useState(false)
+  const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
 
   // const [username, setUsername] = useState(profileData.username)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
@@ -147,7 +149,12 @@ export default function UpdateProfile({
         throw error
       }
     }
+    dispatch({ type: "reset", state: initialFormValue })
     setOpen(false)
+  }
+
+  if (formValue.submitting) {
+    return <Loader style={{ margin: "auto" }} />
   }
 
   return (

@@ -26,5 +26,7 @@ export default function InputReducer(state, action) {
       submitting: false,
       success: true,
     }
+  } else if (action.type === "reset") {
+    return action.state
   }
 }
