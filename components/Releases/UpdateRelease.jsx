@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useReducer } from "react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import AddImage from "../AddImage/AddImage"
@@ -20,6 +20,8 @@ import InputReleaseType from "../InputReleaseType/InputReleaseType"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputIsActive from "../InputIsActive/InputIsActive"
 import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
+import InputReducer from "../InputReducer/InputReducer"
+import Loader from "@/components/Loader/Loader"
 
 export default function UpdateRelease({
   release,
@@ -29,11 +31,24 @@ export default function UpdateRelease({
 }) {
   const supabase = createClientComponentClient()
   const user = useUser()
+  const initialFormValue = {
+    title: release.title,
+    sluggedName: release.release_slug ?? slugify(release.title),
+    yumUrl: release.yum_url,
+    releaseDate: release.release_date,
+    submitting: false,
+    success: false,
+    error: null,
+  }
+
+  const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
+
   const [open, setOpen] = useState(false)
-  const [title, setTitle] = useState(release.title)
-  const [sluggedName, setSluggedName] = useState(
-    release.release_slug ?? slugify(release.title)
-  )
+
+  // const [title, setTitle] = useState(release.title)
+  // const [sluggedName, setSluggedName] = useState(
+  //   release.release_slug ?? slugify(release.title)
+  // )
   const [namesTaken, setNamesTaken] = useState({
     color: "transparent",
     message: "",
@@ -41,7 +56,7 @@ export default function UpdateRelease({
   const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const [noGO, setNoGO] = useState(true)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
-  const [yumUrl, setYumUrl] = useState(release.yum_url)
+  // const [yumUrl, setYumUrl] = useState(release.yum_url)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     release.is_password_protected
   )
@@ -52,12 +67,15 @@ export default function UpdateRelease({
   const [isActive, setIsActive] = useState(release.is_active)
   const [type, setType] = useState(release.type)
   const [sites, setSites] = useState(release.sites)
-  const [releaseDate, setReleaseDate] = useState(release.release_date)
+  // const [releaseDate, setReleaseDate] = useState(release.release_date)
   const [about, setAbout] = useState(release.about)
 
+  const { title, sluggedName, yumUrl, releaseDate } = formValue
+
   const resetForm = () => {
-    setTitle(release.title)
-    setSluggedName(release.release_slug ?? slugify(release.title))
+    dispatch({ type: "reset", state: initialFormValue })
+    // setTitle(release.title)
+    // setSluggedName(release.release_slug ?? slugify(release.title))
     setFirstSlugCheck(false)
     setNoGO(true)
     setArtworkUrl(release.artwork_url)
@@ -71,7 +89,7 @@ export default function UpdateRelease({
       message: "",
     })
     setSites(release.sites ?? null)
-    setReleaseDate(release.release_date)
+    // setReleaseDate(release.release_date)
     setAbout(release.about)
   }
 
@@ -85,7 +103,7 @@ export default function UpdateRelease({
       if (firstSlugCheck == false) {
         setFirstSlugCheck(true)
       }
-      setSluggedName(slugify(sluggedName))
+      // setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase
         .from("releases")
         .select("*")
@@ -141,15 +159,22 @@ export default function UpdateRelease({
         .update(update)
         .eq("id", release.id)
 
-      if (error) throw error
+      if (error) {
+        dispatch({ type: "error", error: error.message })
+        alert(error.message)
+      } else {
+        dispatch({ type: "success" })
+      }
     } catch (error) {
       alert("Error updating the data!")
+      dispatch({ type: "error", error: error.message })
       console.log(error)
     } finally {
       getProfile()
       setShowReleaseUpdateView(false)
       alert("Release updated!")
       resetForm()
+      dispatch({ type: "reset", state: initialFormValue })
       setOpen(false)
     }
   }
@@ -166,6 +191,7 @@ export default function UpdateRelease({
       }
     }
     resetForm()
+    dispatch({ type: "reset", state: initialFormValue })
     setOpen(false)
   }
 
@@ -253,12 +279,25 @@ export default function UpdateRelease({
             id="title"
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: "input",
+                name: "title",
+                value: e.target.value,
+              })
+            }
             onInput={
               firstSlugCheck
                 ? null
                 : (e) =>
-                    setSluggedName(slugify(e.target.value, { lower: true }))
+                    dispatch({
+                      type: "input",
+                      name: "sluggedName",
+                      value: slugify(e.target.value, {
+                        lower: true,
+                        trim: false,
+                      }),
+                    })
             }
             onBlur={firstSlugCheck ? null : checkName}
           />
@@ -270,13 +309,22 @@ export default function UpdateRelease({
             />
             <input
               className="input"
-              onChange={(e) => setSluggedName(e.target.value)}
+              onChange={(e) =>
+                dispatch({
+                  type: "input",
+                  name: "sluggedName",
+                  value: slugify(e.target.value, {
+                    lower: true,
+                    trim: false,
+                  }),
+                })
+              }
               id="slug"
               type="text"
               value={
                 sluggedName
-                  ? slugify(sluggedName, { lower: true, trim: false })
-                  : sluggedName
+                // ? slugify(sluggedName, { lower: true, trim: false })
+                // : sluggedName
               }
               onBlur={checkName}
             />
@@ -303,7 +351,13 @@ export default function UpdateRelease({
               id="releaseDate"
               type="date"
               value={releaseDate}
-              onChange={(e) => setReleaseDate(e.target.value)}
+              onChange={(e) =>
+                dispatch({
+                  type: "input",
+                  name: "releaseDate",
+                  value: e.target.value,
+                })
+              }
             />
           </label>
 
@@ -315,7 +369,13 @@ export default function UpdateRelease({
             id="yumUrl"
             type="text"
             value={yumUrl}
-            onChange={(e) => setYumUrl(e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: "input",
+                name: "yumUrl",
+                value: e.target.value,
+              })
+            }
           />
 
           <InputSocialSites
