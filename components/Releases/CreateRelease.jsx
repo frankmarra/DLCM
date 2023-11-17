@@ -32,6 +32,8 @@ export default function CreateRelease({
     label: profileData.type == "label" ? profileData.username : "",
     yumUrl: "",
     releaseDate: "",
+    type: "Choose release type",
+    about: "",
     submitting: false,
     success: false,
     error: null,
@@ -58,14 +60,15 @@ export default function CreateRelease({
   // const [yumUrl, setYumUrl] = useState(profileData.yum_url)
   const [pagePassword, setPagePassword] = useState()
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
-  const [type, setType] = useState()
+  // const [type, setType] = useState()
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(true)
   const [sites, setSites] = useState()
   // const [releaseDate, setReleaseDate] = useState()
   const [about, setAbout] = useState()
 
-  const { title, sluggedName, artist, label, releaseDate, yumUrl } = formValue
+  const { title, sluggedName, artist, label, releaseDate, yumUrl, type } =
+    formValue
 
   const resetForm = () => {
     // setTitle()
@@ -75,7 +78,7 @@ export default function CreateRelease({
     setArtworkUrl()
     setPagePassword()
     setIsPasswordProtected(false)
-    setType()
+    // setType()
     setNewImagePath()
     setIsActive(true)
     setNamesTaken({
@@ -129,7 +132,7 @@ export default function CreateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath,
         yum_url: prependProtocol(yumUrl),
-        type: type ? type : null,
+        type: type ?? null,
         sites: sites,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
@@ -318,7 +321,7 @@ export default function CreateRelease({
           />
           <p>Upload an image or paste an external link</p>*/}
 
-          <InputReleaseType type={type} onChange={setType} />
+          <InputReleaseType type={type} dispatch={dispatch} />
 
           <label htmlFor="releaseDate" className="label">
             Release Date:

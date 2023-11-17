@@ -36,6 +36,7 @@ export default function UpdateRelease({
     sluggedName: release.release_slug ?? slugify(release.title),
     yumUrl: release.yum_url,
     releaseDate: release.release_date,
+    type: release.type,
     submitting: false,
     success: false,
     error: null,
@@ -65,12 +66,12 @@ export default function UpdateRelease({
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
-  const [type, setType] = useState(release.type)
+  // const [type, setType] = useState(release.type)
   const [sites, setSites] = useState(release.sites)
   // const [releaseDate, setReleaseDate] = useState(release.release_date)
   const [about, setAbout] = useState(release.about)
 
-  const { title, sluggedName, yumUrl, releaseDate } = formValue
+  const { title, sluggedName, yumUrl, releaseDate, type } = formValue
 
   const resetForm = () => {
     dispatch({ type: "reset", state: initialFormValue })
@@ -81,7 +82,7 @@ export default function UpdateRelease({
     setArtworkUrl(release.artwork_url)
     setPagePassword(release.page_password)
     setIsPasswordProtected(release.is_password_protected)
-    setType(release.type)
+    // setType(release.type)
     setNewImagePath()
     setIsActive(release.is_active)
     setNamesTaken({
@@ -133,7 +134,7 @@ export default function UpdateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: prependProtocol(yumUrl),
-        type: type ? type : null,
+        type: type ?? null,
         sites: sites,
         release_date: releaseDate,
         about: about,
@@ -342,7 +343,7 @@ export default function UpdateRelease({
             {namesTaken.message}
           </small>
 
-          <InputReleaseType type={type} onChange={setType} />
+          <InputReleaseType type={type} dispatch={dispatch} />
 
           <label htmlFor="releaseDate" className="label">
             Release Date:
