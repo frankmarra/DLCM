@@ -34,6 +34,7 @@ export default function CreateRelease({
     releaseDate: "",
     type: "Choose release type",
     about: "",
+    sites: {},
     submitting: false,
     success: false,
     error: null,
@@ -63,12 +64,20 @@ export default function CreateRelease({
   // const [type, setType] = useState()
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(true)
-  const [sites, setSites] = useState()
+  // const [sites, setSites] = useState()
   // const [releaseDate, setReleaseDate] = useState()
   const [about, setAbout] = useState()
 
-  const { title, sluggedName, artist, label, releaseDate, yumUrl, type } =
-    formValue
+  const {
+    title,
+    sluggedName,
+    artist,
+    label,
+    releaseDate,
+    yumUrl,
+    type,
+    sites,
+  } = formValue
 
   const resetForm = () => {
     // setTitle()
@@ -85,7 +94,7 @@ export default function CreateRelease({
       color: "transparent",
       message: "",
     })
-    setSites()
+    // setSites()
     // setReleaseDate()
     setAbout()
   }
@@ -363,7 +372,8 @@ export default function CreateRelease({
 
           <InputSocialSites
             sites={sites}
-            setSites={setSites}
+            // setSites={setSites}
+            dispatch={dispatch}
             hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />
 

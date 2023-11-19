@@ -6,6 +6,14 @@ export default function InputReducer(state, action) {
       ...state,
       [action.name]: action.value,
     }
+  } else if (action.type === "object-input") {
+    return {
+      ...state,
+      [action.object]: {
+        ...action.objectVariables,
+        [action.name]: action.value,
+      },
+    }
   } else if (action.type === "submit") {
     return {
       ...state,

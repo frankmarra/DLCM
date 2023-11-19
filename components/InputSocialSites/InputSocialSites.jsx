@@ -1,37 +1,47 @@
 import { prependProtocol } from "@/utils/utils"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useReducer } from "react"
+import InputReducer from "../InputReducer/InputReducer"
 
 export default function InputSocialSites({
   sites,
-  setSites,
+  dispatch,
   hasProAccount,
   showPersonal,
   labelArtist,
 }) {
-  const [personalUrl, setPersonalUrl] = useState(sites?.personal ?? null)
-  const [bandcampUrl, setBandcampUrl] = useState(sites?.bandcamp ?? null)
-  const [appleMusicUrl, setAppleMusicUrl] = useState(sites?.apple ?? null)
-  const [spotifyUrl, setSpotifyUrl] = useState(sites?.spotify ?? null)
-  const [soundcloudUrl, setSoundcloudUrl] = useState(sites?.soundcloud ?? null)
-  const [youtubeUrl, setYoutubeUrl] = useState(sites?.youtube ?? null)
+  // const initialSitesValue = {
+  //   personalUrl: sites?.personal ?? null,
+  //   bandcampUrl: sites?.bandcamp ?? null,
+  //   appleMusicUrl: sites?.apple ?? null,
+  //   spotifyUrl: sites?.spotify ?? null,
+  //   soundcloudUrl: sites?.soundcloud ?? null,
+  //   youtubeUrl: sites?.youtube ?? null,
+  // }
+  // const [sitesValue, dispatch] = useReducer(InputReducer, initialSitesValue)
+  // const [personalUrl, setPersonalUrl] = useState(sites?.personal ?? null)
+  // const [bandcampUrl, setBandcampUrl] = useState(sites?.bandcamp ?? null)
+  // const [appleMusicUrl, setAppleMusicUrl] = useState(sites?.apple ?? null)
+  // const [spotifyUrl, setSpotifyUrl] = useState(sites?.spotify ?? null)
+  // const [soundcloudUrl, setSoundcloudUrl] = useState(sites?.soundcloud ?? null)
+  // const [youtubeUrl, setYoutubeUrl] = useState(sites?.youtube ?? null)
 
-  useEffect(() => {
-    setSites({
-      personal: personalUrl ? prependProtocol(personalUrl) : null,
-      bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
-      apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
-      spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
-      soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
-      youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
-    })
-  }, [
-    bandcampUrl,
-    appleMusicUrl,
-    spotifyUrl,
-    soundcloudUrl,
-    youtubeUrl,
-    personalUrl,
-  ])
+  // useEffect(() => {
+  //   setSites({
+  //     personal: personalUrl ? prependProtocol(personalUrl) : null,
+  //     bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
+  //     apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
+  //     spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
+  //     soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
+  //     youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
+  //   })
+  // }, [
+  //   bandcampUrl,
+  //   appleMusicUrl,
+  //   spotifyUrl,
+  //   soundcloudUrl,
+  //   youtubeUrl,
+  //   personalUrl,
+  // ])
   return (
     <>
       {showPersonal ? (
@@ -46,8 +56,16 @@ export default function InputSocialSites({
             className="input"
             id="personal"
             type="url"
-            value={personalUrl}
-            onChange={(e) => setPersonalUrl(e.target.value)}
+            value={sites?.personal ?? null}
+            onChange={(e) =>
+              dispatch({
+                type: "object-input",
+                object: "sites",
+                objectVariables: sites,
+                name: "personal",
+                value: e.target.value,
+              })
+            }
           />
         </>
       ) : null}
@@ -58,9 +76,17 @@ export default function InputSocialSites({
         className="input"
         id="bandcamp"
         type="url"
-        value={bandcampUrl}
+        value={sites?.bandcamp ?? null}
         required
-        onChange={(e) => setBandcampUrl(e.target.value)}
+        onChange={(e) =>
+          dispatch({
+            type: "object-input",
+            object: "sites",
+            objectVariables: sites,
+            name: "bandcamp",
+            value: e.target.value,
+          })
+        }
       />
       {hasProAccount ? (
         <>
@@ -71,8 +97,16 @@ export default function InputSocialSites({
             className="input"
             id="apple"
             type="url"
-            value={appleMusicUrl}
-            onChange={(e) => setAppleMusicUrl(e.target.value)}
+            value={sites?.apple ?? null}
+            onChange={(e) =>
+              dispatch({
+                type: "object-input",
+                name: "apple",
+                object: "sites",
+                objectVariables: sites,
+                value: e.target.value,
+              })
+            }
           />
 
           <label className="label" htmlFor="spotify">
@@ -82,8 +116,16 @@ export default function InputSocialSites({
             className="input"
             id="spotify"
             type="url"
-            value={spotifyUrl}
-            onChange={(e) => setSpotifyUrl(e.target.value)}
+            value={sites?.spotify ?? null}
+            onChange={(e) =>
+              dispatch({
+                type: "object-input",
+                object: "sites",
+                objectVariables: sites,
+                name: "spotify",
+                value: e.target.value,
+              })
+            }
           />
           <label className="label" htmlFor="soundcloud">
             Soundcloud Link
@@ -92,8 +134,16 @@ export default function InputSocialSites({
             className="input"
             id="soundcloud"
             type="url"
-            value={soundcloudUrl}
-            onChange={(e) => setSoundcloudUrl(e.target.value)}
+            value={sites?.soundcloud ?? null}
+            onChange={(e) =>
+              dispatch({
+                type: "object-input",
+                name: "soundcloud",
+                object: "sites",
+                objectVariables: sites,
+                value: e.target.value,
+              })
+            }
           />
           <label className="label" htmlFor="youtube">
             YouTube Link
@@ -102,8 +152,16 @@ export default function InputSocialSites({
             className="input"
             id="youtube"
             type="url"
-            value={youtubeUrl}
-            onChange={(e) => setYoutubeUrl(e.target.value)}
+            value={sites?.youtube ?? null}
+            onChange={(e) =>
+              dispatch({
+                type: "object-input",
+                name: "youtube",
+                object: "sites",
+                objectVariables: sites,
+                value: e.target.value,
+              })
+            }
           />
         </>
       ) : null}
