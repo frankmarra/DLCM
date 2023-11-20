@@ -28,6 +28,7 @@ export default function UpdateProfile({
     aboutBlurb: profileData.about_blurb,
     location: profileData.location,
     yumUrl: profileData.yum_url,
+    sites: profileData.sites ?? null,
     submitting: false,
     success: false,
     error: null,
@@ -36,26 +37,21 @@ export default function UpdateProfile({
   const [open, setOpen] = useState(false)
   const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
 
-  // const [username, setUsername] = useState(profileData.username)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
-  // const [aboutBlurb, setAboutBlurb] = useState(profileData.about_blurb)
-  // const [location, setLocation] = useState(profileData.location)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     profileData.is_password_protected
   )
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
-  // const [sluggedName, setSluggedName] = useState(profileData.slug)
   const [noGo, setNoGo] = useState(false)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
-  // const [yumUrl, setYumUrl] = useState(profileData.yum_url)
   const [namesTaken, setNamesTaken] = useState({
     color: "transparent",
     message: "",
   })
-  const [sites, setSites] = useState(profileData.sites ?? null)
 
-  const { username, aboutBlurb, location, yumUrl, sluggedName } = formValue
+  const { username, aboutBlurb, location, yumUrl, sluggedName, sites } =
+    formValue
 
   const checkName = async (e) => {
     e.preventDefault()
@@ -213,11 +209,7 @@ export default function UpdateProfile({
                 className="input"
                 id="slug"
                 type="text"
-                value={
-                  sluggedName
-                  // ? slugify(sluggedName, { lower: true, trim: false })
-                  // : sluggedName
-                }
+                value={sluggedName}
                 onChange={(e) =>
                   dispatch({
                     type: "input",
@@ -310,7 +302,7 @@ export default function UpdateProfile({
           </small>
           <InputSocialSites
             sites={sites}
-            setSites={setSites}
+            dispatch={dispatch}
             hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
             labelArtist={
               profileData.type.charAt(0).toUpperCase() +

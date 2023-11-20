@@ -37,6 +37,7 @@ export default function UpdateRelease({
     yumUrl: release.yum_url,
     releaseDate: release.release_date,
     type: release.type,
+    sites: release.sites,
     submitting: false,
     success: false,
     error: null,
@@ -46,10 +47,6 @@ export default function UpdateRelease({
 
   const [open, setOpen] = useState(false)
 
-  // const [title, setTitle] = useState(release.title)
-  // const [sluggedName, setSluggedName] = useState(
-  //   release.release_slug ?? slugify(release.title)
-  // )
   const [namesTaken, setNamesTaken] = useState({
     color: "transparent",
     message: "",
@@ -57,7 +54,6 @@ export default function UpdateRelease({
   const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const [noGO, setNoGO] = useState(true)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
-  // const [yumUrl, setYumUrl] = useState(release.yum_url)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     release.is_password_protected
   )
@@ -66,31 +62,22 @@ export default function UpdateRelease({
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
-  // const [type, setType] = useState(release.type)
-  const [sites, setSites] = useState(release.sites)
-  // const [releaseDate, setReleaseDate] = useState(release.release_date)
   const [about, setAbout] = useState(release.about)
-
-  const { title, sluggedName, yumUrl, releaseDate, type } = formValue
+  const { title, sluggedName, yumUrl, releaseDate, type, sites } = formValue
 
   const resetForm = () => {
     dispatch({ type: "reset", state: initialFormValue })
-    // setTitle(release.title)
-    // setSluggedName(release.release_slug ?? slugify(release.title))
     setFirstSlugCheck(false)
     setNoGO(true)
     setArtworkUrl(release.artwork_url)
     setPagePassword(release.page_password)
     setIsPasswordProtected(release.is_password_protected)
-    // setType(release.type)
     setNewImagePath()
     setIsActive(release.is_active)
     setNamesTaken({
       color: "transparent",
       message: "",
     })
-    setSites(release.sites ?? null)
-    // setReleaseDate(release.release_date)
     setAbout(release.about)
   }
 
@@ -104,7 +91,6 @@ export default function UpdateRelease({
       if (firstSlugCheck == false) {
         setFirstSlugCheck(true)
       }
-      // setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase
         .from("releases")
         .select("*")
@@ -322,11 +308,7 @@ export default function UpdateRelease({
               }
               id="slug"
               type="text"
-              value={
-                sluggedName
-                // ? slugify(sluggedName, { lower: true, trim: false })
-                // : sluggedName
-              }
+              value={sluggedName}
               onBlur={checkName}
             />
           </div>
@@ -381,7 +363,7 @@ export default function UpdateRelease({
 
           <InputSocialSites
             sites={sites}
-            setSites={setSites}
+            dispatch={dispatch}
             hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (

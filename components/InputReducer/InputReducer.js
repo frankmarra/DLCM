@@ -7,6 +7,7 @@ export default function InputReducer(state, action) {
       [action.name]: action.value,
     }
   } else if (action.type === "object-input") {
+    //Make sure to send objectVariables prop to populate object with current key/value pairs.
     return {
       ...state,
       [action.object]: {

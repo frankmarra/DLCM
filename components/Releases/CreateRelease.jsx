@@ -43,29 +43,17 @@ export default function CreateRelease({
   const supabase = createClientComponentClient()
   const [open, setOpen] = useState(false)
   const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
-  // const [title, setTitle] = useState()
-  // const [sluggedName, setSluggedName] = useState("")
   const [firstSlugCheck, setFirstSlugCheck] = useState(false)
   const [namesTaken, setNamesTaken] = useState({
     color: "transparent",
     message: "",
   })
   const [noGO, setNoGO] = useState(true)
-  // const [artist, setArtist] = useState(
-  //   profileData.type == "artist" ? profileData.username : ""
-  // )
-  // const [label, setLabel] = useState(
-  //   profileData.type == "label" ? profileData.username : ""
-  // )
   const [artworkUrl, setArtworkUrl] = useState()
-  // const [yumUrl, setYumUrl] = useState(profileData.yum_url)
   const [pagePassword, setPagePassword] = useState()
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
-  // const [type, setType] = useState()
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(true)
-  // const [sites, setSites] = useState()
-  // const [releaseDate, setReleaseDate] = useState()
   const [about, setAbout] = useState()
 
   const {
@@ -80,22 +68,17 @@ export default function CreateRelease({
   } = formValue
 
   const resetForm = () => {
-    // setTitle()
-    // setSluggedName("")
     setFirstSlugCheck(false)
     setNoGO(true)
     setArtworkUrl()
     setPagePassword()
     setIsPasswordProtected(false)
-    // setType()
     setNewImagePath()
     setIsActive(true)
     setNamesTaken({
       color: "transparent",
       message: "",
     })
-    // setSites()
-    // setReleaseDate()
     setAbout()
   }
 
@@ -109,7 +92,6 @@ export default function CreateRelease({
       if (firstSlugCheck == false) {
         setFirstSlugCheck(true)
       }
-      // setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase
         .from("releases")
         .select("*")
@@ -262,11 +244,7 @@ export default function CreateRelease({
               }
               id="slug"
               type="text"
-              value={
-                sluggedName
-                // ? slugify(sluggedName, { lower: true, trim: false })
-                // : sluggedName
-              }
+              value={sluggedName}
               onBlur={checkName}
             />
           </div>
@@ -372,7 +350,6 @@ export default function CreateRelease({
 
           <InputSocialSites
             sites={sites}
-            // setSites={setSites}
             dispatch={dispatch}
             hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />

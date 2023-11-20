@@ -1,6 +1,4 @@
 import { prependProtocol } from "@/utils/utils"
-import { useEffect, useState, useReducer } from "react"
-import InputReducer from "../InputReducer/InputReducer"
 
 export default function InputSocialSites({
   sites,
@@ -9,39 +7,6 @@ export default function InputSocialSites({
   showPersonal,
   labelArtist,
 }) {
-  // const initialSitesValue = {
-  //   personalUrl: sites?.personal ?? null,
-  //   bandcampUrl: sites?.bandcamp ?? null,
-  //   appleMusicUrl: sites?.apple ?? null,
-  //   spotifyUrl: sites?.spotify ?? null,
-  //   soundcloudUrl: sites?.soundcloud ?? null,
-  //   youtubeUrl: sites?.youtube ?? null,
-  // }
-  // const [sitesValue, dispatch] = useReducer(InputReducer, initialSitesValue)
-  // const [personalUrl, setPersonalUrl] = useState(sites?.personal ?? null)
-  // const [bandcampUrl, setBandcampUrl] = useState(sites?.bandcamp ?? null)
-  // const [appleMusicUrl, setAppleMusicUrl] = useState(sites?.apple ?? null)
-  // const [spotifyUrl, setSpotifyUrl] = useState(sites?.spotify ?? null)
-  // const [soundcloudUrl, setSoundcloudUrl] = useState(sites?.soundcloud ?? null)
-  // const [youtubeUrl, setYoutubeUrl] = useState(sites?.youtube ?? null)
-
-  // useEffect(() => {
-  //   setSites({
-  //     personal: personalUrl ? prependProtocol(personalUrl) : null,
-  //     bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
-  //     apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
-  //     spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
-  //     soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
-  //     youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
-  //   })
-  // }, [
-  //   bandcampUrl,
-  //   appleMusicUrl,
-  //   spotifyUrl,
-  //   soundcloudUrl,
-  //   youtubeUrl,
-  //   personalUrl,
-  // ])
   return (
     <>
       {showPersonal ? (
