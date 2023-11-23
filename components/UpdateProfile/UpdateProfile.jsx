@@ -15,6 +15,7 @@ import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputReducer from "../InputReducer/InputReducer"
+import InputValidator from "../InputValidator/InputValidator"
 import Loader from "@/components/Loader/Loader"
 
 export default function UpdateProfile({
@@ -33,36 +34,62 @@ export default function UpdateProfile({
     success: false,
     error: null,
   }
+
+  const initialValidation = {
+    isNameValid: {
+      color: "transparent",
+      message: "",
+      isValid: true,
+    },
+    isFormValid: true,
+    checking: false,
+  }
+
   const supabase = createClientComponentClient()
   const [open, setOpen] = useState(false)
   const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
-
+  const [validation, validate] = useReducer(InputValidator, initialValidation)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     profileData.is_password_protected
   )
   const [pagePassword, setPagePassword] = useState(profileData.page_password)
-  const [noGo, setNoGo] = useState(false)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
-  const [namesTaken, setNamesTaken] = useState({
-    color: "transparent",
-    message: "",
-  })
 
   const { username, aboutBlurb, location, yumUrl, sluggedName, sites } =
     formValue
 
+  const { isNameValid, isFormValid } = validation
+
+  useEffect(() => {
+    const checkFormIsValid = () => {
+      if (isNameValid.isValid) {
+        validate({
+          type: "success",
+        })
+      }
+    }
+
+    checkFormIsValid()
+  }, [isNameValid.isValid])
+
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
-      setNamesTaken({ color: "red", message: "Profile must have a slug" })
-      setNoGo(true)
+      validate({
+        type: "badCheck",
+        name: "isNameValid",
+        message: "Profile must have a slug",
+      })
     }
     if (sluggedName.length > 0) {
       if (sluggedName == profileData.slug) {
-        setNamesTaken({ color: "green", message: "This is your current URL" })
-        setNoGo(false)
+        validate({
+          type: "goodCheck",
+          name: "isNameValid",
+          message: "This is your current URL",
+        })
       } else {
         let { data, error } = await supabase
           .from("profiles")
@@ -70,14 +97,17 @@ export default function UpdateProfile({
           .eq("slug", sluggedName)
 
         if (data.length > 0) {
-          setNamesTaken({ color: "red", message: "Urls taken, try again" })
-          setNoGo(true)
-        } else if (data.length == 0) {
-          setNamesTaken({
-            color: "green",
-            message: "This url is available, snag it!",
+          validate({
+            type: "badCheck",
+            name: "isNameValid",
+            message: "URLs taken, try again",
           })
-          setNoGo(false)
+        } else if (data.length == 0) {
+          validate({
+            type: "goodCheck",
+            name: "isNameValid",
+            message: "This URL is available, snag it!",
+          })
         }
 
         if (error) throw error
@@ -146,6 +176,7 @@ export default function UpdateProfile({
       }
     }
     dispatch({ type: "reset", state: initialFormValue })
+    validate({ type: "reset", state: initialValidation })
     setOpen(false)
   }
 
@@ -233,8 +264,8 @@ export default function UpdateProfile({
             </code>
           </small>{" "}
           <br />
-          <small className="hint" style={{ color: `${namesTaken.color}` }}>
-            {namesTaken.message}
+          <small className="hint" style={{ color: isNameValid.color }}>
+            {isNameValid.message}
           </small>
           <br />
           <Link
@@ -329,7 +360,7 @@ export default function UpdateProfile({
             className="button"
             data-variant="primary"
             onClick={() => updateUserProfile()}
-            disabled={noGo}
+            disabled={!isFormValid}
           >
             Update
           </button>

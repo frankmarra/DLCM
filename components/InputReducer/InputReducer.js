@@ -1,5 +1,3 @@
-import { useReducer } from "react"
-
 export default function InputReducer(state, action) {
   if (action.type === "input") {
     return {

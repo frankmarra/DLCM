@@ -1,11 +1,12 @@
 import { supabase } from "@/utils/supabase"
-import { useReducer, useState } from "react"
+import { useReducer, useState, useEffect } from "react"
 import slugify from "slugify"
 import { useRouter } from "next/router"
 import PopoverTip from "@/components/PopoverTip/PopoverTip"
 import Head from "next/head"
 import SEO from "@/components/SEO/SEO"
 import InputReducer from "@/components/InputReducer/InputReducer"
+import InputValidator from "@/components/InputValidator/InputValidator"
 import Loader from "@/components/Loader/Loader"
 
 const accountTypes = [
@@ -23,34 +24,64 @@ const Signup = () => {
     type: accountTypes[0].value,
     name: "",
     location: "",
+    firstSlugCheck: false,
     submitting: false,
     success: false,
     error: null,
   })
 
-  const { name, sluggedName, email, password, passwordCheck, type, location } =
-    formValue
+  const [validation, validate] = useReducer(InputValidator, {
+    isEmailValid: {
+      color: "transparent",
+      message: "",
+      isValid: false,
+    },
 
-  // const [userCreated, setUserCreated] = useState(false)
-  // const [createdUser, setCreatedUser] = useState()
-  const [namesTaken, setNamesTaken] = useState({
-    color: "transparent",
-    message: "",
+    isPasswordValid: {
+      color: "transparent",
+      message: "",
+      isValid: false,
+    },
+    isNameValid: {
+      color: "transparent",
+      message: "",
+      isValid: false,
+    },
+    isFormValid: false,
+    checking: false,
   })
-  const [emailsTaken, setEmailsTaken] = useState(false)
-  const [passwordMessage, setPasswordMessage] = useState({
-    color: "transparent",
-    message: "",
-  })
-  const [passwordGood, setPasswordGood] = useState(false)
-  // const [sluggedName, setSluggedName] = useState("")
-  const [noGo, setNoGO] = useState(true)
-  const [firstSlugCheck, setFirstSlugCheck] = useState(false)
+
+  const {
+    name,
+    sluggedName,
+    email,
+    password,
+    passwordCheck,
+    type,
+    location,
+    firstSlugCheck,
+  } = formValue
+
+  const { isEmailValid, isPasswordValid, isNameValid, isFormValid } = validation
+
   const router = useRouter()
 
-  // const handleChange = (e) => {
-  //   setFormValue({ ...formValue, [e.target.id]: e.target.value })
-  // }
+  useEffect(() => {
+    const checkFormIsValid = () => {
+      if (
+        isEmailValid.isValid &&
+        isNameValid.isValid &&
+        isPasswordValid.isValid &&
+        type.length > 0
+      ) {
+        validate({
+          type: "success",
+        })
+      }
+    }
+
+    checkFormIsValid()
+  }, [isEmailValid.isValid, isNameValid.isValid, isPasswordValid.isValid, type])
 
   const checkEmail = async (e) => {
     e.preventDefault()
@@ -61,9 +92,17 @@ const Signup = () => {
         .eq("email", formValue.email)
 
       if (data.length > 0) {
-        setEmailsTaken(true)
+        validate({
+          type: "badCheck",
+          name: "isEmailValid",
+          message: "Account for this email already exists",
+        })
       } else if (data.length == 0) {
-        setEmailsTaken(false)
+        validate({
+          type: "goodCheck",
+          name: "isEmailValid",
+          message: "Account available for this email",
+        })
       }
 
       if (error) throw error
@@ -73,11 +112,17 @@ const Signup = () => {
   const checkPassword = () => {
     if (formValue.password.length > 0) {
       if (formValue.password === formValue.passwordCheck) {
-        setPasswordMessage({ color: "green", message: "Passwords match!" })
-        setPasswordGood(true)
+        validate({
+          type: "goodCheck",
+          name: "isPasswordValid",
+          message: "Passwords match",
+        })
       } else if (formValue.password != formValue.passwordCheck) {
-        setPasswordMessage({ color: "red", message: "Passwords don't match!" })
-        setPasswordGood(false)
+        validate({
+          type: "badCheck",
+          name: "isPasswordValid",
+          message: "Passwords do not match",
+        })
       }
     }
   }
@@ -86,28 +131,37 @@ const Signup = () => {
     e.preventDefault()
 
     if (firstSlugCheck == false) {
-      setFirstSlugCheck(true)
+      dispatch({
+        type: "input",
+        name: "firstSlugCheck",
+        value: true,
+      })
     }
     if (sluggedName.length == 0) {
-      setNamesTaken({ color: "red", message: "User must have a slug" })
-      setNoGO(true)
+      dispatch({
+        type: "badCheck",
+        name: "isNameValid",
+        message: "User must have a slug",
+      })
     }
     if (sluggedName.length > 0) {
-      // setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("slug", sluggedName)
 
       if (data.length > 0) {
-        setNamesTaken({ color: "red", message: "This URL is already in use" })
-        setNoGO(true)
+        validate({
+          type: "badCheck",
+          name: "isNameValid",
+          message: "This URL is already in use",
+        })
       } else if (data.length == 0) {
-        setNamesTaken({
-          color: "green",
+        validate({
+          type: "goodCheck",
+          name: "isNameValid",
           message: "This url is available, snag it!",
         })
-        setNoGO(false)
       }
 
       if (error) throw error
@@ -144,7 +198,11 @@ const Signup = () => {
       }
       if (error) {
         dispatch({ type: "error", error: error.message })
-        setPasswordGood(false)
+        validate({
+          type: "badCheck",
+          name: "isPasswordValid",
+          message: "",
+        })
         alert(error.message)
       } else {
         dispatch({ type: "success" })
@@ -204,16 +262,15 @@ const Signup = () => {
                   id="email"
                   type="email"
                   value={email}
-                  onFocus={() => setEmailsTaken(null)}
+                  // onFocus={() => setEmailsTaken(null)}
                   onBlur={checkEmail}
                   required
                 />
               </div>
-              {emailsTaken ? (
-                <small style={{ color: "red" }}>
-                  Account for this email already exists
-                </small>
-              ) : null}
+
+              <small style={{ color: isEmailValid.color }}>
+                {isEmailValid.message}
+              </small>
 
               <div className="input-wrapper">
                 <label htmlFor="password">Password</label>
@@ -250,18 +307,16 @@ const Signup = () => {
                   id="passwordCheck"
                   type="password"
                   value={passwordCheck}
-                  onFocus={() =>
-                    setPasswordMessage({ color: "transparent", message: "" })
-                  }
+                  // onFocus={() =>
+                  //   setPasswordMessage({ color: "transparent", message: "" })
+                  // }
                   disabled={password.length < 6}
                   onBlur={checkPassword}
                   required
                 />
-                {
-                  <small
-                    style={{ color: `${passwordMessage.color}` }}
-                  >{`${passwordMessage.message}`}</small>
-                }
+                <small style={{ color: isPasswordValid.color }}>
+                  {isPasswordValid.message}
+                </small>
               </div>
               <div className="input-wrapper">
                 <label htmlFor="type">Account type</label>
@@ -331,21 +386,31 @@ const Signup = () => {
                     />
                     <input
                       className="input"
-                      onChange={(e) => setSluggedName(e.target.value)}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "input",
+                          name: "sluggedName",
+                          value: slugify(e.target.value, {
+                            lower: true,
+                            trim: false,
+                          }),
+                        })
+                      }
                       id="slug"
                       type="text"
-                      value={
-                        sluggedName
-                          ? slugify(sluggedName, { lower: true, trim: false })
-                          : sluggedName
-                      }
+                      value={sluggedName}
                       onInput={
                         firstSlugCheck
                           ? null
                           : (e) =>
-                              setSluggedName(
-                                slugify(e.target.value, { lower: true })
-                              )
+                              dispatch({
+                                type: "input",
+                                name: "sluggedName",
+                                value: slugify(e.target.value, {
+                                  lower: true,
+                                  trim: false,
+                                }),
+                              })
                       }
                       onBlur={checkName}
                     />
@@ -354,12 +419,12 @@ const Signup = () => {
                     Public label URL will be:{" "}
                     <code>
                       {process.env.NEXT_PUBLIC_DLCM_URL}
-                      {`${sluggedName}`}
+                      {sluggedName}
                     </code>
                   </small>
                   <br />
-                  <small style={{ color: `${namesTaken.color}` }}>
-                    {namesTaken.message}
+                  <small style={{ color: isNameValid.color }}>
+                    {isNameValid.message}
                   </small>
                 </>
               ) : (
@@ -382,9 +447,14 @@ const Signup = () => {
                         firstSlugCheck
                           ? null
                           : (e) =>
-                              setSluggedName(
-                                slugify(e.target.value, { lower: true })
-                              )
+                              dispatch({
+                                type: "input",
+                                name: "sluggedName",
+                                value: slugify(e.target.value, {
+                                  lower: true,
+                                  trim: false,
+                                }),
+                              })
                       }
                       onBlur={firstSlugCheck ? null : checkName}
                       required
@@ -398,14 +468,19 @@ const Signup = () => {
                     />
                     <input
                       className="input"
-                      onChange={(e) => setSluggedName(e.target.value)}
+                      onChange={(e) =>
+                        dispatch({
+                          type: "input",
+                          name: "sluggedName",
+                          value: slugify(e.target.value, {
+                            lower: true,
+                            trim: false,
+                          }),
+                        })
+                      }
                       id="slug"
                       type="text"
-                      value={
-                        sluggedName
-                          ? slugify(sluggedName, { lower: true, trim: false })
-                          : sluggedName
-                      }
+                      value={sluggedName}
                       onBlur={checkName}
                       required
                     />
@@ -413,11 +488,11 @@ const Signup = () => {
                   <small>
                     Public artist URL will be:{" "}
                     {process.env.NEXT_PUBLIC_DLCM_URL}
-                    {`${sluggedName}`}
+                    {sluggedName}
                   </small>
                   <br />
-                  <small style={{ color: `${namesTaken.color}` }}>
-                    {namesTaken.message}
+                  <small style={{ color: isNameValid.color }}>
+                    {isNameValid.message}
                   </small>
                 </>
               )}
@@ -427,7 +502,7 @@ const Signup = () => {
                   type="submit"
                   className="button"
                   data-variant="primary"
-                  disabled={noGo || emailsTaken || !passwordGood}
+                  disabled={!isFormValid}
                 >
                   Sign Up
                 </button>
