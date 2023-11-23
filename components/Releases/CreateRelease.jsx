@@ -18,6 +18,7 @@ import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputIsActive from "../InputIsActive/InputIsActive"
 import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import InputReducer from "../InputReducer/InputReducer"
+import InputValidator from "../InputValidator/InputValidator"
 import Loader from "@/components/Loader/Loader"
 
 export default function CreateRelease({
@@ -35,20 +36,27 @@ export default function CreateRelease({
     type: "Choose release type",
     about: "",
     sites: {},
+    firstSlugCheck: false,
     submitting: false,
     success: false,
     error: null,
   }
+
+  const initialValidation = {
+    isNameValid: {
+      color: "transparent",
+      message: "",
+      isValid: true,
+    },
+    isFormValid: true,
+    checking: false,
+  }
+
   const user = useUser()
   const supabase = createClientComponentClient()
   const [open, setOpen] = useState(false)
   const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
-  const [firstSlugCheck, setFirstSlugCheck] = useState(false)
-  const [namesTaken, setNamesTaken] = useState({
-    color: "transparent",
-    message: "",
-  })
-  const [noGO, setNoGO] = useState(true)
+  const [validation, validate] = useReducer(InputValidator, initialValidation)
   const [artworkUrl, setArtworkUrl] = useState()
   const [pagePassword, setPagePassword] = useState()
   const [isPasswordProtected, setIsPasswordProtected] = useState(false)
@@ -65,32 +73,47 @@ export default function CreateRelease({
     yumUrl,
     type,
     sites,
+    firstSlugCheck,
   } = formValue
 
+  const { isNameValid, isFormValid } = validation
+
+  useEffect(() => {
+    const checkFormIsValid = () => {
+      if (isNameValid.isValid) {
+        validate({
+          type: "success",
+        })
+      }
+    }
+
+    checkFormIsValid()
+  }, [isNameValid.isValid])
+
   const resetForm = () => {
-    setFirstSlugCheck(false)
-    setNoGO(true)
     setArtworkUrl()
     setPagePassword()
     setIsPasswordProtected(false)
     setNewImagePath()
     setIsActive(true)
-    setNamesTaken({
-      color: "transparent",
-      message: "",
-    })
     setAbout()
   }
 
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
-      setNamesTaken({ color: "red", message: "Release must have a slug" })
-      setNoGO(true)
+      validate({
+        type: "badCheck",
+        name: "isNameValid",
+        message: "Release must have a slug",
+      })
     }
     if (sluggedName.length > 0) {
       if (firstSlugCheck == false) {
-        setFirstSlugCheck(true)
+        dispatch({
+          type: "input",
+          value: true,
+        })
       }
       let { data, error } = await supabase
         .from("releases")
@@ -99,14 +122,17 @@ export default function CreateRelease({
         .eq("release_slug", sluggedName)
 
       if (data.length > 0) {
-        setNamesTaken({ color: "red", message: "Urls taken, try again" })
-        setNoGO(true)
-      } else if (data.length == 0) {
-        setNamesTaken({
-          color: "green",
-          message: "This url is available, snag it!",
+        validate({
+          type: "badCheck",
+          name: "isNameValid",
+          message: "URLs taken, try again",
         })
-        setNoGO(false)
+      } else if (data.length == 0) {
+        validate({
+          type: "goodCheck",
+          name: "isNameValid",
+          message: "This URL is available, snag it!",
+        })
       }
 
       if (error) throw error
@@ -149,6 +175,7 @@ export default function CreateRelease({
       setAddedNewRelease(true)
       resetForm()
       dispatch({ type: "reset", state: initialFormValue })
+      validate({ type: "reset", state: initialValidation })
       setOpen(false)
     }
   }
@@ -166,6 +193,7 @@ export default function CreateRelease({
     }
     resetForm()
     dispatch({ type: "reset", state: initialFormValue })
+    validate({ type: "reset", state: initialValidation })
     setOpen(false)
   }
 
@@ -257,8 +285,8 @@ export default function CreateRelease({
             </code>
           </small>
           <br />
-          <small style={{ color: `${namesTaken.color}` }}>
-            {namesTaken.message}
+          <small style={{ color: isNameValid.color }}>
+            {isNameValid.message}
           </small>
 
           <label className="label" htmlFor="artist">
@@ -380,7 +408,7 @@ export default function CreateRelease({
             className="button"
             data-variant="primary"
             onClick={() => createNewRelease()}
-            disabled={!title || noGO || !artist}
+            disabled={!isFormValid}
           >
             Create
           </button>

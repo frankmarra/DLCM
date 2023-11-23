@@ -21,6 +21,7 @@ import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputIsActive from "../InputIsActive/InputIsActive"
 import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import InputReducer from "../InputReducer/InputReducer"
+import InputValidator from "../InputValidator/InputValidator"
 import Loader from "@/components/Loader/Loader"
 
 export default function UpdateRelease({
@@ -38,21 +39,25 @@ export default function UpdateRelease({
     releaseDate: release.release_date,
     type: release.type,
     sites: release.sites,
+    firstSlugCheck: false,
     submitting: false,
     success: false,
     error: null,
   }
 
+  const initialValidation = {
+    isNameValid: {
+      color: "transparent",
+      message: "",
+      isValid: true,
+    },
+    isFormValid: true,
+    checking: false,
+  }
+
   const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
-
+  const [validation, validate] = useReducer(InputValidator, initialValidation)
   const [open, setOpen] = useState(false)
-
-  const [namesTaken, setNamesTaken] = useState({
-    color: "transparent",
-    message: "",
-  })
-  const [firstSlugCheck, setFirstSlugCheck] = useState(false)
-  const [noGO, setNoGO] = useState(true)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
   const [isPasswordProtected, setIsPasswordProtected] = useState(
     release.is_password_protected
@@ -63,33 +68,45 @@ export default function UpdateRelease({
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
   const [about, setAbout] = useState(release.about)
+
   const { title, sluggedName, yumUrl, releaseDate, type, sites } = formValue
+  const { isNameValid, isFormValid } = validation
 
   const resetForm = () => {
-    dispatch({ type: "reset", state: initialFormValue })
-    setFirstSlugCheck(false)
-    setNoGO(true)
+    // dispatch({ type: "reset", state: initialFormValue })
+    // validate({ type: "reset", state: initialValidation})
     setArtworkUrl(release.artwork_url)
     setPagePassword(release.page_password)
     setIsPasswordProtected(release.is_password_protected)
     setNewImagePath()
     setIsActive(release.is_active)
-    setNamesTaken({
-      color: "transparent",
-      message: "",
-    })
     setAbout(release.about)
   }
+
+  useEffect(() => {
+    const checkFormIsValid = () => {
+      if (isNameValid.isValid) {
+        validate({
+          type: "success",
+        })
+      }
+    }
+
+    checkFormIsValid()
+  }, [isNameValid.isValid])
 
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
-      setNamesTaken({ color: "red", message: "Release must have a slug" })
-      setNoGO(true)
+      validate({
+        type: "badCheck",
+        name: "isNameValid",
+        message: "Release must have a slug",
+      })
     }
     if (sluggedName.length > 0) {
       if (firstSlugCheck == false) {
-        setFirstSlugCheck(true)
+        dispatch({ type: "input", value: true })
       }
       let { data, error } = await supabase
         .from("releases")
@@ -98,14 +115,17 @@ export default function UpdateRelease({
         .eq("release_slug", sluggedName)
 
       if (data.length > 0) {
-        setNamesTaken({ color: "red", message: "Urls taken, try again" })
-        setNoGO(true)
-      } else if (data.length == 0) {
-        setNamesTaken({
-          color: "green",
-          message: "This url is available, snag it!",
+        validate({
+          type: "badCheck",
+          name: "isNameValid",
+          message: "This URL is taken, try again",
         })
-        setNoGO(false)
+      } else if (data.length == 0) {
+        validate({
+          type: "goodCheck",
+          name: "isNameValid",
+          message: "This URL is available, snag it!",
+        })
       }
 
       if (error) throw error
@@ -162,6 +182,7 @@ export default function UpdateRelease({
       alert("Release updated!")
       resetForm()
       dispatch({ type: "reset", state: initialFormValue })
+      validate({ type: "reset", state: initialValidation })
       setOpen(false)
     }
   }
@@ -179,6 +200,7 @@ export default function UpdateRelease({
     }
     resetForm()
     dispatch({ type: "reset", state: initialFormValue })
+    validate({ type: "reset", state: initialValidation })
     setOpen(false)
   }
 
@@ -212,6 +234,8 @@ export default function UpdateRelease({
       } finally {
         getProfile()
         resetForm()
+        dispatch({ type: "reset", state: initialFormValue })
+        validate({ type: "reset", state: initialValidation })
         setOpen(false)
       }
     } else {
@@ -321,8 +345,8 @@ export default function UpdateRelease({
             </code>
           </small>
           <br />
-          <small style={{ color: `${namesTaken.color}` }}>
-            {namesTaken.message}
+          <small style={{ color: isNameValid.color }}>
+            {isNameTaken.message}
           </small>
 
           <InputReleaseType type={type} dispatch={dispatch} />
@@ -394,7 +418,7 @@ export default function UpdateRelease({
               data-variant="primary"
               onClick={updateRelease}
               style={{ marginInlineEnd: "1em" }}
-              disabled={sluggedName.length == 0}
+              disabled={!isFormValid}
             >
               Update
             </button>
