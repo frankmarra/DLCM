@@ -26,6 +26,7 @@ export default function CreateRelease({
   setAddedNewRelease,
   profileData,
 }) {
+  //Create reducer initial values
   const initialFormValue = {
     title: "",
     sluggedName: "",
@@ -38,6 +39,7 @@ export default function CreateRelease({
     sites: {},
     isPasswordProtected: false,
     pagePassword: "",
+    isActive: true,
     firstSlugCheck: false,
     submitting: false,
     success: false,
@@ -53,17 +55,19 @@ export default function CreateRelease({
     isFormValid: false,
     checking: false,
   }
-
-  const user = useUser()
-  const supabase = createClientComponentClient()
-  const [open, setOpen] = useState(false)
   const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
   const [validation, validate] = useReducer(InputValidator, initialValidation)
+
+  //Supabase
+  const user = useUser()
+  const supabase = createClientComponentClient()
+
+  const [open, setOpen] = useState(false)
   const [artworkUrl, setArtworkUrl] = useState()
   const [newImagePath, setNewImagePath] = useState()
-  const [isActive, setIsActive] = useState(true)
   const [about, setAbout] = useState()
 
+  //Destructured formValue for easier use
   const {
     title,
     sluggedName,
@@ -76,11 +80,14 @@ export default function CreateRelease({
     firstSlugCheck,
     pagePassword,
     isPasswordProtected,
+    isActive,
   } = formValue
 
+  //Destructured validation
   const { isNameValid, isFormValid } = validation
 
   useEffect(() => {
+    //Checks for form validation. Add conditions to the if statement to increase requirements. Whatever is added to the statement, must also be added to the dependency array.
     const checkFormIsValid = () => {
       if (isNameValid.isValid && type != "Choose release type") {
         validate({
@@ -92,13 +99,14 @@ export default function CreateRelease({
     checkFormIsValid()
   }, [isNameValid.isValid, type])
 
+  //Resets values not handled by the reducer
   const resetForm = () => {
     setArtworkUrl()
     setNewImagePath()
-    setIsActive(true)
     setAbout()
   }
 
+  //Validates release slug
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
@@ -385,7 +393,7 @@ export default function CreateRelease({
 
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              <InputIsActive isActive={isActive} setIsActive={setIsActive}>
+              <InputIsActive isActive={isActive} dispatch={dispatch}>
                 Show Release
               </InputIsActive>
               <InputReleaseAbout about={about} setAbout={setAbout} />

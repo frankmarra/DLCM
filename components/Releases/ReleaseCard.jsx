@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useReducer } from "react"
 import AddCodes from "../AddCodes/AddCodes"
 import cn from "classnames"
 import styles from "./ReleaseCard.module.css"
@@ -9,6 +9,7 @@ import UpdateRelease from "./UpdateRelease"
 import ReleaseStats from "../ReleaseStats/ReleaseStats"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
+import InputReducer from "../InputReducer/InputReducer"
 
 export default function ReleaseCard({
   release,
@@ -16,13 +17,23 @@ export default function ReleaseCard({
   getProfile,
   profileData,
 }) {
+  const initialFormValue = {
+    isActive: release.is_active,
+    submitting: false,
+    success: false,
+    error: null,
+  }
+
+  const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
   const [artwork, setArtwork] = useState(release.artwork_url)
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
-  const [isActive, setIsActive] = useState(release.is_active)
+  // const [isActive, setIsActive] = useState(release.is_active)
 
   const supabase = createClientComponentClient()
+
+  const { isActive } = formValue
 
   useEffect(() => {
     if (onCodeAdded) {
@@ -33,7 +44,11 @@ export default function ReleaseCard({
 
   const showRelease = async (activeStatus) => {
     try {
-      setIsActive(activeStatus)
+      dispatch({
+        type: "input",
+        name: "isActive",
+        value: activeStatus,
+      })
       let update = {
         is_active: activeStatus,
       }

@@ -42,6 +42,7 @@ export default function UpdateRelease({
     firstSlugCheck: false,
     pagePassword: release.page_password,
     isPasswordProtected: release.is_password_protected,
+    isActive: release.is_active,
     submitting: false,
     success: false,
     error: null,
@@ -68,7 +69,7 @@ export default function UpdateRelease({
   const [artworkId, setArtworkId] = useState()
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
-  const [isActive, setIsActive] = useState(release.is_active)
+  // const [isActive, setIsActive] = useState(release.is_active)
   const [about, setAbout] = useState(release.about)
 
   const {
@@ -81,13 +82,14 @@ export default function UpdateRelease({
     firstSlugCheck,
     pagePassword,
     isPasswordProtected,
+    isActive,
   } = formValue
   const { isNameValid, isFormValid } = validation
 
   const resetForm = () => {
     setArtworkUrl(release.artwork_url)
     setNewImagePath()
-    setIsActive(release.is_active)
+    // setIsActive(release.is_active)
     setAbout(release.about)
   }
 
@@ -400,7 +402,7 @@ export default function UpdateRelease({
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              <InputIsActive isActive={isActive} setIsActive={setIsActive}>
+              <InputIsActive isActive={isActive} dispatch={dispatch}>
                 Show Release
               </InputIsActive>
               <InputReleaseAbout about={about} setAbout={setAbout} />
