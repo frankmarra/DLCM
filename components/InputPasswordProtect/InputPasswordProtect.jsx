@@ -4,9 +4,8 @@ export default function InputPasswordProtect({
   id,
   children,
   isProtected,
-  setIsProtected,
   pagePassword,
-  setPagePassword,
+  dispatch,
 }) {
   const pagePasswordInputRef = useRef(null)
 
@@ -23,7 +22,13 @@ export default function InputPasswordProtect({
           type="checkbox"
           id={id}
           checked={isProtected}
-          onChange={setIsProtected}
+          onChange={() =>
+            dispatch({
+              type: "input",
+              name: "isPasswordProtected",
+              value: !isProtected,
+            })
+          }
         />
         {children}
       </label>
@@ -39,7 +44,13 @@ export default function InputPasswordProtect({
             id="pagePassword"
             type="password"
             value={pagePassword}
-            onChange={setPagePassword}
+            onChange={(e) =>
+              dispatch({
+                type: "input",
+                name: "pagePassword",
+                value: e.target.value,
+              })
+            }
           />
         </>
       ) : null}

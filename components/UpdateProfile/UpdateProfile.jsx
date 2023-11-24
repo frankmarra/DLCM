@@ -30,6 +30,8 @@ export default function UpdateProfile({
     location: profileData.location,
     yumUrl: profileData.yum_url,
     sites: profileData.sites ?? null,
+    pagePassword: profileData.page_password,
+    isPasswordProtected: profileData.is_password_protected,
     submitting: false,
     success: false,
     error: null,
@@ -50,15 +52,19 @@ export default function UpdateProfile({
   const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
   const [validation, validate] = useReducer(InputValidator, initialValidation)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
-  const [isPasswordProtected, setIsPasswordProtected] = useState(
-    profileData.is_password_protected
-  )
-  const [pagePassword, setPagePassword] = useState(profileData.page_password)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
 
-  const { username, aboutBlurb, location, yumUrl, sluggedName, sites } =
-    formValue
+  const {
+    username,
+    aboutBlurb,
+    location,
+    yumUrl,
+    sluggedName,
+    sites,
+    pagePassword,
+    isPasswordProtected,
+  } = formValue
 
   const { isNameValid, isFormValid } = validation
 
@@ -347,9 +353,20 @@ export default function UpdateProfile({
               isProtected={isPasswordProtected}
               pagePassword={pagePassword}
               setIsProtected={() =>
-                setIsPasswordProtected(!isPasswordProtected)
+                dispatch({
+                  type: "input",
+                  name: "isPasswordProtected",
+                  value: !isPasswordProtected,
+                })
               }
-              setPagePassword={(e) => setPagePassword(e.target.value)}
+              setPagePassword={(e) =>
+                dispatch({
+                  type: "input",
+                  name: "pagePassword",
+                  value: e.target.value,
+                })
+              }
+              dispatch={dispatch}
             >
               Password protect your profile page
             </InputPasswordProtect>

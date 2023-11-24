@@ -40,6 +40,8 @@ export default function UpdateRelease({
     type: release.type,
     sites: release.sites,
     firstSlugCheck: false,
+    pagePassword: release.page_password,
+    isPasswordProtected: release.is_password_protected,
     submitting: false,
     success: false,
     error: null,
@@ -59,25 +61,31 @@ export default function UpdateRelease({
   const [validation, validate] = useReducer(InputValidator, initialValidation)
   const [open, setOpen] = useState(false)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
-  const [isPasswordProtected, setIsPasswordProtected] = useState(
-    release.is_password_protected
-  )
-  const [pagePassword, setPagePassword] = useState(release.page_password)
+  // const [isPasswordProtected, setIsPasswordProtected] = useState(
+  //   release.is_password_protected
+  // )
+  // const [pagePassword, setPagePassword] = useState(release.page_password)
   const [artworkId, setArtworkId] = useState()
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(release.is_active)
   const [about, setAbout] = useState(release.about)
 
-  const { title, sluggedName, yumUrl, releaseDate, type, sites } = formValue
+  const {
+    title,
+    sluggedName,
+    yumUrl,
+    releaseDate,
+    type,
+    sites,
+    firstSlugCheck,
+    pagePassword,
+    isPasswordProtected,
+  } = formValue
   const { isNameValid, isFormValid } = validation
 
   const resetForm = () => {
-    // dispatch({ type: "reset", state: initialFormValue })
-    // validate({ type: "reset", state: initialValidation})
     setArtworkUrl(release.artwork_url)
-    setPagePassword(release.page_password)
-    setIsPasswordProtected(release.is_password_protected)
     setNewImagePath()
     setIsActive(release.is_active)
     setAbout(release.about)
@@ -346,7 +354,7 @@ export default function UpdateRelease({
           </small>
           <br />
           <small style={{ color: isNameValid.color }}>
-            {isNameTaken.message}
+            {isNameValid.message}
           </small>
 
           <InputReleaseType type={type} dispatch={dispatch} />
@@ -401,9 +409,20 @@ export default function UpdateRelease({
                 isProtected={isPasswordProtected}
                 pagePassword={pagePassword}
                 setIsProtected={() =>
-                  setIsPasswordProtected(!isPasswordProtected)
+                  dispatch({
+                    type: "input",
+                    name: "isPasswordProtected",
+                    value: !isPasswordProtected,
+                  })
                 }
-                setPagePassword={(e) => setPagePassword(e.target.value)}
+                setPagePassword={(e) =>
+                  dispatch({
+                    type: "input",
+                    name: "pagePassword",
+                    value: e.target.value,
+                  })
+                }
+                dispatch={dispatch}
               >
                 Password protect this release
               </InputPasswordProtect>

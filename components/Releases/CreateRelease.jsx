@@ -36,6 +36,8 @@ export default function CreateRelease({
     type: "Choose release type",
     about: "",
     sites: {},
+    isPasswordProtected: false,
+    pagePassword: "",
     firstSlugCheck: false,
     submitting: false,
     success: false,
@@ -46,9 +48,9 @@ export default function CreateRelease({
     isNameValid: {
       color: "transparent",
       message: "",
-      isValid: true,
+      isValid: false,
     },
-    isFormValid: true,
+    isFormValid: false,
     checking: false,
   }
 
@@ -58,8 +60,6 @@ export default function CreateRelease({
   const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
   const [validation, validate] = useReducer(InputValidator, initialValidation)
   const [artworkUrl, setArtworkUrl] = useState()
-  const [pagePassword, setPagePassword] = useState()
-  const [isPasswordProtected, setIsPasswordProtected] = useState(false)
   const [newImagePath, setNewImagePath] = useState()
   const [isActive, setIsActive] = useState(true)
   const [about, setAbout] = useState()
@@ -74,13 +74,15 @@ export default function CreateRelease({
     type,
     sites,
     firstSlugCheck,
+    pagePassword,
+    isPasswordProtected,
   } = formValue
 
   const { isNameValid, isFormValid } = validation
 
   useEffect(() => {
     const checkFormIsValid = () => {
-      if (isNameValid.isValid) {
+      if (isNameValid.isValid && type != "Choose release type") {
         validate({
           type: "success",
         })
@@ -88,12 +90,10 @@ export default function CreateRelease({
     }
 
     checkFormIsValid()
-  }, [isNameValid.isValid])
+  }, [isNameValid.isValid, type])
 
   const resetForm = () => {
     setArtworkUrl()
-    setPagePassword()
-    setIsPasswordProtected(false)
     setNewImagePath()
     setIsActive(true)
     setAbout()
@@ -153,6 +153,7 @@ export default function CreateRelease({
         sites: sites,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
+        page_password: pagePassword,
         release_slug: sluggedName,
         release_date: releaseDate,
         about: about,
@@ -393,9 +394,14 @@ export default function CreateRelease({
                 isProtected={isPasswordProtected}
                 pagePassword={pagePassword}
                 setIsProtected={() =>
-                  setIsPasswordProtected(!isPasswordProtected)
+                  dispatch({
+                    type: "input",
+                    name: "isPasswordProtected",
+                    value: !isPasswordProtected,
+                  })
                 }
-                setPagePassword={(e) => setPagePassword(e.target.value)}
+                // setPagePassword={(e) => setPagePassword(e.target.value)}
+                dispatch={dispatch}
               >
                 Password protect this page
               </InputPasswordProtect>
