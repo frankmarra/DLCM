@@ -14,8 +14,8 @@ import Link from "next/link"
 import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
-import InputReducer from "../InputReducer/InputReducer"
-import InputValidator from "../InputValidator/InputValidator"
+import formReducer from "../../utils/formReducer"
+import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
 
 export default function UpdateProfile({
@@ -49,8 +49,8 @@ export default function UpdateProfile({
 
   const supabase = createClientComponentClient()
   const [open, setOpen] = useState(false)
-  const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
-  const [validation, validate] = useReducer(InputValidator, initialValidation)
+  const [formValue, dispatch] = useReducer(formReducer, initialFormValue)
+  const [validation, validate] = useReducer(inputValidator, initialValidation)
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
@@ -72,7 +72,7 @@ export default function UpdateProfile({
     const checkFormIsValid = () => {
       if (isNameValid.isValid) {
         validate({
-          type: "success",
+          type: "formSuccess",
         })
       }
     }
@@ -80,11 +80,19 @@ export default function UpdateProfile({
     checkFormIsValid()
   }, [isNameValid.isValid])
 
+  const handleChange = (e) => {
+    dispatch({
+      type: "change",
+      name: e.target.id,
+      value: e.target.value,
+    })
+  }
+
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
       validate({
-        type: "badCheck",
+        type: "error",
         name: "isNameValid",
         message: "Profile must have a slug",
       })
@@ -92,7 +100,7 @@ export default function UpdateProfile({
     if (sluggedName.length > 0) {
       if (sluggedName == profileData.slug) {
         validate({
-          type: "goodCheck",
+          type: "success",
           name: "isNameValid",
           message: "This is your current URL",
         })
@@ -104,13 +112,13 @@ export default function UpdateProfile({
 
         if (data.length > 0) {
           validate({
-            type: "badCheck",
+            type: "error",
             name: "isNameValid",
             message: "URLs taken, try again",
           })
         } else if (data.length == 0) {
           validate({
-            type: "goodCheck",
+            type: "success",
             name: "isNameValid",
             message: "This URL is available, snag it!",
           })
@@ -224,13 +232,7 @@ export default function UpdateProfile({
             id="username"
             type="text"
             value={username || ""}
-            onChange={(e) =>
-              dispatch({
-                type: "input",
-                name: "username",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
             required
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
@@ -249,7 +251,7 @@ export default function UpdateProfile({
                 value={sluggedName}
                 onChange={(e) =>
                   dispatch({
-                    type: "input",
+                    type: "change",
                     name: "sluggedName",
                     value: slugify(e.target.value, {
                       lower: true,
@@ -290,13 +292,7 @@ export default function UpdateProfile({
             id="location"
             type="text"
             value={location || ""}
-            onChange={(e) =>
-              dispatch({
-                type: "input",
-                name: "location",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
           />
           <label className="label" htmlFor="aboutBlurb">
             About blurb
@@ -308,13 +304,7 @@ export default function UpdateProfile({
             rows="5"
             cols="30"
             value={aboutBlurb}
-            onChange={(e) =>
-              dispatch({
-                type: "input",
-                name: "aboutBlurb",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
             placeholder="Enter a brief about section for your fans (optional)"
           ></textarea>
           <label className="label" htmlFor="yumUrl">
@@ -325,13 +315,7 @@ export default function UpdateProfile({
             id="yumUrl"
             type="text"
             value={yumUrl || ""}
-            onChange={(e) =>
-              dispatch({
-                type: "input",
-                name: "yumUrl",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
           />
           <small className="hint">
             This is the link your customers will visit to redeem their code. It
@@ -339,7 +323,7 @@ export default function UpdateProfile({
           </small>
           <InputSocialSites
             sites={sites}
-            dispatch={dispatch}
+            onChange={dispatch}
             hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
             labelArtist={
               profileData.type.charAt(0).toUpperCase() +
@@ -354,19 +338,19 @@ export default function UpdateProfile({
               pagePassword={pagePassword}
               setIsProtected={() =>
                 dispatch({
-                  type: "input",
+                  type: "change",
                   name: "isPasswordProtected",
                   value: !isPasswordProtected,
                 })
               }
               setPagePassword={(e) =>
                 dispatch({
-                  type: "input",
+                  type: "change",
                   name: "pagePassword",
                   value: e.target.value,
                 })
               }
-              dispatch={dispatch}
+              onChange={dispatch}
             >
               Password protect your profile page
             </InputPasswordProtect>

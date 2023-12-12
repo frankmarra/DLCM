@@ -4,28 +4,36 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Link from "next/link"
 import styles from "./LoginForm.module.css"
 import { useRouter } from "next/router"
-import InputReducer from "../InputReducer/InputReducer"
+import formReducer from "../../utils/formReducer"
 import Loader from "@/components/Loader/Loader"
 
 export default function LoginForm() {
   const supabase = createClientComponentClient()
   const user = useUser()
   const router = useRouter()
-  // const [loading, setLoading] = useState(true)
-  const [formValue, dispatch] = useReducer(InputReducer, {
+
+  const initialFormValue = {
     email: "",
     password: "",
     submitting: false,
     success: false,
     error: null,
-  })
-  // const [email, setEmail] = useState("")
-  // const [password, setPassword] = useState("")
+  }
+
+  const [formValue, dispatch] = useReducer(formReducer, initialFormValue)
 
   const { email, password } = formValue
 
   if (user) {
     router.push("/")
+  }
+
+  const handleChange = (e) => {
+    dispatch({
+      type: "change",
+      name: e.target.name,
+      value: e.target.value,
+    })
   }
 
   const handleSubmit = async (e) => {
@@ -38,11 +46,9 @@ export default function LoginForm() {
     })
 
     if (error) {
-      // setEmail("")
-      // setPassword("")
       dispatch({ type: "error" })
       dispatch({
-        type: "input",
+        type: "change",
         name: "password",
         value: "",
       })
@@ -68,15 +74,9 @@ export default function LoginForm() {
           Email
         </label>
         <input
-          onChange={(e) =>
-            dispatch({
-              type: "input",
-              name: "email",
-              value: e.target.value,
-            })
-          }
+          onChange={handleChange}
           className="input"
-          id="email"
+          name="email"
           type="email"
           value={email}
           required
@@ -87,15 +87,9 @@ export default function LoginForm() {
             Password
           </label>
           <input
-            onChange={(e) =>
-              dispatch({
-                type: "input",
-                name: "password",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
             className="input"
-            id="password"
+            name="password"
             type="password"
             value={password}
             required

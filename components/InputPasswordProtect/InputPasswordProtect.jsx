@@ -5,7 +5,7 @@ export default function InputPasswordProtect({
   children,
   isProtected,
   pagePassword,
-  dispatch,
+  onChange,
 }) {
   const pagePasswordInputRef = useRef(null)
 
@@ -23,8 +23,8 @@ export default function InputPasswordProtect({
           id={id}
           checked={isProtected}
           onChange={() =>
-            dispatch({
-              type: "input",
+            onChange({
+              type: "change",
               name: "isPasswordProtected",
               value: !isProtected,
             })
@@ -45,8 +45,8 @@ export default function InputPasswordProtect({
             type="password"
             value={pagePassword}
             onChange={(e) =>
-              dispatch({
-                type: "input",
+              onChange({
+                type: "change",
                 name: "pagePassword",
                 value: e.target.value,
               })

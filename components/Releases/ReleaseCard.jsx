@@ -9,7 +9,7 @@ import UpdateRelease from "./UpdateRelease"
 import ReleaseStats from "../ReleaseStats/ReleaseStats"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
-import InputReducer from "../InputReducer/InputReducer"
+import formReducer from "../../utils/formReducer"
 
 export default function ReleaseCard({
   release,
@@ -24,7 +24,7 @@ export default function ReleaseCard({
     error: null,
   }
 
-  const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
+  const [formValue, dispatch] = useReducer(formReducer, initialFormValue)
   const [onCodeAdded, setOnCodeAdded] = useState(false)
   const [showReleaseUpdateView, setShowReleaseUpdateView] = useState(false)
   const [artwork, setArtwork] = useState(release.artwork_url)
@@ -45,7 +45,7 @@ export default function ReleaseCard({
   const showRelease = async (activeStatus) => {
     try {
       dispatch({
-        type: "input",
+        type: "change",
         name: "isActive",
         value: activeStatus,
       })

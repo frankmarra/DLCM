@@ -5,8 +5,8 @@ import { useRouter } from "next/router"
 import PopoverTip from "@/components/PopoverTip/PopoverTip"
 import Head from "next/head"
 import SEO from "@/components/SEO/SEO"
-import InputReducer from "@/components/InputReducer/InputReducer"
-import InputValidator from "@/components/InputValidator/InputValidator"
+import formReducer from "@/utils/formReducer"
+import inputValidator from "@/utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
 
 const accountTypes = [
@@ -15,22 +15,24 @@ const accountTypes = [
   { value: "artist", label: "Artist", disabled: false },
 ]
 
-const Signup = () => {
-  const [formValue, dispatch] = useReducer(InputReducer, {
-    email: "",
-    sluggedName: "",
-    password: "",
-    passwordCheck: "",
-    type: accountTypes[0].value,
-    name: "",
-    location: "",
-    firstSlugCheck: false,
-    submitting: false,
-    success: false,
-    error: null,
-  })
+const initialFormValue = {
+  email: "",
+  sluggedName: "",
+  password: "",
+  passwordCheck: "",
+  type: accountTypes[0].value,
+  name: "",
+  location: "",
+  firstSlugCheck: false,
+  submitting: false,
+  success: false,
+  error: null,
+}
 
-  const [validation, validate] = useReducer(InputValidator, {
+const Signup = () => {
+  const [formValue, dispatch] = useReducer(formReducer, initialFormValue)
+
+  const [validation, validate] = useReducer(inputValidator, {
     isEmailValid: {
       color: "transparent",
       message: "",
@@ -75,13 +77,21 @@ const Signup = () => {
         type.length > 0
       ) {
         validate({
-          type: "success",
+          type: "formSuccess",
         })
       }
     }
 
     checkFormIsValid()
   }, [isEmailValid.isValid, isNameValid.isValid, isPasswordValid.isValid, type])
+
+  const handleChange = (e) => {
+    dispatch({
+      type: "change",
+      name: e.target.id,
+      value: e.target.value,
+    })
+  }
 
   const checkEmail = async (e) => {
     e.preventDefault()
@@ -93,13 +103,13 @@ const Signup = () => {
 
       if (data.length > 0) {
         validate({
-          type: "badCheck",
+          type: "error",
           name: "isEmailValid",
           message: "Account for this email already exists",
         })
       } else if (data.length == 0) {
         validate({
-          type: "goodCheck",
+          type: "success",
           name: "isEmailValid",
           message: "Account available for this email",
         })
@@ -113,13 +123,13 @@ const Signup = () => {
     if (formValue.password.length > 0) {
       if (formValue.password === formValue.passwordCheck) {
         validate({
-          type: "goodCheck",
+          type: "success",
           name: "isPasswordValid",
           message: "Passwords match",
         })
       } else if (formValue.password != formValue.passwordCheck) {
         validate({
-          type: "badCheck",
+          type: "error",
           name: "isPasswordValid",
           message: "Passwords do not match",
         })
@@ -132,14 +142,14 @@ const Signup = () => {
 
     if (firstSlugCheck == false) {
       dispatch({
-        type: "input",
+        type: "change",
         name: "firstSlugCheck",
         value: true,
       })
     }
     if (sluggedName.length == 0) {
       dispatch({
-        type: "badCheck",
+        type: "error",
         name: "isNameValid",
         message: "User must have a slug",
       })
@@ -152,13 +162,13 @@ const Signup = () => {
 
       if (data.length > 0) {
         validate({
-          type: "badCheck",
+          type: "error",
           name: "isNameValid",
           message: "This URL is already in use",
         })
       } else if (data.length == 0) {
         validate({
-          type: "goodCheck",
+          type: "success",
           name: "isNameValid",
           message: "This url is available, snag it!",
         })
@@ -199,7 +209,7 @@ const Signup = () => {
       if (error) {
         dispatch({ type: "error", error: error.message })
         validate({
-          type: "badCheck",
+          type: "error",
           name: "isPasswordValid",
           message: "",
         })
@@ -252,13 +262,7 @@ const Signup = () => {
                 <label htmlFor="email">Email</label>
                 <input
                   className="input"
-                  onChange={(e) =>
-                    dispatch({
-                      type: "input",
-                      name: "email",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                   id="email"
                   type="email"
                   value={email}
@@ -276,13 +280,7 @@ const Signup = () => {
                 <label htmlFor="password">Password</label>
                 <input
                   className="input"
-                  onChange={(e) =>
-                    dispatch({
-                      type: "input",
-                      name: "password",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                   id="password"
                   type="password"
                   value={password}
@@ -297,13 +295,7 @@ const Signup = () => {
                 <label htmlFor="passwordCheck">Re-enter password</label>
                 <input
                   className="input"
-                  onChange={(e) =>
-                    dispatch({
-                      type: "input",
-                      name: "passwordCheck",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                   id="passwordCheck"
                   type="password"
                   value={passwordCheck}
@@ -322,13 +314,7 @@ const Signup = () => {
                 <label htmlFor="type">Account type</label>
                 <select
                   className="select input"
-                  onChange={(e) =>
-                    dispatch({
-                      type: "input",
-                      name: "type",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={handleChange}
                   id="type"
                   value={type}
                   required
@@ -351,13 +337,7 @@ const Signup = () => {
                     <label htmlFor="name">Label name</label>
                     <input
                       className="input"
-                      onChange={(e) =>
-                        dispatch({
-                          type: "input",
-                          name: "name",
-                          value: e.target.value,
-                        })
-                      }
+                      onChange={handleChange}
                       id="name"
                       type="text"
                       value={name}
@@ -366,7 +346,7 @@ const Signup = () => {
                           ? null
                           : (e) =>
                               dispatch({
-                                type: "input",
+                                type: "change",
                                 name: "sluggedName",
                                 value: slugify(e.target.value, {
                                   lower: true,
@@ -388,7 +368,7 @@ const Signup = () => {
                       className="input"
                       onChange={(e) =>
                         dispatch({
-                          type: "input",
+                          type: "change",
                           name: "sluggedName",
                           value: slugify(e.target.value, {
                             lower: true,
@@ -404,7 +384,7 @@ const Signup = () => {
                           ? null
                           : (e) =>
                               dispatch({
-                                type: "input",
+                                type: "change",
                                 name: "sluggedName",
                                 value: slugify(e.target.value, {
                                   lower: true,
@@ -433,13 +413,7 @@ const Signup = () => {
                     <label htmlFor="name">Artist name</label>
                     <input
                       className="input"
-                      onChange={(e) =>
-                        dispatch({
-                          type: "input",
-                          name: "name",
-                          value: e.target.value,
-                        })
-                      }
+                      onChange={handleChange}
                       id="name"
                       type="text"
                       value={name}
@@ -448,7 +422,7 @@ const Signup = () => {
                           ? null
                           : (e) =>
                               dispatch({
-                                type: "input",
+                                type: "change",
                                 name: "sluggedName",
                                 value: slugify(e.target.value, {
                                   lower: true,
@@ -470,7 +444,7 @@ const Signup = () => {
                       className="input"
                       onChange={(e) =>
                         dispatch({
-                          type: "input",
+                          type: "change",
                           name: "sluggedName",
                           value: slugify(e.target.value, {
                             lower: true,

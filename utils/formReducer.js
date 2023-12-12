@@ -1,10 +1,10 @@
-export default function InputReducer(state, action) {
-  if (action.type === "input") {
+export default function formReducer(state, action) {
+  if (action.type === "change") {
     return {
       ...state,
       [action.name]: action.value,
     }
-  } else if (action.type === "object-input") {
+  } else if (action.type === "object-change") {
     //Make sure to send objectVariables prop to populate object with current key/value pairs.
     return {
       ...state,

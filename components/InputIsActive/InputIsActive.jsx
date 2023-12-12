@@ -2,7 +2,7 @@ export default function InputIsActive({
   isActive,
   setIsActive,
   children,
-  dispatch,
+  onChange,
 }) {
   return (
     <label className="label checkbox" htmlFor="isActive">
@@ -12,8 +12,8 @@ export default function InputIsActive({
         type="checkbox"
         checked={isActive}
         onChange={() =>
-          dispatch({
-            type: "input",
+          onChange({
+            type: "change",
             name: "isActive",
             value: !isActive,
           })

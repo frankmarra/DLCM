@@ -20,8 +20,8 @@ import InputReleaseType from "../InputReleaseType/InputReleaseType"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputIsActive from "../InputIsActive/InputIsActive"
 import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
-import InputReducer from "../InputReducer/InputReducer"
-import InputValidator from "../InputValidator/InputValidator"
+import formReducer from "../../utils/formReducer"
+import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
 
 export default function UpdateRelease({
@@ -58,8 +58,8 @@ export default function UpdateRelease({
     checking: false,
   }
 
-  const [formValue, dispatch] = useReducer(InputReducer, initialFormValue)
-  const [validation, validate] = useReducer(InputValidator, initialValidation)
+  const [formValue, dispatch] = useReducer(formReducer, initialFormValue)
+  const [validation, validate] = useReducer(inputValidator, initialValidation)
   const [open, setOpen] = useState(false)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
   // const [isPasswordProtected, setIsPasswordProtected] = useState(
@@ -84,6 +84,7 @@ export default function UpdateRelease({
     isPasswordProtected,
     isActive,
   } = formValue
+
   const { isNameValid, isFormValid } = validation
 
   const resetForm = () => {
@@ -97,7 +98,7 @@ export default function UpdateRelease({
     const checkFormIsValid = () => {
       if (isNameValid.isValid) {
         validate({
-          type: "success",
+          type: "formSuccess",
         })
       }
     }
@@ -105,40 +106,56 @@ export default function UpdateRelease({
     checkFormIsValid()
   }, [isNameValid.isValid])
 
+  const handleChange = (e) => {
+    dispatch({
+      type: "change",
+      name: e.target.id,
+      value: e.target.value,
+    })
+  }
+
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
       validate({
-        type: "badCheck",
+        type: "error",
         name: "isNameValid",
         message: "Release must have a slug",
       })
     }
     if (sluggedName.length > 0) {
       if (firstSlugCheck == false) {
-        dispatch({ type: "input", value: true })
+        dispatch({ type: "change", name: "firstSlugCheck", value: true })
       }
-      let { data, error } = await supabase
-        .from("releases")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("release_slug", sluggedName)
+      if (sluggedName == release.release_slug) {
+        validate({
+          type: "success",
+          name: "isNameValid",
+          message: "This is your current URL",
+        })
+      } else {
+        let { data, error } = await supabase
+          .from("releases")
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("release_slug", sluggedName)
 
-      if (data.length > 0) {
-        validate({
-          type: "badCheck",
-          name: "isNameValid",
-          message: "This URL is taken, try again",
-        })
-      } else if (data.length == 0) {
-        validate({
-          type: "goodCheck",
-          name: "isNameValid",
-          message: "This URL is available, snag it!",
-        })
+        if (data.length > 0) {
+          validate({
+            type: "error",
+            name: "isNameValid",
+            message: "This URL is taken, try again",
+          })
+        } else if (data.length == 0) {
+          validate({
+            type: "success",
+            name: "isNameValid",
+            message: "This URL is available, snag it!",
+          })
+        }
+
+        if (error) throw error
       }
-
-      if (error) throw error
     }
   }
 
@@ -300,19 +317,13 @@ export default function UpdateRelease({
             id="title"
             type="text"
             value={title}
-            onChange={(e) =>
-              dispatch({
-                type: "input",
-                name: "title",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
             onInput={
               firstSlugCheck
                 ? null
                 : (e) =>
                     dispatch({
-                      type: "input",
+                      type: "change",
                       name: "sluggedName",
                       value: slugify(e.target.value, {
                         lower: true,
@@ -332,7 +343,7 @@ export default function UpdateRelease({
               className="input"
               onChange={(e) =>
                 dispatch({
-                  type: "input",
+                  type: "change",
                   name: "sluggedName",
                   value: slugify(e.target.value, {
                     lower: true,
@@ -368,13 +379,7 @@ export default function UpdateRelease({
               id="releaseDate"
               type="date"
               value={releaseDate}
-              onChange={(e) =>
-                dispatch({
-                  type: "input",
-                  name: "releaseDate",
-                  value: e.target.value,
-                })
-              }
+              onChange={handleChange}
             />
           </label>
 
@@ -386,23 +391,17 @@ export default function UpdateRelease({
             id="yumUrl"
             type="text"
             value={yumUrl}
-            onChange={(e) =>
-              dispatch({
-                type: "input",
-                name: "yumUrl",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
           />
 
           <InputSocialSites
             sites={sites}
-            dispatch={dispatch}
+            onChange={dispatch}
             hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              <InputIsActive isActive={isActive} dispatch={dispatch}>
+              <InputIsActive isActive={isActive} onChange={dispatch}>
                 Show Release
               </InputIsActive>
               <InputReleaseAbout about={about} setAbout={setAbout} />
@@ -412,19 +411,19 @@ export default function UpdateRelease({
                 pagePassword={pagePassword}
                 setIsProtected={() =>
                   dispatch({
-                    type: "input",
+                    type: "change",
                     name: "isPasswordProtected",
                     value: !isPasswordProtected,
                   })
                 }
                 setPagePassword={(e) =>
                   dispatch({
-                    type: "input",
+                    type: "change",
                     name: "pagePassword",
                     value: e.target.value,
                   })
                 }
-                dispatch={dispatch}
+                onChange={dispatch}
               >
                 Password protect this release
               </InputPasswordProtect>

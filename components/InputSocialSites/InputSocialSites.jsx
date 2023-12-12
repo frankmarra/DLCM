@@ -2,7 +2,7 @@ import { prependProtocol } from "@/utils/utils"
 
 export default function InputSocialSites({
   sites,
-  dispatch,
+  onChange,
   hasProAccount,
   showPersonal,
   labelArtist,
@@ -23,8 +23,8 @@ export default function InputSocialSites({
             type="url"
             value={sites?.personal ?? null}
             onChange={(e) =>
-              dispatch({
-                type: "object-input",
+              onChange({
+                type: "object-change",
                 object: "sites",
                 objectVariables: sites,
                 name: "personal",
@@ -44,8 +44,8 @@ export default function InputSocialSites({
         value={sites?.bandcamp ?? null}
         required
         onChange={(e) =>
-          dispatch({
-            type: "object-input",
+          onChange({
+            type: "object-change",
             object: "sites",
             objectVariables: sites,
             name: "bandcamp",
@@ -64,8 +64,8 @@ export default function InputSocialSites({
             type="url"
             value={sites?.apple ?? null}
             onChange={(e) =>
-              dispatch({
-                type: "object-input",
+              onChange({
+                type: "object-change",
                 name: "apple",
                 object: "sites",
                 objectVariables: sites,
@@ -83,8 +83,8 @@ export default function InputSocialSites({
             type="url"
             value={sites?.spotify ?? null}
             onChange={(e) =>
-              dispatch({
-                type: "object-input",
+              onChange({
+                type: "object-change",
                 object: "sites",
                 objectVariables: sites,
                 name: "spotify",
@@ -101,8 +101,8 @@ export default function InputSocialSites({
             type="url"
             value={sites?.soundcloud ?? null}
             onChange={(e) =>
-              dispatch({
-                type: "object-input",
+              onChange({
+                type: "object-change",
                 name: "soundcloud",
                 object: "sites",
                 objectVariables: sites,
@@ -119,8 +119,8 @@ export default function InputSocialSites({
             type="url"
             value={sites?.youtube ?? null}
             onChange={(e) =>
-              dispatch({
-                type: "object-input",
+              onChange({
+                type: "object-change",
                 name: "youtube",
                 object: "sites",
                 objectVariables: sites,

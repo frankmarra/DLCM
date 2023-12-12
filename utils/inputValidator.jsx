@@ -1,5 +1,5 @@
-export default function InputValidator(state, action) {
-  if (action.type == "goodCheck") {
+export default function inputValidator(state, action) {
+  if (action.type == "success") {
     return {
       ...state,
       checking: false,
@@ -9,7 +9,7 @@ export default function InputValidator(state, action) {
         isValid: true,
       },
     }
-  } else if (action.type === "badCheck") {
+  } else if (action.type === "error") {
     return {
       ...state,
       checking: false,
@@ -25,7 +25,7 @@ export default function InputValidator(state, action) {
       ...state,
       checking: true,
     }
-  } else if (action.type === "success") {
+  } else if (action.type === "formSuccess") {
     return {
       ...state,
       checking: false,

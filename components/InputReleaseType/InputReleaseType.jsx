@@ -11,7 +11,7 @@ const releaseTypes = [
   { id: 9, text: "Demo" },
 ]
 
-export default function InputReleaseType({ type, dispatch }) {
+export default function InputReleaseType({ type, onChange }) {
   return (
     <>
       <label className="label" htmlFor="type">
@@ -20,8 +20,8 @@ export default function InputReleaseType({ type, dispatch }) {
       <select
         className="input select"
         onChange={(e) =>
-          dispatch({
-            type: "input",
+          onChange({
+            type: "change",
             name: "type",
             value: e.target.value,
           })
