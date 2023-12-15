@@ -7,6 +7,16 @@ export default function InputSocialSites({
   showPersonal,
   labelArtist,
 }) {
+  const handleChange = (e) => {
+    onChange({
+      type: "object-change",
+      object: "sites",
+      objectVariables: sites,
+      name: e.target.id,
+      value: e.target.value,
+    })
+  }
+
   return (
     <>
       {showPersonal ? (
@@ -22,15 +32,7 @@ export default function InputSocialSites({
             id="personal"
             type="url"
             value={sites?.personal ?? null}
-            onChange={(e) =>
-              onChange({
-                type: "object-change",
-                object: "sites",
-                objectVariables: sites,
-                name: "personal",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
           />
         </>
       ) : null}
@@ -43,15 +45,7 @@ export default function InputSocialSites({
         type="url"
         value={sites?.bandcamp ?? null}
         required
-        onChange={(e) =>
-          onChange({
-            type: "object-change",
-            object: "sites",
-            objectVariables: sites,
-            name: "bandcamp",
-            value: e.target.value,
-          })
-        }
+        onChange={handleChange}
       />
       {hasProAccount ? (
         <>
@@ -63,15 +57,7 @@ export default function InputSocialSites({
             id="apple"
             type="url"
             value={sites?.apple ?? null}
-            onChange={(e) =>
-              onChange({
-                type: "object-change",
-                name: "apple",
-                object: "sites",
-                objectVariables: sites,
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
           />
 
           <label className="label" htmlFor="spotify">
@@ -82,15 +68,7 @@ export default function InputSocialSites({
             id="spotify"
             type="url"
             value={sites?.spotify ?? null}
-            onChange={(e) =>
-              onChange({
-                type: "object-change",
-                object: "sites",
-                objectVariables: sites,
-                name: "spotify",
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
           />
           <label className="label" htmlFor="soundcloud">
             Soundcloud Link
@@ -100,15 +78,7 @@ export default function InputSocialSites({
             id="soundcloud"
             type="url"
             value={sites?.soundcloud ?? null}
-            onChange={(e) =>
-              onChange({
-                type: "object-change",
-                name: "soundcloud",
-                object: "sites",
-                objectVariables: sites,
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
           />
           <label className="label" htmlFor="youtube">
             YouTube Link
@@ -118,15 +88,47 @@ export default function InputSocialSites({
             id="youtube"
             type="url"
             value={sites?.youtube ?? null}
-            onChange={(e) =>
-              onChange({
-                type: "object-change",
-                name: "youtube",
-                object: "sites",
-                objectVariables: sites,
-                value: e.target.value,
-              })
-            }
+            onChange={handleChange}
+          />
+          <label className="label" htmlFor="facebook">
+            Facebook Link
+          </label>
+          <input
+            className="input"
+            id="facebook"
+            type="url"
+            value={sites?.facebook ?? null}
+            onChange={handleChange}
+          />
+          <label className="label" htmlFor="instagram">
+            Instagram Link
+          </label>
+          <input
+            className="input"
+            id="instagram"
+            type="url"
+            value={sites?.instagram ?? null}
+            onChange={handleChange}
+          />
+          <label className="label" htmlFor="tiktok">
+            TikTok Link
+          </label>
+          <input
+            className="input"
+            id="tiktok"
+            type="url"
+            value={sites?.tiktok ?? null}
+            onChange={handleChange}
+          />
+          <label className="label" htmlFor="twitter">
+            Twitter Link
+          </label>
+          <input
+            className="input"
+            id="twitter"
+            type="url"
+            value={sites?.twitter ?? null}
+            onChange={handleChange}
           />
         </>
       ) : null}

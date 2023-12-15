@@ -6,6 +6,10 @@ import {
   faYoutube,
   faSoundcloud,
   faItunesNote,
+  faInstagram,
+  faFacebook,
+  faTwitter,
+  faTiktok,
 } from "@fortawesome/free-brands-svg-icons"
 import cn from "classnames"
 
@@ -25,7 +29,7 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
   return showSites ? (
     <>
       <div className={cn(styles.sites, "cluster")}>
-        <p className={styles.label}>Listen</p>
+        <p className={styles.label}>Listen / Follow</p>
         <ul className={cn(styles.list, "cluster")} role="list">
           {isSubscribed || isDlcmFriend ? (
             <>
@@ -91,6 +95,62 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
                       icon={faYoutube}
                       size={iconSize}
                       color="#FE0100"
+                    />
+                  </a>
+                </li>
+              ) : null}
+              {sites.facebook ? (
+                <li className="facebook">
+                  <a href={`${sites.facebook}`}>
+                    <span className="visually-hidden">
+                      Visit profile on Facebook
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faFacebook}
+                      size={iconSize}
+                      color="#3A5694"
+                    />
+                  </a>
+                </li>
+              ) : null}
+              {sites.instagram ? (
+                <li className="instagram">
+                  <a href={`${sites.instagram}`}>
+                    <span className="visually-hidden">
+                      Visit profile on Instagram
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faInstagram}
+                      size={iconSize}
+                      color="#E74B44"
+                    />
+                  </a>
+                </li>
+              ) : null}
+              {sites.tiktok ? (
+                <li className="tiktok">
+                  <a href={`${sites.tiktok}`}>
+                    <span className="visually-hidden">
+                      Visit profile on TikTok
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faTiktok}
+                      size={iconSize}
+                      color="#FE0100"
+                    />
+                  </a>
+                </li>
+              ) : null}
+              {sites.twitter ? (
+                <li className="twitter">
+                  <a href={`${sites.twitter}`}>
+                    <span className="visually-hidden">
+                      Visit profile on Twitter
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faTwitter}
+                      size={iconSize}
+                      color="#309DEC"
                     />
                   </a>
                 </li>
