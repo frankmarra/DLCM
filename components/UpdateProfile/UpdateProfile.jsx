@@ -14,6 +14,7 @@ import Link from "next/link"
 import { prependProtocol } from "@/utils/utils"
 import InputPasswordProtect from "../InputPasswordProtect/InputPasswordProtect"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
+import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
@@ -26,7 +27,7 @@ export default function UpdateProfile({
   const initialFormValue = {
     username: profileData.username,
     sluggedName: profileData.slug,
-    aboutBlurb: profileData.about_blurb,
+    // aboutBlurb: profileData.about_blurb,
     location: profileData.location,
     yumUrl: profileData.yum_url,
     sites: profileData.sites ?? null,
@@ -54,10 +55,11 @@ export default function UpdateProfile({
   const [avatarUrl, setAvatarUrl] = useState(profileData.avatar_url)
   const [imagePath, setImagePath] = useState(profileData.avatar_path)
   const [newImagePath, setNewImagePath] = useState()
+  const [aboutBlurb, setAboutBlurb] = useState(profileData.about_blurb)
 
   const {
     username,
-    aboutBlurb,
+    // aboutBlurb,
     location,
     yumUrl,
     sluggedName,
@@ -294,19 +296,22 @@ export default function UpdateProfile({
             value={location || ""}
             onChange={handleChange}
           />
-          <label className="label" htmlFor="aboutBlurb">
-            About blurb
-          </label>
-          <textarea
-            className="input"
-            id="aboutBlurb"
-            name="aboutBlurb"
-            rows="5"
-            cols="30"
-            value={aboutBlurb}
-            onChange={handleChange}
-            placeholder="Enter a brief about section for your fans (optional)"
-          ></textarea>
+          <InputReleaseAbout about={aboutBlurb} setAbout={setAboutBlurb} />
+          {
+            //   <label className="label" htmlFor="aboutBlurb">
+            //   About blurb
+            // </label>
+            // <textarea
+            //   className="input"
+            //   id="aboutBlurb"
+            //   name="aboutBlurb"
+            //   rows="5"
+            //   cols="30"
+            //   value={aboutBlurb}
+            //   onChange={handleChange}
+            //   placeholder="Enter a brief about section for your fans (optional)"
+            // ></textarea>
+          }
           <label className="label" htmlFor="yumUrl">
             Redemption{`(yum)`} Link
           </label>
