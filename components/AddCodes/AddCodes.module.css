@@ -1,0 +1,10 @@
+.codes{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.codes button {
+  margin-inline-start: 2vw;
+}

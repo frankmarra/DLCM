@@ -8,6 +8,7 @@ import {
   DialogClose,
 } from "@/components/Dialog/Dialog"
 import Papa from "papaparse"
+import styles from "./AddCodes.module.css"
 
 export default function AddCodes({
   userId,
@@ -46,6 +47,12 @@ export default function AddCodes({
       },
     })
   }
+
+  function removeCode(index) {
+    let updatedCodes = codes.toSpliced(index, 1)
+    setCodes(updatedCodes)
+  }
+
   async function createCodes() {
     try {
       let codeArray = []
@@ -123,12 +130,40 @@ export default function AddCodes({
 
           {displayCodes ? (
             <>
-              <p>Codes to add:</p>
-              <ul>
-                {codes.map((code, index) => (
-                  <li key={index}>{code}</li>
-                ))}
-              </ul>
+              {
+                // <p>Codes to add:</p>
+                //   <ul>
+                //   {codes.map((code, index) => (
+                //     <li key={index}>{code}</li>
+                //   ))}
+                // </ul>
+              }
+              <div className={styles.codes}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th colspan="2">Codes To Add</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {codes.map((code, index) => (
+                      <tr key={index}>
+                        <td>{code}</td>
+                        <td>
+                          <button
+                            className="button"
+                            type="button"
+                            data-variant="secondary"
+                            onClick={() => removeCode(index)}
+                          >
+                            remove?
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </>
           ) : null}
         </div>
