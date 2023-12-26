@@ -9,6 +9,7 @@ import {
 } from "@/components/Dialog/Dialog"
 import Papa from "papaparse"
 import styles from "./AddCodes.module.css"
+import Loader from "../Loader/Loader"
 
 export default function AddCodes({
   userId,
@@ -18,8 +19,49 @@ export default function AddCodes({
 }) {
   const supabase = createClientComponentClient()
   const [codes, setCodes] = useState()
+  const [duplicateCodes, setDuplicateCodes] = useState()
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [displayCodes, toggleDisplayCodes] = useState(false)
+
+  async function checkCodes(codes) {
+    let checkedCodes = []
+    let duplicates = []
+
+    try {
+      setLoading(true)
+
+      let {
+        data: activeCodes,
+        error,
+        status,
+      } = await supabase.from("codes").select("*").eq("release_id", releaseId)
+
+      if (error && status !== 406) {
+        throw error
+      }
+
+      if (activeCodes.length > 0) {
+        activeCodes.forEach((code) => {
+          if (codes.includes(code.code)) {
+            let index = codes.indexOf(code.code)
+            codes.splice(index, 1)
+            duplicates.push(code.code)
+          }
+        })
+
+        setCodes(codes)
+        setDuplicateCodes(duplicates)
+      } else {
+        setCodes(codes)
+      }
+    } catch (error) {
+      alert("Error checking codes")
+      console.lot(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   function handleUpload(e) {
     Papa.parse(e.target.files[0], {
@@ -41,7 +83,8 @@ export default function AddCodes({
         if (!codeArray) {
           setCodes(["No Codes Found"])
         } else {
-          setCodes(codeArray)
+          // setCodes(codeArray)
+          checkCodes(codeArray)
         }
         toggleDisplayCodes(true)
       },
@@ -83,6 +126,10 @@ export default function AddCodes({
   function closeModal() {
     setCodes()
     toggleDisplayCodes(false)
+  }
+
+  if (loading) {
+    return <Loader style={{ margin: "auto" }} />
   }
 
   return (
@@ -142,7 +189,7 @@ export default function AddCodes({
                 <table>
                   <thead>
                     <tr>
-                      <th colspan="2">Codes To Add</th>
+                      <th colSpan="2">Codes To Add</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -163,6 +210,23 @@ export default function AddCodes({
                     ))}
                   </tbody>
                 </table>
+                <table>
+                  <thead>
+                    <tr>
+                      <th colSpan="2">
+                        Duplicates{" "}
+                        <small>{"(These codes will not be added)"}</small>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {duplicateCodes.map((code, index) => (
+                      <tr key={index}>
+                        <td>{code}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </>
           ) : null}
@@ -173,6 +237,7 @@ export default function AddCodes({
             className="button"
             data-variant="primary"
             onClick={createCodes}
+            disabled={!codes || codes?.length === 0}
           >
             Add
           </button>

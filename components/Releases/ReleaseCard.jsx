@@ -1,5 +1,6 @@
 import { useState, useEffect, useReducer } from "react"
 import AddCodes from "../AddCodes/AddCodes"
+import EditCodes from "../EditCodes/EditCodes"
 import cn from "classnames"
 import styles from "./ReleaseCard.module.css"
 import Link from "next/link"
@@ -136,7 +137,13 @@ export default function ReleaseCard({
               setOnCodeAdded={setOnCodeAdded}
               profileData={profileData}
             />
-
+            <EditCodes
+              userId={release.user_id}
+              releaseId={release.id}
+              setOnCodeAdded={setOnCodeAdded}
+              profileData={profileData}
+              releaseName={release.title}
+            />
             {profileData.is_subscribed || profileData.dlcm_friend ? (
               <>
                 <ReleaseStats release={release} />
