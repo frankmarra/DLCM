@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import {
   Dialog,
@@ -10,6 +9,8 @@ import {
 import Papa from "papaparse"
 import styles from "./AddCodes.module.css"
 import Loader from "../Loader/Loader"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
 
 export default function AddCodes({
   userId,
@@ -148,33 +149,6 @@ export default function AddCodes({
         </header>
 
         <div className="stack block-overflow">
-          <label className="label" htmlFor="codes">
-            Paste codes from bandcamp CSV here.
-          </label>
-          <textarea
-            className="input block-resize"
-            id="codes"
-            placeholder="Copy and paste codes here"
-            cols="20"
-            rows="8"
-            onChange={(e) => setCodes(e.target.value.split(/\s/g))}
-          ></textarea>
-          {profileData.is_subscribed || profileData.dlcm_friend ? (
-            <>
-              <label className="label" htmlFor="csvcodes">
-                Upload with Bandcamp CSV
-              </label>
-              <br />
-              <small>Must be Bandcamp codes CSV or this will not work.</small>
-              <input
-                type="file"
-                id="csvcodes"
-                accept=".csv"
-                onChange={(e) => handleUpload(e)}
-              />
-            </>
-          ) : null}
-
           {displayCodes ? (
             <>
               {
@@ -185,51 +159,74 @@ export default function AddCodes({
                 //   ))}
                 // </ul>
               }
-              <div className={styles.codes}>
-                <table>
-                  <thead>
-                    <tr>
-                      <th colSpan="2">Codes To Add</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {codes.map((code, index) => (
-                      <tr key={index}>
-                        <td>{code}</td>
-                        <td>
+              <div>
+                {codes.length > 0 ? (
+                  <div className="container ">
+                    <h3 className="intrinsic-center">Codes To Add</h3>
+                    <ul className="flex-grid" role="list">
+                      {codes.map((code, index) => (
+                        <li className="flex-grid container" key={index}>
+                          {code}
+
                           <button
                             className="button"
                             type="button"
                             data-variant="secondary"
+                            data-size="small"
                             onClick={() => removeCode(index)}
                           >
-                            remove?
+                            <FontAwesomeIcon icon={faTrashCan} />
                           </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <table>
-                  <thead>
-                    <tr>
-                      <th colSpan="2">
-                        Duplicates{" "}
-                        <small>{"(These codes will not be added)"}</small>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {duplicateCodes.map((code, index) => (
-                      <tr key={index}>
-                        <td>{code}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {duplicateCodes.length > 0 ? (
+                  <div className="container intrinsic-center">
+                    <h3>Duplicates</h3>
+                    <small>{"(These codes will not be added)"}</small>
+                    <ul className="flex-grid" role="list">
+                      {duplicateCodes.map((code, index) => (
+                        <li key={index}>{code}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             </>
-          ) : null}
+          ) : (
+            <>
+              <label className="label" htmlFor="codes">
+                Paste codes from bandcamp CSV here.
+              </label>
+              <textarea
+                className="input block-resize"
+                id="codes"
+                placeholder="Copy and paste codes here"
+                cols="20"
+                rows="8"
+                onChange={(e) => setCodes(e.target.value.split(/\s/g))}
+              ></textarea>
+              {profileData.is_subscribed || profileData.dlcm_friend ? (
+                <>
+                  <label className="label" htmlFor="csvcodes">
+                    Upload with Bandcamp CSV
+                  </label>
+                  <br />
+                  <small>
+                    Must be Bandcamp codes CSV or this will not work.
+                  </small>
+                  <input
+                    type="file"
+                    id="csvcodes"
+                    accept=".csv"
+                    onChange={(e) => handleUpload(e)}
+                  />
+                </>
+              ) : null}
+            </>
+          )}
         </div>
 
         <footer className="button-actions cluster">
