@@ -11,6 +11,7 @@ import styles from "./AddCodes.module.css"
 import Loader from "../Loader/Loader"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import cn from "classnames"
 
 export default function AddCodes({
   userId,
@@ -161,34 +162,41 @@ export default function AddCodes({
               }
               <div>
                 {codes.length > 0 ? (
-                  <div className="container ">
+                  <div>
                     <h3 className="intrinsic-center">Codes To Add</h3>
                     <ul className="flex-grid" role="list">
                       {codes.map((code, index) => (
-                        <li className="flex-grid container" key={index}>
-                          {code}
+                        <li
+                          className={cn(styles.code, "container")}
+                          key={index}
+                        >
+                          <>
+                            {code}
 
-                          <button
-                            className="button"
-                            type="button"
-                            data-variant="secondary"
-                            data-size="small"
-                            onClick={() => removeCode(index)}
-                          >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                          </button>
+                            <button
+                              className="button"
+                              type="button"
+                              data-variant="secondary"
+                              data-size="small"
+                              onClick={() => removeCode(index)}
+                            >
+                              <FontAwesomeIcon icon={faTrashCan} />
+                            </button>
+                          </>
                         </li>
                       ))}
                     </ul>
                   </div>
                 ) : null}
                 {duplicateCodes.length > 0 ? (
-                  <div className="container intrinsic-center">
+                  <div className=" intrinsic-center">
                     <h3>Duplicates</h3>
                     <small>{"(These codes will not be added)"}</small>
                     <ul className="flex-grid" role="list">
                       {duplicateCodes.map((code, index) => (
-                        <li key={index}>{code}</li>
+                        <li className="container" key={index}>
+                          {code}
+                        </li>
                       ))}
                     </ul>
                   </div>

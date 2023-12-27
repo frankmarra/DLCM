@@ -1,5 +1,6 @@
 
-.code button {
-  margin-inline-start: 2vw;
+.code {
+  display: flex;
+  justify-content: space-between;
 }
 
