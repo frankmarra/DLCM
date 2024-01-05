@@ -170,37 +170,15 @@ export default function AddCodes({
                           className={cn(styles.code, "container")}
                           key={index}
                         >
-                          <>
-                            {code}
-
-                            <button
-                              className="button"
-                              type="button"
-                              data-variant="secondary"
-                              data-size="small"
-                              onClick={() => removeCode(index)}
-                            >
-                              <FontAwesomeIcon icon={faTrashCan} />
-                            </button>
-                          </>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-                {duplicateCodes.length > 0 ? (
-                  <div className=" intrinsic-center">
-                    <h3>Duplicates</h3>
-                    <small>{"(These codes will not be added)"}</small>
-                    <ul className="flex-grid" role="list">
-                      {duplicateCodes.map((code, index) => (
-                        <li className="container" key={index}>
                           {code}
                         </li>
                       ))}
                     </ul>
+                    <small>Any duplicates have been removed</small>
                   </div>
-                ) : null}
+                ) : (
+                  <div>These codes have already been added</div>
+                )}
               </div>
             </>
           ) : (
