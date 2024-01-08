@@ -164,6 +164,9 @@ export default function AddCodes({
                 {codes.length > 0 ? (
                   <div>
                     <h3 className="intrinsic-center">Codes To Add</h3>
+                    <small className="intrinsic-center">
+                      Any duplicates have been removed
+                    </small>
                     <ul className="flex-grid" role="list">
                       {codes.map((code, index) => (
                         <li
@@ -174,7 +177,6 @@ export default function AddCodes({
                         </li>
                       ))}
                     </ul>
-                    <small>Any duplicates have been removed</small>
                   </div>
                 ) : (
                   <div>These codes have already been added</div>
