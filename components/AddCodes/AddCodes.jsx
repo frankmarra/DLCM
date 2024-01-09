@@ -25,10 +25,10 @@ export default function AddCodes({
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [displayCodes, toggleDisplayCodes] = useState(false)
+  const [codesChecked, toggleCodesChecked] = useState(false)
 
   async function checkCodes(codes) {
-    let checkedCodes = []
-    let duplicates = []
+    let codesToCheck = codes
 
     try {
       setLoading(true)
@@ -45,21 +45,23 @@ export default function AddCodes({
 
       if (activeCodes.length > 0) {
         activeCodes.forEach((code) => {
-          if (codes.includes(code.code)) {
-            let index = codes.indexOf(code.code)
-            codes.splice(index, 1)
-            duplicates.push(code.code)
+          if (codesToCheck.includes(code.code)) {
+            let index = codesToCheck.indexOf(code.code)
+            codesToCheck.splice(index, 1)
           }
         })
 
-        setCodes(codes)
-        setDuplicateCodes(duplicates)
+        setCodes(codesToCheck)
+
+        toggleCodesChecked(true)
+        toggleDisplayCodes(true)
       } else {
-        setCodes(codes)
+        toggleDisplayCodes(true)
+        toggleCodesChecked(true)
       }
     } catch (error) {
       alert("Error checking codes")
-      console.lot(error)
+      console.log(error)
     } finally {
       setLoading(false)
     }
@@ -85,18 +87,16 @@ export default function AddCodes({
         if (!codeArray) {
           setCodes(["No Codes Found"])
         } else {
-          // setCodes(codeArray)
           checkCodes(codeArray)
         }
-        toggleDisplayCodes(true)
       },
     })
   }
 
-  function removeCode(index) {
-    let updatedCodes = codes.toSpliced(index, 1)
-    setCodes(updatedCodes)
-  }
+  // function removeCode(index) {
+  //   let updatedCodes = codes.toSpliced(index, 1)
+  //   setCodes(updatedCodes)
+  // }
 
   async function createCodes() {
     try {
@@ -128,6 +128,7 @@ export default function AddCodes({
   function closeModal() {
     setCodes()
     toggleDisplayCodes(false)
+    toggleCodesChecked(false)
   }
 
   if (loading) {
@@ -218,14 +219,25 @@ export default function AddCodes({
         </div>
 
         <footer className="button-actions cluster">
-          <button
-            className="button"
-            data-variant="primary"
-            onClick={createCodes}
-            disabled={!codes || codes?.length === 0}
-          >
-            Add
-          </button>
+          {codesChecked ? (
+            <button
+              className="button"
+              data-variant="primary"
+              onClick={createCodes}
+              disabled={!codes || codes?.length === 0}
+            >
+              Add
+            </button>
+          ) : (
+            <button
+              className="button"
+              data-variant="primary"
+              onClick={() => checkCodes(codes)}
+              disabled={!codes || codes?.length === 0}
+            >
+              Check Codes
+            </button>
+          )}
 
           <DialogClose className="button" onClick={closeModal}>
             Cancel
