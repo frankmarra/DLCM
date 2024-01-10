@@ -20,7 +20,7 @@ export default function InputReleaseAbout({ about, setAbout }) {
   return (
     <>
       <label htmlFor="about" className="label">
-        About this release
+        About
       </label>
       <style>
         {`

@@ -33,7 +33,7 @@ export default function CreateRelease({
     artist: profileData.type == "artist" ? profileData.username : "",
     label: profileData.type == "label" ? profileData.username : "",
     yumUrl: "",
-    releaseDate: "",
+    releaseDate: null,
     type: "Choose release type",
     about: "",
     sites: {},
@@ -89,7 +89,7 @@ export default function CreateRelease({
   useEffect(() => {
     //Checks for form validation. Add conditions to the if statement to increase requirements. Whatever is added to the statement, must also be added to the dependency array.
     const checkFormIsValid = () => {
-      if (isNameValid.isValid && type != "Choose release type") {
+      if (isNameValid.isValid) {
         validate({
           type: "formSuccess",
         })

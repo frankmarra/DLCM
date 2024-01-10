@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import {
   Dialog,
@@ -8,6 +7,11 @@ import {
   DialogClose,
 } from "@/components/Dialog/Dialog"
 import Papa from "papaparse"
+import styles from "./AddCodes.module.css"
+import Loader from "../Loader/Loader"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import cn from "classnames"
 
 export default function AddCodes({
   userId,
@@ -17,8 +21,51 @@ export default function AddCodes({
 }) {
   const supabase = createClientComponentClient()
   const [codes, setCodes] = useState()
+  const [duplicateCodes, setDuplicateCodes] = useState()
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [displayCodes, toggleDisplayCodes] = useState(false)
+  const [codesChecked, toggleCodesChecked] = useState(false)
+
+  async function checkCodes(codes) {
+    let codesToCheck = codes
+
+    try {
+      setLoading(true)
+
+      let {
+        data: activeCodes,
+        error,
+        status,
+      } = await supabase.from("codes").select("*").eq("release_id", releaseId)
+
+      if (error && status !== 406) {
+        throw error
+      }
+
+      if (activeCodes.length > 0) {
+        activeCodes.forEach((code) => {
+          if (codesToCheck.includes(code.code)) {
+            let index = codesToCheck.indexOf(code.code)
+            codesToCheck.splice(index, 1)
+          }
+        })
+
+        setCodes(codesToCheck)
+
+        toggleCodesChecked(true)
+        toggleDisplayCodes(true)
+      } else {
+        toggleDisplayCodes(true)
+        toggleCodesChecked(true)
+      }
+    } catch (error) {
+      alert("Error checking codes")
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   function handleUpload(e) {
     Papa.parse(e.target.files[0], {
@@ -40,12 +87,17 @@ export default function AddCodes({
         if (!codeArray) {
           setCodes(["No Codes Found"])
         } else {
-          setCodes(codeArray)
+          checkCodes(codeArray)
         }
-        toggleDisplayCodes(true)
       },
     })
   }
+
+  // function removeCode(index) {
+  //   let updatedCodes = codes.toSpliced(index, 1)
+  //   setCodes(updatedCodes)
+  // }
+
   async function createCodes() {
     try {
       let codeArray = []
@@ -76,6 +128,11 @@ export default function AddCodes({
   function closeModal() {
     setCodes()
     toggleDisplayCodes(false)
+    toggleCodesChecked(false)
+  }
+
+  if (loading) {
+    return <Loader style={{ margin: "auto" }} />
   }
 
   return (
@@ -94,53 +151,93 @@ export default function AddCodes({
         </header>
 
         <div className="stack block-overflow">
-          <label className="label" htmlFor="codes">
-            Paste codes from bandcamp CSV here.
-          </label>
-          <textarea
-            className="input block-resize"
-            id="codes"
-            placeholder="Copy and paste codes here"
-            cols="20"
-            rows="8"
-            onChange={(e) => setCodes(e.target.value.split(/\s/g))}
-          ></textarea>
-          {profileData.is_subscribed || profileData.dlcm_friend ? (
-            <>
-              <label className="label" htmlFor="csvcodes">
-                Upload with Bandcamp CSV
-              </label>
-              <br />
-              <small>Must be Bandcamp codes CSV or this will not work.</small>
-              <input
-                type="file"
-                id="csvcodes"
-                accept=".csv"
-                onChange={(e) => handleUpload(e)}
-              />
-            </>
-          ) : null}
-
           {displayCodes ? (
             <>
-              <p>Codes to add:</p>
-              <ul>
-                {codes.map((code, index) => (
-                  <li key={index}>{code}</li>
-                ))}
-              </ul>
+              {
+                // <p>Codes to add:</p>
+                //   <ul>
+                //   {codes.map((code, index) => (
+                //     <li key={index}>{code}</li>
+                //   ))}
+                // </ul>
+              }
+              <div>
+                {codes.length > 0 ? (
+                  <div>
+                    <h3 className="intrinsic-center">Codes To Add</h3>
+                    <small className="intrinsic-center">
+                      Any duplicates have been removed
+                    </small>
+                    <ul className="flex-grid" role="list">
+                      {codes.map((code, index) => (
+                        <li
+                          className={cn(styles.code, "container")}
+                          key={index}
+                        >
+                          {code}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <div>These codes have already been added</div>
+                )}
+              </div>
             </>
-          ) : null}
+          ) : (
+            <>
+              <label className="label" htmlFor="codes">
+                Paste codes from bandcamp CSV here.
+              </label>
+              <textarea
+                className="input block-resize"
+                id="codes"
+                placeholder="Copy and paste codes here"
+                cols="20"
+                rows="8"
+                onChange={(e) => setCodes(e.target.value.split(/\s/g))}
+              ></textarea>
+              {profileData.is_subscribed || profileData.dlcm_friend ? (
+                <>
+                  <label className="label" htmlFor="csvcodes">
+                    Upload with Bandcamp CSV
+                  </label>
+                  <br />
+                  <small>
+                    Must be Bandcamp codes CSV or this will not work.
+                  </small>
+                  <input
+                    type="file"
+                    id="csvcodes"
+                    accept=".csv"
+                    onChange={(e) => handleUpload(e)}
+                  />
+                </>
+              ) : null}
+            </>
+          )}
         </div>
 
         <footer className="button-actions cluster">
-          <button
-            className="button"
-            data-variant="primary"
-            onClick={createCodes}
-          >
-            Add
-          </button>
+          {codesChecked ? (
+            <button
+              className="button"
+              data-variant="primary"
+              onClick={createCodes}
+              disabled={!codes || codes?.length === 0}
+            >
+              Add
+            </button>
+          ) : (
+            <button
+              className="button"
+              data-variant="primary"
+              onClick={() => checkCodes(codes)}
+              disabled={!codes || codes?.length === 0}
+            >
+              Add
+            </button>
+          )}
 
           <DialogClose className="button" onClick={closeModal}>
             Cancel
