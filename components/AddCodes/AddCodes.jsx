@@ -235,7 +235,7 @@ export default function AddCodes({
               onClick={() => checkCodes(codes)}
               disabled={!codes || codes?.length === 0}
             >
-              Check Codes
+              Add
             </button>
           )}
 
