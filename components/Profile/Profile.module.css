@@ -39,6 +39,10 @@
   font-size: 0.8em;
 }
 
+/* .about {
+  text-align: left;
+} */
+
 .location {
   font-size: var(--font-size-0);
   font-family: var(--font-main);

@@ -10,6 +10,7 @@ import Image from "next/image"
 import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
+import { sanitize } from "isomorphic-dompurify"
 
 export default function ProfileLayout({
   avatar,
@@ -33,6 +34,8 @@ export default function ProfileLayout({
   const [releasesOffset, setReleasesOffset] = useState(0)
   const endOffset = releasesOffset + releasesPerPage
   const currentReleases = refinedReleases.slice(releasesOffset, endOffset)
+
+  const sanitizedAbout = sanitize(aboutBlurb)
 
   const profilePic = (
     <Image
@@ -81,7 +84,15 @@ export default function ProfileLayout({
         <div className={cn(styles.info, "stack")}>
           <h1 className={cn(styles.name, "text-3")}>{name}</h1>
           <p className={cn(styles.location, "text-2")}>{location}</p>
-          <p className={cn(styles.blurb)}>{aboutBlurb}</p>
+          {
+            // <p className={cn(styles.blurb)}>{aboutBlurb}</p>
+          }
+          {sanitizedAbout && authorized ? (
+            <section
+              className={styles.about}
+              dangerouslySetInnerHTML={{ __html: sanitizedAbout }}
+            />
+          ) : null}
           <SocialSites
             sites={sites}
             isSubscribed={isSubscribed}

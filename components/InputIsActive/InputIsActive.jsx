@@ -1,4 +1,9 @@
-export default function InputIsActive({ isActive, setIsActive, children }) {
+export default function InputIsActive({
+  isActive,
+  setIsActive,
+  children,
+  onChange,
+}) {
   return (
     <label className="label checkbox" htmlFor="isActive">
       <input
@@ -6,7 +11,13 @@ export default function InputIsActive({ isActive, setIsActive, children }) {
         id="isActive"
         type="checkbox"
         checked={isActive}
-        onChange={() => setIsActive(!isActive)}
+        onChange={() =>
+          onChange({
+            type: "change",
+            name: "isActive",
+            value: !isActive,
+          })
+        }
       />
       {children}
     </label>

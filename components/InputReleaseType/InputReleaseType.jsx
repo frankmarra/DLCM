@@ -19,7 +19,13 @@ export default function InputReleaseType({ type, onChange }) {
       </label>
       <select
         className="input select"
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) =>
+          onChange({
+            type: "change",
+            name: "type",
+            value: e.target.value,
+          })
+        }
         id="type"
         value={type}
       >
@@ -28,7 +34,7 @@ export default function InputReleaseType({ type, onChange }) {
             key={type.id}
             value={type.value}
             disabled={type.isDisabled}
-            selected={type.isSelected}
+            defaultValue={type.isSelected}
           >
             {type.text}
           </option>

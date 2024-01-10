@@ -1,5 +1,5 @@
 import slugify from "slugify"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useReducer } from "react"
 import { useUser } from "@supabase/auth-helpers-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import AddImage from "@/components/AddImage/AddImage"
@@ -17,71 +17,121 @@ import InputReleaseType from "../InputReleaseType/InputReleaseType"
 import InputSocialSites from "../InputSocialSites/InputSocialSites"
 import InputIsActive from "../InputIsActive/InputIsActive"
 import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
+import formReducer from "../../utils/formReducer"
+import inputValidator from "../../utils/inputValidator"
+import Loader from "@/components/Loader/Loader"
 
 export default function CreateRelease({
   trigger,
   setAddedNewRelease,
   profileData,
 }) {
-  const user = useUser()
-  const supabase = createClientComponentClient()
-  const [open, setOpen] = useState(false)
-  const [title, setTitle] = useState()
-  const [sluggedName, setSluggedName] = useState("")
-  const [firstSlugCheck, setFirstSlugCheck] = useState(false)
-  const [namesTaken, setNamesTaken] = useState({
-    color: "transparent",
-    message: "",
-  })
-  const [noGO, setNoGO] = useState(true)
-  const [artist, setArtist] = useState(
-    profileData.type == "artist" ? profileData.username : ""
-  )
-  const [label, setLabel] = useState(
-    profileData.type == "label" ? profileData.username : ""
-  )
-  const [artworkUrl, setArtworkUrl] = useState()
-  const [yumUrl, setYumUrl] = useState(profileData.yum_url)
-  const [pagePassword, setPagePassword] = useState()
-  const [isPasswordProtected, setIsPasswordProtected] = useState(false)
-  const [type, setType] = useState()
-  const [newImagePath, setNewImagePath] = useState()
-  const [isActive, setIsActive] = useState(true)
-  const [sites, setSites] = useState()
-  const [releaseDate, setReleaseDate] = useState()
-  const [about, setAbout] = useState()
+  //Create reducer initial values
+  const initialFormValue = {
+    title: "",
+    sluggedName: "",
+    artist: profileData.type == "artist" ? profileData.username : "",
+    label: profileData.type == "label" ? profileData.username : "",
+    yumUrl: "",
+    releaseDate: "",
+    type: "Choose release type",
+    about: "",
+    sites: {},
+    isPasswordProtected: false,
+    pagePassword: "",
+    isActive: true,
+    firstSlugCheck: false,
+    submitting: false,
+    success: false,
+    error: null,
+  }
 
-  const resetForm = () => {
-    setTitle()
-    setSluggedName("")
-    setFirstSlugCheck(false)
-    setNoGO(true)
-    setArtworkUrl()
-    setPagePassword()
-    setIsPasswordProtected(false)
-    setType()
-    setNewImagePath()
-    setIsActive(true)
-    setNamesTaken({
+  const initialValidation = {
+    isNameValid: {
       color: "transparent",
       message: "",
-    })
-    setSites()
-    setReleaseDate()
+      isValid: false,
+    },
+    isFormValid: false,
+    checking: false,
+  }
+  const [formValue, dispatch] = useReducer(formReducer, initialFormValue)
+  const [validation, validate] = useReducer(inputValidator, initialValidation)
+
+  //Supabase
+  const user = useUser()
+  const supabase = createClientComponentClient()
+
+  const [open, setOpen] = useState(false)
+  const [artworkUrl, setArtworkUrl] = useState()
+  const [newImagePath, setNewImagePath] = useState()
+  const [about, setAbout] = useState()
+
+  //Destructured formValue for easier use
+  const {
+    title,
+    sluggedName,
+    artist,
+    label,
+    releaseDate,
+    yumUrl,
+    type,
+    sites,
+    firstSlugCheck,
+    pagePassword,
+    isPasswordProtected,
+    isActive,
+  } = formValue
+
+  //Destructured validation
+  const { isNameValid, isFormValid } = validation
+
+  useEffect(() => {
+    //Checks for form validation. Add conditions to the if statement to increase requirements. Whatever is added to the statement, must also be added to the dependency array.
+    const checkFormIsValid = () => {
+      if (isNameValid.isValid && type != "Choose release type") {
+        validate({
+          type: "formSuccess",
+        })
+      }
+    }
+
+    checkFormIsValid()
+  }, [isNameValid.isValid, type])
+
+  //Resets values not handled by the reducer
+  const resetForm = () => {
+    setArtworkUrl()
+    setNewImagePath()
     setAbout()
   }
 
+  const handleChange = (e) => {
+    dispatch({
+      type: "change",
+      name: e.target.id,
+      value: e.target.value,
+    })
+  }
+
+  //Validates release slug
   const checkName = async (e) => {
     e.preventDefault()
     if (sluggedName.length == 0) {
-      setNamesTaken({ color: "red", message: "Release must have a slug" })
-      setNoGO(true)
+      validate({
+        type: "error",
+        name: "isNameValid",
+        message: "Release must have a slug",
+      })
     }
     if (sluggedName.length > 0) {
       if (firstSlugCheck == false) {
-        setFirstSlugCheck(true)
+        dispatch({
+          type: "change",
+          name: "firstSlugCheck",
+          value: true,
+        })
       }
-      setSluggedName(slugify(sluggedName))
       let { data, error } = await supabase
         .from("releases")
         .select("*")
@@ -89,14 +139,17 @@ export default function CreateRelease({
         .eq("release_slug", sluggedName)
 
       if (data.length > 0) {
-        setNamesTaken({ color: "red", message: "Urls taken, try again" })
-        setNoGO(true)
-      } else if (data.length == 0) {
-        setNamesTaken({
-          color: "green",
-          message: "This url is available, snag it!",
+        validate({
+          type: "error",
+          name: "isNameValid",
+          message: "URLs taken, try again",
         })
-        setNoGO(false)
+      } else if (data.length == 0) {
+        validate({
+          type: "success",
+          name: "isNameValid",
+          message: "This URL is available, snag it!",
+        })
       }
 
       if (error) throw error
@@ -104,6 +157,7 @@ export default function CreateRelease({
   }
 
   async function createNewRelease() {
+    dispatch({ type: "submit" })
     try {
       let newRelease = {
         title: title,
@@ -112,10 +166,11 @@ export default function CreateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath,
         yum_url: prependProtocol(yumUrl),
-        type: type ? type : null,
+        type: type ?? null,
         sites: sites,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
+        page_password: pagePassword,
         release_slug: sluggedName,
         release_date: releaseDate,
         about: about,
@@ -124,13 +179,21 @@ export default function CreateRelease({
       const { data, error } = await supabase
         .from("releases")
         .insert([newRelease])
-      if (error) throw error
-      alert("New release created!")
+      if (error) {
+        dispatch({ type: "error", error: error.message })
+        alert(error.message)
+      } else {
+        alert("New release created!")
+        dispatch({ type: "success" })
+      }
     } catch (error) {
       alert("Error creating new release!")
+      dispatch({ type: "error", error: error.message })
     } finally {
       setAddedNewRelease(true)
       resetForm()
+      dispatch({ type: "reset", state: initialFormValue })
+      validate({ type: "reset", state: initialValidation })
       setOpen(false)
     }
   }
@@ -147,7 +210,13 @@ export default function CreateRelease({
       }
     }
     resetForm()
+    dispatch({ type: "reset", state: initialFormValue })
+    validate({ type: "reset", state: initialValidation })
     setOpen(false)
+  }
+
+  if (formValue.submitting) {
+    return <Loader style={{ margin: "auto" }} />
   }
 
   return (
@@ -179,12 +248,19 @@ export default function CreateRelease({
             id="title"
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleChange}
             onInput={
               firstSlugCheck
                 ? null
                 : (e) =>
-                    setSluggedName(slugify(e.target.value, { lower: true }))
+                    dispatch({
+                      type: "change",
+                      name: "sluggedName",
+                      value: slugify(e.target.value, {
+                        lower: true,
+                        trim: false,
+                      }),
+                    })
             }
             onBlur={firstSlugCheck ? null : checkName}
           />
@@ -196,14 +272,19 @@ export default function CreateRelease({
             />
             <input
               className="input"
-              onChange={(e) => setSluggedName(e.target.value)}
+              onChange={(e) =>
+                dispatch({
+                  type: "change",
+                  name: "sluggedName",
+                  value: slugify(e.target.value, {
+                    lower: true,
+                    trim: false,
+                  }),
+                })
+              }
               id="slug"
               type="text"
-              value={
-                sluggedName
-                  ? slugify(sluggedName, { lower: true, trim: false })
-                  : sluggedName
-              }
+              value={sluggedName}
               onBlur={checkName}
             />
           </div>
@@ -216,8 +297,8 @@ export default function CreateRelease({
             </code>
           </small>
           <br />
-          <small style={{ color: `${namesTaken.color}` }}>
-            {namesTaken.message}
+          <small style={{ color: isNameValid.color }}>
+            {isNameValid.message}
           </small>
 
           <label className="label" htmlFor="artist">
@@ -228,7 +309,7 @@ export default function CreateRelease({
             id="artist"
             type="text"
             value={artist}
-            onChange={(e) => setArtist(e.target.value)}
+            onChange={handleChange}
             required
           />
 
@@ -240,7 +321,7 @@ export default function CreateRelease({
             id="label"
             type="text"
             value={label}
-            onChange={(e) => setLabel(e.target.value)}
+            onChange={handleChange}
           />
 
           {/*<label className="label" htmlFor="artworkUrl">
@@ -255,7 +336,7 @@ export default function CreateRelease({
           />
           <p>Upload an image or paste an external link</p>*/}
 
-          <InputReleaseType type={type} onChange={setType} />
+          <InputReleaseType type={type} onChange={dispatch} />
 
           <label htmlFor="releaseDate" className="label">
             Release Date:
@@ -264,7 +345,7 @@ export default function CreateRelease({
               id="releaseDate"
               type="date"
               value={releaseDate}
-              onChange={(e) => setReleaseDate(e.target.value)}
+              onChange={handleChange}
             />
           </label>
 
@@ -276,7 +357,7 @@ export default function CreateRelease({
             id="yumUrl"
             type="text"
             value={yumUrl}
-            onChange={(e) => setYumUrl(e.target.value)}
+            onChange={handleChange}
           />
           <small class="hint">
             This is the link your customers will visit to redeem their code. It
@@ -285,13 +366,13 @@ export default function CreateRelease({
 
           <InputSocialSites
             sites={sites}
-            setSites={setSites}
+            dispatch={dispatch}
             hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />
 
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              <InputIsActive isActive={isActive} setIsActive={setIsActive}>
+              <InputIsActive isActive={isActive} onChange={dispatch}>
                 Show Release
               </InputIsActive>
               <InputReleaseAbout about={about} setAbout={setAbout} />
@@ -300,9 +381,14 @@ export default function CreateRelease({
                 isProtected={isPasswordProtected}
                 pagePassword={pagePassword}
                 setIsProtected={() =>
-                  setIsPasswordProtected(!isPasswordProtected)
+                  dispatch({
+                    type: "change",
+                    name: "isPasswordProtected",
+                    value: !isPasswordProtected,
+                  })
                 }
-                setPagePassword={(e) => setPagePassword(e.target.value)}
+                // setPagePassword={(e) => setPagePassword(e.target.value)}
+                onChange={dispatch}
               >
                 Password protect this page
               </InputPasswordProtect>
@@ -315,7 +401,7 @@ export default function CreateRelease({
             className="button"
             data-variant="primary"
             onClick={() => createNewRelease()}
-            disabled={!title || noGO || !artist}
+            disabled={!isFormValid}
           >
             Create
           </button>

@@ -1,37 +1,22 @@
 import { prependProtocol } from "@/utils/utils"
-import { useEffect, useState } from "react"
 
 export default function InputSocialSites({
   sites,
-  setSites,
+  onChange,
   hasProAccount,
   showPersonal,
   labelArtist,
 }) {
-  const [personalUrl, setPersonalUrl] = useState(sites?.personal ?? null)
-  const [bandcampUrl, setBandcampUrl] = useState(sites?.bandcamp ?? null)
-  const [appleMusicUrl, setAppleMusicUrl] = useState(sites?.apple ?? null)
-  const [spotifyUrl, setSpotifyUrl] = useState(sites?.spotify ?? null)
-  const [soundcloudUrl, setSoundcloudUrl] = useState(sites?.soundcloud ?? null)
-  const [youtubeUrl, setYoutubeUrl] = useState(sites?.youtube ?? null)
-
-  useEffect(() => {
-    setSites({
-      personal: personalUrl ? prependProtocol(personalUrl) : null,
-      bandcamp: bandcampUrl ? prependProtocol(bandcampUrl) : null,
-      apple: appleMusicUrl ? prependProtocol(appleMusicUrl) : null,
-      spotify: spotifyUrl ? prependProtocol(spotifyUrl) : null,
-      soundcloud: soundcloudUrl ? prependProtocol(soundcloudUrl) : null,
-      youtube: youtubeUrl ? prependProtocol(youtubeUrl) : null,
+  const handleChange = (e) => {
+    onChange({
+      type: "object-change",
+      object: "sites",
+      objectVariables: sites,
+      name: e.target.id,
+      value: e.target.value,
     })
-  }, [
-    bandcampUrl,
-    appleMusicUrl,
-    spotifyUrl,
-    soundcloudUrl,
-    youtubeUrl,
-    personalUrl,
-  ])
+  }
+
   return (
     <>
       {showPersonal ? (
@@ -46,8 +31,8 @@ export default function InputSocialSites({
             className="input"
             id="personal"
             type="url"
-            value={personalUrl}
-            onChange={(e) => setPersonalUrl(e.target.value)}
+            value={sites?.personal ?? null}
+            onChange={handleChange}
           />
         </>
       ) : null}
@@ -58,9 +43,9 @@ export default function InputSocialSites({
         className="input"
         id="bandcamp"
         type="url"
-        value={bandcampUrl}
+        value={sites?.bandcamp ?? null}
         required
-        onChange={(e) => setBandcampUrl(e.target.value)}
+        onChange={handleChange}
       />
       {hasProAccount ? (
         <>
@@ -71,8 +56,8 @@ export default function InputSocialSites({
             className="input"
             id="apple"
             type="url"
-            value={appleMusicUrl}
-            onChange={(e) => setAppleMusicUrl(e.target.value)}
+            value={sites?.apple ?? null}
+            onChange={handleChange}
           />
 
           <label className="label" htmlFor="spotify">
@@ -82,8 +67,8 @@ export default function InputSocialSites({
             className="input"
             id="spotify"
             type="url"
-            value={spotifyUrl}
-            onChange={(e) => setSpotifyUrl(e.target.value)}
+            value={sites?.spotify ?? null}
+            onChange={handleChange}
           />
           <label className="label" htmlFor="soundcloud">
             Soundcloud Link
@@ -92,8 +77,8 @@ export default function InputSocialSites({
             className="input"
             id="soundcloud"
             type="url"
-            value={soundcloudUrl}
-            onChange={(e) => setSoundcloudUrl(e.target.value)}
+            value={sites?.soundcloud ?? null}
+            onChange={handleChange}
           />
           <label className="label" htmlFor="youtube">
             YouTube Link
@@ -102,8 +87,48 @@ export default function InputSocialSites({
             className="input"
             id="youtube"
             type="url"
-            value={youtubeUrl}
-            onChange={(e) => setYoutubeUrl(e.target.value)}
+            value={sites?.youtube ?? null}
+            onChange={handleChange}
+          />
+          <label className="label" htmlFor="facebook">
+            Facebook Link
+          </label>
+          <input
+            className="input"
+            id="facebook"
+            type="url"
+            value={sites?.facebook ?? null}
+            onChange={handleChange}
+          />
+          <label className="label" htmlFor="instagram">
+            Instagram Link
+          </label>
+          <input
+            className="input"
+            id="instagram"
+            type="url"
+            value={sites?.instagram ?? null}
+            onChange={handleChange}
+          />
+          <label className="label" htmlFor="tiktok">
+            TikTok Link
+          </label>
+          <input
+            className="input"
+            id="tiktok"
+            type="url"
+            value={sites?.tiktok ?? null}
+            onChange={handleChange}
+          />
+          <label className="label" htmlFor="twitter">
+            Twitter Link
+          </label>
+          <input
+            className="input"
+            id="twitter"
+            type="url"
+            value={sites?.twitter ?? null}
+            onChange={handleChange}
           />
         </>
       ) : null}
