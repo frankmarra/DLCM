@@ -71,6 +71,7 @@ export default function UpdateRelease({
   const [newImagePath, setNewImagePath] = useState()
   // const [isActive, setIsActive] = useState(release.is_active)
   const [about, setAbout] = useState(release.about)
+  const [playerEmbed, setPlayerEmbed] = useState(release.player_embed)
 
   const {
     title,
@@ -171,6 +172,7 @@ export default function UpdateRelease({
         sites: sites,
         release_date: releaseDate,
         about: about,
+        player_embed: playerEmbed,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -393,7 +395,16 @@ export default function UpdateRelease({
             value={yumUrl}
             onChange={handleChange}
           />
-
+          <label className="label" htmlFor="playerEmbed">
+            Player Embed
+          </label>
+          <input
+            className="input"
+            id="playerEmbed"
+            type="text"
+            value={playerEmbed}
+            onChange={(e) => setPlayerEmbed(e.target.value)}
+          />
           <InputSocialSites
             sites={sites}
             onChange={dispatch}

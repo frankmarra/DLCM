@@ -6,6 +6,7 @@ import cn from "classnames"
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
+import Script from "next/script"
 import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
 import { sanitize } from "isomorphic-dompurify"
@@ -22,6 +23,7 @@ export default function ReleaseLayout({
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
 
   const sanitizedAbout = sanitize(release.about)
+  const sanitizedEmbed = sanitize(release.player_embed)
 
   return (
     <>
@@ -58,6 +60,15 @@ export default function ReleaseLayout({
             {release.release_date ? `  — ${releaseDate.getFullYear()}` : null}
           </p>
         </div>
+        {sanitizedEmbed ? (
+          <Script
+            id="bandcampEmbed"
+            strategy="afterInteractive"
+            // className={styles.embed}
+            dangerouslySetInnerHTML={{ __html: sanitizedEmbed }}
+          />
+        ) : null}
+
         {!authorized ? (
           <InputPagePassword
             setAuthorized={setAuthorized}
