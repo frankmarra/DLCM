@@ -39,6 +39,7 @@ export default function UpdateRelease({
     releaseDate: release.release_date,
     type: release.type,
     sites: release.sites,
+    playerEmbed: release.player_embed,
     firstSlugCheck: false,
     pagePassword: release.page_password,
     isPasswordProtected: release.is_password_protected,
@@ -79,6 +80,7 @@ export default function UpdateRelease({
     releaseDate,
     type,
     sites,
+    playerEmbed,
     firstSlugCheck,
     pagePassword,
     isPasswordProtected,
@@ -170,6 +172,7 @@ export default function UpdateRelease({
         type: type ?? null,
         sites: sites,
         release_date: releaseDate,
+        player_embed: playerEmbed,
         about: about,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
@@ -401,6 +404,16 @@ export default function UpdateRelease({
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
+              <label className="label" htmlFor="playerEmbed">
+                Bandcamp audio player embed
+              </label>
+              <input
+                className="input"
+                id="playerEmbed"
+                type="text"
+                value={playerEmbed}
+                onChange={handleChange}
+              />
               <InputIsActive isActive={isActive} onChange={dispatch}>
                 Show Release
               </InputIsActive>

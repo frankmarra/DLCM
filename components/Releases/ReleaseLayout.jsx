@@ -21,11 +21,17 @@ export default function ReleaseLayout({
   const [authorized, setAuthorized] = useState(!release.is_password_protected)
   const [releaseDate, setReleaseDate] = useState(new Date(release.release_date))
   const [isClient, setIsClient] = useState(false)
-
+  const [albumCode, setAlbumCode] = useState()
   const sanitizedAbout = sanitize(release.about)
 
   useEffect(() => {
     setIsClient(true)
+
+    if (release.player_embed) {
+      let embedArray = release.player_embed.split("/")
+      let code = embedArray[4].slice(6)
+      setAlbumCode(code)
+    }
   }, [])
 
   return (
@@ -44,15 +50,17 @@ export default function ReleaseLayout({
             height={250}
             width={250}
           />
-          <section>
-            <iframe
-              style={{ border: 0, width: 100 + "%", height: 120 + "px" }}
-              src={`https://bandcamp.com/EmbeddedPlayer/album=${release.player_embed}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/`}
-              seamless
-            >
-              <a href=""></a>
-            </iframe>
-          </section>
+          {albumCode ? (
+            <section>
+              <iframe
+                style={{ border: 0, width: 100 + "%", height: 120 + "px" }}
+                src={`https://bandcamp.com/EmbeddedPlayer/album=${albumCode}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/`}
+                seamless
+              >
+                <a href=""></a>
+              </iframe>
+            </section>
+          ) : null}
           <div>
             <h1 className={styles.title}>{release.title}</h1>
             {userType == "artist" ? (

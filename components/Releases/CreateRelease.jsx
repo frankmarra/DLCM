@@ -32,11 +32,12 @@ export default function CreateRelease({
     sluggedName: "",
     artist: profileData.type == "artist" ? profileData.username : "",
     label: profileData.type == "label" ? profileData.username : "",
-    yumUrl: "",
+    yumUrl: profileData.yum_url ?? "",
     releaseDate: null,
     type: "Choose release type",
     about: "",
     sites: {},
+    playerEmbed: "",
     isPasswordProtected: false,
     pagePassword: "",
     isActive: true,
@@ -77,6 +78,7 @@ export default function CreateRelease({
     yumUrl,
     type,
     sites,
+    playerEmbed,
     firstSlugCheck,
     pagePassword,
     isPasswordProtected,
@@ -168,6 +170,7 @@ export default function CreateRelease({
         yum_url: prependProtocol(yumUrl),
         type: type ?? null,
         sites: sites,
+        player_embed: playerEmbed,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -372,6 +375,16 @@ export default function CreateRelease({
 
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
+              <label className="label" htmlFor="playerEmbed">
+                Bandcamp audio player embed
+              </label>
+              <input
+                className="input"
+                id="playerEmbed"
+                type="text"
+                value={playerEmbed}
+                onChange={handleChange}
+              />
               <InputIsActive isActive={isActive} onChange={dispatch}>
                 Show Release
               </InputIsActive>
