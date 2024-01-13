@@ -32,7 +32,7 @@ export default function CreateRelease({
     sluggedName: "",
     artist: profileData.type == "artist" ? profileData.username : "",
     label: profileData.type == "label" ? profileData.username : "",
-    yumUrl: "",
+    yumUrl: profileData.yum_url ?? "",
     releaseDate: null,
     type: "Choose release type",
     about: "",
