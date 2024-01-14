@@ -63,15 +63,12 @@ export default function UpdateRelease({
   const [validation, validate] = useReducer(inputValidator, initialValidation)
   const [open, setOpen] = useState(false)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
-  // const [isPasswordProtected, setIsPasswordProtected] = useState(
-  //   release.is_password_protected
-  // )
-  // const [pagePassword, setPagePassword] = useState(release.page_password)
   const [artworkId, setArtworkId] = useState()
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
-  // const [isActive, setIsActive] = useState(release.is_active)
   const [about, setAbout] = useState(release.about)
+  const [embedChanged, toggleEmbedChanged] = useState(false)
+  const [changeEmbed, toggleChangeEmbed] = useState(false)
 
   const {
     title,
@@ -114,6 +111,11 @@ export default function UpdateRelease({
       name: e.target.id,
       value: e.target.value,
     })
+  }
+
+  const handleEmbedChange = () => {
+    toggleChangeEmbed(!changeEmbed)
+    toggleEmbedChanged(!embedChanged)
   }
 
   const checkName = async (e) => {
@@ -163,6 +165,18 @@ export default function UpdateRelease({
 
   async function updateRelease() {
     try {
+      let embedCode = ""
+
+      if (embedChanged) {
+        let embedArray = playerEmbed.split("/")
+
+        embedArray.forEach((value) => {
+          if (value.match(/(?:album=)\d+/)) {
+            embedCode = value.slice(6)
+          }
+        })
+      }
+
       const update = {
         title: title,
         release_slug: sluggedName,
@@ -172,7 +186,7 @@ export default function UpdateRelease({
         type: type ?? null,
         sites: sites,
         release_date: releaseDate,
-        player_embed: playerEmbed,
+        player_embed: embedChanged ? embedCode : playerEmbed,
         about: about,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
@@ -397,6 +411,47 @@ export default function UpdateRelease({
             onChange={handleChange}
           />
 
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
+            <>
+              {changeEmbed ? (
+                <>
+                  <label className="label" htmlFor="playerEmbed">
+                    Bandcamp audio player embed
+                  </label>
+                  <PopoverTip
+                    message={`Paste a bandcamp embed iframe here. We set what the player will look like for consistency, so it doesn't matter what size or customizations you make.`}
+                  />
+                  <input
+                    className="input"
+                    id="playerEmbed"
+                    type="text"
+                    value={playerEmbed}
+                    onChange={handleChange}
+                  />
+
+                  <button
+                    className="button"
+                    data-variant="secondary"
+                    onClick={handleEmbedChange}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p>Embed is active.</p>
+                  <button
+                    className="button"
+                    data-variant="secondary"
+                    onClick={handleEmbedChange}
+                  >
+                    Change?
+                  </button>
+                </>
+              )}
+            </>
+          ) : null}
+
           <InputSocialSites
             sites={sites}
             onChange={dispatch}
@@ -404,16 +459,6 @@ export default function UpdateRelease({
           />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              <label className="label" htmlFor="playerEmbed">
-                Bandcamp audio player embed
-              </label>
-              <input
-                className="input"
-                id="playerEmbed"
-                type="text"
-                value={playerEmbed}
-                onChange={handleChange}
-              />
               <InputIsActive isActive={isActive} onChange={dispatch}>
                 Show Release
               </InputIsActive>

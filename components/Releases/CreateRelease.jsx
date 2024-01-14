@@ -161,6 +161,18 @@ export default function CreateRelease({
   async function createNewRelease() {
     dispatch({ type: "submit" })
     try {
+      let embedCode = ""
+
+      if (playerEmbed.length > 0) {
+        let embedArray = playerEmbed.split("/")
+
+        embedArray.forEach((value) => {
+          if (value.match(/(?:album=)\d+/)) {
+            embedCode = value.slice(6)
+          }
+        })
+      }
+
       let newRelease = {
         title: title,
         artist: artist,
@@ -170,7 +182,7 @@ export default function CreateRelease({
         yum_url: prependProtocol(yumUrl),
         type: type ?? null,
         sites: sites,
-        player_embed: playerEmbed,
+        player_embed: embedCode,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -367,6 +379,23 @@ export default function CreateRelease({
             is usually <code>your-name.bandcamp.com/yum</code>.
           </small>
 
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
+            <>
+              <label className="label" htmlFor="playerEmbed">
+                Bandcamp audio player embed
+              </label>
+              <PopoverTip
+                message={`Paste a bandcamp embed iframe here. We set what the player will look like for consistency, so it doesn't matter what size or customizations you make.`}
+              />
+              <input
+                className="input"
+                id="playerEmbed"
+                type="text"
+                value={playerEmbed}
+                onChange={handleChange}
+              />
+            </>
+          ) : null}
           <InputSocialSites
             sites={sites}
             dispatch={dispatch}
@@ -375,16 +404,6 @@ export default function CreateRelease({
 
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              <label className="label" htmlFor="playerEmbed">
-                Bandcamp audio player embed
-              </label>
-              <input
-                className="input"
-                id="playerEmbed"
-                type="text"
-                value={playerEmbed}
-                onChange={handleChange}
-              />
               <InputIsActive isActive={isActive} onChange={dispatch}>
                 Show Release
               </InputIsActive>
