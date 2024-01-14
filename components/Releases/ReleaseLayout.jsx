@@ -27,10 +27,18 @@ export default function ReleaseLayout({
   useEffect(() => {
     setIsClient(true)
 
-    if (release.player_embed) {
+    if (
+      release.player_embed &&
+      release.player_embed.includes("album=") &&
+      !albumCode
+    ) {
       let embedArray = release.player_embed.split("/")
-      let code = embedArray[4].slice(6)
-      setAlbumCode(code)
+
+      embedArray.forEach((value) => {
+        if (value.match(/(?:album=)\d+/)) {
+          setAlbumCode(value.slice(6))
+        }
+      })
     }
   }, [])
 
