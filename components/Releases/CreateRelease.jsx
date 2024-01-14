@@ -380,7 +380,7 @@ export default function CreateRelease({
           </small>
 
           {profileData.is_subscribed || profileData.dlcm_friend ? (
-            <>
+            <div className="input-wrapper">
               <label className="label" htmlFor="playerEmbed">
                 Bandcamp audio player embed
               </label>
@@ -394,7 +394,7 @@ export default function CreateRelease({
                 value={playerEmbed}
                 onChange={handleChange}
               />
-            </>
+            </div>
           ) : null}
           <InputSocialSites
             sites={sites}

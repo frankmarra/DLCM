@@ -415,23 +415,25 @@ export default function UpdateRelease({
             <>
               {changeEmbed ? (
                 <>
-                  <label className="label" htmlFor="playerEmbed">
-                    Bandcamp audio player embed
-                  </label>
-                  <PopoverTip
-                    message={`Paste a bandcamp embed iframe here. We set what the player will look like for consistency, so it doesn't matter what size or customizations you make.`}
-                  />
-                  <input
-                    className="input"
-                    id="playerEmbed"
-                    type="text"
-                    value={playerEmbed}
-                    onChange={handleChange}
-                  />
-
+                  <div className="input-wrapper">
+                    <label className="label" htmlFor="playerEmbed">
+                      Bandcamp audio player embed
+                    </label>
+                    <PopoverTip
+                      message={`Paste a bandcamp embed iframe here. We set what the player will look like for aesthetic consistency.`}
+                    />
+                    <input
+                      className="input"
+                      id="playerEmbed"
+                      type="text"
+                      value={playerEmbed}
+                      onChange={handleChange}
+                    />
+                  </div>
                   <button
                     className="button"
                     data-variant="secondary"
+                    data-size="small"
                     onClick={handleEmbedChange}
                   >
                     Cancel
@@ -439,13 +441,18 @@ export default function UpdateRelease({
                 </>
               ) : (
                 <>
-                  <p>Embed is active.</p>
+                  {playerEmbed?.length > 0 ? (
+                    <p>Embed is active.</p>
+                  ) : (
+                    <p>No embed for this release</p>
+                  )}
                   <button
                     className="button"
                     data-variant="secondary"
+                    data-size="small"
                     onClick={handleEmbedChange}
                   >
-                    Change?
+                    {playerEmbed?.length > 0 ? "Change?" : "Add?"}
                   </button>
                 </>
               )}
