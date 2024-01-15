@@ -56,6 +56,7 @@ export default function AddCodes({
         toggleCodesChecked(true)
         toggleDisplayCodes(true)
       } else {
+        setCodes(codesToCheck)
         toggleDisplayCodes(true)
         toggleCodesChecked(true)
       }
