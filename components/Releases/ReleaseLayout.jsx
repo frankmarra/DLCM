@@ -26,20 +26,6 @@ export default function ReleaseLayout({
 
   useEffect(() => {
     setIsClient(true)
-
-    // if (
-    //   release.player_embed &&
-    //   release.player_embed.includes("album=") &&
-    //   !albumCode
-    // ) {
-    //   let embedArray = release.player_embed.split("/")
-
-    //   embedArray.forEach((value) => {
-    //     if (value.match(/(?:album=)\d+/)) {
-    //       setAlbumCode(value.slice(6))
-    //     }
-    //   })
-    // }
   }, [])
 
   return (

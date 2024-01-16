@@ -23,6 +23,7 @@ import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
+import InputReleaseEmbed from "../InputReleaseEmbed/InputReleaseEmbed"
 
 export default function UpdateRelease({
   release,
@@ -415,21 +416,10 @@ export default function UpdateRelease({
             <>
               {changeEmbed ? (
                 <>
-                  <div className="input-wrapper">
-                    <label className="label" htmlFor="playerEmbed">
-                      Bandcamp audio player embed
-                    </label>
-                    <PopoverTip
-                      message={`Paste a bandcamp embed iframe here. We set what the player will look like for aesthetic consistency.`}
-                    />
-                    <input
-                      className="input"
-                      id="playerEmbed"
-                      type="text"
-                      value={playerEmbed}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <InputReleaseEmbed
+                    onChange={dispatch}
+                    playerEmbed={playerEmbed}
+                  />
                   <button
                     className="button"
                     data-variant="secondary"
