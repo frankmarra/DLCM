@@ -23,6 +23,7 @@ import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
+import InputReleaseEmbed from "../InputReleaseEmbed/InputReleaseEmbed"
 
 export default function UpdateRelease({
   release,
@@ -39,6 +40,7 @@ export default function UpdateRelease({
     releaseDate: release.release_date,
     type: release.type,
     sites: release.sites,
+    playerEmbed: release.player_embed,
     firstSlugCheck: false,
     pagePassword: release.page_password,
     isPasswordProtected: release.is_password_protected,
@@ -62,15 +64,12 @@ export default function UpdateRelease({
   const [validation, validate] = useReducer(inputValidator, initialValidation)
   const [open, setOpen] = useState(false)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
-  // const [isPasswordProtected, setIsPasswordProtected] = useState(
-  //   release.is_password_protected
-  // )
-  // const [pagePassword, setPagePassword] = useState(release.page_password)
   const [artworkId, setArtworkId] = useState()
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
-  // const [isActive, setIsActive] = useState(release.is_active)
   const [about, setAbout] = useState(release.about)
+  const [embedChanged, toggleEmbedChanged] = useState(false)
+  const [changeEmbed, toggleChangeEmbed] = useState(false)
 
   const {
     title,
@@ -79,6 +78,7 @@ export default function UpdateRelease({
     releaseDate,
     type,
     sites,
+    playerEmbed,
     firstSlugCheck,
     pagePassword,
     isPasswordProtected,
@@ -112,6 +112,11 @@ export default function UpdateRelease({
       name: e.target.id,
       value: e.target.value,
     })
+  }
+
+  const handleEmbedChange = () => {
+    toggleChangeEmbed(!changeEmbed)
+    toggleEmbedChanged(!embedChanged)
   }
 
   const checkName = async (e) => {
@@ -161,6 +166,18 @@ export default function UpdateRelease({
 
   async function updateRelease() {
     try {
+      let embedCode = ""
+
+      if (embedChanged) {
+        let embedArray = playerEmbed.split("/")
+
+        embedArray.forEach((value) => {
+          if (value.match(/(?:album=)\d+/)) {
+            embedCode = value.slice(6)
+          }
+        })
+      }
+
       const update = {
         title: title,
         release_slug: sluggedName,
@@ -170,6 +187,7 @@ export default function UpdateRelease({
         type: type ?? null,
         sites: sites,
         release_date: releaseDate,
+        player_embed: embedChanged ? embedCode : playerEmbed,
         about: about,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
@@ -393,6 +411,43 @@ export default function UpdateRelease({
             value={yumUrl}
             onChange={handleChange}
           />
+
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
+            <>
+              {changeEmbed ? (
+                <>
+                  <InputReleaseEmbed
+                    onChange={dispatch}
+                    playerEmbed={playerEmbed}
+                  />
+                  <button
+                    className="button"
+                    data-variant="secondary"
+                    data-size="small"
+                    onClick={handleEmbedChange}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  {playerEmbed?.length > 0 ? (
+                    <p>Embed is active.</p>
+                  ) : (
+                    <p>No embed for this release</p>
+                  )}
+                  <button
+                    className="button"
+                    data-variant="secondary"
+                    data-size="small"
+                    onClick={handleEmbedChange}
+                  >
+                    {playerEmbed?.length > 0 ? "Change?" : "Add?"}
+                  </button>
+                </>
+              )}
+            </>
+          ) : null}
 
           <InputSocialSites
             sites={sites}
