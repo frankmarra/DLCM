@@ -7,15 +7,15 @@ function ReleaseRefinement(
   ref
 ) {
   const [filtered, setFiltered] = useState(releases)
-  const [sorted, setSorted] = useState(filtered)
+  const [sortType, setSortType] = useState()
+
+  // useEffect(() => {
+  //   setSorted(filtered)
+  // }, [filtered])
 
   useEffect(() => {
-    setSorted(filtered)
-  }, [filtered])
-
-  useEffect(() => {
-    onRefinement(sorted)
-  }, [sorted])
+    onRefinement(sortType)
+  }, [sortType])
 
   if (!isVisible) {
     return
@@ -28,11 +28,7 @@ function ReleaseRefinement(
       style={{ "--cluster-gap": "var(--size-3)" }}
     >
       <ReleaseFilter releases={releases} onChange={setFiltered} />
-      <ReleaseSort
-        releases={filtered}
-        onChange={setSorted}
-        isDashboard={isDashboard}
-      />
+      <ReleaseSort onChange={setSortType} />
     </div>
   )
 }
