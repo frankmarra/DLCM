@@ -15,6 +15,10 @@ export async function getServerSideProps({ params }) {
     .order("created_at", { foreignTable: "releases", ascending: false })
     .single()
 
+  if (error) {
+    throw error
+    console.log(error)
+  }
   if (profile === null) {
     return { props: {}, redirect: { destination: "/404" } }
   }
