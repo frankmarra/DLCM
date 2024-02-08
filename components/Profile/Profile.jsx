@@ -20,6 +20,7 @@ export default function ProfileLayout({
   name,
   location,
   releases,
+  artists,
   profileSlug,
   sites,
   pagePassword,
@@ -46,6 +47,7 @@ export default function ProfileLayout({
     sortBy: "created_at",
     ascending: true,
   })
+  const [currentFilter, setCurrentFilter] = useState("all")
   const sanitizedAbout = sanitize(aboutBlurb)
 
   const profilePic = (
@@ -57,26 +59,31 @@ export default function ProfileLayout({
       height={200}
     />
   )
-
+  console.log(artists)
   useEffect(() => {
     getReleases()
-  }, [releasesOffset, currentSort])
+  }, [releasesOffset, currentSort, currentFilter])
 
   const getReleases = async () => {
     try {
       setLoading(true)
       const endOffset = releasesOffset + releasesPerPage
 
-      let { data, error, status } = await supabase
+      let filteredReleases = supabase
         .from("releases")
         .select("*, codes(count)")
         .eq("user_id", userId)
         .eq("is_active", true)
-
         .order(currentSort ? currentSort.sortBy : "created_at", {
           ascending: currentSort ? currentSort.ascending : false,
         })
         .range(releasesOffset, endOffset - 1)
+
+      if (currentFilter != "all") {
+        filteredReleases = filteredReleases.eq("artist", currentFilter)
+      }
+
+      let { data, error, status } = await filteredReleases
 
       if (error && status !== 406) {
         throw error
@@ -107,9 +114,10 @@ export default function ProfileLayout({
   )
 
   const handleFilterRefinement = useCallback(
-    (sort) => {
+    (sort, filter) => {
       // console.log(releases[0].title)
       setCurrentSort(sort)
+      setCurrentFilter(filter)
       handlePageChange({ selected: 0 })
     },
     [handlePageChange]
@@ -163,6 +171,7 @@ export default function ProfileLayout({
               ref={filtersRef}
               releases={currentReleases}
               isVisible={isSubscribed || isDlcmFriend}
+              artists={artists}
               onRefinement={handleFilterRefinement}
             />
             {loading ? (
