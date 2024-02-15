@@ -37,7 +37,6 @@ export default function ProfileLayout({
   const [authorized, setAuthorized] = useState(!isPasswordProtected)
   // const [refinedReleases, setRefinedReleases] = useState(releases)
   // const pageCount = Math.ceil(refinedReleases.length / releasesPerPage)
-  const pageCount = Math.ceil(releases / releasesPerPage)
 
   const [releasesOffset, setReleasesOffset] = useState(0)
   // const endOffset = releasesOffset + releasesPerPage
@@ -48,6 +47,7 @@ export default function ProfileLayout({
     ascending: true,
   })
   const [currentFilter, setCurrentFilter] = useState("all")
+  let pageCount = Math.ceil(releases / releasesPerPage)
   const sanitizedAbout = sanitize(aboutBlurb)
 
   const profilePic = (
@@ -71,9 +71,10 @@ export default function ProfileLayout({
 
       let filteredReleases = supabase
         .from("releases")
-        .select("*, codes(count)")
+        .select("*, codes(count)", { count: "exact" })
         .eq("user_id", userId)
         .eq("is_active", true)
+        .eq("codes.redeemed", false)
         .order(currentSort ? currentSort.sortBy : "created_at", {
           ascending: currentSort ? currentSort.ascending : false,
         })
