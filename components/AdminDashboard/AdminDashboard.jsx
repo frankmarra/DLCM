@@ -10,7 +10,7 @@ export default function AdminDashboard({ supabase }) {
     try {
       let { data, error, status } = await supabase
         .from("profiles")
-        .select("username, email, slug")
+        .select("username, email, slug, type, dlcm_friend, is_subscribed")
         .csv()
 
       if (error) throw error
