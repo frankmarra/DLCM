@@ -1,10 +1,10 @@
 import { useUser } from "@supabase/auth-helpers-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ supabase }) {
   //Supabase
-  const user = useUser()
-  const supabase = createClientComponentClient()
+  // const user = useUser()
+  // const supabase = createClientComponentClient()
 
   const getAllUsers = async () => {
     try {
@@ -16,11 +16,19 @@ export default function AdminDashboard() {
       if (error) throw error
 
       if (data) {
+        let today = new Date()
+        let month = today.getMonth() + 1
+        let day = today.getDate()
+        let year = today.getFullYear()
+
         const blob = new Blob([data], { type: "text/csv" })
         const url = URL.createObjectURL(blob)
         const link = document.createElement("a")
         link.href = url
-        link.setAttribute("download", "dlcm_user_list.csv")
+        link.setAttribute(
+          "download",
+          `dlcm_user_list_${month}_${day}_${year}.csv`
+        )
         document.body.appendChild(link)
         link.click()
       }
@@ -32,18 +40,14 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <div className="stack">
-        <div className="container">
-          <h2>Get all usernames, slugs, and emails</h2>
-          <button
-            className="button"
-            data-variant="secondary"
-            onClick={getAllUsers}
-          >
-            Get CSV
-          </button>
-        </div>
-      </div>
+      <button
+        className="button"
+        data-variant="secondary"
+        data-size="small"
+        onClick={getAllUsers}
+      >
+        Get user list
+      </button>
     </>
   )
 }
