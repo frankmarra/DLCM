@@ -1,11 +1,4 @@
-import { useUser } from "@supabase/auth-helpers-react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-
 export default function AdminDashboard({ supabase }) {
-  //Supabase
-  // const user = useUser()
-  // const supabase = createClientComponentClient()
-
   const getAllUsers = async () => {
     try {
       let { data, error, status } = await supabase
