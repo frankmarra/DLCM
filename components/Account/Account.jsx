@@ -10,12 +10,14 @@ import cn from "classnames"
 import Link from "next/link"
 import Head from "next/head"
 import SEO from "../SEO/SEO"
+import AdminDashboard from "../AdminDashboard/AdminDashboard"
 
 export default function Account({ session }) {
   const supabase = createClientComponentClient()
   const [loading, setLoading] = useState(true)
   const [showUpdateView, setShowUpdateView] = useState(false)
   const [profileData, setProfileData] = useState(null)
+  const [isAdmin, toggleIsAdmin] = useState(false)
   const { user } = session
 
   useEffect(() => {
@@ -62,6 +64,9 @@ export default function Account({ session }) {
           profileData={profileData}
           setShowUpdateView={setShowUpdateView}
         />
+        {process.env.NEXT_PUBLIC_ADMIN_USERS.includes(user.id) ? (
+          <AdminDashboard supabase={supabase} />
+        ) : null}
 
         {!profileData.dlcm_friend ? (
           profileData.is_subscribed ? (
