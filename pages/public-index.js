@@ -6,10 +6,8 @@ export async function getServerSideProps() {
 
   let { data: publicProfiles, error } = await supabase
     .from("profiles")
-    .select(
-      "avatar_url, username, type, location, slug, about_blurb, releases(count)"
-    )
-    // .eq("releases.is_active", true)
+    .select("avatar_url, username, type, location, slug")
+    .eq("in_public_index", true)
     .order("username", { ascending: true })
 
   if (publicProfiles === null) {

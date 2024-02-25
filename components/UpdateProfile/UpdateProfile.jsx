@@ -33,6 +33,7 @@ export default function UpdateProfile({
     sites: profileData.sites ?? null,
     pagePassword: profileData.page_password,
     isPasswordProtected: profileData.is_password_protected,
+    inPublicIndex: profileData.in_public_index,
     submitting: false,
     success: false,
     error: null,
@@ -66,6 +67,7 @@ export default function UpdateProfile({
     sites,
     pagePassword,
     isPasswordProtected,
+    inPublicIndex,
   } = formValue
 
   const { isNameValid, isFormValid } = validation
@@ -144,6 +146,7 @@ export default function UpdateProfile({
         sites: sites,
         page_password: pagePassword,
         is_password_protected: isPasswordProtected,
+        in_public_index: inPublicIndex,
         yum_url: prependProtocol(yumUrl),
         about_blurb: aboutBlurb,
         updated_at: new Date().toISOString(),
@@ -336,6 +339,22 @@ export default function UpdateProfile({
             }
             showPersonal={true}
           />
+          <label className="label checkbox" htmlFor="inPublicIndex">
+            <input
+              type="checkbox"
+              id="inPublicIndex"
+              checked={inPublicIndex}
+              onChange={() =>
+                dispatch({
+                  type: "change",
+                  name: "inPublicIndex",
+                  value: !inPublicIndex,
+                })
+              }
+            />
+            Show profile in public index?
+            <PopoverTip message="Selecting this allows your profile to be discoverable by anyone who visits DLCM." />
+          </label>
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <InputPasswordProtect
               id="isPasswordProtected"
