@@ -10,44 +10,51 @@ const sortOptions = [
   {
     label: "Recently Added",
     value: "newest",
-    method: sortByCreatedAt,
-    direction: "desc",
+
+    ascending: false,
+    sortBy: "created_at",
   },
   {
     label: "Release Date (newest)",
     value: "release date (newest)",
-    method: sortByReleaseDate,
-    direction: "desc",
+
+    ascending: false,
+    sortBy: "release_date",
   },
   {
     label: "Release Date (oldest)",
     value: "release date (oldest)",
-    method: sortByReleaseDate,
-    direction: "asc",
+
+    ascending: true,
+    sortBy: "release_date",
   },
   {
     label: "Release (a - z)",
     value: "release (a - z)",
-    method: sortByTitle,
-    direction: "asc",
+
+    ascending: true,
+    sortBy: "title",
   },
   {
     label: "Release (z - a)",
     value: "release (z - a)",
-    method: sortByTitle,
-    direction: "desc",
+
+    ascending: false,
+    sortBy: "title",
   },
   {
     label: "Artist (a - z)",
     value: "artist (a - z)",
-    method: sortByArtist,
-    direction: "asc",
+
+    ascending: true,
+    sortBy: "artist",
   },
   {
     label: "Artist (z - a)",
     value: "artist (z - a)",
-    method: sortByArtist,
-    direction: "desc",
+
+    ascending: false,
+    sortBy: "artist",
   },
 ]
 
@@ -73,14 +80,14 @@ export default function ReleaseSort({ releases, onChange, isDashboard }) {
   const handleChange = (e) => {
     const value = e.target.value
     const selected = sortOptions.find((option) => option.value === value)
-    let sortedItems = [...releases].sort(selected.method)
+    // let sortedItems = [...releases].sort(selected.method)
 
-    if (selected.direction === "desc") {
-      sortedItems.reverse()
-    }
+    // if (selected.direction === "desc") {
+    //   sortedItems.reverse()
+    // }
 
     setSelected(value)
-    onChange(sortedItems)
+    onChange(selected)
   }
 
   // useEffect(() => {

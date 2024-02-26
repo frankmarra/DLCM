@@ -1,16 +1,20 @@
 const sortByName = (a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1)
 
-export default function ReleaseFilter({ releases, onChange }) {
+export default function ReleaseFilter({ releases, artistNames, onChange }) {
   const artists = [
-    ...new Map(releases.map(({ artist }) => [artist, artist])).values(),
+    ...new Map(artistNames.map(({ artist }) => [artist, artist])).values(),
   ].sort(sortByName)
 
+  // const handleFilter = (value) => {
+  //   if (value == "all") {
+  //     onChange(releases)
+  //   } else {
+  //     onChange(releases.filter(({ artist }) => artist === value))
+  //   }
+  // }
+
   const handleFilter = (value) => {
-    if (value == "all") {
-      onChange(releases)
-    } else {
-      onChange(releases.filter(({ artist }) => artist === value))
-    }
+    onChange(value)
   }
 
   if (artists.length <= 1) {
