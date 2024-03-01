@@ -18,6 +18,7 @@ import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
+import InputGenres from "../InputGenres/InputGenres"
 
 export default function UpdateProfile({
   getProfile,
@@ -34,6 +35,7 @@ export default function UpdateProfile({
     pagePassword: profileData.page_password,
     isPasswordProtected: profileData.is_password_protected,
     inPublicIndex: profileData.in_public_index,
+    genres: profileData.genres,
     submitting: false,
     success: false,
     error: null,
@@ -68,6 +70,7 @@ export default function UpdateProfile({
     pagePassword,
     isPasswordProtected,
     inPublicIndex,
+    genres,
   } = formValue
 
   const { isNameValid, isFormValid } = validation
@@ -147,6 +150,7 @@ export default function UpdateProfile({
         page_password: pagePassword,
         is_password_protected: isPasswordProtected,
         in_public_index: inPublicIndex,
+        genres: genres,
         yum_url: prependProtocol(yumUrl),
         about_blurb: aboutBlurb,
         updated_at: new Date().toISOString(),
@@ -355,6 +359,7 @@ export default function UpdateProfile({
             Show profile in public index?
             <PopoverTip message="Selecting this allows your profile to be discoverable by anyone who visits DLCM." />
           </label>
+          <InputGenres genres={genres} onChange={dispatch} />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <InputPasswordProtect
               id="isPasswordProtected"
