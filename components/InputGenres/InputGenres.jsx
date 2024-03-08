@@ -1,4 +1,6 @@
 import { useState } from "react"
+import styles from "./InputGenres.module.css"
+import cn from "classnames"
 
 export default function InputGenres({ onChange, genres }) {
   const [genreArray, setGenreArray] = useState(genres ?? [])
@@ -42,16 +44,18 @@ export default function InputGenres({ onChange, genres }) {
         Add
       </button>
 
-      {genres.length ? (
+      {genres?.length ? (
         <>
           <ul role="list">
             Current Genres:
             {genres.map((genre) => (
               <>
-                <li key={genre}>{genre}</li>
-                <button className="button" onClick={() => removeGenre(genre)}>
-                  Remove
-                </button>
+                <li key={genre} className={cn(styles.genre, "container")}>
+                  {genre}
+                  <button className="button" onClick={() => removeGenre(genre)}>
+                    Remove
+                  </button>
+                </li>
               </>
             ))}
           </ul>

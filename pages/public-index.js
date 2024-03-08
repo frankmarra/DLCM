@@ -6,7 +6,7 @@ export async function getServerSideProps() {
 
   let { data: publicProfiles, error } = await supabase
     .from("profiles")
-    .select("avatar_url, username, type, location, slug")
+    .select("avatar_url, username, type, location, slug, genres")
     .eq("in_public_index", true)
     .order("username", { ascending: true })
 
