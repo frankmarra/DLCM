@@ -366,7 +366,7 @@ export default function CreateRelease({
 
           <InputSocialSites
             sites={sites}
-            dispatch={dispatch}
+            onChange={dispatch}
             hasProAccount={profileData.is_subscribed || profileData.dlcm_friend}
           />
 

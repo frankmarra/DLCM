@@ -13,6 +13,20 @@ export default function formReducer(state, action) {
         [action.name]: action.value,
       },
     }
+  } else if (action.type == "array-add") {
+    return {
+      ...state,
+      [action.array]: action.arrayVariables
+        ? [...action.arrayVariables, action.value]
+        : [action.value],
+    }
+  } else if (action.type == "array-remove") {
+    return {
+      ...state,
+      [action.array]: action.arrayVariables.filter(
+        (genre) => genre != action.value
+      ),
+    }
   } else if (action.type === "submit") {
     return {
       ...state,

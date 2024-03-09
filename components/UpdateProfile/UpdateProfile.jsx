@@ -18,6 +18,7 @@ import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
+import InputGenres from "../InputGenres/InputGenres"
 
 export default function UpdateProfile({
   getProfile,
@@ -33,6 +34,8 @@ export default function UpdateProfile({
     sites: profileData.sites ?? null,
     pagePassword: profileData.page_password,
     isPasswordProtected: profileData.is_password_protected,
+    inPublicIndex: profileData.in_public_index,
+    genres: profileData.genres,
     submitting: false,
     success: false,
     error: null,
@@ -66,6 +69,8 @@ export default function UpdateProfile({
     sites,
     pagePassword,
     isPasswordProtected,
+    inPublicIndex,
+    genres,
   } = formValue
 
   const { isNameValid, isFormValid } = validation
@@ -144,6 +149,8 @@ export default function UpdateProfile({
         sites: sites,
         page_password: pagePassword,
         is_password_protected: isPasswordProtected,
+        in_public_index: inPublicIndex,
+        genres: genres,
         yum_url: prependProtocol(yumUrl),
         about_blurb: aboutBlurb,
         updated_at: new Date().toISOString(),
@@ -336,6 +343,25 @@ export default function UpdateProfile({
             }
             showPersonal={true}
           />
+          <div className="container">
+            <label className="label checkbox" htmlFor="inPublicIndex">
+              <input
+                type="checkbox"
+                id="inPublicIndex"
+                checked={inPublicIndex}
+                onChange={() =>
+                  dispatch({
+                    type: "change",
+                    name: "inPublicIndex",
+                    value: !inPublicIndex,
+                  })
+                }
+              />
+              <strong>Show profile in public index?</strong>
+              <PopoverTip message="Selecting this allows your profile to be discoverable by anyone who visits our public index page" />
+            </label>
+          </div>
+          <InputGenres genres={genres} onChange={dispatch} />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <InputPasswordProtect
               id="isPasswordProtected"
