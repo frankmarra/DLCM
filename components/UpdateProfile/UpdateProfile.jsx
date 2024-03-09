@@ -343,22 +343,24 @@ export default function UpdateProfile({
             }
             showPersonal={true}
           />
-          <label className="label checkbox" htmlFor="inPublicIndex">
-            <input
-              type="checkbox"
-              id="inPublicIndex"
-              checked={inPublicIndex}
-              onChange={() =>
-                dispatch({
-                  type: "change",
-                  name: "inPublicIndex",
-                  value: !inPublicIndex,
-                })
-              }
-            />
-            Show profile in public index?
-            <PopoverTip message="Selecting this allows your profile to be discoverable by anyone who visits DLCM." />
-          </label>
+          <div className="container">
+            <label className="label checkbox" htmlFor="inPublicIndex">
+              <input
+                type="checkbox"
+                id="inPublicIndex"
+                checked={inPublicIndex}
+                onChange={() =>
+                  dispatch({
+                    type: "change",
+                    name: "inPublicIndex",
+                    value: !inPublicIndex,
+                  })
+                }
+              />
+              <strong>Show profile in public index?</strong>
+              <PopoverTip message="Selecting this allows your profile to be discoverable by anyone who visits our public index page" />
+            </label>
+          </div>
           <InputGenres genres={genres} onChange={dispatch} />
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <InputPasswordProtect

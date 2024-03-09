@@ -3,7 +3,10 @@ export default function AdminDashboard({ supabase }) {
     try {
       let { data, error, status } = await supabase
         .from("profiles")
-        .select("username, email, slug, type, dlcm_friend, is_subscribed")
+        .select(
+          "username, email, slug, type, dlcm_friend, is_subscribed, created_at"
+        )
+        .order("created_at", { ascending: false })
         .csv()
 
       if (error) throw error
