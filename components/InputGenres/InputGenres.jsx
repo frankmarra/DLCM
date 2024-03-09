@@ -24,25 +24,30 @@ export default function InputGenres({ onChange, genres }) {
       value: genreToRemove,
     })
   }
+  console.log("genres length: ", genres.length)
   return (
     <>
-      <label className="label" htmlFor="addGenre">
-        Add genre:
-      </label>
-      <input
-        className="input"
-        id="addGenre"
-        type="text"
-        value={newGenre}
-        onChange={(e) => setNewGenre(e.target.value)}
-      />
-      <button
-        className="button"
-        data-variant="primary"
-        onClick={() => addGenre()}
-      >
-        Add
-      </button>
+      {genres?.length < 3 ? (
+        <>
+          <label className="label" htmlFor="addGenre">
+            Add genre:
+          </label>
+          <input
+            className="input"
+            id="addGenre"
+            type="text"
+            value={newGenre}
+            onChange={(e) => setNewGenre(e.target.value)}
+          />
+          <button
+            className="button"
+            data-variant="primary"
+            onClick={() => addGenre()}
+          >
+            Add
+          </button>
+        </>
+      ) : null}
 
       {genres?.length ? (
         <>

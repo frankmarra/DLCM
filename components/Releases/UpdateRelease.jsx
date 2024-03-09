@@ -233,10 +233,10 @@ export default function UpdateRelease({
 
   async function deleteRelease() {
     const deleteCheck = window.prompt(
-      `Please enter '${release.title}' to delete this release.`
+      `Please enter 'delete' to delete this release.`
     )
 
-    if (deleteCheck === release.title) {
+    if (deleteCheck === "delete") {
       try {
         let { data, error } = await supabase.storage
           .from("images")
