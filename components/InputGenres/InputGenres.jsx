@@ -27,7 +27,7 @@ export default function InputGenres({ onChange, genres }) {
 
   return (
     <>
-      {genres?.length < 3 ? (
+      {genres?.length < 3 || genres == null ? (
         <>
           <label className="label" htmlFor="addGenre">
             Add genre:
