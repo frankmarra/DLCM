@@ -24,7 +24,7 @@ export default function InputGenres({ onChange, genres }) {
       value: genreToRemove,
     })
   }
-  console.log("genres length: ", genres.length)
+
   return (
     <>
       {genres?.length < 3 ? (
@@ -54,14 +54,12 @@ export default function InputGenres({ onChange, genres }) {
           <ul role="list">
             Current Genres:
             {genres.map((genre) => (
-              <>
-                <li key={genre} className={cn(styles.genre, "container")}>
-                  {genre}
-                  <button className="button" onClick={() => removeGenre(genre)}>
-                    Remove
-                  </button>
-                </li>
-              </>
+              <li key={genre} className={cn(styles.genre, "container")}>
+                {genre}
+                <button className="button" onClick={() => removeGenre(genre)}>
+                  Remove
+                </button>
+              </li>
             ))}
           </ul>
         </>
