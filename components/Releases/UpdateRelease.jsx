@@ -167,7 +167,7 @@ export default function UpdateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: prependProtocol(yumUrl),
-        type: type ?? null,
+        type: type,
         sites: sites,
         release_date: releaseDate,
         about: about,
@@ -370,7 +370,7 @@ export default function UpdateRelease({
             {isNameValid.message}
           </small>
 
-          <InputReleaseType type={type} dispatch={dispatch} />
+          <InputReleaseType type={type} onChange={dispatch} />
 
           <label htmlFor="releaseDate" className="label">
             Release Date:
