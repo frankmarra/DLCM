@@ -7,11 +7,6 @@ const nav = [
   { id: "privacy", label: "Privacy Policy", url: "/privacy" },
   { id: "terms", label: "Terms and Conditions", url: "/terms" },
   { id: "contact", label: "Contact Us", url: "mailto:dlcm.app@gmail.com" },
-  {
-    id: "coffee",
-    label: "Buy us a coffee",
-    url: "https://mysterycircles.com/donate-to-mc",
-  },
 ]
 
 export default function Footer() {
