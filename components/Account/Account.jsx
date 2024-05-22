@@ -11,6 +11,9 @@ import Link from "next/link"
 import Head from "next/head"
 import SEO from "../SEO/SEO"
 import AdminDashboard from "../AdminDashboard/AdminDashboard"
+import PopoverTip from "../PopoverTip/PopoverTip"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
 export default function Account({ session }) {
   const supabase = createClientComponentClient()
@@ -58,6 +61,21 @@ export default function Account({ session }) {
   return (
     <>
       <SEO title={profileData.username}></SEO>
+      <div
+        className="container inline-max"
+        style={{ textAlign: "center", width: "45vw" }}
+      >
+        <FontAwesomeIcon
+          icon={faTriangleExclamation}
+          style={{ color: "#ff4747" }}
+        />{" "}
+        Attention{" "}
+        <PopoverTip
+          message={`If you encounter a problem, please
+      try clearing your cache and logging back in. If the problem persists,
+      please contact us at dlcm.app@gmail.com`}
+        />
+      </div>
       <div className={cn(styles.update, "cluster")}>
         <UpdateProfile
           getProfile={getProfile}
