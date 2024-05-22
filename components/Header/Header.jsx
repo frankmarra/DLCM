@@ -8,6 +8,8 @@ import Logo from "@/icons/dlcm-logo.svg"
 import cn from "classnames"
 import styles from "./Header.module.css"
 import PopoverTip from "../PopoverTip/PopoverTip"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
 export default function Header() {
   const [isNavOpen, setNavOpen] = useState(false)
@@ -60,7 +62,11 @@ export default function Header() {
         Menu
       </button>
       <div className="container">
-        We are currently experiencing issues.
+        <FontAwesomeIcon
+          icon={faTriangleExclamation}
+          style={{ color: "#ff4747" }}
+        />{" "}
+        Attention{" "}
         <PopoverTip
           message={`If you encounter a problem, please
           try clearing your cache and logging back in. If the problem persists,
