@@ -58,6 +58,7 @@ export default function Header() {
       >
         Menu
       </button>
+
       <nav className={cn(styles.nav, isNavOpen ? styles.isOpen : "")}>
         <ul className={cn(styles.list, "cluster")} role="list">
           {user ? (
