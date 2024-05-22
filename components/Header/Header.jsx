@@ -7,6 +7,7 @@ import ThemeToggle from "@/components/ThemeToggle/ThemeToggle.jsx"
 import Logo from "@/icons/dlcm-logo.svg"
 import cn from "classnames"
 import styles from "./Header.module.css"
+import PopoverTip from "../PopoverTip/PopoverTip"
 
 export default function Header() {
   const [isNavOpen, setNavOpen] = useState(false)
@@ -58,6 +59,14 @@ export default function Header() {
       >
         Menu
       </button>
+      <div className="container">
+        We are currently experiencing issues.
+        <PopoverTip
+          message={`If you encounter a problem, please
+          try clearing your cache and logging back in. If the problem persists,
+          please contact us at dlcm.app@gmail.com`}
+        />
+      </div>
       <nav className={cn(styles.nav, isNavOpen ? styles.isOpen : "")}>
         <ul className={cn(styles.list, "cluster")} role="list">
           {user ? (
