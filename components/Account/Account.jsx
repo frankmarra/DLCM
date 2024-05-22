@@ -61,15 +61,12 @@ export default function Account({ session }) {
   return (
     <>
       <SEO title={profileData.username}></SEO>
-      <div
-        className="container inline-max"
-        style={{ textAlign: "center", width: "45vw" }}
-      >
+      <div className="container inline-max" style={{ textAlign: "center" }}>
         <FontAwesomeIcon
           icon={faTriangleExclamation}
           style={{ color: "#ff4747" }}
         />{" "}
-        Attention{" "}
+        Currently experiencing issues{" "}
         <PopoverTip
           message={`If you encounter a problem, please
       try clearing your cache and logging back in. If the problem persists,
