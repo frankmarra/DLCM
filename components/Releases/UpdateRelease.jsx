@@ -34,7 +34,9 @@ export default function UpdateRelease({
   const user = useUser()
   const initialFormValue = {
     title: release.title,
-    sluggedName: release.release_slug ?? slugify(release.title),
+    sluggedName:
+      release.release_slug ??
+      slugify(release.title, { lower: true, remove: /[*+~.()'"!:@]/g }),
     yumUrl: release.yum_url,
     releaseDate: release.release_date,
     type: release.type,
@@ -328,6 +330,7 @@ export default function UpdateRelease({
                       value: slugify(e.target.value, {
                         lower: true,
                         trim: false,
+                        remove: /[*+~.()'"!:@]/g,
                       }),
                     })
             }
@@ -348,6 +351,7 @@ export default function UpdateRelease({
                   value: slugify(e.target.value, {
                     lower: true,
                     trim: false,
+                    remove: /[*+~.()'"!:@]/g,
                   }),
                 })
               }

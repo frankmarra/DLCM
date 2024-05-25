@@ -1,4 +1,4 @@
-import { supabase } from "@/utils/supabase"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useReducer, useState, useEffect } from "react"
 import slugify from "slugify"
 import { useRouter } from "next/router"
@@ -8,6 +8,8 @@ import SEO from "@/components/SEO/SEO"
 import formReducer from "@/utils/formReducer"
 import inputValidator from "@/utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
+
+const nameRegEx = /[A-Za-z0-9\-_\.]/
 
 const accountTypes = [
   { value: "", label: "Choose account type", disabled: true },
@@ -30,6 +32,7 @@ const initialFormValue = {
 }
 
 const Signup = () => {
+  const supabase = createClientComponentClient()
   const [formValue, dispatch] = useReducer(formReducer, initialFormValue)
 
   const [validation, validate] = useReducer(inputValidator, {
@@ -351,6 +354,7 @@ const Signup = () => {
                                 value: slugify(e.target.value, {
                                   lower: true,
                                   trim: false,
+                                  remove: /[*+~.()'"!:@]/g,
                                 }),
                               })
                       }
@@ -373,6 +377,7 @@ const Signup = () => {
                           value: slugify(e.target.value, {
                             lower: true,
                             trim: false,
+                            remove: /[*+~.()'"!:@]/g,
                           }),
                         })
                       }
@@ -389,6 +394,7 @@ const Signup = () => {
                                 value: slugify(e.target.value, {
                                   lower: true,
                                   trim: false,
+                                  remove: /[*+~.()'"!:@]/g,
                                 }),
                               })
                       }
@@ -427,6 +433,7 @@ const Signup = () => {
                                 value: slugify(e.target.value, {
                                   lower: true,
                                   trim: false,
+                                  remove: /[*+~.()'"!:@]/g,
                                 }),
                               })
                       }
@@ -449,6 +456,7 @@ const Signup = () => {
                           value: slugify(e.target.value, {
                             lower: true,
                             trim: false,
+                            remove: /[*+~.()'"!:@]/g,
                           }),
                         })
                       }

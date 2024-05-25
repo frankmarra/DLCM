@@ -44,6 +44,7 @@ export default function ProfileLayout({
       alt={name}
       width={200}
       height={200}
+      priority={true}
     />
   )
 
