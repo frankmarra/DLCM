@@ -31,8 +31,16 @@ export default function Header() {
   ]
 
   async function handleLogout() {
-    await supabase.auth.signOut()
-    router.push("/")
+    try {
+      let { error } = await supabase.auth.signOut()
+      if (error) {
+        console.log(error)
+      }
+    } catch (error) {
+      throw error
+    } finally {
+      router.push("/")
+    }
   }
 
   const closeNav = () => setNavOpen(false)
