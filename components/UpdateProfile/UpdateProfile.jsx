@@ -265,6 +265,7 @@ export default function UpdateProfile({
                     value: slugify(e.target.value, {
                       lower: true,
                       trim: false,
+                      remove: /[*+~.()'"!:@]/g,
                     }),
                   })
                 }

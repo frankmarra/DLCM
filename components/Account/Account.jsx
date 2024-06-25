@@ -36,15 +36,15 @@ export default function Account({ session }) {
         .select("*, releases(*, codes(count))")
         .eq("id", user.id)
         .eq("releases.codes.redeemed", false)
-        .order("created_at", { foreignTable: "releases", ascending: false })
-        .single()
+        .order("created_at", { referencedTable: "releases", ascending: false })
+      //.single()
 
       if (error && status !== 406) {
         throw error
       }
 
       if (data) {
-        setProfileData(data)
+        setProfileData(data[0])
       }
     } catch (error) {
       alert("Error loading user data!")
@@ -61,18 +61,21 @@ export default function Account({ session }) {
   return (
     <>
       <SEO title={profileData.username}></SEO>
-      <div className="container inline-max" style={{ textAlign: "center" }}>
-        <FontAwesomeIcon
-          icon={faTriangleExclamation}
-          style={{ color: "#ff4747" }}
-        />{" "}
-        Currently experiencing issues{" "}
-        <PopoverTip
-          message={`If you encounter a problem, please
-      try clearing your cache and logging back in. If the problem persists,
-      please contact us at dlcm.app@gmail.com`}
-        />
-      </div>
+      {
+        //    Banner used for updating users on DLCM status.
+        // <div className="container inline-max" style={{ textAlign: "center" }}>
+        //   <FontAwesomeIcon
+        //     icon={faTriangleExclamation}
+        //     style={{ color: "#ff4747" }}
+        //   />{" "}
+        //   Currently experiencing issues{" "}
+        //   <PopoverTip
+        //     message={`If you encounter a problem, please
+        // try clearing your cache and logging back in. If the problem persists,
+        // please contact us at dlcm.app@gmail.com`}
+        //   />
+        // </div>
+      }
       <div className={cn(styles.update, "cluster")}>
         <UpdateProfile
           getProfile={getProfile}

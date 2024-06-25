@@ -259,6 +259,7 @@ export default function CreateRelease({
                       value: slugify(e.target.value, {
                         lower: true,
                         trim: false,
+                        remove: /[*+~.()'"!:@]/g,
                       }),
                     })
             }
@@ -279,6 +280,7 @@ export default function CreateRelease({
                   value: slugify(e.target.value, {
                     lower: true,
                     trim: false,
+                    remove: /[*+~.()'"!:@]/g,
                   }),
                 })
               }

@@ -36,6 +36,7 @@ export default function ReleaseLayout({
           alt={release.title}
           height={250}
           width={250}
+          priority={true}
         />
         <div>
           <h1 className={styles.title}>{release.title}</h1>

@@ -31,7 +31,7 @@ export default function InputSocialSites({
             className="input"
             id="personal"
             type="url"
-            value={sites?.personal ?? null}
+            value={sites?.personal ?? ""}
             onChange={handleChange}
           />
         </>
@@ -43,7 +43,7 @@ export default function InputSocialSites({
         className="input"
         id="bandcamp"
         type="url"
-        value={sites?.bandcamp ?? null}
+        value={sites?.bandcamp ?? ""}
         required
         onChange={handleChange}
       />
@@ -56,7 +56,7 @@ export default function InputSocialSites({
             className="input"
             id="apple"
             type="url"
-            value={sites?.apple ?? null}
+            value={sites?.apple ?? ""}
             onChange={handleChange}
           />
 
@@ -67,7 +67,7 @@ export default function InputSocialSites({
             className="input"
             id="spotify"
             type="url"
-            value={sites?.spotify ?? null}
+            value={sites?.spotify ?? ""}
             onChange={handleChange}
           />
           <label className="label" htmlFor="soundcloud">
@@ -77,7 +77,7 @@ export default function InputSocialSites({
             className="input"
             id="soundcloud"
             type="url"
-            value={sites?.soundcloud ?? null}
+            value={sites?.soundcloud ?? ""}
             onChange={handleChange}
           />
           <label className="label" htmlFor="youtube">
@@ -87,7 +87,7 @@ export default function InputSocialSites({
             className="input"
             id="youtube"
             type="url"
-            value={sites?.youtube ?? null}
+            value={sites?.youtube ?? ""}
             onChange={handleChange}
           />
           <label className="label" htmlFor="facebook">
@@ -97,7 +97,7 @@ export default function InputSocialSites({
             className="input"
             id="facebook"
             type="url"
-            value={sites?.facebook ?? null}
+            value={sites?.facebook ?? ""}
             onChange={handleChange}
           />
           <label className="label" htmlFor="instagram">
@@ -107,7 +107,7 @@ export default function InputSocialSites({
             className="input"
             id="instagram"
             type="url"
-            value={sites?.instagram ?? null}
+            value={sites?.instagram ?? ""}
             onChange={handleChange}
           />
           <label className="label" htmlFor="tiktok">
@@ -117,7 +117,7 @@ export default function InputSocialSites({
             className="input"
             id="tiktok"
             type="url"
-            value={sites?.tiktok ?? null}
+            value={sites?.tiktok ?? ""}
             onChange={handleChange}
           />
           <label className="label" htmlFor="twitter">
@@ -127,7 +127,7 @@ export default function InputSocialSites({
             className="input"
             id="twitter"
             type="url"
-            value={sites?.twitter ?? null}
+            value={sites?.twitter ?? ""}
             onChange={handleChange}
           />
         </>
