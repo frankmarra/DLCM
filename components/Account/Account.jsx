@@ -62,21 +62,20 @@ export default function Account({ session }) {
     <>
       <SEO title={profileData.username}></SEO>
       {
-        // Banner used for updating users on DLCM status.
+        //    Banner used for updating users on DLCM status.
+        // <div className="container inline-max" style={{ textAlign: "center" }}>
+        //   <FontAwesomeIcon
+        //     icon={faTriangleExclamation}
+        //     style={{ color: "#ff4747" }}
+        //   />{" "}
+        //   Currently experiencing issues{" "}
+        //   <PopoverTip
+        //     message={`If you encounter a problem, please
+        // try clearing your cache and logging back in. If the problem persists,
+        // please contact us at dlcm.app@gmail.com`}
+        //   />
+        // </div>
       }
-      <div className="container inline-max" style={{ textAlign: "center" }}>
-        <FontAwesomeIcon
-          icon={faTriangleExclamation}
-          style={{ color: "#ff4747" }}
-        />{" "}
-        Currently experiencing issues{" "}
-        <PopoverTip
-          message={`If you encounter a problem, please
-      try clearing your cache and logging back in. If the problem persists,
-      please contact us at dlcm.app@gmail.com`}
-        />
-      </div>
-
       <div className={cn(styles.update, "cluster")}>
         <UpdateProfile
           getProfile={getProfile}
