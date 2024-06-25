@@ -53,7 +53,7 @@
 
 .with-sidebar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: var(--sidebar-gap, var(--size-4));
 }
 
