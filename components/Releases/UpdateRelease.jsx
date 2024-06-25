@@ -37,6 +37,8 @@ export default function UpdateRelease({
     sluggedName:
       release.release_slug ??
       slugify(release.title, { lower: true, remove: /[*+~.()'"!:@]/g }),
+    artist: release.artist ?? "",
+    label: release.label ?? "",
     yumUrl: release.yum_url,
     releaseDate: release.release_date,
     type: release.type,
@@ -72,12 +74,14 @@ export default function UpdateRelease({
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
   // const [isActive, setIsActive] = useState(release.is_active)
-  const [about, setAbout] = useState(release.about)
+  const [about, setAbout] = useState(release.about ?? "")
 
   const {
     title,
     sluggedName,
     yumUrl,
+    artist,
+    label,
     releaseDate,
     type,
     sites,
@@ -169,6 +173,8 @@ export default function UpdateRelease({
         artwork_url: artworkUrl,
         artwork_path: newImagePath ? newImagePath : imagePath,
         yum_url: prependProtocol(yumUrl),
+        artist: artist,
+        label: label,
         type: type,
         sites: sites,
         release_date: releaseDate,
@@ -373,6 +379,29 @@ export default function UpdateRelease({
           <small style={{ color: isNameValid.color }}>
             {isNameValid.message}
           </small>
+
+          <label className="label" htmlFor="artist">
+            Artist*
+          </label>
+          <input
+            className="input"
+            id="artist"
+            type="text"
+            value={artist}
+            onChange={handleChange}
+            required
+          />
+
+          <label className="label" htmlFor="label">
+            Label
+          </label>
+          <input
+            className="input"
+            id="label"
+            type="text"
+            value={label}
+            onChange={handleChange}
+          />
 
           <InputReleaseType type={type} onChange={dispatch} />
 
