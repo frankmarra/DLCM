@@ -51,72 +51,77 @@ export default function Releases({ profileData, getProfile }) {
   }, [profileData.id, addedNewRelease, getProfile])
 
   return (
-    <article className="stack">
-      <header className="article-heading cluster">
-        <h2 className="visually-hidden">Releases</h2>
+    refinedReleases && (
+      <article className="stack">
+        <header className="article-heading cluster">
+          <h2 className="visually-hidden">Releases</h2>
 
-        <ReleaseRefinement
-          isVisible={profileData.is_subscribed || profileData.dlcm_friend}
-          releases={releases}
-          onRefinement={handleFilterRefinement}
-          ref={filtersRef}
-          isDashboard={true}
-        />
-      </header>
+          <ReleaseRefinement
+            isVisible={profileData.is_subscribed || profileData.dlcm_friend}
+            releases={releases}
+            onRefinement={handleFilterRefinement}
+            ref={filtersRef}
+            isDashboard={true}
+          />
+        </header>
 
-      <ul className="grid" role="list">
-        <li className={cn(styles.actionCard, "container")} data-variant="empty">
-          {profileData.is_subscribed ||
-          profileData.dlcm_friend ||
-          releases.length <= 1 ? (
-            <CreateRelease
-              setAddedNewRelease={setAddedNewRelease}
-              profileData={profileData}
-              trigger={
-                <button
-                  className={cn(styles.actionCardButton, "button")}
-                  data-variant="text"
-                >
-                  <IconMusicNotesPlus aria-hidden="true" />
-                  Create a new release
-                </button>
-              }
-            />
+        <ul className="grid" role="list">
+          <li
+            className={cn(styles.actionCard, "container")}
+            data-variant="empty"
+          >
+            {profileData.is_subscribed ||
+            profileData.dlcm_friend ||
+            releases.length <= 1 ? (
+              <CreateRelease
+                setAddedNewRelease={setAddedNewRelease}
+                profileData={profileData}
+                trigger={
+                  <button
+                    className={cn(styles.actionCardButton, "button")}
+                    data-variant="text"
+                  >
+                    <IconMusicNotesPlus aria-hidden="true" />
+                    Create a new release
+                  </button>
+                }
+              />
+            ) : (
+              <Link href="/api/subscribe-to-dlcm">
+                Subscribe to add more releases
+              </Link>
+            )}
+          </li>
+          {releases.length ? (
+            <>
+              {currentReleases.map((release, index) => (
+                <li key={index}>
+                  <ReleaseCard
+                    key={release.id}
+                    release={release}
+                    user={user}
+                    getProfile={getProfile}
+                    profileData={profileData}
+                    profileSlug={user.user_metadata.slug}
+                  />
+                </li>
+              ))}
+            </>
           ) : (
-            <Link href="/api/subscribe-to-dlcm">
-              Subscribe to add more releases
-            </Link>
+            <div className={cn(styles.empty, "container")} data-variant="empty">
+              <p>Your releases list is currently empty.</p>
+            </div>
           )}
-        </li>
-        {releases.length ? (
-          <>
-            {currentReleases.map((release, index) => (
-              <li key={index}>
-                <ReleaseCard
-                  key={release.id}
-                  release={release}
-                  user={user}
-                  getProfile={getProfile}
-                  profileData={profileData}
-                  profileSlug={user.user_metadata.slug}
-                />
-              </li>
-            ))}
-          </>
-        ) : (
-          <div className={cn(styles.empty, "container")} data-variant="empty">
-            <p>Your releases list is currently empty.</p>
-          </div>
-        )}
-      </ul>
-      <div className={styles.pagination}>
-        <Pagination
-          forcePage={pageChange}
-          onClick={handlePageClick}
-          onPageChange={handlePageChange}
-          pageCount={pageCount}
-        />
-      </div>
-    </article>
+        </ul>
+        <div className={styles.pagination}>
+          <Pagination
+            forcePage={pageChange}
+            onClick={handlePageClick}
+            onPageChange={handlePageChange}
+            pageCount={pageCount}
+          />
+        </div>
+      </article>
+    )
   )
 }

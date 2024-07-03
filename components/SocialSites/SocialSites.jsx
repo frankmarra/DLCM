@@ -39,10 +39,12 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
                     <span className="visually-hidden">
                       Visit profile on Bandcamp
                     </span>
+
                     <FontAwesomeIcon
                       icon={faBandcamp}
                       size={iconSize}
                       color="#3B98AA"
+                      listItem
                     />
                   </a>
                 </li>
