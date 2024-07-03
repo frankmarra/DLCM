@@ -3,6 +3,7 @@ import { clashDisplay, archivo } from "@/utils/fonts"
 import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs"
 import { SessionContextProvider } from "@supabase/auth-helpers-react"
 import { useState } from "react"
+import "@fortawesome/fontawesome-svg-core/styles.css"
 import Layout from "@/components/Layout/Layout"
 
 function App({ Component, pageProps }) {
