@@ -44,7 +44,6 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
                       icon={faBandcamp}
                       size={iconSize}
                       color="#3B98AA"
-                      listItem
                     />
                   </a>
                 </li>
