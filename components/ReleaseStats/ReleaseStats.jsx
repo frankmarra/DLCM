@@ -9,10 +9,10 @@ import {
 } from "@/components/Dialog/Dialog"
 
 let now = new Date()
-now = now.toLocaleDateString()
+now = now.toISOString().slice(0, 10)
 
-let allDates = new Date("2023-01-22")
-allDates = allDates.toLocaleDateString()
+let allDates = "2023-01-22"
+// allDates = allDates.toLocaleDateString()
 
 export default function ReleaseStats({ release }) {
   const [open, setOpen] = useState(false)
@@ -25,15 +25,15 @@ export default function ReleaseStats({ release }) {
   const supabase = createClientComponentClient()
 
   async function getCodes(startDate, endDate, period) {
+    console.log("start date: ", startDate, "end date: ", endDate)
     try {
       let { count, error } = await supabase
         .from("codes")
-        .select("redeemed_at", { count: "exact", head: true })
+        .select("*", { count: "exact", head: true })
         .eq("release_id", release.id)
         .eq("redeemed", true)
         .gte("redeemed_at", startDate)
-        .lte("redeemed_at", endDate)
-
+      // .lt("redeemed_at", endDate)
       if (count) {
         setRedeemedCodes({ count: count, period: period })
       } else if (count === 0) {
@@ -50,39 +50,33 @@ export default function ReleaseStats({ release }) {
     let date = new Date(now)
     date.setDate(date.getDate() - days)
 
-    return date.toLocaleDateString()
+    return date.toISOString().slice(0, 10)
   }
 
   const statsFrom = [
     {
       label: "Today",
       start: now,
-      end: now,
     },
     {
-      label: "Yesterday",
+      label: "2 Days",
       start: getPastDate(1),
-      end: getPastDate(1),
     },
     {
       label: "7 Days",
       start: getPastDate(7),
-      end: now,
     },
     {
       label: "14 Days",
       start: getPastDate(14),
-      end: now,
     },
     {
       label: "30 Days",
       start: getPastDate(30),
-      end: now,
     },
     {
       label: "All",
       start: allDates,
-      end: now,
     },
   ]
 
