@@ -43,7 +43,7 @@ export default function ReleaseLayout({
             height={250}
             width={250}
           />
-          {release.player_embed.length > 0 ? (
+          {release.player_embed?.length > 0 ? (
             <section>
               <iframe
                 style={{ border: 0, width: 100 + "%", height: 120 + "px" }}
