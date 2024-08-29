@@ -160,16 +160,16 @@ export default function CreateRelease({
   }
 
   function stripEmbed(embedToStrip) {
-    let strippedEmbed = ""
+    let albumRegex = /album=(\d+)/
+    let trackRegex = /track=(\d+)/
+    if (embedToStrip.includes("album=")) {
+      let match = embedToStrip.match(albumRegex)
+      let strippedEmbed = match[0]
 
-    if (embedToStrip.length > 0) {
-      let embedArray = embedToStrip.split("/")
-
-      embedArray.forEach((value) => {
-        if (value.match(/(?:album=)\d+/)) {
-          strippedEmbed = value.slice(6)
-        }
-      })
+      return strippedEmbed
+    } else if (embedToStrip.includes("track")) {
+      let match = embedToStrip.match(trackRegex)
+      let strippedEmbed = match[0]
 
       return strippedEmbed
     }

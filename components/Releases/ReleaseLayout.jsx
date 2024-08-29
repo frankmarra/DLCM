@@ -47,7 +47,7 @@ export default function ReleaseLayout({
             <section>
               <iframe
                 style={{ border: 0, width: 100 + "%", height: 120 + "px" }}
-                src={`https://bandcamp.com/EmbeddedPlayer/album=${release.player_embed}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/`}
+                src={`https://bandcamp.com/EmbeddedPlayer/${release.player_embed}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/`}
                 seamless
               >
                 <a href=""></a>
