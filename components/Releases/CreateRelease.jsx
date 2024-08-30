@@ -159,25 +159,8 @@ export default function CreateRelease({
     }
   }
 
-  function stripEmbed(embedToStrip) {
-    let albumRegex = /album=(\d+)/
-    let trackRegex = /track=(\d+)/
-    if (embedToStrip.includes("album=")) {
-      let match = embedToStrip.match(albumRegex)
-      let strippedEmbed = match[0]
-
-      return strippedEmbed
-    } else if (embedToStrip.includes("track")) {
-      let match = embedToStrip.match(trackRegex)
-      let strippedEmbed = match[0]
-
-      return strippedEmbed
-    }
-  }
-
   async function createNewRelease() {
     dispatch({ type: "submit" })
-    let embed = stripEmbed(playerEmbed)
 
     try {
       let newRelease = {
@@ -189,7 +172,7 @@ export default function CreateRelease({
         yum_url: prependProtocol(yumUrl),
         type: type ?? null,
         sites: sites,
-        player_embed: embed,
+        player_embed: playerEmbed,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,

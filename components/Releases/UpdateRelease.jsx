@@ -77,8 +77,6 @@ export default function UpdateRelease({
   const [newImagePath, setNewImagePath] = useState()
   // const [isActive, setIsActive] = useState(release.is_active)
   const [about, setAbout] = useState(release.about ?? "")
-  const [embedChanged, toggleEmbedChanged] = useState(false)
-  const [showUpdateEmbed, toggleShowUpdateEmbed] = useState(false)
 
   const {
     title,
@@ -123,11 +121,6 @@ export default function UpdateRelease({
       name: e.target.id,
       value: e.target.value,
     })
-  }
-
-  const handleEmbedChange = () => {
-    toggleEmbedChanged(!embedChanged)
-    toggleShowUpdateEmbed(!showUpdateEmbed)
   }
 
   const checkName = async (e) => {
@@ -175,29 +168,7 @@ export default function UpdateRelease({
     }
   }
 
-  function stripEmbed(embedToStrip) {
-    let albumRegex = /album=(\d+)/
-    let trackRegex = /track=(\d+)/
-    if (embedToStrip.includes("album=")) {
-      let match = embedToStrip.match(albumRegex)
-      let strippedEmbed = match[0]
-
-      return strippedEmbed
-    } else if (embedToStrip.includes("track")) {
-      let match = embedToStrip.match(trackRegex)
-      let strippedEmbed = match[0]
-
-      return strippedEmbed
-    }
-  }
-
   async function updateRelease() {
-    let embed = ""
-
-    if (embedChanged) {
-      embed = stripEmbed(playerEmbed)
-    }
-
     try {
       const update = {
         title: title,
@@ -209,7 +180,7 @@ export default function UpdateRelease({
         label: label,
         type: type,
         sites: sites,
-        player_embed: embedChanged ? embed : playerEmbed,
+        player_embed: playerEmbed,
         release_date: releaseDate,
         about: about,
         is_active: isActive,
@@ -462,38 +433,10 @@ export default function UpdateRelease({
 
           {profileData.is_subscribed || profileData.dlcm_friend ? (
             <>
-              {showUpdateEmbed ? (
-                <>
-                  <InputAudioPlayerEmbed
-                    onChange={dispatch}
-                    playerEmbed={playerEmbed}
-                  />
-                  <button
-                    className="button"
-                    data-variant="secondary"
-                    data-size="small"
-                    onClick={handleEmbedChange}
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
-                <>
-                  {playerEmbed?.length > 0 ? (
-                    <p>Embed is active.</p>
-                  ) : (
-                    <p>No embed for this release</p>
-                  )}
-                  <button
-                    className="button"
-                    data-variant="secondary"
-                    data-size="small"
-                    onClick={handleEmbedChange}
-                  >
-                    {playerEmbed?.length > 0 ? "Change?" : "Add?"}
-                  </button>
-                </>
-              )}
+              <InputAudioPlayerEmbed
+                onChange={dispatch}
+                playerEmbed={playerEmbed}
+              />
             </>
           ) : null}
 

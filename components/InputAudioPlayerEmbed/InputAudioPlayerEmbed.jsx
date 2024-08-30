@@ -1,6 +1,27 @@
 import PopoverTip from "../PopoverTip/PopoverTip"
 
 export default function InputAudioPlayerEmbed({ playerEmbed, onChange }) {
+  function stripEmbed(embedToStrip) {
+    let albumRegex = /album=(\d+)/
+    let trackRegex = /track=(\d+)/
+
+    if (embedToStrip.includes("album")) {
+      let match = embedToStrip.match(albumRegex)
+      let strippedEmbed = match[1]
+
+      return "album=" + strippedEmbed
+    } else if (embedToStrip.includes("track")) {
+      let match = embedToStrip.match(trackRegex)
+      let strippedEmbed = match[1]
+
+      return "track=" + strippedEmbed
+    } else if (embedToStrip == "") {
+      return ""
+    } else {
+      return "Not a valid embed"
+    }
+  }
+
   return (
     <>
       <div className="input-wrapper">
@@ -19,7 +40,7 @@ export default function InputAudioPlayerEmbed({ playerEmbed, onChange }) {
             onChange({
               type: "change",
               name: e.target.id,
-              value: e.target.value,
+              value: stripEmbed(e.target.value),
             })
           }
         />
