@@ -44,6 +44,9 @@ export default function InputAudioPlayerEmbed({ playerEmbed, onChange }) {
             })
           }
         />
+        <small>
+          {"We will automatically format the embed when you paste it here."}
+        </small>
       </div>
     </>
   )
