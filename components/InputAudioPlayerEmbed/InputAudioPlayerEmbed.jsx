@@ -5,17 +5,20 @@ export default function InputAudioPlayerEmbed({ playerEmbed, onChange }) {
     let albumRegex = /album=(\d+)/
     let trackRegex = /track=(\d+)/
 
-    if (embedToStrip.includes("album")) {
-      let match = embedToStrip.match(albumRegex)
-      let strippedEmbed = match[1]
+    let albumMatch = embedToStrip.match(albumRegex)
+    let trackMatch = embedToStrip.match(trackRegex)
 
-      return "album=" + strippedEmbed
-    } else if (embedToStrip.includes("track")) {
-      let match = embedToStrip.match(trackRegex)
-      let strippedEmbed = match[1]
-
-      return "track=" + strippedEmbed
-    } else if (embedToStrip == "") {
+    if (albumMatch && trackMatch) {
+      // Both 'album=' and 'track=' are present
+      let strippedEmbed = `album=${albumMatch[1]}, track=${trackMatch[1]}`
+      return strippedEmbed
+    } else if (albumMatch) {
+      // Only 'album=' is present
+      return `album=${albumMatch[1]}`
+    } else if (trackMatch) {
+      // Only 'track=' is present
+      return `track=${trackMatch[1]}`
+    } else if (embedToStrip === "") {
       return ""
     } else {
       return "Not a valid embed"

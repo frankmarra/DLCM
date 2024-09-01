@@ -23,6 +23,7 @@ export default function ReleaseLayout({
   const [isClient, setIsClient] = useState(false)
 
   const sanitizedAbout = sanitize(release.about)
+  const embeds = release.player_embed.split(",")
 
   useEffect(() => {
     setIsClient(true)
@@ -43,18 +44,24 @@ export default function ReleaseLayout({
             height={250}
             width={250}
           />
-          {release.player_embed?.length > 0 &&
-          release.player_embed != "Not a valid embed" ? (
-            <section>
-              <iframe
-                style={{ border: 0, width: 100 + "%", height: 120 + "px" }}
-                src={`https://bandcamp.com/EmbeddedPlayer/${release.player_embed}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/`}
-                seamless
-              >
+
+          {embeds?.length > 0 &&
+            embeds[0] !== "Not a valid embed" &&
+            embeds[0] !== "" && (
+              <section>
+                <iframe
+                  style={{ border: 0, width: "100%", height: "120px" }}
+                  src={`https://bandcamp.com/EmbeddedPlayer/${
+                    embeds[0]
+                  }/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/${
+                    embeds.length > 1 ? embeds[1] : ""
+                  }/transparent=true/`}
+                  seamless
+                ></iframe>
                 <a href=""></a>
-              </iframe>
-            </section>
-          ) : null}
+              </section>
+            )}
+
           <div>
             <h1 className={styles.title}>{release.title}</h1>
             {userType == "artist" ? (
