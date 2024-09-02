@@ -23,6 +23,7 @@ import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
+import InputAudioPlayerEmbed from "../InputAudioPlayerEmbed/InputAudioPlayerEmbed"
 
 export default function UpdateRelease({
   release,
@@ -43,6 +44,7 @@ export default function UpdateRelease({
     releaseDate: release.release_date,
     type: release.type,
     sites: release.sites,
+    playerEmbed: release.player_embed,
     firstSlugCheck: false,
     pagePassword: release.page_password,
     isPasswordProtected: release.is_password_protected,
@@ -85,6 +87,7 @@ export default function UpdateRelease({
     releaseDate,
     type,
     sites,
+    playerEmbed,
     firstSlugCheck,
     pagePassword,
     isPasswordProtected,
@@ -177,6 +180,7 @@ export default function UpdateRelease({
         label: label,
         type: type,
         sites: sites,
+        player_embed: playerEmbed,
         release_date: releaseDate,
         about: about,
         is_active: isActive,
@@ -426,6 +430,15 @@ export default function UpdateRelease({
             value={yumUrl}
             onChange={handleChange}
           />
+
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
+            <>
+              <InputAudioPlayerEmbed
+                onChange={dispatch}
+                playerEmbed={playerEmbed}
+              />
+            </>
+          ) : null}
 
           <InputSocialSites
             sites={sites}

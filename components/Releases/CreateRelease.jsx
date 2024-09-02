@@ -20,6 +20,7 @@ import InputReleaseAbout from "../InputReleaseAbout/InputReleaseAbout"
 import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
+import InputAudioPlayerEmbed from "../InputAudioPlayerEmbed/InputAudioPlayerEmbed"
 
 export default function CreateRelease({
   trigger,
@@ -37,6 +38,7 @@ export default function CreateRelease({
     type: "Choose release type",
     about: "",
     sites: {},
+    payerEmbed: "",
     isPasswordProtected: false,
     pagePassword: "",
     isActive: true,
@@ -77,6 +79,7 @@ export default function CreateRelease({
     yumUrl,
     type,
     sites,
+    playerEmbed,
     firstSlugCheck,
     pagePassword,
     isPasswordProtected,
@@ -158,6 +161,7 @@ export default function CreateRelease({
 
   async function createNewRelease() {
     dispatch({ type: "submit" })
+
     try {
       let newRelease = {
         title: title,
@@ -168,6 +172,7 @@ export default function CreateRelease({
         yum_url: prependProtocol(yumUrl),
         type: type ?? null,
         sites: sites,
+        player_embed: playerEmbed,
         is_active: isActive,
         is_password_protected: isPasswordProtected,
         page_password: pagePassword,
@@ -365,6 +370,13 @@ export default function CreateRelease({
             This is the link your customers will visit to redeem their code. It
             is usually <code>your-name.bandcamp.com/yum</code>.
           </small>
+
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
+            <InputAudioPlayerEmbed
+              playerEmbed={playerEmbed}
+              onChange={dispatch}
+            />
+          ) : null}
 
           <InputSocialSites
             sites={sites}
