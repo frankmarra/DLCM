@@ -23,9 +23,10 @@ export default function ReleaseLayout({
   const [isClient, setIsClient] = useState(false)
 
   const sanitizedAbout = sanitize(release.about)
-  const embeds = release.player_embed.split(",")
-  console.log("embed 1: ", embeds[0])
-  console.log("embed 2: ", embeds[1])
+  const embeds =
+    release.player_embed.length > 1
+      ? release.player_embed.split(",")
+      : release.player_embed
 
   useEffect(() => {
     setIsClient(true)
