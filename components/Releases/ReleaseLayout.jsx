@@ -24,9 +24,9 @@ export default function ReleaseLayout({
 
   const sanitizedAbout = sanitize(release.about)
   const embeds =
-    release.player_embed.length > 1
+    release.player_embed?.length > 1
       ? release.player_embed.split(",")
-      : release.player_embed
+      : [release.player_embed]
 
   useEffect(() => {
     setIsClient(true)
@@ -50,7 +50,8 @@ export default function ReleaseLayout({
 
           {embeds?.length > 0 &&
             embeds[0] !== "Not a valid embed" &&
-            embeds[0] !== "" && (
+            embeds[0] !== "" &&
+            release.player_embed !== null && (
               <section>
                 <iframe
                   style={{ border: 0, width: "100%", height: "120px" }}
