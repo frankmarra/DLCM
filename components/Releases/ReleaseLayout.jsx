@@ -53,8 +53,8 @@ export default function ReleaseLayout({
                   style={{ border: 0, width: "100%", height: "120px" }}
                   src={`https://bandcamp.com/EmbeddedPlayer/${
                     embeds[0]
-                  }/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/${
-                    embeds.length > 1 ? embeds[1] : ""
+                  }/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small${
+                    embeds.length > 1 ? "/" + embeds[1] : "/"
                   }/transparent=true/`}
                   seamless
                 ></iframe>
