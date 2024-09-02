@@ -24,6 +24,8 @@ export default function ReleaseLayout({
 
   const sanitizedAbout = sanitize(release.about)
   const embeds = release.player_embed.split(",")
+  console.log("embed 1: ", embeds[0])
+  console.log("embed 2: ", embeds[1])
 
   useEffect(() => {
     setIsClient(true)
@@ -54,7 +56,7 @@ export default function ReleaseLayout({
                   src={`https://bandcamp.com/EmbeddedPlayer/${
                     embeds[0]
                   }/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small${
-                    embeds.length > 1 ? "/" + embeds[1] : "/"
+                    embeds.length > 1 ? `/${embeds[1].trim()}` : "/"
                   }/transparent=true/`}
                   seamless
                 ></iframe>
