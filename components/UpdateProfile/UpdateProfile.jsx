@@ -305,21 +305,6 @@ export default function UpdateProfile({
             onChange={handleChange}
           />
           <InputReleaseAbout about={aboutBlurb} setAbout={setAboutBlurb} />
-          {
-            //   <label className="label" htmlFor="aboutBlurb">
-            //   About blurb
-            // </label>
-            // <textarea
-            //   className="input"
-            //   id="aboutBlurb"
-            //   name="aboutBlurb"
-            //   rows="5"
-            //   cols="30"
-            //   value={aboutBlurb}
-            //   onChange={handleChange}
-            //   placeholder="Enter a brief about section for your fans (optional)"
-            // ></textarea>
-          }
           <label className="label" htmlFor="yumUrl">
             Redemption{`(yum)`} Link
           </label>

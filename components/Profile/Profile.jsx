@@ -25,6 +25,7 @@ export default function ProfileLayout({
   isSubscribed,
   isDlcmFriend,
 }) {
+  // State
   const releasesPerPage = 10
   const filtersRef = useRef(null)
   const [pageChange, setPageChange] = useState(0)
@@ -85,9 +86,7 @@ export default function ProfileLayout({
         <div className={cn(styles.info, "stack")}>
           <h1 className={cn(styles.name, "text-3")}>{name}</h1>
           <p className={cn(styles.location, "text-2")}>{location}</p>
-          {
-            // <p className={cn(styles.blurb)}>{aboutBlurb}</p>
-          }
+
           {sanitizedAbout && authorized ? (
             <section
               className={styles.about}

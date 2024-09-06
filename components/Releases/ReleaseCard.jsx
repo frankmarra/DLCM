@@ -10,6 +10,8 @@ import ReleaseStats from "../ReleaseStats/ReleaseStats"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Image from "next/image"
 import formReducer from "../../utils/formReducer"
+import { faLock } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export default function ReleaseCard({
   release,
@@ -109,6 +111,7 @@ export default function ReleaseCard({
               </div>
             ) : null}
           </div>
+
           <div
             className={cn(
               styles.codes,
@@ -119,6 +122,12 @@ export default function ReleaseCard({
             {release.codes[0].count}{" "}
             <small style={{ fontWeight: "normal" }}>left</small>
           </div>
+          {release.is_password_protected ? (
+            <div className={styles.password}>
+              <FontAwesomeIcon icon={faLock} />
+              <p>Password protected.</p>
+            </div>
+          ) : null}
         </div>
       </div>
       {user ? (
