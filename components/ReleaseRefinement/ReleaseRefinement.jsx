@@ -3,19 +3,22 @@ import ReleaseFilter from "../ReleaseFilter/ReleaseFilter"
 import ReleaseSort from "../ReleaseSort/ReleaseSort"
 
 function ReleaseRefinement(
-  { isVisible, onRefinement, releases, isDashboard },
+  { isVisible, onRefinement, releases, artists, isDashboard },
   ref
 ) {
-  const [filtered, setFiltered] = useState(releases)
-  const [sorted, setSorted] = useState(filtered)
+  const [filtered, setFiltered] = useState("all")
+  const [sortType, setSortType] = useState({
+    sortBy: "created_at",
+    ascending: true,
+  })
+
+  // useEffect(() => {
+  //   setSorted(filtered)
+  // }, [filtered])
 
   useEffect(() => {
-    setSorted(filtered)
-  }, [filtered])
-
-  useEffect(() => {
-    onRefinement(sorted)
-  }, [sorted])
+    onRefinement(sortType, filtered)
+  }, [sortType, filtered])
 
   if (!isVisible) {
     return
@@ -27,12 +30,12 @@ function ReleaseRefinement(
       className="cluster"
       style={{ "--cluster-gap": "var(--size-3)" }}
     >
-      <ReleaseFilter releases={releases} onChange={setFiltered} />
-      <ReleaseSort
-        releases={filtered}
-        onChange={setSorted}
-        isDashboard={isDashboard}
+      <ReleaseFilter
+        artistNames={artists}
+        releases={releases}
+        onChange={setFiltered}
       />
+      <ReleaseSort onChange={setSortType} />
     </div>
   )
 }
