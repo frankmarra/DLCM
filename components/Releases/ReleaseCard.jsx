@@ -78,9 +78,10 @@ export default function ReleaseCard({
           className={styles.image}
           src={artwork || "/default-image-release.png"}
           alt={release.title}
-          height={250}
-          width={250}
-          quality={60}
+          height={256}
+          width={256}
+          quality={100}
+          priority={true}
         />
         <div className={styles.details}>
           <div>

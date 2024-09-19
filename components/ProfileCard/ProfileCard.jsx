@@ -12,9 +12,9 @@ export default function ProfileCard({ profile }) {
             className={styles.image}
             src={profile.avatar_url || "/default-image-release.png"}
             alt={profile.username}
-            height={250}
-            width={250}
-            quality={60}
+            height={256}
+            width={256}
+            quality={100}
           />
           <div className={styles.details}>
             <div>
