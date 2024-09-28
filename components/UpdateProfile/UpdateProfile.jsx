@@ -19,6 +19,7 @@ import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
 import InputGenres from "../InputGenres/InputGenres"
+import InputAudioPlayerEmbed from "../InputAudioPlayerEmbed/InputAudioPlayerEmbed"
 
 export default function UpdateProfile({
   getProfile,
@@ -39,6 +40,7 @@ export default function UpdateProfile({
     submitting: false,
     success: false,
     error: null,
+    playerEmbed: profileData.player_embed,
   }
 
   const initialValidation = {
@@ -62,7 +64,6 @@ export default function UpdateProfile({
 
   const {
     username,
-    // aboutBlurb,
     location,
     yumUrl,
     sluggedName,
@@ -71,6 +72,7 @@ export default function UpdateProfile({
     isPasswordProtected,
     inPublicIndex,
     genres,
+    playerEmbed,
   } = formValue
 
   const { isNameValid, isFormValid } = validation
@@ -154,6 +156,7 @@ export default function UpdateProfile({
         yum_url: prependProtocol(yumUrl),
         about_blurb: aboutBlurb,
         updated_at: new Date().toISOString(),
+        player_embed: playerEmbed,
       }
 
       if (newImagePath) {
@@ -171,6 +174,7 @@ export default function UpdateProfile({
         .from("profiles")
         .update(updates)
         .eq("id", profileData.id)
+
       if (error) {
         dispatch({ type: "error", error: error.message })
         alert(error.message)
@@ -319,6 +323,14 @@ export default function UpdateProfile({
             This is the link your customers will visit to redeem their code. It
             is usually <code>your-name.bandcamp.com/yum</code>
           </small>
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
+            <>
+              <InputAudioPlayerEmbed
+                onChange={dispatch}
+                playerEmbed={playerEmbed}
+              />
+            </>
+          ) : null}
           <InputSocialSites
             sites={sites}
             onChange={dispatch}

@@ -68,14 +68,9 @@ export default function UpdateRelease({
   const [validation, validate] = useReducer(inputValidator, initialValidation)
   const [open, setOpen] = useState(false)
   const [artworkUrl, setArtworkUrl] = useState(release.artwork_url)
-  // const [isPasswordProtected, setIsPasswordProtected] = useState(
-  //   release.is_password_protected
-  // )
-  // const [pagePassword, setPagePassword] = useState(release.page_password)
   const [artworkId, setArtworkId] = useState()
   const [imagePath, setImagePath] = useState(release.artwork_path)
   const [newImagePath, setNewImagePath] = useState()
-  // const [isActive, setIsActive] = useState(release.is_active)
   const [about, setAbout] = useState(release.about ?? "")
 
   const {

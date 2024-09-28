@@ -28,12 +28,14 @@ export default function InputAudioPlayerEmbed({ playerEmbed, onChange }) {
   return (
     <>
       <div className="input-wrapper">
-        <label className="label" htmlFor="playerEmbed">
-          Bandcamp audio player embed
-        </label>
-        <PopoverTip
-          message={`Paste a bandcamp HTML embed here. We set what the player will look like for aesthetic consistency.`}
-        />
+        <div className="cluster">
+          <label className="label" htmlFor="playerEmbed">
+            Bandcamp audio player embed
+          </label>
+          <PopoverTip
+            message={`Paste a bandcamp HTML embed here. We set what the player will look like for aesthetic consistency.`}
+          />
+        </div>
         <input
           className="input"
           id="playerEmbed"
