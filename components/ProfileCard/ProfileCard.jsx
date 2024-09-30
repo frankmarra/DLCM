@@ -2,6 +2,7 @@ import cn from "classnames"
 import styles from "./ProfileCard.module.css"
 import Link from "next/link"
 import Image from "next/image"
+import AudioPlayerEmbed from "../AudioPlayerEmbed/AudioPlayerEmbed"
 
 export default function ProfileCard({ profile }) {
   return (
@@ -21,16 +22,22 @@ export default function ProfileCard({ profile }) {
               <h3 className={cn(styles.title, "line-clamp")}>
                 {profile.username}
               </h3>
-              <div className={cn(styles.artist, "line-clamp")}>
+              <h5 className={cn(styles.artist, "line-clamp")}>
                 {profile.type}
-              </div>
-              <br />
-              {profile.genres ? (
-                <h3 className={cn(styles.title, "line-clamp")}>
-                  Genres: {profile.genres.toString()}
-                </h3>
-              ) : null}
+              </h5>
+
+              {
+                // profile.genres ? (
+                // <h3 className={cn(styles.title, "line-clamp")}>
+                //   Genres: {profile.genres.toString()}
+                // </h3>
+                // ) : null
+              }
             </div>
+            <AudioPlayerEmbed
+              playerEmbed={profile.player_embed}
+              size={"small"}
+            />
           </div>
         </div>
       </div>
