@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function AdminDashboard({ supabase }) {
   const getAllUsers = async () => {
     try {
@@ -44,6 +46,14 @@ export default function AdminDashboard({ supabase }) {
       >
         Get user list
       </button>
+      <Link
+        className="button"
+        data-variant="secondary"
+        data="size"
+        href="/public-index"
+      >
+        Public Index
+      </Link>
     </>
   )
 }

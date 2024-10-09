@@ -10,6 +10,7 @@ import {
   faFacebook,
   faTwitter,
   faTiktok,
+  faXTwitter,
 } from "@fortawesome/free-brands-svg-icons"
 import cn from "classnames"
 
@@ -149,7 +150,7 @@ export default function SocialSites({ sites, isSubscribed, isDlcmFriend }) {
                       Visit profile on Twitter
                     </span>
                     <FontAwesomeIcon
-                      icon={faTwitter}
+                      icon={faXTwitter}
                       size={iconSize}
                       color="#309DEC"
                     />

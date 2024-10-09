@@ -10,6 +10,7 @@ import Pagination from "../Pagination/Pagination"
 import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 
 export default function Releases({ profileData, getProfile }) {
+  // State
   const releasesPerPage = 9
   const filtersRef = useRef(null)
   const user = useUser()
@@ -26,6 +27,7 @@ export default function Releases({ profileData, getProfile }) {
     filtersRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
+  // Pagination
   const handlePageChange = useCallback(
     (e) => {
       const newOffset = (e.selected * releasesPerPage) % releases.length
@@ -35,6 +37,7 @@ export default function Releases({ profileData, getProfile }) {
     [releases.length]
   )
 
+  // Filtering of releases
   const handleFilterRefinement = useCallback(
     (releases) => {
       setRefinedReleases(releases)
@@ -43,12 +46,15 @@ export default function Releases({ profileData, getProfile }) {
     [handlePageChange]
   )
 
+  // Effects
   useEffect(() => {
     if (addedNewRelease == true) {
       getProfile()
       setAddedNewRelease(false)
     }
   }, [profileData.id, addedNewRelease, getProfile])
+
+  // Return
 
   return (
     refinedReleases && (

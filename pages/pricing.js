@@ -54,6 +54,7 @@ export default function Pricing() {
                 <li>Add Copy to Release Pages</li>
                 <li>Make Releases Active/Inactive</li>
                 <li>Bandcamp CSV Code Upload</li>
+                <li>Bandcamp Player Embed</li>
                 <li>Social/Streaming Links</li>
               </ul>
             </div>

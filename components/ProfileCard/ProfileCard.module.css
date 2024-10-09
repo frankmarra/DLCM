@@ -1,6 +1,6 @@
 .component {
   --border: var(--border-size-1) solid var(--surface-3);
-  --padding: var(--size-2);
+  --padding: var(--size-3);
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -17,15 +17,26 @@
 .content {
   flex: 1 1 100%;
   display: flex;
+  /* flex-direction: column; */
   align-items: flex-start;
+  align-items: center;
   gap: var(--padding);
   padding: var(--padding);
+  /* text-align: center; */
 }
 
 .title {
   font-size: var(--step-2);
   font-weight: var(--font-weight-6);
   font-family: var(--font-main);
+  text-transform: capitalize;
+}
+
+.artist {
+  font-size: var(--step-3);
+  font-weight: var(--font-weight-4);
+  font-family: var(--font-main);
+  text-transform: capitalize;
 }
 
 .title a {
@@ -168,4 +179,9 @@
     color: var(--gray-6);
     background-color: transparent;
   }
+}
+
+.embed {
+  margin-block-start: 5px;
+  border-top: 1px solid rgb(94, 94, 94);
 }

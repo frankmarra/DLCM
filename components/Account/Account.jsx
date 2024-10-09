@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import Avatar from "@/components/Avatar/Avatar"
 import Releases from "@/components/Releases/Releases"
@@ -16,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
 export default function Account({ session }) {
+  ////////////////////// State/////////////////////////
   const supabase = createClientComponentClient()
   const [loading, setLoading] = useState(true)
   const [showUpdateView, setShowUpdateView] = useState(false)
@@ -23,10 +23,14 @@ export default function Account({ session }) {
   const [isAdmin, toggleIsAdmin] = useState(false)
   const { user } = session
 
+  //////////////////// Effects ////////////////////////
   useEffect(() => {
     getProfile()
   }, [])
 
+  /////////////////// Functions //////////////////////
+
+  // This function gets the logged in users profile
   async function getProfile() {
     try {
       setLoading(true)
@@ -37,7 +41,6 @@ export default function Account({ session }) {
         .eq("id", user.id)
         .eq("releases.codes.redeemed", false)
         .order("created_at", { foreignTable: "releases", ascending: false })
-      //.single()
 
       if (error && status !== 406) {
         throw error
@@ -58,11 +61,12 @@ export default function Account({ session }) {
     return <Loader style={{ margin: "auto" }} />
   }
 
+  ////////////////////////// Return ///////////////////////////////////
   return (
     <>
       <SEO title={profileData.username}></SEO>
       {
-        //    Banner used for updating users on DLCM status.
+        //    Banner used for updating users on DLCM status. Uncomment and update message to use. //////
         // <div className="container inline-max" style={{ textAlign: "center" }}>
         //   <FontAwesomeIcon
         //     icon={faTriangleExclamation}
@@ -75,16 +79,22 @@ export default function Account({ session }) {
         // please contact us at dlcm.app@gmail.com`}
         //   />
         // </div>
+        //   End of message. /////////////////
       }
+
       <div className={cn(styles.update, "cluster")}>
         <UpdateProfile
           getProfile={getProfile}
           profileData={profileData}
           setShowUpdateView={setShowUpdateView}
         />
-        {process.env.NEXT_PUBLIC_ADMIN_USERS.includes(user.id) ? (
-          <AdminDashboard supabase={supabase} />
-        ) : null}
+
+        {
+          // Show admin options on dashboard
+          process.env.NEXT_PUBLIC_ADMIN_USERS.includes(user.id) ? (
+            <AdminDashboard supabase={supabase} />
+          ) : null
+        }
 
         {!profileData.dlcm_friend ? (
           profileData.is_subscribed ? (
@@ -108,6 +118,7 @@ export default function Account({ session }) {
           )
         ) : null}
       </div>
+
       <article className={cn(styles.profile)}>
         <div className="with-sidebar">
           <Avatar url={profileData.avatar_url} size={150} />
