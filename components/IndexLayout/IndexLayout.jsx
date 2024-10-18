@@ -14,7 +14,7 @@ export default function IndexLayout({ profiles }) {
 
       <h1>DLCM Public User Index</h1>
 
-      <ul className={cn(styles.cards, "grid")} role="list">
+      <ul className={cn("grid")} role="list">
         {profiles.map((profile, index) => (
           <li key={index}>
             <Link className={styles.profile} href={`/${profile.slug}`}>
