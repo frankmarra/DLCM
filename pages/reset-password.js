@@ -52,7 +52,7 @@ export default function ResetPassword() {
     }
   }
 
-  if (!user && !passwordUpdated) {
+  if (session?.user.aud != "authenticated" && !passwordUpdated) {
     return <p>You are not permitted to do this.</p>
   }
 
