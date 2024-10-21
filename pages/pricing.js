@@ -19,7 +19,7 @@ export default function Pricing() {
               <ul role="list">
                 <li>Two Releases</li>
                 <li>Unlimited Codes</li>
-                <li>Copy and Paste Code Upload</li>
+                <li>Manual Code Upload</li>
                 <li>Public Profile Page</li>
                 <li>Dedicated Release Pages</li>
               </ul>
@@ -54,6 +54,7 @@ export default function Pricing() {
                 <li>Add Copy to Release Pages</li>
                 <li>Make Releases Active/Inactive</li>
                 <li>Bandcamp CSV Code Upload</li>
+                <li>Bandcamp Player Embed</li>
                 <li>Social/Streaming Links</li>
               </ul>
             </div>

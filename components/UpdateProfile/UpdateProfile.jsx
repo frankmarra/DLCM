@@ -19,6 +19,7 @@ import formReducer from "../../utils/formReducer"
 import inputValidator from "../../utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
 import InputGenres from "../InputGenres/InputGenres"
+import InputAudioPlayerEmbed from "../InputAudioPlayerEmbed/InputAudioPlayerEmbed"
 
 export default function UpdateProfile({
   getProfile,
@@ -39,6 +40,7 @@ export default function UpdateProfile({
     submitting: false,
     success: false,
     error: null,
+    playerEmbed: profileData.player_embed,
   }
 
   const initialValidation = {
@@ -62,7 +64,6 @@ export default function UpdateProfile({
 
   const {
     username,
-    // aboutBlurb,
     location,
     yumUrl,
     sluggedName,
@@ -71,6 +72,7 @@ export default function UpdateProfile({
     isPasswordProtected,
     inPublicIndex,
     genres,
+    playerEmbed,
   } = formValue
 
   const { isNameValid, isFormValid } = validation
@@ -138,6 +140,10 @@ export default function UpdateProfile({
 
   async function updateUserProfile() {
     dispatch({ type: "submit" })
+
+    for (let site in sites) {
+      sites[site] = prependProtocol(sites[site])
+    }
     try {
       const updates = {
         username: username,
@@ -154,6 +160,7 @@ export default function UpdateProfile({
         yum_url: prependProtocol(yumUrl),
         about_blurb: aboutBlurb,
         updated_at: new Date().toISOString(),
+        player_embed: playerEmbed,
       }
 
       if (newImagePath) {
@@ -171,6 +178,7 @@ export default function UpdateProfile({
         .from("profiles")
         .update(updates)
         .eq("id", profileData.id)
+
       if (error) {
         dispatch({ type: "error", error: error.message })
         alert(error.message)
@@ -305,21 +313,6 @@ export default function UpdateProfile({
             onChange={handleChange}
           />
           <InputReleaseAbout about={aboutBlurb} setAbout={setAboutBlurb} />
-          {
-            //   <label className="label" htmlFor="aboutBlurb">
-            //   About blurb
-            // </label>
-            // <textarea
-            //   className="input"
-            //   id="aboutBlurb"
-            //   name="aboutBlurb"
-            //   rows="5"
-            //   cols="30"
-            //   value={aboutBlurb}
-            //   onChange={handleChange}
-            //   placeholder="Enter a brief about section for your fans (optional)"
-            // ></textarea>
-          }
           <label className="label" htmlFor="yumUrl">
             Redemption{`(yum)`} Link
           </label>
@@ -334,6 +327,14 @@ export default function UpdateProfile({
             This is the link your customers will visit to redeem their code. It
             is usually <code>your-name.bandcamp.com/yum</code>
           </small>
+          {profileData.is_subscribed || profileData.dlcm_friend ? (
+            <>
+              <InputAudioPlayerEmbed
+                onChange={dispatch}
+                playerEmbed={playerEmbed}
+              />
+            </>
+          ) : null}
           <InputSocialSites
             sites={sites}
             onChange={dispatch}

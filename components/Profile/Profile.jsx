@@ -11,6 +11,7 @@ import ReleaseRefinement from "../ReleaseRefinement/ReleaseRefinement"
 import InputPagePassword from "../InputPagePassword/InputPagePassword"
 import SEO from "../SEO/SEO"
 import { sanitize } from "isomorphic-dompurify"
+import AudioPlayerEmbed from "../AudioPlayerEmbed/AudioPlayerEmbed"
 
 export default function ProfileLayout({
   avatar,
@@ -24,7 +25,9 @@ export default function ProfileLayout({
   aboutBlurb,
   isSubscribed,
   isDlcmFriend,
+  embed,
 }) {
+  // State
   const releasesPerPage = 10
   const filtersRef = useRef(null)
   const [pageChange, setPageChange] = useState(0)
@@ -44,6 +47,7 @@ export default function ProfileLayout({
       alt={name}
       width={200}
       height={200}
+      quality={100}
       priority={true}
     />
   )
@@ -82,12 +86,34 @@ export default function ProfileLayout({
         ) : (
           profilePic
         )}
+
+        {
+          // authorized &&
+          // embeds?.length > 0 &&
+          // embeds[0] !== "Not a valid embed" &&
+          // embeds[0] !== "" &&
+          // embed !== null && (
+          //   <section>
+          //     <iframe
+          //       style={{ border: 0, width: "100%", height: "120px" }}
+          //       src={`https://bandcamp.com/EmbeddedPlayer/${
+          //         embeds[0]
+          //       }/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small${
+          //         embeds.length > 1 ? `/${embeds[1].trim()}` : "/"
+          //       }/transparent=true/`}
+          //       seamless
+          //     ></iframe>
+          //     <a href=""></a>
+          //   </section>
+          // )
+        }
+
+        <AudioPlayerEmbed playerEmbed={embed} size={"large"} />
+
         <div className={cn(styles.info, "stack")}>
           <h1 className={cn(styles.name, "text-3")}>{name}</h1>
           <p className={cn(styles.location, "text-2")}>{location}</p>
-          {
-            // <p className={cn(styles.blurb)}>{aboutBlurb}</p>
-          }
+
           {sanitizedAbout && authorized ? (
             <section
               className={styles.about}

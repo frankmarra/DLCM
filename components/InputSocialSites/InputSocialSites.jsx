@@ -121,7 +121,7 @@ export default function InputSocialSites({
             onChange={handleChange}
           />
           <label className="label" htmlFor="twitter">
-            Twitter Link
+            X (Twitter) Link
           </label>
           <input
             className="input"

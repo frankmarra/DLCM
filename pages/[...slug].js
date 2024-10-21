@@ -7,7 +7,7 @@ export async function getServerSideProps({ params }) {
   let { data: profile, error } = await supabase
     .from("profiles")
     .select(
-      "avatar_url, username, location, slug, sites, page_password, is_password_protected, about_blurb, is_subscribed, dlcm_friend, releases(*, codes(count))"
+      "avatar_url, username, location, slug, sites, page_password, is_password_protected, about_blurb, is_subscribed, dlcm_friend, player_embed,releases(*, codes(count))"
     )
     .eq("slug", slug)
     .eq("releases.codes.redeemed", false)
@@ -35,6 +35,7 @@ export default function ProfilePage({ profile }) {
       aboutBlurb={profile.about_blurb}
       isSubscribed={profile.is_subscribed}
       isDlcmFriend={profile.dlcm_friend}
+      embed={profile.player_embed}
     />
   ) : null
 }

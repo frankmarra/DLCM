@@ -72,7 +72,8 @@
 }
 
 .label,
-.type {
+.type,
+.password {
   font-size: var(--font-size--1);
 }
 
@@ -91,6 +92,12 @@
   flex-shrink: 0;
 }
 
+.password {
+  display: flex;
+  margin-block: 1vh;
+  padding-inline: 2px;
+  gap: 0.4em;
+}
 .codes {
   --offset: calc(var(--padding) * -1 + 3px);
   position: relative;

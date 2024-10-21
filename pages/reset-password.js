@@ -1,6 +1,6 @@
 import { useUser, useSessionContext } from "@supabase/auth-helpers-react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { useState } from "react"
+import { useState, useParams } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import Head from "next/head"
@@ -18,6 +18,8 @@ export default function ResetPassword() {
   })
   const [passwordGood, setPasswordGood] = useState(false)
   const user = useUser()
+  console.log("user: ", user)
+  console.log("session: ", session)
   const router = useRouter()
 
   if (isLoading) {
