@@ -165,7 +165,9 @@ export default function UpdateRelease({
 
   async function updateRelease() {
     for (let site in sites) {
-      sites[site] = prependProtocol(sites[site])
+      if (sites[site] != "") {
+        sites[site] = prependProtocol(sites[site])
+      }
     }
     try {
       const update = {
