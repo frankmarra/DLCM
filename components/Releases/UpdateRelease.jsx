@@ -165,7 +165,7 @@ export default function UpdateRelease({
 
   async function updateRelease() {
     for (let site in sites) {
-      if (sites[site] != "") {
+      if (sites[site] != "" || null) {
         sites[site] = prependProtocol(sites[site])
       }
     }
