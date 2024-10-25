@@ -140,9 +140,10 @@ export default function UpdateProfile({
 
   async function updateUserProfile() {
     dispatch({ type: "submit" })
-
     for (let site in sites) {
-      sites[site] = prependProtocol(sites[site])
+      if (sites[site] != "" || null) {
+        sites[site] = prependProtocol(sites[site])
+      }
     }
     try {
       const updates = {

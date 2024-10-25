@@ -162,7 +162,9 @@ export default function CreateRelease({
   async function createNewRelease() {
     dispatch({ type: "submit" })
     for (let site in sites) {
-      sites[site] = prependProtocol(sites[site])
+      if (sites[site] != "" || null) {
+        sites[site] = prependProtocol(sites[site])
+      }
     }
     try {
       let newRelease = {
