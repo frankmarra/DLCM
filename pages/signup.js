@@ -251,7 +251,7 @@ const Signup = () => {
 
             <br />
             <p>
-              Thank you for signing up! <span> <a href="dlcm.app">Click here</a></span> to go to your dashboard.
+              Thank you for signing up! <span> <a href="/">Click here</a></span> to go to your dashboard.
             </p>
           </div>
         ) : (
