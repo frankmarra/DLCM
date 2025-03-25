@@ -8,6 +8,7 @@ import SEO from "@/components/SEO/SEO"
 import formReducer from "@/utils/formReducer"
 import inputValidator from "@/utils/inputValidator"
 import Loader from "@/components/Loader/Loader"
+import Link from 'next/link'
 
 const nameRegEx = /[A-Za-z0-9\-_\.]/
 
@@ -251,7 +252,7 @@ const Signup = () => {
 
             <br />
             <p>
-              Thank you for signing up! <span> <a href="/">Click here</a></span> to go to your dashboard.
+              Thank you for signing up! <span> <Link href="/">Click here</Link></span> to go to your dashboard.
             </p>
           </div>
         ) : (
