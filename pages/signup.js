@@ -251,9 +251,7 @@ const Signup = () => {
 
             <br />
             <p>
-              Thank you for signing up! Please verify your email address to
-              finish the signup process. Make sure to check your spam if you do
-              not see the email in your inbox.
+              Thank you for signing up! <span> <a href="dlcm.app">Click here</a></span> to go to your dashboard.
             </p>
           </div>
         ) : (
